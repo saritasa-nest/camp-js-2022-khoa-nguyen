@@ -1,5 +1,55 @@
 @import url("../global/index.css");
 
 .title {
-  color: var(--heading-color-1);
+  width: 100%;
+  text-align: center;
+  color: var(--primary-color);
+  text-transform: uppercase;
+}
+
+.container {
+  display: flex;
+  gap: 40px;
+  margin-top: 30px;
+}
+
+.container__list {
+  flex: 1;
+  display: grid;
+  grid-template-columns: var(--grid-template-cols-5);
+  gap: 20px;
+}
+
+.container__list_item > .img {
+  max-width: 200px;
+  height: 150px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.container__list_item > .img > img {
+  width: 100%;
+  opacity: 0;
+}
+
+.container__list_item > .content > h3:nth-child(2) {
+  font-weight: 400;
+}
+
+.container__list_item > .content > h3:nth-child(3) {
+  font-weight: 400;
+  font-size: 17px;
+}
+
+.content__typeAndStatus {
+  display: flex;
+  flex-direction: row;
+  font-weight: normal;
+  font-size: 16px;
+  justify-content: space-between;
+}
+
+.content .content__typeAndStatus h3:last-child {
+  color: var(--primary-color);
 }
