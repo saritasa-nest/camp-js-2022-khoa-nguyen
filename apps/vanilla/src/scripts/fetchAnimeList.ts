@@ -6,7 +6,7 @@ import { appAxios } from '../configs';
 
 /**
  * Generate for range of numbers.
- * @param limit Anime quanity per pages.
+ * @param limit Anime quantity per pages.
  * @param offset Anime offset.
  */
 export async function asyncGetAnimeList(limit: number, offset: number): Promise<PaginationDto<AnimeDto>> {

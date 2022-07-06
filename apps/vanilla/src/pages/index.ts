@@ -15,23 +15,30 @@ function formatDate(str: Date): string {
 
 const htmlInsideContainer = animeList.results.map(element => (
   `
-    <div class="container__list_item">
-    <div class="img" style="background-image: url(${element.image}) ;" ">
-      <img src="${element.image}" alt="${element.title_eng}" />
-    </div>
-    <div class="content">
-      <h3>${element.title_eng}</h3>
-      <h3>${element.title_jpn}</h3>
-      <h3>${element.aired.start ? formatDate(element.aired.start) : ''}</h3>
-      <div class="content__typeAndStatus">
-        <h3>${element.type}</h3>
-        <h3>${element.status}</h3>
-      </div>
-    </div>
-    </div>
+    <tr class="container__list_item">
+      <th class="img" style="background-image: url(${element.image}) ;" ">
+        <img src="${element.image}" alt="${element.title_eng}" />
+      </th>
+      <th>${element.title_eng}</th>
+      <th>${element.title_jpn}</th>
+      <th>${element.aired.start ? formatDate(element.aired.start) : ''}</th>
+      <th>${element.type}</th>
+      <th>${element.status}</th>
+    </tr>
   `
 )).join('');
 
 if (container) {
-  container.innerHTML = htmlInsideContainer;
+  container.innerHTML = `
+    <tr class="container__list_item">
+      <th>Thumbnail</th>
+      <th>English title</th>
+      <th>Japanese title</th>
+      <th>Aired start</th>
+      <th>Type</th>
+      <th>Status</th>
+    </tr>
+    ${htmlInsideContainer}
+
+`;
 }

@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link type="text/css" rel="stylesheet" href="../global/materialize.min.css"  media="screen,projection"/>
     <link rel="stylesheet" href="./index.css" />
     <title>Vite App</title>
   </head>
@@ -25,12 +26,26 @@
         </select>
       </div>
       <!-- Anime films list -->
-      <div class="container__list">
-      </div>
+      <table class="container__list">
+
+      </table>
 
       <!-- Pagination -->
-      <div></div>
+
     </div>
+    <div>
+      <ul class="pagination">
+        <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+        <li class="active"><a href="#!">1</a></li>
+        <li class="waves-effect"><a href="#!">2</a></li>
+        <li class="waves-effect"><a href="#!">3</a></li>
+        <li class="waves-effect"><a href="#!">4</a></li>
+        <li class="waves-effect"><a href="#!">5</a></li>
+        <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+      </ul>
+    </div>
+
     <script type="module" src="./index.ts"></script>
+    <script type="text/javascript" src="../scripts/materializeJS/materialize.min.js"></script>
   </body>
 </html>

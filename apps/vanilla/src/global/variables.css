@@ -1,9 +1,14 @@
 :root {
-  /* Using html color names here only for showcase,
-   * you shouldn't be using color names in real projects. */
   --primary-color: #1363df;
-  --secondary-color: #47b5ff;
-  --third-color: #dff6ff;
-  --fourth-color: #06283d;
+  --primary-light-color: #47b5ff;
+  --primary-light-color-2: #dff6ff;
+
+  /* Text color */
+  --primary-font-color: #06283d;
+
+  /* Box shadow color */
+  --primary-box-shadow-color: 0 4px 8px 0 rgba(0 0 0 / 20%), 0 6px 20px 0 rgba(0 0 0 / 19%);
+
+  /* Custom grid columns */
   --grid-template-cols-5: repeat(5, minmax(0, 1fr));
 }
