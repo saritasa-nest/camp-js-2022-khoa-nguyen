@@ -1,8 +1,15 @@
 import { asyncGetAnimeList } from '../scripts/fetchAnimeList';
 
-const animeList = await asyncGetAnimeList(25, 25);
-
 const container = document.querySelector('.container__list');
+
+const animeListInitial = await asyncGetAnimeList(25, 25);
+
+const pagination = {
+  limit: 25,
+  offset: 25,
+  activePage: 1,
+  totalPage: animeListInitial.count / 25 - 1,
+};
 
 /**
  * Format date into dd/mm/yyyy .
@@ -13,65 +20,124 @@ function formatDate(str: Date): string {
   return newDate.toLocaleDateString('en-us');
 }
 
-const htmlInsideContainer = animeList.results.map(element => (
-  `
-    <tr class="container__list_item">
-      <th class="img" style="background-image: url(${element.image}) ;" ">
-        <img src="${element.image}" alt="${element.title_eng}" />
-      </th>
-      <th>${element.title_eng}</th>
-      <th>${element.title_jpn}</th>
-      <th>${element.aired.start ? formatDate(element.aired.start) : ''}</th>
-      <th>${element.type}</th>
-      <th>${element.status}</th>
-    </tr>
-  `
-)).join('');
+/**
+ * Format date into dd/mm/yyyy .
+ */
+async function renderAnimeList(): Promise<void> {
+  const { limit, offset } = pagination;
+  const animeList = await asyncGetAnimeList(limit, offset);
+  const htmlInsideContainer = animeList.results.map(element => (
+    `
+      <tr class="container__list_item">
+        <th class="img" style="background-image: url(${element.image}) ;" ">
+          <img src="${element.image}" alt="${element.title_eng}" />
+        </th>
+        <th>${element.title_eng}</th>
+        <th>${element.title_jpn}</th>
+        <th>${element.aired.start ? formatDate(element.aired.start) : ''}</th>
+        <th>${element.type}</th>
+        <th>${element.status}</th>
+      </tr>
+    `
+  )).join('');
 
-if (container) {
-  container.innerHTML = `
-    <tr class="container__list_item">
-      <th>Thumbnail</th>
-      <th>English title</th>
-      <th>Japanese title</th>
-      <th>Aired start</th>
-      <th>Type</th>
-      <th>Status</th>
-    </tr>
-    ${htmlInsideContainer}
+  if (container) {
+    container.innerHTML = `
+      <tr class="container__list_item">
+        <th>Thumbnail</th>
+        <th>English title</th>
+        <th>Japanese title</th>
+        <th>Aired start</th>
+        <th>Type</th>
+        <th>Status</th>
+      </tr>
+      ${htmlInsideContainer}
 
-`;
+  `;
+  }
 }
 
 const paginationContainer = document.querySelector('.pagination');
-const itemsPerPage = 25;
-const offSet = 25;
 
 /**
  * Render items of pagination .
- * @param activePage Active page to show items.
  */
-function renderPageItems(activePage: number): string {
-  const totalPage = animeList.count / itemsPerPage;
+function renderPageItems(): string {
+  const { activePage, totalPage } = pagination;
   let pageItemHTML = '';
-  if (activePage <= 5) {
+  if (activePage < 5) {
     for (let i = 1; i <= 5; i++) {
-      pageItemHTML = pageItemHTML.concat(`<li class="waves-effect"><a href="#!">${i}</a></li>`, '');
+      pageItemHTML = pageItemHTML.concat(`<li class="waves-effect ${activePage === i ? 'active' : ''}"><a href="#!">${i}</a></li>`, '');
     }
-  }
-
-  if (activePage > 5 && activePage < totalPage - 2) {
+  } else if (activePage >= 5 && activePage < totalPage - 2) {
     for (let i = activePage - 2; i <= activePage + 2; i++) {
-      pageItemHTML = pageItemHTML.concat(`<li class="waves-effect"><a href="#!">${i}</a></li>`, '');
+      pageItemHTML = pageItemHTML.concat(`<li class="waves-effect ${activePage === i ? 'active' : ''}"><a href="#!">${i}</a></li>`, '');
+    }
+  } else if (activePage > totalPage - 5) {
+    for (let i = totalPage - 5; i <= totalPage; i++) {
+      pageItemHTML = pageItemHTML.concat(`<li class="waves-effect ${activePage === i ? 'active' : ''}"><a href="#!">${i}</a></li>`, '');
     }
   }
   return pageItemHTML;
 }
 
-if (paginationContainer) {
-  paginationContainer.innerHTML = `
-    <li class="disabled"><a href="#!"><i class="material-icons">Previous</i></a></li>
-    ${renderPageItems(1)}
-    <li class="waves-effect"><a href="#!"><i class="material-icons">Next</i></a></li>
+/**
+ * Render pagination.
+ */
+function renderPagination(): void {
+  if (paginationContainer) {
+    paginationContainer.innerHTML = `
+      <li id="btnFirst" class="btn waves-effect"><a href="#!"><i class="material-icons">First</i></a></li>
+      ${renderPageItems()}
+      <li id="btnLast" class="btn waves-effect"><a href="#!"><i class="material-icons">Last</i></a></li>
   `;
+    const btnFirst = document.querySelector('#btnFirst');
+    const btnLast = document.querySelector('#btnLast');
+
+    btnFirst?.addEventListener('click', () => {
+      pagination.activePage = 1;
+      pagination.offset = 25 * pagination.activePage;
+      renderToUI();
+    });
+
+    btnLast?.addEventListener('click', () => {
+      pagination.activePage = pagination.totalPage;
+      pagination.offset = 25 * pagination.activePage;
+      renderToUI();
+    });
+
+    if (pagination.activePage === pagination.totalPage) {
+      btnLast?.classList.add('disabled');
+    } else {
+      btnLast?.classList.remove('disabled');
+    }
+
+    if (pagination.activePage === 1) {
+      btnFirst?.classList.add('disabled');
+    } else {
+      btnFirst?.classList.remove('disabled');
+    }
+  }
 }
+
+/**
+ * Render pagination into UI.
+ */
+async function renderToUI(): Promise<void> {
+  await renderAnimeList();
+  renderPagination();
+  const itemsPageList = document.querySelectorAll('.pagination li:not(.btn)');
+  itemsPageList.forEach(item => {
+    item.addEventListener('click', () => {
+      const strPage = item.childNodes[0].childNodes[0].nodeValue;
+      if (strPage) {
+        const numPage = Number.parseInt(strPage, 10);
+        pagination.offset = 25 * numPage;
+        pagination.activePage = numPage;
+        renderToUI();
+      }
+    });
+  });
+}
+
+renderToUI();

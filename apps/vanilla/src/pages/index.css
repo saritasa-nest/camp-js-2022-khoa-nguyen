@@ -52,7 +52,12 @@
 .container__list_item:first-child {
   background-color: var(--primary-color);
   color: var(--primary-light-color-2);
-  height: 80px;
+}
+
+.container__list_item:first-child > th {
+  background-color: var(--primary-color);
+  color: var(--primary-light-color-2);
+  text-align: center;
 }
 
 .container__pagination {
