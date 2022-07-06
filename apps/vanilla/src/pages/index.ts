@@ -42,3 +42,36 @@ if (container) {
 
 `;
 }
+
+const paginationContainer = document.querySelector('.pagination');
+const itemsPerPage = 25;
+const offSet = 25;
+
+/**
+ * Render items of pagination .
+ * @param activePage Active page to show items.
+ */
+function renderPageItems(activePage: number): string {
+  const totalPage = animeList.count / itemsPerPage;
+  let pageItemHTML = '';
+  if (activePage <= 5) {
+    for (let i = 1; i <= 5; i++) {
+      pageItemHTML = pageItemHTML.concat(`<li class="waves-effect"><a href="#!">${i}</a></li>`, '');
+    }
+  }
+
+  if (activePage > 5 && activePage < totalPage - 2) {
+    for (let i = activePage - 2; i <= activePage + 2; i++) {
+      pageItemHTML = pageItemHTML.concat(`<li class="waves-effect"><a href="#!">${i}</a></li>`, '');
+    }
+  }
+  return pageItemHTML;
+}
+
+if (paginationContainer) {
+  paginationContainer.innerHTML = `
+    <li class="disabled"><a href="#!"><i class="material-icons">Previous</i></a></li>
+    ${renderPageItems(1)}
+    <li class="waves-effect"><a href="#!"><i class="material-icons">Next</i></a></li>
+  `;
+}
