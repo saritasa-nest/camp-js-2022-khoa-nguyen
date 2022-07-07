@@ -1,7 +1,7 @@
 import { constants } from '../constants';
 import { asyncFetchAnimeList } from '../scripts/fetchAnimeList';
 
-const container = document.querySelector('.container__list');
+const container = document.querySelector('.container__table');
 const selectSort = document.querySelector<HTMLSelectElement>('#selectSort');
 const selectOrdering = document.querySelector<HTMLSelectElement>('#selectOrder');
 
@@ -50,6 +50,8 @@ async function renderAnimeList(): Promise<void> {
 
     if (container) {
       container.innerHTML = `
+      <caption>Anime list</caption>
+      <table class="container__list">
         <tr class="container__list_item">
           <th>Thumbnail</th>
           <th>English title</th>
@@ -59,6 +61,7 @@ async function renderAnimeList(): Promise<void> {
           <th>Status</th>
         </tr>
         ${htmlInsideContainer}
+      </table>
 
     `;
     }
@@ -70,35 +73,43 @@ async function renderAnimeList(): Promise<void> {
 const paginationContainer = document.querySelector('.pagination');
 
 /**
+ * Render range of pagination.
+ * @param activePage Page selected.
+ * @param from First index of pagination.
+ * @param to Last index of pagination.
+ */
+function renderRangeOfPagination(activePage: number, from: number, to: number): string {
+  let innerHTML = '';
+  for (let i = from; i <= to; i++) {
+    innerHTML = innerHTML.concat(`<li class="waves-effect ${activePage === i ? 'active' : ''}"><a>${i}</a></li>`, '');
+  }
+  return innerHTML;
+}
+
+/**
  * Render items of pagination .
  */
-function renderPageItems(): string {
-  const { activePage, totalPage } = pagination;
+function renderPaginationItems(): string {
   let pageItemHTML = '';
+  const { activePage, totalPage } = pagination;
   if (activePage < 5) {
-    for (let i = 1; i <= 5; i++) {
-      pageItemHTML = pageItemHTML.concat(`<li class="waves-effect ${activePage === i ? 'active' : ''}"><a>${i}</a></li>`, '');
-    }
+    pageItemHTML = renderRangeOfPagination(activePage, 1, 5);
   } else if (activePage >= 5 && activePage <= totalPage - 4) {
-    for (let i = activePage - 2; i <= activePage + 2; i++) {
-      pageItemHTML = pageItemHTML.concat(`<li class="waves-effect ${activePage === i ? 'active' : ''}"><a>${i}</a></li>`, '');
-    }
+    pageItemHTML = renderRangeOfPagination(activePage, activePage - 2, activePage + 2);
   } else if (activePage > totalPage - 4) {
-    for (let i = totalPage - 4; i <= totalPage; i++) {
-      pageItemHTML = pageItemHTML.concat(`<li class="waves-effect ${activePage === i ? 'active' : ''}"><a>${i}</a></li>`, '');
-    }
+    pageItemHTML = renderRangeOfPagination(activePage, totalPage - 4, totalPage);
   }
   return pageItemHTML;
 }
 
 /**
- * Render pagination.
+ * Render pagination with buttons First and Last.
  */
 function renderPagination(): void {
   if (paginationContainer) {
     paginationContainer.innerHTML = `
       <li id="btnFirst" class="btn waves-effect"><a href="#!"><i class="material-icons">First</i></a></li>
-      ${renderPageItems()}
+      ${renderPaginationItems()}
       <li id="btnLast" class="btn waves-effect"><a href="#!"><i class="material-icons">Last</i></a></li>
   `;
     const btnFirst = document.querySelector('#btnFirst');
