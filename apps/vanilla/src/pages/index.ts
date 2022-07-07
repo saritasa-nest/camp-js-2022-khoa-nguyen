@@ -3,6 +3,7 @@ import { asyncFetchAnimeList } from '../scripts/fetchAnimeList';
 
 const container = document.querySelector('.container__list');
 const selectSort = document.querySelector<HTMLSelectElement>('#selectSort');
+const selectOrdering = document.querySelector<HTMLSelectElement>('#selectOrder');
 
 const animeListInitial = await asyncFetchAnimeList(25, 25, constants.sortOptions[0].api);
 
@@ -12,6 +13,7 @@ const pagination = {
   activePage: 1,
   totalPage: animeListInitial.count / 25 - 1,
   sorting: constants.sortOptions[0].api,
+  isAscending: true,
 };
 
 /**
@@ -30,7 +32,7 @@ async function renderAnimeList(): Promise<void> {
   try {
     pagination.offset = pagination.activePage * pagination.limit;
     const { limit, offset } = pagination;
-    const animeList = await asyncFetchAnimeList(limit, offset, pagination.sorting);
+    const animeList = await asyncFetchAnimeList(limit, offset, pagination.isAscending ? pagination.sorting : `-${pagination.sorting}`);
     const htmlInsideContainer = animeList.results.map(element => (
       `
         <tr class="container__list_item">
@@ -129,12 +131,17 @@ function renderPagination(): void {
 }
 
 /**
- * Init sorting list and render list sort to UI .
+ * Init sorting and ordering list, hence render corresponding list anime.
  */
-function initSorting(): void {
+function initSortingAndOrdering(): void {
   const sortOptionsHTMl = constants.sortOptions.map(item => (
-    `<option>${item.title}</option>`
+    `<option value="${item.title}">${item.title}</option>`
   )).join('');
+
+  const orderOptionHTML = constants.orderOptions.map(item => (
+    `<option value ="${item}">${item}</option>`
+  )).join('');
+
   if (selectSort) {
     selectSort.innerHTML = sortOptionsHTMl;
     selectSort.addEventListener('change', () => {
@@ -144,6 +151,15 @@ function initSorting(): void {
         pagination.activePage = 1;
         renderToUI();
       });
+  }
+  if (selectOrdering) {
+    selectOrdering.innerHTML = orderOptionHTML;
+    selectOrdering.addEventListener('change', () => {
+      pagination.offset = 25;
+      pagination.activePage = 1;
+      pagination.isAscending = !pagination.isAscending;
+      renderToUI();
+    });
   }
 }
 
@@ -170,5 +186,5 @@ async function renderToUI(): Promise<void> {
     throw new Error(`Unable to render UI ${error}`);
   }
 }
-initSorting();
+initSortingAndOrdering();
 renderToUI();
