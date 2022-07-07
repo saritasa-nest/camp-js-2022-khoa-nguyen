@@ -1,18 +1,21 @@
+import { constants } from '../constants';
 import { asyncGetAnimeList } from '../scripts/fetchAnimeList';
 
 const container = document.querySelector('.container__list');
+const selectSort = document.querySelector<HTMLSelectElement>('#selectSort');
 
-const animeListInitial = await asyncGetAnimeList(25, 25);
+const animeListInitial = await asyncGetAnimeList(25, 25, constants.sortOptions[0].api);
 
 const pagination = {
   limit: 25,
   offset: 25,
   activePage: 1,
   totalPage: animeListInitial.count / 25 - 1,
+  sorting: constants.sortOptions[0].api,
 };
 
 /**
- * Format date into dd/mm/yyyy .
+ * Format date into mm/dd/yyyy.
  * @param str Date to format.
  */
 function formatDate(str: Date): string {
@@ -21,39 +24,43 @@ function formatDate(str: Date): string {
 }
 
 /**
- * Format date into dd/mm/yyyy .
+ * Render Anime list.
  */
 async function renderAnimeList(): Promise<void> {
-  const { limit, offset } = pagination;
-  const animeList = await asyncGetAnimeList(limit, offset);
-  const htmlInsideContainer = animeList.results.map(element => (
-    `
-      <tr class="container__list_item">
-        <th class="img" style="background-image: url(${element.image}) ;" ">
-          <img src="${element.image}" alt="${element.titleEng}" />
-        </th>
-        <th>${element.titleEng}</th>
-        <th>${element.titleJapan}</th>
-        <th>${element.airedStart ? formatDate(element.airedStart) : ''}</th>
-        <th>${element.type}</th>
-        <th>${element.status}</th>
-      </tr>
-    `
-  )).join('');
+  try {
+    const { limit, offset } = pagination;
+    const animeList = await asyncGetAnimeList(limit, offset, pagination.sorting);
+    const htmlInsideContainer = animeList.results.map(element => (
+      `
+        <tr class="container__list_item">
+          <th class="img" style="background-image: url(${element.image}) ;" ">
+            <img src="${element.image}" alt="${element.titleEng}" />
+          </th>
+          <th>${element.titleEng}</th>
+          <th>${element.titleJapan}</th>
+          <th>${element.airedStart ? formatDate(element.airedStart) : ''}</th>
+          <th>${element.type}</th>
+          <th>${element.status}</th>
+        </tr>
+      `
+    )).join('');
 
-  if (container) {
-    container.innerHTML = `
-      <tr class="container__list_item">
-        <th>Thumbnail</th>
-        <th>English title</th>
-        <th>Japanese title</th>
-        <th>Aired start</th>
-        <th>Type</th>
-        <th>Status</th>
-      </tr>
-      ${htmlInsideContainer}
+    if (container) {
+      container.innerHTML = `
+        <tr class="container__list_item">
+          <th>Thumbnail</th>
+          <th>English title</th>
+          <th>Japanese title</th>
+          <th>Aired start</th>
+          <th>Type</th>
+          <th>Status</th>
+        </tr>
+        ${htmlInsideContainer}
 
-  `;
+    `;
+    }
+  } catch (error: unknown) {
+    throw new Error(`Unable to render Anime list ${error}`);
   }
 }
 
@@ -121,23 +128,51 @@ function renderPagination(): void {
 }
 
 /**
- * Render pagination into UI.
+ * Render sorting.
  */
-async function renderToUI(): Promise<void> {
-  await renderAnimeList();
-  renderPagination();
-  const itemsPageList = document.querySelectorAll('.pagination li:not(.btn)');
-  itemsPageList.forEach(item => {
-    item.addEventListener('click', () => {
-      const strPage = item.childNodes[0].childNodes[0].nodeValue;
-      if (strPage) {
-        const numPage = Number.parseInt(strPage, 10);
-        pagination.offset = 25 * numPage;
-        pagination.activePage = numPage;
+function initSorting(): void {
+  const sortOptionsHTMl = constants.sortOptions.map(item => (
+    `<option>${item.title}</option>`
+  )).join('');
+  if (selectSort) {
+    selectSort.innerHTML = sortOptionsHTMl;
+    selectSort.addEventListener('change', () => {
+        const { value } = selectSort;
+        pagination.sorting = constants.sortOptions.filter(item => item.title === value)[0].api;
         renderToUI();
-      }
-    });
-  });
+      });
+  }
 }
 
+// /**
+//  * Render sorting options.
+//  */
+// function renderSorting(): void {
+
+// }
+
+/**
+ * Render anime list and pagination to UI.
+ */
+async function renderToUI(): Promise<void> {
+  try {
+    await renderAnimeList();
+    renderPagination();
+    const itemsPageList = document.querySelectorAll('.pagination li:not(.btn)');
+    itemsPageList.forEach(item => {
+      item.addEventListener('click', () => {
+        const strPage = item.childNodes[0].childNodes[0].nodeValue;
+        if (strPage) {
+          const numPage = Number.parseInt(strPage, 10);
+          pagination.offset = 25 * numPage;
+          pagination.activePage = numPage;
+          renderToUI();
+        }
+      });
+    });
+  } catch (error: unknown) {
+    throw new Error(`Unable to render UI ${error}`);
+  }
+}
+initSorting();
 renderToUI();
