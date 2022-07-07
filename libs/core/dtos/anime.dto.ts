@@ -1,6 +1,9 @@
 /** Anime data interface.*/
 export interface AnimeDto {
 
+  /** Anime ID.*/
+  readonly id: number;
+
   /** Date created.*/
   readonly created: number;
 

@@ -30,11 +30,11 @@ async function renderAnimeList(): Promise<void> {
     `
       <tr class="container__list_item">
         <th class="img" style="background-image: url(${element.image}) ;" ">
-          <img src="${element.image}" alt="${element.title_eng}" />
+          <img src="${element.image}" alt="${element.titleEng}" />
         </th>
-        <th>${element.title_eng}</th>
-        <th>${element.title_jpn}</th>
-        <th>${element.aired.start ? formatDate(element.aired.start) : ''}</th>
+        <th>${element.titleEng}</th>
+        <th>${element.titleJapan}</th>
+        <th>${element.airedStart ? formatDate(element.airedStart) : ''}</th>
         <th>${element.type}</th>
         <th>${element.status}</th>
       </tr>
@@ -67,15 +67,15 @@ function renderPageItems(): string {
   let pageItemHTML = '';
   if (activePage < 5) {
     for (let i = 1; i <= 5; i++) {
-      pageItemHTML = pageItemHTML.concat(`<li class="waves-effect ${activePage === i ? 'active' : ''}"><a href="#!">${i}</a></li>`, '');
+      pageItemHTML = pageItemHTML.concat(`<li class="waves-effect ${activePage === i ? 'active' : ''}"><a>${i}</a></li>`, '');
     }
   } else if (activePage >= 5 && activePage < totalPage - 2) {
     for (let i = activePage - 2; i <= activePage + 2; i++) {
-      pageItemHTML = pageItemHTML.concat(`<li class="waves-effect ${activePage === i ? 'active' : ''}"><a href="#!">${i}</a></li>`, '');
+      pageItemHTML = pageItemHTML.concat(`<li class="waves-effect ${activePage === i ? 'active' : ''}"><a>${i}</a></li>`, '');
     }
   } else if (activePage > totalPage - 5) {
     for (let i = totalPage - 5; i <= totalPage; i++) {
-      pageItemHTML = pageItemHTML.concat(`<li class="waves-effect ${activePage === i ? 'active' : ''}"><a href="#!">${i}</a></li>`, '');
+      pageItemHTML = pageItemHTML.concat(`<li class="waves-effect ${activePage === i ? 'active' : ''}"><a>${i}</a></li>`, '');
     }
   }
   return pageItemHTML;
