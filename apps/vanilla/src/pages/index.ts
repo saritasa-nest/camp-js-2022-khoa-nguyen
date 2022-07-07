@@ -1,10 +1,10 @@
 import { constants } from '../constants';
-import { asyncGetAnimeList } from '../scripts/fetchAnimeList';
+import { asyncFetchAnimeList } from '../scripts/fetchAnimeList';
 
 const container = document.querySelector('.container__list');
 const selectSort = document.querySelector<HTMLSelectElement>('#selectSort');
 
-const animeListInitial = await asyncGetAnimeList(25, 25, constants.sortOptions[0].api);
+const animeListInitial = await asyncFetchAnimeList(25, 25, constants.sortOptions[0].api);
 
 const pagination = {
   limit: 25,
@@ -24,12 +24,13 @@ function formatDate(str: Date): string {
 }
 
 /**
- * Render Anime list.
+ * Render anime list.
  */
 async function renderAnimeList(): Promise<void> {
   try {
+    pagination.offset = pagination.activePage * pagination.limit;
     const { limit, offset } = pagination;
-    const animeList = await asyncGetAnimeList(limit, offset, pagination.sorting);
+    const animeList = await asyncFetchAnimeList(limit, offset, pagination.sorting);
     const htmlInsideContainer = animeList.results.map(element => (
       `
         <tr class="container__list_item">
@@ -76,12 +77,12 @@ function renderPageItems(): string {
     for (let i = 1; i <= 5; i++) {
       pageItemHTML = pageItemHTML.concat(`<li class="waves-effect ${activePage === i ? 'active' : ''}"><a>${i}</a></li>`, '');
     }
-  } else if (activePage >= 5 && activePage < totalPage - 2) {
+  } else if (activePage >= 5 && activePage <= totalPage - 4) {
     for (let i = activePage - 2; i <= activePage + 2; i++) {
       pageItemHTML = pageItemHTML.concat(`<li class="waves-effect ${activePage === i ? 'active' : ''}"><a>${i}</a></li>`, '');
     }
-  } else if (activePage > totalPage - 5) {
-    for (let i = totalPage - 5; i <= totalPage; i++) {
+  } else if (activePage > totalPage - 4) {
+    for (let i = totalPage - 4; i <= totalPage; i++) {
       pageItemHTML = pageItemHTML.concat(`<li class="waves-effect ${activePage === i ? 'active' : ''}"><a>${i}</a></li>`, '');
     }
   }
@@ -128,7 +129,7 @@ function renderPagination(): void {
 }
 
 /**
- * Render sorting.
+ * Init sorting list and render list sort to UI .
  */
 function initSorting(): void {
   const sortOptionsHTMl = constants.sortOptions.map(item => (
@@ -139,17 +140,12 @@ function initSorting(): void {
     selectSort.addEventListener('change', () => {
         const { value } = selectSort;
         pagination.sorting = constants.sortOptions.filter(item => item.title === value)[0].api;
+        pagination.offset = 25;
+        pagination.activePage = 1;
         renderToUI();
       });
   }
 }
-
-// /**
-//  * Render sorting options.
-//  */
-// function renderSorting(): void {
-
-// }
 
 /**
  * Render anime list and pagination to UI.

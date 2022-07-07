@@ -14,7 +14,7 @@ import { appAxios } from '../configs';
  * @param offset Anime offset.
  * @param ordering Anime ordering.
  */
-export async function asyncGetAnimeList(limit: number, offset: number, ordering: string): Promise<Pagination<Anime>> {
+export async function asyncFetchAnimeList(limit: number, offset: number, ordering: string): Promise<Pagination<Anime>> {
   try {
     const result = await appAxios.get<PaginationDto<AnimeDto>>(`anime/anime/`, { params: { limit, offset, ordering } });
     return PaginationMapper.fromDto<AnimeDto, Anime>(result.data, AnimeMapper.fromDto);
