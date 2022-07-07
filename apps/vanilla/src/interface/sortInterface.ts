@@ -1,8 +1,6 @@
 
-/**
- * Sorting interface.
- */
-export interface ISort {
+/** Sorting interface. */
+export interface Sort {
 
   /** Title of sort value. */
   readonly title: string;

@@ -7,7 +7,7 @@ const selectOrdering = document.querySelector<HTMLSelectElement>('#selectOrder')
 
 const animeListInitial = await asyncFetchAnimeList(25, 25, constants.sortOptions[0].api);
 
-const pagination = {
+const PAGINATION_OPTIONS = {
   limit: 25,
   offset: 25,
   activePage: 1,
@@ -18,10 +18,10 @@ const pagination = {
 
 /**
  * Format date into mm/dd/yyyy.
- * @param str Date to format.
+ * @param dateToFormat Date to format.
  */
-function formatDate(str: Date): string {
-  const newDate = new Date(str);
+function formatDate(dateToFormat: Date): string {
+  const newDate = new Date(dateToFormat);
   return newDate.toLocaleDateString('en-us');
 }
 
@@ -30,9 +30,10 @@ function formatDate(str: Date): string {
  */
 async function renderAnimeList(): Promise<void> {
   try {
-    pagination.offset = pagination.activePage * pagination.limit;
-    const { limit, offset } = pagination;
-    const animeList = await asyncFetchAnimeList(limit, offset, pagination.isAscending ? pagination.sorting : `-${pagination.sorting}`);
+    PAGINATION_OPTIONS.offset = PAGINATION_OPTIONS.activePage * PAGINATION_OPTIONS.limit;
+    const { limit, offset } = PAGINATION_OPTIONS;
+    const animeList = await asyncFetchAnimeList(limit, offset, PAGINATION_OPTIONS.isAscending ?
+      PAGINATION_OPTIONS.sorting : `-${PAGINATION_OPTIONS.sorting}`);
     const htmlInsideContainer = animeList.results.map(element => (
       `
         <tr class="container__list_item">
@@ -90,14 +91,17 @@ function renderRangeOfPagination(activePage: number, from: number, to: number): 
  * Render items of pagination .
  */
 function renderPaginationItems(): string {
+  const { activePage, totalPage } = PAGINATION_OPTIONS;
+  const FIRST_PAGE = 1;
+  const PAGE_AT_INDEX_5 = 5;
+  const PAGE_AT_INDEX_5_REVERSE = totalPage - 4;
   let pageItemHTML = '';
-  const { activePage, totalPage } = pagination;
-  if (activePage < 5) {
-    pageItemHTML = renderRangeOfPagination(activePage, 1, 5);
-  } else if (activePage >= 5 && activePage <= totalPage - 4) {
+  if (activePage < PAGE_AT_INDEX_5) {
+    pageItemHTML = renderRangeOfPagination(activePage, FIRST_PAGE, PAGE_AT_INDEX_5);
+  } else if (activePage >= PAGE_AT_INDEX_5 && activePage <= PAGE_AT_INDEX_5_REVERSE) {
     pageItemHTML = renderRangeOfPagination(activePage, activePage - 2, activePage + 2);
-  } else if (activePage > totalPage - 4) {
-    pageItemHTML = renderRangeOfPagination(activePage, totalPage - 4, totalPage);
+  } else if (activePage > PAGE_AT_INDEX_5_REVERSE) {
+    pageItemHTML = renderRangeOfPagination(activePage, PAGE_AT_INDEX_5_REVERSE, totalPage);
   }
   return pageItemHTML;
 }
@@ -116,24 +120,24 @@ function renderPagination(): void {
     const btnLast = document.querySelector('#btnLast');
 
     btnFirst?.addEventListener('click', () => {
-      pagination.activePage = 1;
-      pagination.offset = 25 * pagination.activePage;
+      PAGINATION_OPTIONS.activePage = 1;
+      PAGINATION_OPTIONS.offset = 25 * PAGINATION_OPTIONS.activePage;
       renderToUI();
     });
 
     btnLast?.addEventListener('click', () => {
-      pagination.activePage = pagination.totalPage;
-      pagination.offset = 25 * pagination.activePage;
+      PAGINATION_OPTIONS.activePage = PAGINATION_OPTIONS.totalPage;
+      PAGINATION_OPTIONS.offset = 25 * PAGINATION_OPTIONS.activePage;
       renderToUI();
     });
 
-    if (pagination.activePage === pagination.totalPage) {
+    if (PAGINATION_OPTIONS.activePage === PAGINATION_OPTIONS.totalPage) {
       btnLast?.classList.add('disabled');
     } else {
       btnLast?.classList.remove('disabled');
     }
 
-    if (pagination.activePage === 1) {
+    if (PAGINATION_OPTIONS.activePage === 1) {
       btnFirst?.classList.add('disabled');
     } else {
       btnFirst?.classList.remove('disabled');
@@ -157,18 +161,18 @@ function initSortingAndOrdering(): void {
     selectSort.innerHTML = sortOptionsHTMl;
     selectSort.addEventListener('change', () => {
         const { value } = selectSort;
-        pagination.sorting = constants.sortOptions.filter(item => item.title === value)[0].api;
-        pagination.offset = 25;
-        pagination.activePage = 1;
+        PAGINATION_OPTIONS.sorting = constants.sortOptions.filter(item => item.title === value)[0].api;
+        PAGINATION_OPTIONS.offset = 25;
+        PAGINATION_OPTIONS.activePage = 1;
         renderToUI();
       });
   }
   if (selectOrdering) {
     selectOrdering.innerHTML = orderOptionHTML;
     selectOrdering.addEventListener('change', () => {
-      pagination.offset = 25;
-      pagination.activePage = 1;
-      pagination.isAscending = !pagination.isAscending;
+      PAGINATION_OPTIONS.offset = 25;
+      PAGINATION_OPTIONS.activePage = 1;
+      PAGINATION_OPTIONS.isAscending = !PAGINATION_OPTIONS.isAscending;
       renderToUI();
     });
   }
@@ -187,8 +191,8 @@ async function renderToUI(): Promise<void> {
         const strPage = item.childNodes[0].childNodes[0].nodeValue;
         if (strPage) {
           const numPage = Number.parseInt(strPage, 10);
-          pagination.offset = 25 * numPage;
-          pagination.activePage = numPage;
+          PAGINATION_OPTIONS.offset = 25 * numPage;
+          PAGINATION_OPTIONS.activePage = numPage;
           renderToUI();
         }
       });
