@@ -15,22 +15,11 @@
   margin: 30px 0;
 }
 
-.container__filter {
-  display: flex;
-  justify-content: space-between;
-  gap: 30px;
-  margin-bottom: 30px;
-}
-
-.container__filter > div {
-  flex: 1;
-}
-
-.container__filter > div > h3 {
+.container__filter > h3 {
   font-size: 25px;
 }
 
-.container__filter > div > select {
+.container__filter > select {
   display: block;
   margin-top: 10px;
 }

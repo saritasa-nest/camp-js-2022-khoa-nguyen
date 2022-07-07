@@ -1,3 +1,4 @@
+import { StatusEnum, TypeEnum } from '../enum/enum';
 import { Immerable, OmitImmerable } from '../models/immerable';
 
 /** Base model for anime. */
@@ -19,10 +20,10 @@ export class Anime extends Immerable {
   public readonly airedStart: Date | null;
 
   /** Type. */
-  public readonly type: string;
+  public readonly type: TypeEnum;
 
   /** Status. */
-  public readonly status: string;
+  public readonly status: StatusEnum;
 
   public constructor(data: AnimeInitArgs) {
     super();

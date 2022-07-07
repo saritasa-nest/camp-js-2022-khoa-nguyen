@@ -1,3 +1,5 @@
+import { StatusEnum, TypeEnum } from '../enum/enum';
+
 /** Anime data interface.*/
 export interface AnimeDto {
 
@@ -30,8 +32,8 @@ export interface AnimeDto {
   };
 
   /** Anime type. */
-  readonly type: string;
+  readonly type: TypeEnum;
 
   /** Status of anime. */
-  readonly status: string;
+  readonly status: StatusEnum;
 }
