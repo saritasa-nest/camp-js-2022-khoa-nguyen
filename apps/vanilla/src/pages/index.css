@@ -21,15 +21,15 @@
   margin-bottom: 10px;
 }
 
-.container__filter > div {
+.container__filter_item {
   flex: 1;
 }
 
-.container__filter > div > h3 {
+.container__filter .select__title {
   font-size: 25px;
 }
 
-.container__filter > div > select {
+.container__filter .select {
   display: block;
   margin-top: 10px;
 }
