@@ -11,4 +11,8 @@
 
   /* Custom grid columns */
   --grid-template-cols-5: repeat(5, minmax(0, 1fr));
+
+  /* Font size */
+  --primary-font-size-normal: 25px;
+  --primary-font-size-title: 40px;
 }
