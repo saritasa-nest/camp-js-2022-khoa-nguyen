@@ -41,13 +41,6 @@ const PAGINATION_OPTIONS: PaginationOptions = {
 async function renderAnimeList(): Promise<void> {
   try {
     PAGINATION_OPTIONS.offset = PAGINATION_OPTIONS.activePage * PAGINATION_OPTIONS.limit;
-    if (PAGINATION_OPTIONS.isAscending) {
-      PAGINATION_OPTIONS.sorting.value = SORT_OPTIONS.filter(item =>
-        item.title === PAGINATION_OPTIONS.sorting.title)[0].value as SortValue;
-    } else {
-      PAGINATION_OPTIONS.sorting.value = `-${SORT_OPTIONS.filter(item =>
-        item.title === PAGINATION_OPTIONS.sorting.title)[0].value}` as SortValue;
-    }
     const animeList = await fetchAnimeList(PAGINATION_OPTIONS);
     if (animeList instanceof Error) {
       return;

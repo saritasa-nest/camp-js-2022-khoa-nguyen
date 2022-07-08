@@ -31,7 +31,13 @@ import { PaginationOptions } from '../interface/paginationInterface';
 export async function fetchAnimeList(options: PaginationOptions): Promise<Pagination<Anime>> {
   try {
     const result = await appAxios.get<PaginationDto<AnimeDto>>(`anime/anime/`,
-      { params: { limit: options.limit, offset: options.offset, ordering: options.sorting.value } });
+      {
+        params: {
+          limit: options.limit,
+          offset: options.offset,
+          ordering: options.isAscending ? options.sorting.value : `-${options.sorting.value}`,
+        },
+      });
     return PaginationMapper.fromDto<AnimeDto, Anime>(result.data, AnimeMapper.fromDto);
   } catch (errors: unknown) {
     throw new Error(`Failed to get anime list: ${errors as string}`);

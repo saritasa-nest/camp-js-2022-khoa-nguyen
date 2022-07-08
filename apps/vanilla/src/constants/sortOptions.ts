@@ -15,6 +15,6 @@ export const SORT_OPTIONS: Sort[] = [
   },
   {
     title: SortTitle.Status,
-    value: SortTitle.Status,
+    value: SortValue.Status,
   },
 ];
