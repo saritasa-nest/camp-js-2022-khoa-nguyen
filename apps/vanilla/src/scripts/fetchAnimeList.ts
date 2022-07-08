@@ -19,6 +19,6 @@ export async function fetchAnimeList(limit: number, offset: number, ordering: st
     const result = await appAxios.get<PaginationDto<AnimeDto>>(`anime/anime/`, { params: { limit, offset, ordering } });
     return PaginationMapper.fromDto<AnimeDto, Anime>(result.data, AnimeMapper.fromDto);
   } catch (errors: unknown) {
-    throw new Error(`Failed to get anime list: ${errors}`);
+    throw new Error(`Failed to get anime list: ${errors as string}`);
   }
 }

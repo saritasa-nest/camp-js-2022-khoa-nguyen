@@ -1,6 +1,6 @@
 import { formatDate } from '@js-camp/core/utils';
 
-import { DEFAULT_LIMIT, DEFAULT_OFFSET, ORDER_OPTIONS, SORT_OPTIONS } from '../constants';
+import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, ORDER_OPTIONS, SORT_OPTIONS } from '../constants';
 import { fetchAnimeList } from '../scripts/fetchAnimeList';
 
 const container = document.querySelector('.container__table');
@@ -12,8 +12,8 @@ const animeListInitial = await fetchAnimeList(DEFAULT_LIMIT, DEFAULT_OFFSET, SOR
 const PAGINATION_OPTIONS = {
   limit: DEFAULT_LIMIT,
   offset: DEFAULT_OFFSET,
-  activePage: 1,
-  totalPage: animeListInitial.count / DEFAULT_LIMIT - 1,
+  activePage: DEFAULT_ACTIVE_PAGE,
+  totalPage: Math.ceil(animeListInitial.count / DEFAULT_LIMIT) - 1,
   sorting: SORT_OPTIONS[0].value,
   isAscending: true,
 };
@@ -27,6 +27,9 @@ async function renderAnimeList(): Promise<void> {
     const { limit, offset } = PAGINATION_OPTIONS;
     const animeList = await fetchAnimeList(limit, offset, PAGINATION_OPTIONS.isAscending ?
       PAGINATION_OPTIONS.sorting : `-${PAGINATION_OPTIONS.sorting}`);
+    if (animeList instanceof Error) {
+      return;
+    }
     const htmlInsideContainer = animeList.results.map(element => (
       `
         <tr class="container__list_item">
@@ -60,7 +63,7 @@ async function renderAnimeList(): Promise<void> {
     `;
     }
   } catch (error: unknown) {
-    throw new Error(`Unable to render Anime list ${error}`);
+    throw new Error(`Unable to render Anime list ${error as string}`);
   }
 }
 
@@ -189,7 +192,7 @@ async function renderToUI(): Promise<void> {
       });
     });
   } catch (error: unknown) {
-    throw new Error(`Unable to render UI ${error}`);
+    throw new Error(`Unable to render UI ${error as string}`);
   }
 }
 initSortingAndOrdering();
