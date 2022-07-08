@@ -40,7 +40,7 @@
   gap: 20px;
 }
 
-.container__list_item .img {
+.container__list_item .wrapper__img {
   width: 200px;
   height: 200px;
   background-repeat: no-repeat;
@@ -48,13 +48,13 @@
   background-position: center;
 }
 
-.container__list_item .img > img {
+.container__list_item .wrapper__img > .wrapper__img_item {
   width: 100%;
   height: 100%;
   opacity: 0;
 }
 
-.container__list_item > th {
+.container__list_item > .item_col {
   font-weight: 500;
   border: 1px solid var(--primary-light-color);
 }
@@ -64,7 +64,7 @@
   color: var(--primary-light-color-2);
 }
 
-.container__list_item:first-child > th {
+.container__list_item:first-child > .item_col {
   background-color: var(--primary-color);
   color: var(--primary-light-color-2);
   text-align: center;

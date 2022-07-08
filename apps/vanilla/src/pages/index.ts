@@ -1,14 +1,12 @@
 import { formatDate } from '@js-camp/core/utils';
 
-import { ORDER_OPTIONS, SORT_OPTIONS } from '../constants';
+import { DEFAULT_LIMIT, DEFAULT_OFFSET, ORDER_OPTIONS, SORT_OPTIONS } from '../constants';
 import { fetchAnimeList } from '../scripts/fetchAnimeList';
 
 const container = document.querySelector('.container__table');
 const selectSort = document.querySelector<HTMLSelectElement>('.select__sort');
 const selectOrdering = document.querySelector<HTMLSelectElement>('.select__order');
 
-const DEFAULT_LIMIT = 25;
-const DEFAULT_OFFSET = DEFAULT_LIMIT;
 const animeListInitial = await fetchAnimeList(DEFAULT_LIMIT, DEFAULT_OFFSET, SORT_OPTIONS[0].value);
 
 const PAGINATION_OPTIONS = {
@@ -32,14 +30,14 @@ async function renderAnimeList(): Promise<void> {
     const htmlInsideContainer = animeList.results.map(element => (
       `
         <tr class="container__list_item">
-          <th class="img" style="background-image: url(${element.image}) ;" ">
-            <img src="${element.image}" alt="${element.titleEnglish}" />
+          <th class="item_col wrapper__img" style="background-image: url(${element.image}) ;" ">
+            <img class= "wrapper__img_item" src="${element.image}" alt="${element.titleEnglish}" />
           </th>
-          <th>${element.titleEnglish}</th>
-          <th>${element.titleJapan}</th>
-          <th>${element.aired.start ? formatDate(element.aired.start) : ''}</th>
-          <th>${element.type}</th>
-          <th>${element.status}</th>
+          <th class="item_col">${element.titleEnglish}</th>
+          <th class="item_col">${element.titleJapan}</th>
+          <th class="item_col">${element.aired.start ? formatDate(element.aired.start) : ''}</th>
+          <th class="item_col">${element.type}</th>
+          <th class="item_col">${element.status}</th>
         </tr>
       `
     )).join('');
@@ -49,12 +47,12 @@ async function renderAnimeList(): Promise<void> {
       <caption>Anime list</caption>
       <table class="container__list">
         <tr class="container__list_item">
-          <th>Thumbnail</th>
-          <th>English title</th>
-          <th>Japanese title</th>
-          <th>Aired start</th>
-          <th>Type</th>
-          <th>Status</th>
+          <th class="item_col">Thumbnail</th>
+          <th class="item_col">English title</th>
+          <th class="item_col">Japanese title</th>
+          <th class="item_col">Aired start</th>
+          <th class="item_col">Type</th>
+          <th class="item_col">Status</th>
         </tr>
         ${htmlInsideContainer}
       </table>
