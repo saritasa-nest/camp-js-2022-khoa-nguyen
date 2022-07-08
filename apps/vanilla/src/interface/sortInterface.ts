@@ -6,5 +6,5 @@ export interface Sort {
   readonly title: string;
 
   /** Api ordering in backend. */
-  readonly api: string;
+  readonly value: string;
 }

@@ -1,30 +1,30 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import { ISort } from '../interface/sortInterface';
+import { Sort } from '../interface/sortInterface';
 
-const sortTitles = {
+const SORT_TITLES = {
   TITLE_ENG: 'Title Eng',
   AIRED_START_DATE: 'Aired start day',
   STATUS: 'Status',
 };
 
-const sortAPI = {
+const SORT_VALUE = {
   TITLE_ENG: 'title_eng',
   AIRED_START_DATE: 'aired__startswith',
   STATUS: 'status',
 };
 
-export const sortOptions: ISort[] = [
+export const SORT_OPTIONS: Sort[] = [
   {
-    title: sortTitles.TITLE_ENG,
-    api: sortAPI.TITLE_ENG,
+    title: SORT_TITLES.TITLE_ENG,
+    value: SORT_VALUE.TITLE_ENG,
   },
   {
-    title: sortTitles.AIRED_START_DATE,
-    api: sortAPI.AIRED_START_DATE,
+    title: SORT_TITLES.AIRED_START_DATE,
+    value: SORT_VALUE.AIRED_START_DATE,
   },
   {
-    title: sortTitles.STATUS,
-    api: sortAPI.STATUS,
+    title: SORT_TITLES.STATUS,
+    value: SORT_VALUE.STATUS,
   },
 ];

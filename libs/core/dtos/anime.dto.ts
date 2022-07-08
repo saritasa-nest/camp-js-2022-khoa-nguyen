@@ -1,39 +1,41 @@
-import { StatusEnum, TypeEnum } from '../enum/enum';
+import { Type, Status } from '../enum/anime';
 
-/** Anime data interface.*/
+export interface DateRangeDto {
+
+  /** Start date. */
+  readonly start: string;
+
+  /** End date. */
+  readonly end: string;
+}
+
+/** Anime data interface. */
 export interface AnimeDto {
 
-  /** Anime ID.*/
+  /** Anime ID. */
   readonly id: number;
 
-  /** Date created.*/
+  /** Date created. */
   readonly created: number;
 
-  /** Date modified.*/
+  /** Date modified. */
   readonly modified: string;
 
-  /** English title.*/
+  /** English title. */
   readonly title_eng: string;
 
-  /** Japanese title.*/
+  /** Japanese title. */
   readonly title_jpn: string;
 
-  /** Thumbnail of anime.*/
+  /** Thumbnail of anime. */
   readonly image: string;
 
-  /** Aired date.*/
-  readonly aired: {
-
-    /** Start date.*/
-    readonly start: Date;
-
-    /** End date. */
-    readonly end: Date;
-  };
+  /** Aired date. */
+  readonly aired: DateRangeDto;
 
   /** Anime type. */
-  readonly type: TypeEnum;
+  readonly type: Type;
 
   /** Status of anime. */
-  readonly status: StatusEnum;
+  readonly status: Status;
 }

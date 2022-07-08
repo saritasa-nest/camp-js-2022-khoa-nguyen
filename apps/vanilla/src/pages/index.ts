@@ -1,29 +1,24 @@
-import { constants } from '../constants';
-import { asyncFetchAnimeList } from '../scripts/fetchAnimeList';
+import { formatDate } from '@js-camp/core/utils';
+
+import { ORDER_OPTIONS, SORT_OPTIONS } from '../constants';
+import { fetchAnimeList } from '../scripts/fetchAnimeList';
 
 const container = document.querySelector('.container__table');
 const selectSort = document.querySelector<HTMLSelectElement>('#selectSort');
 const selectOrdering = document.querySelector<HTMLSelectElement>('#selectOrder');
 
-const animeListInitial = await asyncFetchAnimeList(25, 25, constants.sortOptions[0].api);
+const DEFAULT_LIMIT = 25;
+const DEFAULT_OFFSET = DEFAULT_LIMIT;
+const animeListInitial = await fetchAnimeList(DEFAULT_LIMIT, DEFAULT_OFFSET, SORT_OPTIONS[0].value);
 
 const PAGINATION_OPTIONS = {
-  limit: 25,
-  offset: 25,
+  limit: DEFAULT_LIMIT,
+  offset: DEFAULT_OFFSET,
   activePage: 1,
-  totalPage: animeListInitial.count / 25 - 1,
-  sorting: constants.sortOptions[0].api,
+  totalPage: animeListInitial.count / DEFAULT_LIMIT - 1,
+  sorting: SORT_OPTIONS[0].value,
   isAscending: true,
 };
-
-/**
- * Format date into mm/dd/yyyy.
- * @param dateToFormat Date to format.
- */
-function formatDate(dateToFormat: Date): string {
-  const newDate = new Date(dateToFormat);
-  return newDate.toLocaleDateString('en-us');
-}
 
 /**
  * Render anime list.
@@ -32,17 +27,17 @@ async function renderAnimeList(): Promise<void> {
   try {
     PAGINATION_OPTIONS.offset = PAGINATION_OPTIONS.activePage * PAGINATION_OPTIONS.limit;
     const { limit, offset } = PAGINATION_OPTIONS;
-    const animeList = await asyncFetchAnimeList(limit, offset, PAGINATION_OPTIONS.isAscending ?
+    const animeList = await fetchAnimeList(limit, offset, PAGINATION_OPTIONS.isAscending ?
       PAGINATION_OPTIONS.sorting : `-${PAGINATION_OPTIONS.sorting}`);
     const htmlInsideContainer = animeList.results.map(element => (
       `
         <tr class="container__list_item">
           <th class="img" style="background-image: url(${element.image}) ;" ">
-            <img src="${element.image}" alt="${element.titleEng}" />
+            <img src="${element.image}" alt="${element.titleEnglish}" />
           </th>
-          <th>${element.titleEng}</th>
+          <th>${element.titleEnglish}</th>
           <th>${element.titleJapan}</th>
-          <th>${element.airedStart ? formatDate(element.airedStart) : ''}</th>
+          <th>${element.aired.start ? formatDate(element.aired.start) : ''}</th>
           <th>${element.type}</th>
           <th>${element.status}</th>
         </tr>
@@ -87,23 +82,23 @@ function renderRangeOfPagination(activePage: number, from: number, to: number): 
   return innerHTML;
 }
 
-/**
- * Render items of pagination .
- */
+/**  Render items of pagination. */
 function renderPaginationItems(): string {
   const { activePage, totalPage } = PAGINATION_OPTIONS;
+
   const FIRST_PAGE = 1;
   const PAGE_AT_INDEX_5 = 5;
   const PAGE_AT_INDEX_5_REVERSE = totalPage - 4;
-  let pageItemHTML = '';
-  if (activePage < PAGE_AT_INDEX_5) {
-    pageItemHTML = renderRangeOfPagination(activePage, FIRST_PAGE, PAGE_AT_INDEX_5);
-  } else if (activePage >= PAGE_AT_INDEX_5 && activePage <= PAGE_AT_INDEX_5_REVERSE) {
-    pageItemHTML = renderRangeOfPagination(activePage, activePage - 2, activePage + 2);
-  } else if (activePage > PAGE_AT_INDEX_5_REVERSE) {
-    pageItemHTML = renderRangeOfPagination(activePage, PAGE_AT_INDEX_5_REVERSE, totalPage);
+  const PAGE_STEP = 2;
+
+  if (activePage <= PAGE_STEP) {
+    return renderRangeOfPagination(activePage, FIRST_PAGE, PAGE_AT_INDEX_5);
+  } else if (activePage > PAGE_STEP && activePage < totalPage - PAGE_STEP) {
+    return renderRangeOfPagination(activePage, activePage - PAGE_STEP, activePage + PAGE_STEP);
+  } else if (activePage >= totalPage - PAGE_STEP) {
+    return renderRangeOfPagination(activePage, PAGE_AT_INDEX_5_REVERSE, totalPage);
   }
-  return pageItemHTML;
+  return '';
 }
 
 /**
@@ -121,13 +116,13 @@ function renderPagination(): void {
 
     btnFirst?.addEventListener('click', () => {
       PAGINATION_OPTIONS.activePage = 1;
-      PAGINATION_OPTIONS.offset = 25 * PAGINATION_OPTIONS.activePage;
+      PAGINATION_OPTIONS.offset = DEFAULT_LIMIT * PAGINATION_OPTIONS.activePage;
       renderToUI();
     });
 
     btnLast?.addEventListener('click', () => {
       PAGINATION_OPTIONS.activePage = PAGINATION_OPTIONS.totalPage;
-      PAGINATION_OPTIONS.offset = 25 * PAGINATION_OPTIONS.activePage;
+      PAGINATION_OPTIONS.offset = DEFAULT_LIMIT * PAGINATION_OPTIONS.activePage;
       renderToUI();
     });
 
@@ -145,24 +140,22 @@ function renderPagination(): void {
   }
 }
 
-/**
- * Init sorting and ordering list, hence render corresponding list anime.
- */
+/** Init sorting and ordering list, hence render corresponding list anime. */
 function initSortingAndOrdering(): void {
-  const sortOptionsHTMl = constants.sortOptions.map(item => (
+  const sortOptionHTML = SORT_OPTIONS.map(item => (
     `<option value="${item.title}">${item.title}</option>`
   )).join('');
 
-  const orderOptionHTML = constants.orderOptions.map(item => (
+  const orderOptionHTML = ORDER_OPTIONS.map(item => (
     `<option value ="${item}">${item}</option>`
   )).join('');
 
   if (selectSort) {
-    selectSort.innerHTML = sortOptionsHTMl;
+    selectSort.innerHTML = sortOptionHTML;
     selectSort.addEventListener('change', () => {
         const { value } = selectSort;
-        PAGINATION_OPTIONS.sorting = constants.sortOptions.filter(item => item.title === value)[0].api;
-        PAGINATION_OPTIONS.offset = 25;
+        PAGINATION_OPTIONS.sorting = SORT_OPTIONS.filter(item => item.title === value)[0].value;
+        PAGINATION_OPTIONS.offset = DEFAULT_LIMIT;
         PAGINATION_OPTIONS.activePage = 1;
         renderToUI();
       });
@@ -170,7 +163,7 @@ function initSortingAndOrdering(): void {
   if (selectOrdering) {
     selectOrdering.innerHTML = orderOptionHTML;
     selectOrdering.addEventListener('change', () => {
-      PAGINATION_OPTIONS.offset = 25;
+      PAGINATION_OPTIONS.offset = DEFAULT_LIMIT;
       PAGINATION_OPTIONS.activePage = 1;
       PAGINATION_OPTIONS.isAscending = !PAGINATION_OPTIONS.isAscending;
       renderToUI();
@@ -191,7 +184,7 @@ async function renderToUI(): Promise<void> {
         const strPage = item.childNodes[0].childNodes[0].nodeValue;
         if (strPage) {
           const numPage = Number.parseInt(strPage, 10);
-          PAGINATION_OPTIONS.offset = 25 * numPage;
+          PAGINATION_OPTIONS.offset = DEFAULT_LIMIT * numPage;
           PAGINATION_OPTIONS.activePage = numPage;
           renderToUI();
         }

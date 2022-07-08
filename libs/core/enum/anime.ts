@@ -1,6 +1,6 @@
 
 /** Enum of anime type. */
-export enum TypeEnum {
+export enum Type {
   Ona = 'ONA',
   TV = 'TV',
   Movie = 'MOVIE',
@@ -10,7 +10,7 @@ export enum TypeEnum {
 }
 
 /** Enum of anime status. */
-export enum StatusEnum {
+export enum Status {
   Airing = 'AIRING',
   Finished = 'FINISHED',
   NotYetAir = 'NOT_YET_AIRED',
