@@ -108,12 +108,12 @@ function renderPaginationItems(): string {
 function renderPagination(): void {
   if (paginationContainer) {
     paginationContainer.innerHTML = `
-      <li id="btnFirst" class="btn waves-effect"><a href="#!"><i class="material-icons">First</i></a></li>
+      <li class="button__first waves-effect"><a href="#!"><i class="material-icons">First</i></a></li>
       ${renderPaginationItems()}
-      <li id="btnLast" class="btn waves-effect"><a href="#!"><i class="material-icons">Last</i></a></li>
+      <li class="button__last waves-effect"><a href="#!"><i class="material-icons">Last</i></a></li>
   `;
-    const btnFirst = document.querySelector('#btnFirst');
-    const btnLast = document.querySelector('#btnLast');
+    const btnFirst = document.querySelector('.button__first');
+    const btnLast = document.querySelector('.button__last');
 
     btnFirst?.addEventListener('click', () => {
       PAGINATION_OPTIONS.activePage = 1;
