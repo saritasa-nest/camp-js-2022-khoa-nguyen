@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
-import { constants } from '../constants';
+import { API_KEY, BASE_URL } from '../constants';
 
 /**
  * Interceptor that adds the schema API key header to the request.
@@ -20,13 +20,13 @@ function schemaInterceptor(config: AxiosRequestConfig): AxiosRequestConfig {
     headers: {
       ...headers,
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      'api-key': constants.api.apiKey,
+      'api-key': API_KEY,
     },
   };
 }
 
 export const appAxios: AxiosInstance = axios.create({
-  baseURL: constants.api.baseURL,
+  baseURL: BASE_URL,
 });
 
 appAxios.interceptors.request.use(schemaInterceptor);

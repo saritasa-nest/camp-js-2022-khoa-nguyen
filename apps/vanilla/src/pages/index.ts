@@ -4,8 +4,8 @@ import { ORDER_OPTIONS, SORT_OPTIONS } from '../constants';
 import { fetchAnimeList } from '../scripts/fetchAnimeList';
 
 const container = document.querySelector('.container__table');
-const selectSort = document.querySelector<HTMLSelectElement>('#selectSort');
-const selectOrdering = document.querySelector<HTMLSelectElement>('#selectOrder');
+const selectSort = document.querySelector<HTMLSelectElement>('.select__sort');
+const selectOrdering = document.querySelector<HTMLSelectElement>('.select__order');
 
 const DEFAULT_LIMIT = 25;
 const DEFAULT_OFFSET = DEFAULT_LIMIT;
