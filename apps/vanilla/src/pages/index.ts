@@ -1,20 +1,37 @@
+import { SortTitle, SortValue } from '@js-camp/core/enum';
 import { formatDate } from '@js-camp/core/utils';
 
 import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, ORDER_OPTIONS, SORT_OPTIONS } from '../constants';
+import { PaginationOptions } from '../interface/paginationInterface';
 import { fetchAnimeList } from '../scripts/fetchAnimeList';
 
 const container = document.querySelector('.container__table');
 const selectSort = document.querySelector<HTMLSelectElement>('.select__sort');
 const selectOrdering = document.querySelector<HTMLSelectElement>('.select__order');
 
-const animeListInitial = await fetchAnimeList(DEFAULT_LIMIT, DEFAULT_OFFSET, SORT_OPTIONS[0].value);
-
-const PAGINATION_OPTIONS = {
+const INITIAL_PAGINATION: PaginationOptions = {
   limit: DEFAULT_LIMIT,
   offset: DEFAULT_OFFSET,
   activePage: DEFAULT_ACTIVE_PAGE,
-  totalPage: Math.ceil(animeListInitial.count / DEFAULT_LIMIT) - 1,
-  sorting: SORT_OPTIONS[0].value,
+  totalPages: 0,
+  sorting: {
+    title: SortTitle.TitleEnglish,
+    value: SortValue.TitleEnglish,
+  },
+  isAscending: true,
+};
+
+const animeListInitial = await fetchAnimeList(INITIAL_PAGINATION);
+
+const PAGINATION_OPTIONS: PaginationOptions = {
+  limit: DEFAULT_LIMIT,
+  offset: DEFAULT_OFFSET,
+  activePage: DEFAULT_ACTIVE_PAGE,
+  totalPages: Math.ceil(animeListInitial.count / DEFAULT_LIMIT) - 1,
+  sorting: {
+    title: SortTitle.TitleEnglish,
+    value: SortValue.TitleEnglish,
+  },
   isAscending: true,
 };
 
@@ -24,9 +41,14 @@ const PAGINATION_OPTIONS = {
 async function renderAnimeList(): Promise<void> {
   try {
     PAGINATION_OPTIONS.offset = PAGINATION_OPTIONS.activePage * PAGINATION_OPTIONS.limit;
-    const { limit, offset } = PAGINATION_OPTIONS;
-    const animeList = await fetchAnimeList(limit, offset, PAGINATION_OPTIONS.isAscending ?
-      PAGINATION_OPTIONS.sorting : `-${PAGINATION_OPTIONS.sorting}`);
+    if (PAGINATION_OPTIONS.isAscending) {
+      PAGINATION_OPTIONS.sorting.value = SORT_OPTIONS.filter(item =>
+        item.title === PAGINATION_OPTIONS.sorting.title)[0].value as SortValue;
+    } else {
+      PAGINATION_OPTIONS.sorting.value = `-${SORT_OPTIONS.filter(item =>
+        item.title === PAGINATION_OPTIONS.sorting.title)[0].value}` as SortValue;
+    }
+    const animeList = await fetchAnimeList(PAGINATION_OPTIONS);
     if (animeList instanceof Error) {
       return;
     }
@@ -85,19 +107,18 @@ function renderRangeOfPagination(activePage: number, from: number, to: number): 
 
 /**  Render items of pagination. */
 function renderPaginationItems(): string {
-  const { activePage, totalPage } = PAGINATION_OPTIONS;
-
+  const { activePage, totalPages } = PAGINATION_OPTIONS;
   const FIRST_PAGE = 1;
   const PAGE_AT_INDEX_5 = 5;
-  const PAGE_AT_INDEX_5_REVERSE = totalPage - 4;
+  const PAGE_AT_INDEX_5_REVERSE = totalPages - 4;
   const PAGE_STEP = 2;
 
   if (activePage <= PAGE_STEP) {
     return renderRangeOfPagination(activePage, FIRST_PAGE, PAGE_AT_INDEX_5);
-  } else if (activePage > PAGE_STEP && activePage < totalPage - PAGE_STEP) {
+  } else if (activePage > PAGE_STEP && activePage < totalPages - PAGE_STEP) {
     return renderRangeOfPagination(activePage, activePage - PAGE_STEP, activePage + PAGE_STEP);
-  } else if (activePage >= totalPage - PAGE_STEP) {
-    return renderRangeOfPagination(activePage, PAGE_AT_INDEX_5_REVERSE, totalPage);
+  } else if (activePage >= totalPages - PAGE_STEP) {
+    return renderRangeOfPagination(activePage, PAGE_AT_INDEX_5_REVERSE, totalPages);
   }
   return '';
 }
@@ -122,12 +143,12 @@ function renderPagination(): void {
     });
 
     btnLast?.addEventListener('click', () => {
-      PAGINATION_OPTIONS.activePage = PAGINATION_OPTIONS.totalPage;
+      PAGINATION_OPTIONS.activePage = PAGINATION_OPTIONS.totalPages;
       PAGINATION_OPTIONS.offset = DEFAULT_LIMIT * PAGINATION_OPTIONS.activePage;
       renderToUI();
     });
 
-    if (PAGINATION_OPTIONS.activePage === PAGINATION_OPTIONS.totalPage) {
+    if (PAGINATION_OPTIONS.activePage === PAGINATION_OPTIONS.totalPages) {
       btnLast?.classList.add('disabled');
     } else {
       btnLast?.classList.remove('disabled');
@@ -155,7 +176,7 @@ function initSortingAndOrdering(): void {
     selectSort.innerHTML = sortOptionHTML;
     selectSort.addEventListener('change', () => {
         const { value } = selectSort;
-        PAGINATION_OPTIONS.sorting = SORT_OPTIONS.filter(item => item.title === value)[0].value;
+        PAGINATION_OPTIONS.sorting.value = SORT_OPTIONS.filter(item => item.title === value)[0].value as SortValue;
         PAGINATION_OPTIONS.offset = DEFAULT_LIMIT;
         PAGINATION_OPTIONS.activePage = 1;
         renderToUI();

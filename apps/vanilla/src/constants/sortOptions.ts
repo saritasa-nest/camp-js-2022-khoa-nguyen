@@ -1,30 +1,20 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
+import { SortTitle, SortValue } from '@js-camp/core/enum';
+
 import { Sort } from '../interface/sortInterface';
-
-const SORT_TITLES = {
-  TITLE_ENG: 'Title Eng',
-  AIRED_START_DATE: 'Aired start day',
-  STATUS: 'Status',
-};
-
-const SORT_VALUE = {
-  TITLE_ENG: 'title_eng',
-  AIRED_START_DATE: 'aired__startswith',
-  STATUS: 'status',
-};
 
 export const SORT_OPTIONS: Sort[] = [
   {
-    title: SORT_TITLES.TITLE_ENG,
-    value: SORT_VALUE.TITLE_ENG,
+    title: SortTitle.TitleEnglish,
+    value: SortValue.TitleEnglish,
   },
   {
-    title: SORT_TITLES.AIRED_START_DATE,
-    value: SORT_VALUE.AIRED_START_DATE,
+    title: SortTitle.AiredStartDate,
+    value: SortValue.AiredStartDate,
   },
   {
-    title: SORT_TITLES.STATUS,
-    value: SORT_VALUE.STATUS,
+    title: SortTitle.Status,
+    value: SortTitle.Status,
   },
 ];
