@@ -1,21 +1,7 @@
 import { Status, Type } from '../enum/anime';
 import { Immerable, OmitImmerable } from '../models/immerable';
 
-/** Base model for date range. */
-export class DateRange extends Immerable {
-
-  /** Aired start date. */
-  public readonly start: Date | null;
-
-  /** Aired end date. */
-  public readonly end: Date | null;
-
-  public constructor(data: DateRangeInitArgs) {
-    super();
-    this.start = data.start;
-    this.end = data.end;
-  }
-}
+import { DateRange } from './dateRange';
 
 /** Base model for anime. */
 export class Anime extends Immerable {
@@ -54,4 +40,3 @@ export class Anime extends Immerable {
 }
 
 type AnimeInitArgs = OmitImmerable<Anime>;
-type DateRangeInitArgs = OmitImmerable<DateRange>;

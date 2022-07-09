@@ -1,5 +1,6 @@
 import { AnimeDto } from '../dtos/anime.dto';
-import { Anime, DateRange } from '../models/anime';
+import { Anime } from '../models/anime';
+import { DateRange } from '../models/dateRange';
 
 export namespace AnimeMapper {
 
