@@ -1,13 +1,6 @@
 import { Type, Status } from '../enum/anime';
 
-export interface DateRangeDto {
-
-  /** Start date. */
-  readonly start: string;
-
-  /** End date. */
-  readonly end: string;
-}
+import { DateRangeDto } from './dateRange.dto';
 
 /** Anime data interface. */
 export interface AnimeDto {
