@@ -1,7 +1,7 @@
-import { SortTitle, SortValue } from '@js-camp/core/enum';
+import { SortTitle, SortValue, OrderOption } from '@js-camp/core/enum';
 import { formatDate } from '@js-camp/core/utils';
 
-import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, ORDER_OPTIONS, SORT_OPTIONS } from '../constants';
+import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, SORT_OPTIONS } from '../constants';
 import { PaginationOptions } from '../interface/paginationInterface';
 import { fetchAnimeList } from '../scripts/fetchAnimeList';
 
@@ -161,9 +161,10 @@ function initSortingAndOrdering(): void {
     `<option value="${item.title}">${item.title}</option>`
   )).join('');
 
-  const orderOptionHTML = ORDER_OPTIONS.map(item => (
+  const orderOptionHTML = Object.keys(OrderOption).map(item => (
     `<option value ="${item}">${item}</option>`
-  )).join('');
+  ))
+    .join('');
 
   if (selectSort) {
     selectSort.innerHTML = sortOptionHTML;
