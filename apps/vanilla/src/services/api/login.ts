@@ -1,24 +1,27 @@
+// const VERIFY_TOKEN_URL = 'auth/token/verify/';
+// const REFRESH_TOKEN_URL = 'auth/token/refresh/';
+
 import { HttpErrorDto } from '@js-camp/core/dtos/httpError.dto';
 import { TokenDto } from '@js-camp/core/dtos/token.dto';
 import { HttpErrorMapper } from '@js-camp/core/mappers/httpError.mapper';
+import { LoginMapper } from '@js-camp/core/mappers/login.mapper';
 import { TokenMapper } from '@js-camp/core/mappers/token.mapper';
-import { UserMapper } from '@js-camp/core/mappers/user.mapper';
 import { HttpError } from '@js-camp/core/models/httpError';
+import { Login } from '@js-camp/core/models/login';
 import { Token } from '@js-camp/core/models/token';
-import { User } from '@js-camp/core/models/user';
 import { AxiosError } from 'axios';
 
 import { appAxios } from '../../axios';
 
-const REGISTER_URL = 'auth/register/';
+const LOGIN_URL = 'auth/login/';
 
 /** Post user information to register.
- * @param userInfo Registration info of user.
+ * @param userLoginInfo Registration info of user.
  */
-export async function postUserRegistration(userInfo: User): Promise<Token | HttpError> {
+export async function postUserLoginInfo(userLoginInfo: Login): Promise<Token | HttpError> {
   try {
-    const userDto = UserMapper.toDto(userInfo);
-    const response = await appAxios.post<TokenDto>(REGISTER_URL, { ...userDto });
+    const userLoginDto = LoginMapper.toDto(userLoginInfo);
+    const response = await appAxios.post<TokenDto>(LOGIN_URL, { ...userLoginDto });
     return TokenMapper.fromDto(response.data);
   } catch (error: unknown) {
     const errorWithType = error as AxiosError<HttpErrorDto>;

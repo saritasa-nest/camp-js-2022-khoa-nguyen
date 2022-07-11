@@ -16,7 +16,7 @@ export class User extends Immerable {
   public readonly password: string;
 
   /** Avatar. */
-  public readonly avatar: string;
+  public readonly avatar?: string;
 
   public constructor(data: PostInitArgs) {
     super();

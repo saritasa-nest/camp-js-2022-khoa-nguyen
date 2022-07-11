@@ -13,16 +13,19 @@
     <form class="form__container">
       <div class="form__item">
         <h2>Email</h2>
-        <input data-type="email" type="email" required/>
+        <input data-type="email" required/>
+        <span class="form__item error"></span>
       </div>
       <div class="form__item">
         <h2>First name</h2>
         <input data-type="firstName" required/>
+        <span class="form__item error"></span>
       </div>
 
       <div class="form__item">
         <h2>Last name</h2>
         <input data-type="lastName" required/>
+        <span class="form__item error"></span>
       </div>
 
       <div class="form__item">
@@ -38,6 +41,9 @@
       </div>
 
       <button class="form__submit" type="submit">Register</button>
+      <div>
+        <a class="form__goBack" href="../index.html">Go back to login</a>
+      </div>
     </form>
     <script src="signup.ts" type="module"></script>
 
