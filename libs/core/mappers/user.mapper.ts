@@ -1,5 +1,5 @@
-import { UserDto } from '../dtos/user.dto';
-import { User } from '../models/user';
+import { ErrorUserDto, UserDto } from '../dtos/user.dto';
+import { ErrorUser, User } from '../models/user';
 
 export namespace UserMapper {
 
@@ -29,5 +29,22 @@ export namespace UserMapper {
       password: info.password,
       avatar: info.avatar,
     };
+  }
+}
+
+export namespace ErrorUserMapper {
+
+  /**
+   * Maps dto to model.
+   * @param dto Genre dto.
+   */
+  export function fromDto(dto: ErrorUserDto): ErrorUser {
+    return new ErrorUser({
+      firstName: dto.first_name,
+      email: dto.email,
+      lastName: dto.last_name,
+      password: dto.password,
+      avatar: dto.avatar,
+    });
   }
 }

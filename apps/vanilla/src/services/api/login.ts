@@ -18,15 +18,15 @@ const LOGIN_URL = 'auth/login/';
 /** Post user information to register.
  * @param userLoginInfo Registration info of user.
  */
-export async function postUserLoginInfo(userLoginInfo: Login): Promise<Token | HttpError> {
+export async function postUserLoginInfo(userLoginInfo: Login): Promise<Token | HttpError<null>> {
   try {
     const userLoginDto = LoginMapper.toDto(userLoginInfo);
     const response = await appAxios.post<TokenDto>(LOGIN_URL, { ...userLoginDto });
     return TokenMapper.fromDto(response.data);
   } catch (error: unknown) {
-    const errorWithType = error as AxiosError<HttpErrorDto>;
+    const errorWithType = error as AxiosError<HttpErrorDto<null>>;
     if (errorWithType.response) {
-      return HttpErrorMapper.fromDto(errorWithType.response.data);
+      return HttpErrorMapper.fromDtoWithNull(errorWithType.response.data);
     }
     return new HttpError({ detail: 'Unknown error', data: null });
   }

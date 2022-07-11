@@ -1,5 +1,5 @@
-import { LoginDto } from '../dtos/login.dto';
-import { Login } from '../models/login';
+import { ErrorLoginDto, LoginDto } from '../dtos/login.dto';
+import { ErrorLogin, Login } from '../models/login';
 
 export namespace LoginMapper {
 
@@ -23,5 +23,18 @@ export namespace LoginMapper {
       email: info.email,
       password: info.password,
     };
+  }
+}
+
+export namespace ErrorLoginMapper {
+
+  /**
+   * Maps dto to model.
+   * @param dto Password dto.
+   */
+  export function fromDto(dto: ErrorLoginDto): ErrorLogin {
+    return new ErrorLogin({
+      noneFieldErrors: dto.non_field_errors ? null : dto.non_field_errors,
+    });
   }
 }

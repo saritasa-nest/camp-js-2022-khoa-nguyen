@@ -1,7 +1,6 @@
 import { HttpError } from '@js-camp/core/models/httpError';
 import { Login } from '@js-camp/core/models/login';
 import { Token } from '@js-camp/core/models/token';
-import { queryErrorSpan } from '@js-camp/core/utils';
 
 import { postUserLoginInfo } from '../services/api/login';
 import { setValueToLocalStorage } from '../services/localStore';
@@ -11,7 +10,7 @@ const form = document.querySelector('.form__container');
 if (form) {
   const inputEmail = document.querySelector('input[type=email]') as HTMLInputElement ;
   const inputPassword = document.querySelector('input[type=password]') as HTMLInputElement;
-  const errorElement = document.querySelector('.error__message');
+  const errorElement = document.querySelector('.error');
   form.addEventListener('submit', async(e): Promise<void> => {
     e.preventDefault();
     const userLoginInfo = new Login({
@@ -21,21 +20,10 @@ if (form) {
 
     const result = await postUserLoginInfo(userLoginInfo);
     if (result instanceof HttpError) {
-      const error = result.data;
-      if (!error) {
-        // eslint-disable-next-line no-alert
-        if (!errorElement) {
-          return;
-        }
-        errorElement.innerHTML = result.detail;
+      if (!errorElement) {
         return;
       }
-      if (error.email) {
-        queryErrorSpan(inputEmail, error.email);
-      }
-      if (error.password) {
-        queryErrorSpan(inputPassword, error.password);
-      }
+      errorElement.innerHTML = result.detail;
       return;
     }
     // eslint-disable-next-line no-alert
