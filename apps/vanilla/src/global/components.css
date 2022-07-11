@@ -14,6 +14,11 @@ a:hover,
   --link-color: var(--primary-light-color);
 }
 
+h2 {
+  font-size: 25px;
+  font-weight: normal;
+}
+
 .links {
   display: flex;
   flex-wrap: wrap;
@@ -21,9 +26,8 @@ a:hover,
 }
 
 .default-layout {
-  --default-layout-width: 1200px;
+  --default-layout-width: 900px;
 
   margin: auto;
-  padding: 20px;
   max-width: var(--default-layout-width);
 }
