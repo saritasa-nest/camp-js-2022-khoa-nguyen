@@ -41,7 +41,7 @@
 
 .form__submit:hover {
   background-color: var(--primary-color);
-  color: white;
+  color: var(--primary-light-color-2);
 }
 
 .noaccount {
@@ -52,4 +52,9 @@
   color: var(--primary-color);
   text-decoration: underline;
   cursor: pointer;
+}
+
+.error {
+  color: var(--primary-font-error-color);
+  margin-top: 10px;
 }
