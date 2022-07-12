@@ -95,16 +95,15 @@ function renderRangeOfPagination(activePage: number, from: number, to: number): 
 function renderPaginationItems(): string {
   const { activePage, totalPages } = PAGINATION_OPTIONS;
   const FIRST_PAGE = 1;
-  const PAGE_5 = 5;
-  const PAGE_5_DESCENDING = totalPages - 4;
+  const PAGE_RANGE = 5;
   const PAGE_STEP = 2;
 
   if (activePage <= PAGE_STEP) {
-    return renderRangeOfPagination(activePage, FIRST_PAGE, PAGE_5);
+    return renderRangeOfPagination(activePage, FIRST_PAGE, PAGE_RANGE);
   } else if (activePage > PAGE_STEP && activePage < totalPages - PAGE_STEP) {
     return renderRangeOfPagination(activePage, activePage - PAGE_STEP, activePage + PAGE_STEP);
   } else if (activePage >= totalPages - PAGE_STEP) {
-    return renderRangeOfPagination(activePage, PAGE_5_DESCENDING, totalPages);
+    return renderRangeOfPagination(activePage, totalPages - PAGE_STEP * 2, totalPages);
   }
   return '';
 }
