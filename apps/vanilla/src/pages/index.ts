@@ -32,7 +32,7 @@ if (form) {
     // eslint-disable-next-line no-alert
     alert('Login success!');
     setValueToLocalStorage<Token>(TOKEN_KEY, result);
-    window.location.href = '/profile/';
+    window.location.href = PROFILE_URL;
 
 });
 }
