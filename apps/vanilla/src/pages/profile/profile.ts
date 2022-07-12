@@ -8,7 +8,7 @@ import { getValueFromLocalStorage, removeKeyFromLocalStorage } from '../../servi
 const token = getValueFromLocalStorage<Token>(TOKEN_KEY);
 
 if (!token) {
-  window.location.href = 'index.html';
+  window.location.href = '../index.html';
 }
 
 /** Display user profile on screen. */
