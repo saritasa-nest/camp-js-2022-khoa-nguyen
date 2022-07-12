@@ -55,8 +55,8 @@ async function renderAnimeList(): Promise<void> {
 
     if (container) {
       container.innerHTML = `
-      <caption>Anime list</caption>
       <table class="container__list">
+        <caption>Anime list</caption>
         <tr class="container__list_item">
           <th class="item_col">Thumbnail</th>
           <th class="item_col">English title</th>
