@@ -2,6 +2,8 @@ import { HttpError } from '@js-camp/core/models/httpError';
 import { Login } from '@js-camp/core/models/login';
 import { Token } from '@js-camp/core/models/token';
 
+import { TOKEN_KEY } from '../constant';
+
 import { postUserLoginInfo } from '../services/api/login';
 import { setValueToLocalStorage } from '../services/localStore';
 
@@ -27,6 +29,8 @@ if (form) {
       return;
     }
     // eslint-disable-next-line no-alert
-    setValueToLocalStorage<Token>('Token', result);
+    alert('Login success!');
+    setValueToLocalStorage<Token>(TOKEN_KEY, result);
+    window.location.href = 'profile/profile.html';
 });
 }

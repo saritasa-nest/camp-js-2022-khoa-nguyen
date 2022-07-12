@@ -16,14 +16,14 @@ export namespace HttpErrorMapper {
     });
   }
 
-  // /**
-  //  * Maps model to dto.
-  //  * @param dto Something.
-  //  */
-  // export function fromDtoWithNull(dto: HttpErrorDto<null>): HttpError<null> {
-  //   return new HttpError({
-  //     data: null,
-  //     detail: dto.detail,
-  //   });
-  // }
+  /**
+   * Maps model to dto.
+   * @param dto Something.
+   */
+  export function fromDtoWithNull(dto: HttpErrorDto<null>): HttpError<null> {
+    return new HttpError({
+      data: null,
+      detail: dto.detail,
+    });
+  }
 }

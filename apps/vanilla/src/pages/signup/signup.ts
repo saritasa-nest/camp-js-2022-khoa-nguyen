@@ -3,6 +3,8 @@ import { Token } from '@js-camp/core/models/token';
 import { User } from '@js-camp/core/models/user';
 import { queryErrorSpan } from '@js-camp/core/utils';
 
+import { TOKEN_KEY } from '../../constant';
+
 import { validateConfirmPassword } from '../../scripts/validate';
 import { postUserRegistration } from '../../services/api/register';
 import { setValueToLocalStorage } from '../../services/localStore';
@@ -54,6 +56,7 @@ if (form) {
       }
       // eslint-disable-next-line no-alert
       alert('Signup success!');
-      setValueToLocalStorage<Token>('Token', result);
+      setValueToLocalStorage<Token>(TOKEN_KEY, result);
+      window.location.href = 'profile/profile.html';
   });
 }
