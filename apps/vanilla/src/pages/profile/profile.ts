@@ -11,7 +11,7 @@ if (!token) {
   window.location.href = 'index.html';
 }
 
-/** */
+/** Display user profile on screen. */
 async function displayProfile(): Promise<void> {
   if (token) {
     const profile = await getProfile(token);

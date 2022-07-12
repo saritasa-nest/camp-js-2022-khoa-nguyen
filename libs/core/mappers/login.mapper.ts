@@ -16,7 +16,7 @@ export namespace LoginMapper {
 
   /**
    * Maps model to dto.
-   * @param info User login info.
+   * @param info User login info dto.
    */
   export function toDto(info: Login): LoginDto {
     return {
@@ -30,7 +30,7 @@ export namespace ErrorLoginMapper {
 
   /**
    * Maps dto to model.
-   * @param dto Password dto.
+   * @param dto Error login dto.
    */
   export function fromDto(dto: ErrorLoginDto): ErrorLogin {
     return new ErrorLogin({

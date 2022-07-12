@@ -9,7 +9,7 @@ export const appAxios: AxiosInstance = axios.create({
 });
 
 /**
- * @param token Something.
+ * @param token Token of user.
  */
 export function authAxios(token: Token): AxiosInstance {
   return axios.create({

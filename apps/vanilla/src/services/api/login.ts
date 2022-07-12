@@ -16,8 +16,8 @@ import { appAxios } from '../../axios';
 
 const LOGIN_URL = 'auth/login/';
 
-/** Post user information to register.
- * @param userLoginInfo Registration info of user.
+/** Post user information to login.
+ * @param userLoginInfo Login info of user.
  */
 export async function postUserLoginInfo(userLoginInfo: Login): Promise<Token | HttpError<ErrorLogin>> {
   try {

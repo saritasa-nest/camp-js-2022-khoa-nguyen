@@ -9,17 +9,13 @@ export interface ProfileDto {
   /** Last name of user. */
   readonly last_name: string;
 
-  /** Password. */
-  readonly password: string;
-
-  /** Password. */
+  /** Avatar of user. */
   readonly avatar?: string;
 
-  /** Password. */
-
+  /** Created date. */
   readonly created: string;
 
-  /** Password. */
+  /** Modifier date. */
   readonly modified: string;
 
 }

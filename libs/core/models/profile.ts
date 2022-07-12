@@ -1,6 +1,6 @@
 import { Immerable, OmitImmerable } from './immerable';
 
-/** User. */
+/** Profile. */
 export class Profile extends Immerable {
 
   /** Email. */
@@ -12,16 +12,13 @@ export class Profile extends Immerable {
   /** Last name. */
   public readonly lastName: string;
 
-  /** Password. */
-  public readonly password: string;
-
   /** Avatar. */
   public readonly avatar?: string;
 
-  /** Avatar. */
+  /** Created date. */
   public readonly created: string;
 
-  /** Avatar. */
+  /** Modifier date. */
   public readonly modified: string;
 
   public constructor(data: PostInitArgs) {
@@ -29,7 +26,6 @@ export class Profile extends Immerable {
     this.email = data.email;
     this.firstName = data.firstName;
     this.lastName = data.lastName;
-    this.password = data.password;
     this.avatar = data.avatar;
     this.created = data.created;
     this.modified = data.modified;

@@ -1,15 +1,15 @@
 import { Immerable, OmitImmerable } from './immerable';
 
-/** Genre. */
+/** Errors that returned from backend. */
 export class HttpError<T> extends Immerable {
 
-  /** Id. */
+  /** Data of error. */
   public readonly data?: T;
 
-  /** Name. */
+  /** Detail of error. */
   public readonly detail: string;
 
-  /** Name. */
+  /** Code of error. */
   public readonly code?: string;
 
   public constructor(data: PostInitArgs<T>) {

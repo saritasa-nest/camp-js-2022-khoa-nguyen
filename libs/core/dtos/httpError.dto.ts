@@ -7,6 +7,6 @@ export interface HttpErrorDto<T> extends Error {
   /** Error detail. */
   readonly detail: string;
 
-  /** Error detail. */
+  /** Error code. */
   readonly code: string;
 }

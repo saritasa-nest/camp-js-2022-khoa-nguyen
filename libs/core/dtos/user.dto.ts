@@ -12,7 +12,7 @@ export interface UserDto {
   /** Password. */
   readonly password: string;
 
-  /** Password. */
+  /** Avatar. */
   readonly avatar?: string;
 
 }
@@ -20,18 +20,18 @@ export interface UserDto {
 /** Date error DTO. */
 export interface ErrorUserDto {
 
-  /** Errors for a specific field. */
+  /** Errors for a email field. */
   readonly email: readonly string[];
 
-  /** Errors for a specific field. */
+  /** Errors for a password field. */
   readonly password: readonly string[];
 
-  /** Errors for a specific field. */
+  /** Errors for first name field. */
   readonly first_name: readonly string[];
 
-  /** Errors for a specific field. */
+  /** Errors for last name field. */
   readonly last_name: readonly string[];
 
-  /** Errors for a specific field. */
+  /** Errors for avatar field. */
   readonly avatar: readonly string[];
 }

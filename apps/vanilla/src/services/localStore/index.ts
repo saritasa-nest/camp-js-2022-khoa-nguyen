@@ -1,7 +1,7 @@
 /**
- * Gets some value by key from local storage.
+ * Get values by key from local storage.
  * @param key The key by which the value is stored.
- * @returns If there are no value, then null otherwise the value object.
+ * @returns Return null if there is no value or key, otherwise return value corresponding.
  */
 export function getValueFromLocalStorage<T>(key: string): T | null {
   const localValue = localStorage.getItem(key);
@@ -12,9 +12,9 @@ export function getValueFromLocalStorage<T>(key: string): T | null {
 }
 
 /**
- * Writes some value by key to local storage.
+ * Add or write values by key to local storage.
  * @param key The key by which the value is stored.
- * @param value Some value that needs to be stored.
+ * @param value Value that needs to be stored.
  */
 export function setValueToLocalStorage<T>(key: string, value: T): void {
   if (value !== undefined) {
@@ -23,8 +23,8 @@ export function setValueToLocalStorage<T>(key: string, value: T): void {
 }
 
 /**
- * Writes some value by key to local storage.
- * @param key The key by which the value is stored.
+ * Remove key from local storage.
+ * @param key The key that need to be removed.
  */
 export function removeKeyFromLocalStorage(key: string): void {
   localStorage.removeItem(key);

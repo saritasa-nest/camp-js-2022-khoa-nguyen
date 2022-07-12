@@ -8,9 +8,9 @@ export interface LoginDto {
 
 }
 
-/** Date error DTO. */
+/** Login error DTO. */
 export interface ErrorLoginDto {
 
-  /** Errors for a specific field. */
+  /** Non field errors. */
   readonly non_field_errors?: readonly string[];
 }

@@ -36,7 +36,7 @@ export namespace ErrorUserMapper {
 
   /**
    * Maps dto to model.
-   * @param dto Genre dto.
+   * @param dto Error sign up info dto.
    */
   export function fromDto(dto: ErrorUserDto): ErrorUser {
     return new ErrorUser({

@@ -30,22 +30,22 @@ export class User extends Immerable {
 
 type PostInitArgs = OmitImmerable<User>;
 
-/** Data errors. */
+/** User signup info errors. */
 export class ErrorUser extends Immerable {
 
-  /** Id. */
+  /** Email errors. */
   public readonly email: readonly string[];
 
-  /** Id. */
+  /** Password errors. */
   public readonly password: readonly string[];
 
-  /** Id. */
+  /** First name errors. */
   public readonly firstName: readonly string[];
 
-  /** Id. */
+  /** Last name errors. */
   public readonly lastName: readonly string[];
 
-  /** Id. */
+  /** Avatar errors. */
   public readonly avatar: readonly string[];
 
   public constructor(data: ErrorInitArgs) {

@@ -18,10 +18,10 @@ export class Login extends Immerable {
 
 type PostInitArgs = OmitImmerable<Login>;
 
-/** Login. */
+/** Login errors. */
 export class ErrorLogin extends Immerable {
 
-  /** User email. */
+  /** None field errors. */
   public readonly noneFieldErrors?: readonly string[];
 
   public constructor(data: ErrorInitArgs) {
