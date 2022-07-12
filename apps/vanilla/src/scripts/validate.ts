@@ -16,12 +16,14 @@ export function validateConfirmPassword(validationObject: Validation, message: s
   const { passwordElement, confirmPasswordElement } = validationObject;
   const passwordValue = passwordElement?.value;
   const confirmPasswordValue = confirmPasswordElement?.value;
+  const errorElement = confirmPasswordElement.parentElement?.querySelector('.error');
+  if (!errorElement) {
+    return false;
+  }
   if (passwordValue === confirmPasswordValue) {
+    errorElement.innerHTML = '';
     return true;
   }
-  const errorElement = confirmPasswordElement.parentElement?.querySelector('.error');
-  if (errorElement) {
-    errorElement.innerHTML = message;
-  }
+  errorElement.innerHTML = message;
   return false;
 }

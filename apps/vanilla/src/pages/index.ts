@@ -8,8 +8,8 @@ import { setValueToLocalStorage } from '../services/localStore';
 const form = document.querySelector('.form__container');
 
 if (form) {
-  const inputEmail = document.querySelector('input[type=email]') as HTMLInputElement ;
-  const inputPassword = document.querySelector('input[type=password]') as HTMLInputElement;
+  const inputEmail = document.querySelector('input[data-type=email]') as HTMLInputElement ;
+  const inputPassword = document.querySelector('input[data-type=password]') as HTMLInputElement;
   const errorElement = document.querySelector('.error');
   form.addEventListener('submit', async(e): Promise<void> => {
     e.preventDefault();
