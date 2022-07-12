@@ -34,7 +34,7 @@ export namespace ErrorLoginMapper {
    */
   export function fromDto(dto: ErrorLoginDto): ErrorLogin {
     return new ErrorLogin({
-      noneFieldErrors: dto.non_field_errors ? null : dto.non_field_errors,
+      noneFieldErrors: dto.non_field_errors,
     });
   }
 }

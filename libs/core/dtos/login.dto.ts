@@ -12,5 +12,5 @@ export interface LoginDto {
 export interface ErrorLoginDto {
 
   /** Errors for a specific field. */
-  readonly non_field_errors: readonly string[] | null;
+  readonly non_field_errors?: readonly string[];
 }

@@ -10,19 +10,20 @@ export namespace HttpErrorMapper {
    */
   export function fromDto<Dto, Model>(dto: HttpErrorDto<Dto>, resultFromDto: (resultDto: Dto) => Model): HttpError<Model> {
     return new HttpError({
-      data: resultFromDto(dto.data),
+      data: dto.data && resultFromDto(dto.data),
       detail: dto.detail,
+      code: dto.code,
     });
   }
 
-  /**
-   * Maps model to dto.
-   * @param dto Something.
-   */
-  export function fromDtoWithNull(dto: HttpErrorDto<null>): HttpError<null> {
-    return new HttpError({
-      data: null,
-      detail: dto.detail,
-    });
-  }
+  // /**
+  //  * Maps model to dto.
+  //  * @param dto Something.
+  //  */
+  // export function fromDtoWithNull(dto: HttpErrorDto<null>): HttpError<null> {
+  //   return new HttpError({
+  //     data: null,
+  //     detail: dto.detail,
+  //   });
+  // }
 }

@@ -22,7 +22,7 @@ type PostInitArgs = OmitImmerable<Login>;
 export class ErrorLogin extends Immerable {
 
   /** User email. */
-  public readonly noneFieldErrors: readonly string[] | null;
+  public readonly noneFieldErrors?: readonly string[];
 
   public constructor(data: ErrorInitArgs) {
     super();
