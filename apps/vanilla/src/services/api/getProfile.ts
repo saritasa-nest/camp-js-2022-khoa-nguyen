@@ -6,14 +6,14 @@ import { Profile } from '@js-camp/core/models/profile';
 import { Token } from '@js-camp/core/models/token';
 import { AxiosError } from 'axios';
 
-import { appAxios } from '../../axios';
+import { authAxios } from '../../axios';
 
 /** Get user information.
  * @param token Token of user.
  */
 export async function getProfile(token: Token): Promise<Profile | HttpError<null>> {
   try {
-    const result = await appAxios.get(`Bearer ${token.access}`);
+    const result = await authAxios(token).get('/users/profile/');
     return ProfileMapper.fromDto(result.data);
   } catch (error: unknown) {
     const errorWithType = error as AxiosError<HttpErrorDto<null>>;

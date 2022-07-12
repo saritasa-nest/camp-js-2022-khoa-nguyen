@@ -57,6 +57,6 @@ if (form) {
       // eslint-disable-next-line no-alert
       alert('Signup success!');
       setValueToLocalStorage<Token>(TOKEN_KEY, result);
-      window.location.href = 'profile/profile.html';
+      window.location.href = '../profile/profile.html';
   });
 }

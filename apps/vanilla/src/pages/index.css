@@ -8,6 +8,32 @@
   flex-direction: column;
 }
 
+.title {
+  color: var(--primary-color);
+}
+
+.info {
+  margin-top: 30px;
+}
+
+.info__item {
+  margin-top: 20px;
+}
+
+.button {
+  margin-top: 20px;
+  padding: 10px 25px;
+  border: none;
+  background-color: var(--primary-light-color);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.button:hover {
+  color: var(--primary-light-color-2);
+  background-color: var(--primary-color);
+}
+
 .form__container {
   display: flex;
   flex-direction: column;

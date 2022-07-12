@@ -21,3 +21,11 @@ export function setValueToLocalStorage<T>(key: string, value: T): void {
     localStorage.setItem(key, JSON.stringify(value));
   }
 }
+
+/**
+ * Writes some value by key to local storage.
+ * @param key The key by which the value is stored.
+ */
+export function removeKeyFromLocalStorage(key: string): void {
+  localStorage.removeItem(key);
+}
