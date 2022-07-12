@@ -23,7 +23,7 @@ export interface PaginationOptions {
   sorting: Sorting;
 
   /** Ordering. */
-  isAscending: Boolean;
+  isAscending: boolean;
 
   /** Ordering. */
   totalPages: number;
