@@ -1,5 +1,5 @@
 
-/** Date range interface. */
+/** Date range. */
 export interface DateRangeDto {
 
   /** Start date. */

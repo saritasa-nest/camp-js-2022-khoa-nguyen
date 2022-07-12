@@ -2,7 +2,7 @@ import { Type, Status } from '../enum/anime';
 
 import { DateRangeDto } from './dateRange.dto';
 
-/** Anime data interface. */
+/** Anime data. */
 export interface AnimeDto {
 
   /** Anime ID. */

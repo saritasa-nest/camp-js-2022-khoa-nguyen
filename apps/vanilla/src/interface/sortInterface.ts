@@ -1,5 +1,5 @@
 
-/** Sorting interface. */
+/** Sorting. */
 export interface Sort {
 
   /** Title of sort value. */

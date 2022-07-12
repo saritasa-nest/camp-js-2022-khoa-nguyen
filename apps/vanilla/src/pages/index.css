@@ -41,8 +41,8 @@
 }
 
 .container__list_item .wrapper__img {
-  width: 200px;
-  height: 200px;
+  max-width: 200px;
+  max-height: 200px;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;

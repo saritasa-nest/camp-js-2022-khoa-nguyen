@@ -10,7 +10,7 @@ export interface Sorting {
   value: SortValue;
 }
 
-/** Pagination option interface. */
+/** Pagination option. */
 export interface PaginationOptions {
 
   /** Number of items per page. */
