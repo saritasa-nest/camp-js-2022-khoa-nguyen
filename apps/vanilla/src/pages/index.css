@@ -80,7 +80,7 @@
   cursor: pointer;
 }
 
-.error {
+.form__item-error {
   color: var(--primary-font-error-color);
   margin-top: 10px;
 }

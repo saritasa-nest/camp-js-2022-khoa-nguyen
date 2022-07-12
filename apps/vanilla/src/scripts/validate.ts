@@ -16,7 +16,7 @@ export function validateConfirmPassword(validationObject: Validation, message: s
   const { passwordElement, confirmPasswordElement } = validationObject;
   const passwordValue = passwordElement?.value;
   const confirmPasswordValue = confirmPasswordElement?.value;
-  const errorElement = confirmPasswordElement.parentElement?.querySelector('.error');
+  const errorElement = confirmPasswordElement.parentElement?.querySelector('.form__item-error');
   if (!errorElement) {
     return false;
   }

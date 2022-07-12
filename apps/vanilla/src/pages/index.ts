@@ -13,7 +13,7 @@ const form = document.querySelector('.form__container');
 if (form) {
   const inputEmail = document.querySelector('input[data-type=email]') as HTMLInputElement ;
   const inputPassword = document.querySelector('input[data-type=password]') as HTMLInputElement;
-  const errorElement = document.querySelector('.error');
+  const errorElement = document.querySelector('.form__item-error');
   form.addEventListener('submit', async(e): Promise<void> => {
     e.preventDefault();
     const userLoginInfo = new Login({
