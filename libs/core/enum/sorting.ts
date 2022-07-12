@@ -1,11 +1,11 @@
-/** Enum of sort value. */
+/** Sort value. */
 export enum SortValue {
   TitleEnglish = 'title_eng',
   AiredStartDate = 'aired__startswith',
   Status = 'status',
 }
 
-/** Enum of sort title. */
+/** Sort title. */
 export enum SortTitle {
   TitleEnglish = 'Title English',
   AiredStartDate = 'Aired start date',

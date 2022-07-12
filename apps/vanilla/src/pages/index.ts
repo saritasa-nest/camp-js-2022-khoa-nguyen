@@ -1,4 +1,4 @@
-import { SortTitle, SortValue, OrderOption } from '@js-camp/core/enum';
+import { OrderOption, SortTitle, SortValue } from '@js-camp/core/enum';
 import { formatDate } from '@js-camp/core/utils';
 
 import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, SORT_OPTIONS } from '../constants';
@@ -24,15 +24,8 @@ const INITIAL_PAGINATION: PaginationOptions = {
 const animeListInitial = await fetchAnimeList(INITIAL_PAGINATION);
 
 const PAGINATION_OPTIONS: PaginationOptions = {
-  limit: DEFAULT_LIMIT,
-  offset: DEFAULT_OFFSET,
-  activePage: DEFAULT_ACTIVE_PAGE,
-  totalPages: Math.ceil(animeListInitial.count / DEFAULT_LIMIT) - 1,
-  sorting: {
-    title: SortTitle.TitleEnglish,
-    value: SortValue.TitleEnglish,
-  },
-  isAscending: true,
+  ...INITIAL_PAGINATION,
+  totalPages: animeListInitial instanceof Error ? 0 : Math.ceil(animeListInitial.count / DEFAULT_LIMIT) - 1,
 };
 
 /**
@@ -126,31 +119,31 @@ function renderPagination(): void {
       ${renderPaginationItems()}
       <li class="button__last waves-effect"><a href="#!"><i class="material-icons">Last</i></a></li>
   `;
-    const btnFirst = document.querySelector('.button__first');
-    const btnLast = document.querySelector('.button__last');
+    const buttonFirstPage = document.querySelector('.button__first');
+    const buttonLastPage = document.querySelector('.button__last');
 
-    btnFirst?.addEventListener('click', () => {
+    buttonFirstPage?.addEventListener('click', () => {
       PAGINATION_OPTIONS.activePage = 1;
       PAGINATION_OPTIONS.offset = DEFAULT_LIMIT * PAGINATION_OPTIONS.activePage;
       renderToUI();
     });
 
-    btnLast?.addEventListener('click', () => {
+    buttonLastPage?.addEventListener('click', () => {
       PAGINATION_OPTIONS.activePage = PAGINATION_OPTIONS.totalPages;
       PAGINATION_OPTIONS.offset = DEFAULT_LIMIT * PAGINATION_OPTIONS.activePage;
       renderToUI();
     });
 
     if (PAGINATION_OPTIONS.activePage === PAGINATION_OPTIONS.totalPages) {
-      btnLast?.classList.add('disabled');
+      buttonLastPage?.classList.add('disabled');
     } else {
-      btnLast?.classList.remove('disabled');
+      buttonLastPage?.classList.remove('disabled');
     }
 
     if (PAGINATION_OPTIONS.activePage === 1) {
-      btnFirst?.classList.add('disabled');
+      buttonFirstPage?.classList.add('disabled');
     } else {
-      btnFirst?.classList.remove('disabled');
+      buttonFirstPage?.classList.remove('disabled');
     }
   }
 }

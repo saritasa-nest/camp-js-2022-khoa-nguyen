@@ -1,5 +1,5 @@
 
-/** Enum of anime type. */
+/** Anime type. */
 export enum Type {
   Ona = 'ONA',
   TV = 'TV',
@@ -9,7 +9,7 @@ export enum Type {
   Ova = 'OVA',
 }
 
-/** Enum of anime status. */
+/** Anime status. */
 export enum Status {
   Airing = 'AIRING',
   Finished = 'FINISHED',

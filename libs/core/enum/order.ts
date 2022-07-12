@@ -1,4 +1,4 @@
-/** Enum of ordering option. */
+/** Ordering option. */
 export enum OrderOption {
   Ascending = 'Ascending',
   Descending = 'Descending',
