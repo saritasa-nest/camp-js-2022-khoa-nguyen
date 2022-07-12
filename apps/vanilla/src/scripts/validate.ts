@@ -12,7 +12,7 @@ interface Validation {
  * @param validationObject HTML input of password.
  * @param message Error message.
  */
-export function validateConfirmPassword(validationObject: Validation, message: string): Boolean {
+export function validateConfirmPassword(validationObject: Validation, message: string): boolean {
   const { passwordElement, confirmPasswordElement } = validationObject;
   const passwordValue = passwordElement?.value;
   const confirmPasswordValue = confirmPasswordElement?.value;

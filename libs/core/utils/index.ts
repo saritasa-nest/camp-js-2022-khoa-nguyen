@@ -4,6 +4,9 @@
  * @param message Error message.
  */
 export function queryErrorSpan(inputElement: HTMLInputElement, message: readonly string[]): void {
+  if (!inputElement) {
+    return;
+  }
   const { parentElement } = inputElement;
   const errorElement = parentElement?.querySelector('.form__item-error');
   if (errorElement) {

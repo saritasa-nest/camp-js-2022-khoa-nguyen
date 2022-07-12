@@ -1,6 +1,3 @@
-// const VERIFY_TOKEN_URL = 'auth/token/verify/';
-// const REFRESH_TOKEN_URL = 'auth/token/refresh/';
-
 import { HttpErrorDto } from '@js-camp/core/dtos/httpError.dto';
 import { ErrorLoginDto } from '@js-camp/core/dtos/login.dto';
 import { TokenDto } from '@js-camp/core/dtos/token.dto';

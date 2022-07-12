@@ -40,18 +40,10 @@ if (form) {
           alert(result.detail);
           return;
         }
-        if (error.email) {
-          queryErrorSpan(inputEmail, error.email);
-        }
-        if (error.firstName) {
-          queryErrorSpan(inputEmail, error.firstName);
-        }
-        if (error.lastName) {
-          queryErrorSpan(inputEmail, error.lastName);
-        }
-        if (error.password) {
-          queryErrorSpan(inputPassword, error.password);
-        }
+        queryErrorSpan(inputEmail, error.email);
+        queryErrorSpan(inputEmail, error.firstName);
+        queryErrorSpan(inputEmail, error.lastName);
+        queryErrorSpan(inputPassword, error.password);
         return;
       }
       // eslint-disable-next-line no-alert
