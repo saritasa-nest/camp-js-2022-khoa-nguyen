@@ -40,7 +40,7 @@ async function renderAnimeList(): Promise<void> {
     }
     const htmlInsideContainer = animeList.results.map(element => (
       `
-        <tr class="container__list_item">
+        <tr class="list__col">
           <th class="item_col wrapper__img" style="background-image: url(${element.image}) ;" ">
             <img class= "wrapper__img_item" src="${element.image}" alt="${element.titleEnglish}" />
           </th>
@@ -55,8 +55,9 @@ async function renderAnimeList(): Promise<void> {
 
     if (container) {
       container.innerHTML = `
-        <caption>Anime list</caption>
-        <tr class="container__list_item">
+      <caption>Anime list</caption>
+      <table>
+        <tr class="list__col">
           <th class="item_col">Thumbnail</th>
           <th class="item_col">English title</th>
           <th class="item_col">Japanese title</th>
@@ -65,6 +66,8 @@ async function renderAnimeList(): Promise<void> {
           <th class="item_col">Status</th>
         </tr>
         ${htmlInsideContainer}
+      </table>
+
     `;
     }
   } catch (error: unknown) {
