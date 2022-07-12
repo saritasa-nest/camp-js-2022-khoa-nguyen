@@ -2,10 +2,11 @@ import { HttpError } from '@js-camp/core/models/httpError';
 import { Login } from '@js-camp/core/models/login';
 import { Token } from '@js-camp/core/models/token';
 
-import { TOKEN_KEY } from '../constant';
+import { PROFILE_URL, TOKEN_KEY } from '../constant';
 
 import { postUserLoginInfo } from '../services/api/login';
-import { setValueToLocalStorage } from '../services/localStore';
+import { postRefreshToken, postTokenToVerify } from '../services/api/verifyToken';
+import { getValueFromLocalStorage, setValueToLocalStorage } from '../services/localStore';
 
 const form = document.querySelector('.form__container');
 
@@ -31,6 +32,35 @@ if (form) {
     // eslint-disable-next-line no-alert
     alert('Login success!');
     setValueToLocalStorage<Token>(TOKEN_KEY, result);
-    window.location.href = 'profile/profile.html';
+    window.location.href = '/profile/';
+
 });
 }
+
+/** Check valid token. */
+async function checkValidToken(): Promise<void> {
+  const token = getValueFromLocalStorage<Token>(TOKEN_KEY);
+  if (!token) {
+    return;
+  }
+  const response = await postTokenToVerify(token);
+  if (response instanceof HttpError) {
+    refreshToken(token);
+  }
+  window.location.href = PROFILE_URL;
+
+}
+
+/** Refresh token.
+ * @param token Token to refresh.
+ */
+async function refreshToken(token: Token): Promise<void> {
+  const response = await postRefreshToken(token);
+  if (response instanceof HttpError) {
+    return;
+  }
+  setValueToLocalStorage<Token>(TOKEN_KEY, response);
+  window.location.href = PROFILE_URL;
+}
+
+checkValidToken();

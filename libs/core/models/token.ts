@@ -17,3 +17,21 @@ export class Token extends Immerable {
 }
 
 type PostInitArgs = OmitImmerable<Token>;
+
+/** Token errors. */
+export class ErrorToken extends Immerable {
+
+  /** None field errors. */
+  public readonly noneFieldErrors?: readonly string[];
+
+  /** Token errors. */
+  public readonly token?: readonly string[];
+
+  public constructor(data: ErrorInitArgs) {
+    super();
+    this.token = data.token;
+    this.noneFieldErrors = data.noneFieldErrors;
+  }
+}
+
+type ErrorInitArgs = OmitImmerable<ErrorToken>;

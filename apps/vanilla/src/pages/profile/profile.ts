@@ -36,11 +36,11 @@ async function displayProfile(): Promise<void> {
       },
       {
         title: 'Created date',
-        value: profile.created,
+        value: profile.created.toLocaleString(),
       },
       {
         title: 'Modified date',
-        value: profile.modified,
+        value: profile.modified.toLocaleString(),
       },
     ];
     if (!titleElement) {

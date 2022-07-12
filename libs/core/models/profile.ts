@@ -16,10 +16,10 @@ export class Profile extends Immerable {
   public readonly avatar?: string;
 
   /** Created date. */
-  public readonly created: string;
+  public readonly created: Date;
 
   /** Modifier date. */
-  public readonly modified: string;
+  public readonly modified: Date;
 
   public constructor(data: PostInitArgs) {
     super();

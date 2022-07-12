@@ -13,8 +13,8 @@ export namespace ProfileMapper {
       firstName: dto.first_name,
       lastName: dto.last_name,
       avatar: dto.avatar,
-      created: dto.created,
-      modified: dto.modified,
+      created: new Date(dto.created),
+      modified: new Date(dto.modified),
     });
   }
 }
