@@ -9,7 +9,7 @@ import { validateConfirmPassword } from '../../scripts/validate';
 import { postUserRegistration } from '../../services/api/register';
 import { setValueToLocalStorage } from '../../services/localStore';
 
-const form = document.querySelector('.form__container');
+const form = document.querySelector('.form');
 
 if (form) {
   const inputEmail = form.querySelector('input[data-type=email]') as HTMLInputElement ;
@@ -25,10 +25,8 @@ if (form) {
       firstName: inputFirstName.value,
       lastName: inputLastName.value,
     });
-
     const isValidPassword = validateConfirmPassword({ passwordElement: inputPassword, confirmPasswordElement: inputConfirmPassword },
       'This field must be matched with password field');
-
       if (!isValidPassword) {
         return;
       }
