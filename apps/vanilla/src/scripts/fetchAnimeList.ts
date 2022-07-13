@@ -24,7 +24,11 @@ export async function fetchAnimeList(options: PaginationOptions): Promise<Pagina
         },
       });
     return PaginationMapper.fromDto<AnimeDto, Anime>(result.data, AnimeMapper.fromDto);
-  } catch (errors: unknown) {
-    throw new Error(`Failed to get anime list: ${(errors as Error).message}`);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      throw new Error(`Failed to get anime list: ${error.message}`);
+    } else {
+      throw new Error('Unexpected error!');
+    }
   }
 }
