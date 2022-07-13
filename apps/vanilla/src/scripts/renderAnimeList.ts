@@ -4,7 +4,7 @@ import { PaginationOptions } from '../interface/paginationInterface';
 
 import { fetchAnimeList } from './fetchAnimeList';
 
-const container = document.querySelector('.container__table');
+const container = document.querySelector('.table');
 
 /**
  * Render anime list.
@@ -19,15 +19,15 @@ export async function renderAnimeList(options: PaginationOptions): Promise<void>
     }
     const htmlTableContent = animeList.results.map(element => (
       `
-        <tr class="list__col">
-          <th class="item_col wrapper__img" style="background-image: url(${element.image})">
-            <img class= "wrapper__img_item" src="${element.image}" alt="${element.titleEnglish}" />
+        <tr class="table__row">
+          <th class="table__row_item table__row_item_thumb">
+            <img class= "table__row_item table__row_item_thumb__img" src="${element.image}" alt="${element.titleEnglish}" />
           </th>
-          <th class="item_col">${element.titleEnglish}</th>
-          <th class="item_col">${element.titleJapan}</th>
-          <th class="item_col">${element.aired.start ? formatDate(element.aired.start) : ''}</th>
-          <th class="item_col">${element.type}</th>
-          <th class="item_col">${element.status}</th>
+          <th class="table__row_item">${element.titleEnglish}</th>
+          <th class="table__row_item">${element.titleJapan}</th>
+          <th class="table__row_item">${element.aired.start ? formatDate(element.aired.start) : ''}</th>
+          <th class="table__row_item">${element.type}</th>
+          <th class="table__row_item">${element.status}</th>
         </tr>
       `
     )).join('');
@@ -36,13 +36,13 @@ export async function renderAnimeList(options: PaginationOptions): Promise<void>
       container.innerHTML = `
       <table>
         <caption>Anime list</caption>
-        <tr class="list__col">
-          <th class="item_col">Thumbnail</th>
-          <th class="item_col">English title</th>
-          <th class="item_col">Japanese title</th>
-          <th class="item_col">Aired start</th>
-          <th class="item_col">Type</th>
-          <th class="item_col">Status</th>
+        <tr class="table__row">
+          <th class="table__row_item">Thumbnail</th>
+          <th class="table__row_item">English title</th>
+          <th class="table__row_item">Japanese title</th>
+          <th class="table__row_item">Aired start</th>
+          <th class="table__row_item">Type</th>
+          <th class="table__row_item">Status</th>
         </tr>
         ${htmlTableContent}
       </table>

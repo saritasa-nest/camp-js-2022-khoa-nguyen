@@ -7,34 +7,24 @@
     <link rel="stylesheet" href="./index.css" />
     <title>Vite App</title>
   </head>
-  <body class="page default-layout">
-    <h1 class="page__title">Saritasa Anime</h1>
-    <div class="page__content">
-      <!-- Filter -->
-      <div class="container__filter">
-
-        <div class="filter__item">
-          <label class="select__title">Sort by</label>
-          <select class="select select__sort">
-          </select>
-        </div>
-
-        <div class="filter__item">
-          <label class="select__title">Ordering by</label>
-          <select class="select select__order">
-          </select>
-        </div>
-
+  <body class="default-layout">
+    <h1 class="title">Saritasa Anime</h1>
+     <!-- Filter -->
+     <div class="filter">
+      <div class="filter__item">
+        <label class="filter__item_title">Sort by</label>
+        <select class="filter__item_select"></select>
       </div>
-      <!-- Anime films list -->
-      <div class="container__table">
-      </div>
-      <!-- Pagination -->
-      <div class="container__pagination">
-        <ul class="pagination">
-        </ul>
+      <div class="filter__item">
+        <label class="filter__item_title">Ordering by</label>
+        <select class="filter__item_select"></select>
       </div>
     </div>
+
+    <!-- Anime films list -->
+    <div class="table"></div>
+    <!-- Pagination -->
+    <ul class="pagination"></ul>
     <script type="module" src="./index.ts"></script>
   </body>
 </html>
