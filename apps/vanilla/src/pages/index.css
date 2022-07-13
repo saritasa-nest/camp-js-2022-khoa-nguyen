@@ -34,7 +34,7 @@
   background-color: var(--primary-color);
 }
 
-.form__container {
+.form {
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -47,13 +47,13 @@
   width: 100%;
 }
 
-.form__item > input {
+.form__item_input {
   padding: 8px;
   width: 100%;
   margin-top: 10px;
 }
 
-.form__submit {
+.button-submit {
   padding: 15px;
   width: 100%;
   margin-top: 10px;
@@ -65,22 +65,19 @@
   font-size: var(--primary-font-size-small);
 }
 
-.form__submit:hover {
-  background-color: var(--primary-color);
-  color: var(--primary-light-color-2);
-}
-
-.noaccount {
+.text {
   margin-top: 20px;
 }
 
-.noaccount__register {
-  color: var(--primary-color);
-  text-decoration: underline;
-  cursor: pointer;
+.text-center {
+  text-align: center;
 }
 
 .form__item-error {
   color: var(--primary-font-error-color);
   margin-top: 10px;
+}
+
+.link-below {
+  margin-top: 20px;
 }

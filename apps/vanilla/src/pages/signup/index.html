@@ -10,41 +10,39 @@
 <body class="default-layout">
   <div class="container">
     <h1>Sign up Saritasa Anime</h1>
-    <form class="form__container">
+    <form class="form">
       <div class="form__item">
-        <h2>Email</h2>
-        <input data-type="email" required/>
-        <span class="form__item-error"></span>
+        <label>Email</label>
+        <input class="form__item_input" data-type="email" required/>
+        <span class="form__item_span form__item_span-error"></span>
       </div>
       <div class="form__item">
-        <h2>First name</h2>
-        <input data-type="firstName" required/>
-        <span class="form__item-error"></span>
+        <label>First name</label>
+        <input class="form__item_input" data-type="firstName" required/>
+        <span class="form__item_span form__item_span-error"></span>
       </div>
 
       <div class="form__item">
-        <h2>Last name</h2>
-        <input data-type="lastName" required/>
-        <span class="form__item-error"></span>
+        <label>Last name</label>
+        <input class="form__item_input" data-type="lastName" required/>
+        <span class="form__item-span form__item_span-error"></span>
       </div>
 
       <div class="form__item">
-        <h2>Password</h2>
-        <input data-type="password" type="password" required/>
-        <span class="form__item-error"></span>
+        <label>Password</label>
+        <input class="form__item_input" data-type="password" type="password" required/>
+        <span class="form__item_span form__item_span-error"></span>
       </div>
 
       <div class="form__item">
-        <h2>Re-type password</h2>
-        <input data-type="confirmPassword" type="password" required/>
-        <span class="form__item-error"></span>
+        <label>Re-type password</label>
+        <input class="form__item_input" data-type="confirmPassword" type="password" required/>
+        <span class="form__item_span form__item_span-error"></span>
       </div>
 
-      <button class="form__submit" type="submit">Register</button>
-      <div>
-        <a class="form__goBack" href="../index.html">Go back to login</a>
-      </div>
+      <button class="button button-submit" type="submit">Register</button>
     </form>
+    <a class="link link-below" href="../index.html">Go back to login</a>
     <script src="signup.ts" type="module"></script>
 
   </div>

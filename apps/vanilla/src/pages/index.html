@@ -9,20 +9,20 @@
   <body class="default-layout">
     <div class="container">
       <h1>Login to Saritasa Anime</h1>
-      <form class="form__container">
-        <div class="form__item email">
-          <h2>Email</h2>
-          <input type="email" data-type="email" required/>
+      <form class="form">
+        <div class="form__item form__item-email">
+          <label>Email</label>
+          <input class="form__item_input" type="email" data-type="email" required/>
         </div>
-        <div class="form__item password">
-          <h2>Password</h2>
-          <input type="password" data-type="password" required/>
+        <div class="form__item form__item-password">
+          <label>Password</label>
+          <input class="form__item_input" type="password" data-type="password" required/>
         </div>
-        <button class="form__submit" type="submit">Login</button>
+        <button class="button button-submit" type="submit">Login</button>
         <h3 class="form__item-error"></h3>
       </form>
 
-      <h2 class="noaccount">Don't have an account? Feel free to <span><a class="noaccount__register" href="./signup/">Register here</a></span></h2>
+      <h2 class="text text-center">Don't have an account? Feel free to <span><a class="link" href="./signup/">Register here</a></span></h2>
     </div>
     <script type="module" src="./index.ts"></script>
   </body>
