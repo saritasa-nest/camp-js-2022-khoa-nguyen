@@ -73,7 +73,7 @@
   text-align: center;
 }
 
-.form__item-error {
+.form__item_span-error {
   color: var(--primary-font-error-color);
   margin-top: 10px;
 }

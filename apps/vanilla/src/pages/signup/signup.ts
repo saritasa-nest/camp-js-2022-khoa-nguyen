@@ -39,8 +39,8 @@ if (form) {
           return;
         }
         queryErrorSpan(inputEmail, error.email);
-        queryErrorSpan(inputEmail, error.firstName);
-        queryErrorSpan(inputEmail, error.lastName);
+        queryErrorSpan(inputFirstName, error.firstName);
+        queryErrorSpan(inputLastName, error.lastName);
         queryErrorSpan(inputPassword, error.password);
         return;
       }
