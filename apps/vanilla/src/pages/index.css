@@ -3,10 +3,10 @@
 .title {
   width: 100%;
   text-align: center;
-  color: var(--primary-color);
+  color: var(--primary-font-color-2);
   text-transform: uppercase;
   font-size: var(--primary-font-size-title);
-  font-weight: 600;
+  font-weight: var(--primary-font-weight-title);
 }
 
 .container {
@@ -49,7 +49,7 @@
 }
 
 .list__col > .item_col {
-  font-weight: 500;
+  font-weight: var(--primary-font-weight-heading);
   border: 1px solid var(--primary-light-color);
 }
 

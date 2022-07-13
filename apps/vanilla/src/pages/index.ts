@@ -38,10 +38,10 @@ async function renderAnimeList(): Promise<void> {
     if (animeList instanceof Error) {
       return;
     }
-    const htmlInsideContainer = animeList.results.map(element => (
+    const htmlTableContent = animeList.results.map(element => (
       `
         <tr class="list__col">
-          <th class="item_col wrapper__img" style="background-image: url(${element.image}) ;" ">
+          <th class="item_col wrapper__img" style="background-image: url(${element.image})">
             <img class= "wrapper__img_item" src="${element.image}" alt="${element.titleEnglish}" />
           </th>
           <th class="item_col">${element.titleEnglish}</th>
@@ -55,8 +55,8 @@ async function renderAnimeList(): Promise<void> {
 
     if (container) {
       container.innerHTML = `
-      <caption>Anime list</caption>
       <table>
+        <caption>Anime list</caption>
         <tr class="list__col">
           <th class="item_col">Thumbnail</th>
           <th class="item_col">English title</th>
@@ -65,13 +65,13 @@ async function renderAnimeList(): Promise<void> {
           <th class="item_col">Type</th>
           <th class="item_col">Status</th>
         </tr>
-        ${htmlInsideContainer}
+        ${htmlTableContent}
       </table>
 
     `;
     }
   } catch (error: unknown) {
-    throw new Error(`Unable to render Anime list ${error as string}`);
+    throw new Error(`Unable to render Anime list ${error}`);
   }
 }
 
@@ -124,13 +124,13 @@ function renderPagination(): void {
     buttonFirstPage?.addEventListener('click', () => {
       PAGINATION_OPTIONS.activePage = 1;
       PAGINATION_OPTIONS.offset = DEFAULT_LIMIT * PAGINATION_OPTIONS.activePage;
-      renderToUI();
+      renderListAndPaginationToUI();
     });
 
     buttonLastPage?.addEventListener('click', () => {
       PAGINATION_OPTIONS.activePage = PAGINATION_OPTIONS.totalPages;
       PAGINATION_OPTIONS.offset = DEFAULT_LIMIT * PAGINATION_OPTIONS.activePage;
-      renderToUI();
+      renderListAndPaginationToUI();
     });
 
     if (PAGINATION_OPTIONS.activePage === PAGINATION_OPTIONS.totalPages) {
@@ -165,7 +165,7 @@ function initSortingAndOrdering(): void {
         PAGINATION_OPTIONS.sorting.value = SORT_OPTIONS.filter(item => item.title === value)[0].value as SortValue;
         PAGINATION_OPTIONS.offset = DEFAULT_LIMIT;
         PAGINATION_OPTIONS.activePage = 1;
-        renderToUI();
+        renderListAndPaginationToUI();
       });
   }
   if (selectOrdering) {
@@ -174,7 +174,7 @@ function initSortingAndOrdering(): void {
       PAGINATION_OPTIONS.offset = DEFAULT_LIMIT;
       PAGINATION_OPTIONS.activePage = 1;
       PAGINATION_OPTIONS.isAscending = !PAGINATION_OPTIONS.isAscending;
-      renderToUI();
+      renderListAndPaginationToUI();
     });
   }
 }
@@ -182,7 +182,7 @@ function initSortingAndOrdering(): void {
 /**
  * Render anime list and pagination to UI.
  */
-async function renderToUI(): Promise<void> {
+async function renderListAndPaginationToUI(): Promise<void> {
   try {
     await renderAnimeList();
     renderPagination();
@@ -194,7 +194,7 @@ async function renderToUI(): Promise<void> {
           const numPage = Number.parseInt(strPage, 10);
           PAGINATION_OPTIONS.offset = DEFAULT_LIMIT * numPage;
           PAGINATION_OPTIONS.activePage = numPage;
-          renderToUI();
+          renderListAndPaginationToUI();
         }
       });
     });
@@ -203,4 +203,4 @@ async function renderToUI(): Promise<void> {
   }
 }
 initSortingAndOrdering();
-renderToUI();
+renderListAndPaginationToUI();
