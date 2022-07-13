@@ -21,7 +21,7 @@ export async function renderAnimeList(options: PaginationOptions): Promise<void>
       `
         <tr class="table__row">
           <th class="table__row_item table__row_item_thumb">
-            <img class= "table__row_item table__row_item_thumb__img" src="${element.image}" alt="${element.titleEnglish}" />
+            <img class= "table__row_item_thumb__img" src="${element.image}" alt="${element.titleEnglish}" />
           </th>
           <th class="table__row_item">${element.titleEnglish}</th>
           <th class="table__row_item">${element.titleJapan}</th>
@@ -35,7 +35,7 @@ export async function renderAnimeList(options: PaginationOptions): Promise<void>
     if (container) {
       container.innerHTML = `
       <table>
-        <caption>Anime list</caption>
+        <caption class="table__caption" >Anime list</caption>
         <tr class="table__row">
           <th class="table__row_item">Thumbnail</th>
           <th class="table__row_item">English title</th>

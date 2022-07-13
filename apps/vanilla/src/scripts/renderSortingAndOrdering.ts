@@ -5,8 +5,8 @@ import { PaginationOptions } from '../interface/paginationInterface';
 
 import { renderListAndPaginationToUI } from './renderPagination';
 
-const selectSort = document.querySelector<HTMLSelectElement>('.select__sort');
-const selectOrdering = document.querySelector<HTMLSelectElement>('.select__order');
+const selectSort = document.querySelector<HTMLSelectElement>('.filter__item_select-sort');
+const selectOrdering = document.querySelector<HTMLSelectElement>('.filter__item_select-order');
 
 /** Init and render sorting and ordering list, hence render corresponding list anime.
  * @param options Options of pagination.
