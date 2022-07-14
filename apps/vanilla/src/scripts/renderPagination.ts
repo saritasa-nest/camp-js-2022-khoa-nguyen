@@ -91,20 +91,24 @@ function renderPagination(options: PaginationOptions): void {
  */
 export async function renderListAndPaginationToUI(options: PaginationOptions): Promise<void> {
   try {
-    await renderAnimeList(options);
-    renderPagination(options);
+    const animeList = await renderAnimeList(options);
+    const optionUpdated = new PaginationOptions({
+      ...options,
+      totalPages: Math.ceil(animeList.count / options.offset - 1),
+    });
+    renderPagination(optionUpdated);
     const itemsPageList = document.querySelectorAll('.pagination li:not(.btn)');
     itemsPageList.forEach(item => {
       item.addEventListener('click', () => {
         const strPage = item.childNodes[0].childNodes[0].nodeValue;
         if (strPage) {
           const numPage = Number.parseInt(strPage, 10);
-          const optionUpdated = new PaginationOptions({
+          const optionUpdatedTrigger = new PaginationOptions({
             ...options,
             offset: DEFAULT_LIMIT * numPage,
             activePage: numPage,
           });
-          renderListAndPaginationToUI(optionUpdated);
+          renderListAndPaginationToUI(optionUpdatedTrigger);
         }
       });
     });

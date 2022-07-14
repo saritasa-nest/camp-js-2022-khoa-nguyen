@@ -23,6 +23,7 @@ export async function fetchAnimeList(options: PaginationOptions): Promise<Pagina
           limit: optionsDto.limit,
           offset: optionsDto.offset,
           ordering: optionsDto.ordering,
+          type: optionsDto.type,
         },
       });
     return PaginationMapper.fromDto<AnimeDto, Anime>(result.data, AnimeMapper.fromDto);

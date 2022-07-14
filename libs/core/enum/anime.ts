@@ -1,13 +1,13 @@
 
 /** Anime type. */
 export enum Type {
-  ONA = 'Ona',
+  ONA = 'ONA',
   TV = 'TV',
-  MOVIE = 'Movie',
-  SPECIAL = 'Special',
-  MUSIC = 'Music',
-  OVA = 'Ova',
-  UNDEFINED = 'Undefined',
+  MOVIE = 'MOVIE',
+  SPECIAL = 'SPECIAL',
+  MUSIC = 'MUSIC',
+  OVA = 'OVA',
+  DEFAULT = '',
 }
 
 /** Anime status. */
@@ -19,5 +19,6 @@ export enum Status {
   AIRING = 'Airing',
   FINISHED = 'Finished',
   NOT_YET_AIRED = 'Not yet aired',
-  UNDEFINED = 'Undefined',
+
+  // UNDEFINED = 'Undefined',
 }
