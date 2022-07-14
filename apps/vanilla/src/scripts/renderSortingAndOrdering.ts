@@ -26,19 +26,28 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
     selectSort.innerHTML = sortOptionHTML;
     selectSort.addEventListener('change', () => {
         const { value } = selectSort;
-        options.sorting = SORT_OPTIONS.filter(item => item.title === value)[0] as Sorting;
-        options.offset = DEFAULT_LIMIT;
-        options.activePage = 1;
-        renderListAndPaginationToUI(options);
+        const optionUpdated = new PaginationOptions({
+          ...options,
+          sorting: SORT_OPTIONS.filter(item => item.title === value)[0] as Sorting,
+          offset: DEFAULT_LIMIT,
+          activePage: 1,
+        });
+        renderListAndPaginationToUI(optionUpdated);
       });
   }
   if (selectOrdering) {
     selectOrdering.innerHTML = orderOptionHTML;
     selectOrdering.addEventListener('change', () => {
-      options.offset = DEFAULT_LIMIT;
-      options.activePage = 1;
-      options.sorting.isAscending = !options.sorting.isAscending;
-      renderListAndPaginationToUI(options);
+      const optionUpdated = new PaginationOptions({
+        ...options,
+        offset: DEFAULT_LIMIT,
+        activePage: 1,
+        sorting: new Sorting({
+          ...options.sorting,
+          isAscending: !options.sorting.isAscending,
+        }),
+      });
+      renderListAndPaginationToUI(optionUpdated);
     });
   }
 }

@@ -54,15 +54,21 @@ function renderPagination(options: PaginationOptions): void {
     const buttonLastPage = document.querySelector('.button__last');
 
     buttonFirstPage?.addEventListener('click', () => {
-      options.activePage = 1;
-      options.offset = DEFAULT_LIMIT * options.activePage;
-      renderListAndPaginationToUI(options);
+      const optionUpdated = new PaginationOptions({
+        ...options,
+        activePage: 1,
+        offset: DEFAULT_LIMIT * options.activePage,
+      });
+      renderListAndPaginationToUI(optionUpdated);
     });
 
     buttonLastPage?.addEventListener('click', () => {
-      options.activePage = options.totalPages;
-      options.offset = DEFAULT_LIMIT * options.activePage;
-      renderListAndPaginationToUI(options);
+      const optionUpdated = new PaginationOptions({
+        ...options,
+        activePage: options.totalPages,
+        offset: DEFAULT_LIMIT * options.activePage,
+      });
+      renderListAndPaginationToUI(optionUpdated);
     });
 
     if (options.activePage === options.totalPages) {
@@ -93,9 +99,12 @@ export async function renderListAndPaginationToUI(options: PaginationOptions): P
         const strPage = item.childNodes[0].childNodes[0].nodeValue;
         if (strPage) {
           const numPage = Number.parseInt(strPage, 10);
-          options.offset = DEFAULT_LIMIT * numPage;
-          options.activePage = numPage;
-          renderListAndPaginationToUI(options);
+          const optionUpdated = new PaginationOptions({
+            ...options,
+            offset: DEFAULT_LIMIT * numPage,
+            activePage: numPage,
+          });
+          renderListAndPaginationToUI(optionUpdated);
         }
       });
     });

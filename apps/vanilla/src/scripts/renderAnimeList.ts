@@ -11,8 +11,11 @@ const container = document.querySelector('.table');
  */
 export async function renderAnimeList(options: PaginationOptions): Promise<void> {
   try {
-    options.offset = options.activePage * options.limit;
-    const animeList = await fetchAnimeList(options);
+    const optionUpdated = new PaginationOptions({
+      ...options,
+      offset: options.activePage * options.limit,
+    });
+    const animeList = await fetchAnimeList(optionUpdated);
     if (animeList instanceof Error) {
       return;
     }
