@@ -25,29 +25,43 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
   if (selectSort) {
     selectSort.innerHTML = sortOptionHTML;
     selectSort.addEventListener('change', () => {
-        const { value } = selectSort;
-        const optionUpdated = new PaginationOptions({
-          ...options,
-          sorting: SORT_OPTIONS.filter(item => item.title === value)[0] as Sorting,
-          offset: DEFAULT_LIMIT,
-          activePage: 1,
-        });
-        renderListAndPaginationToUI(optionUpdated);
-      });
+    const { value } = selectSort;
+
+    // const optionsUpdated = new PaginationOptions({
+    //   ...options,
+    //   offset: DEFAULT_LIMIT,
+    //   activePage: 1,
+    //   sorting: new Sorting({
+    //     ...SORT_OPTIONS.filter(item => item.title === value)[0],
+    //   isAscending: options.sorting.isAscending,
+    //   }),
+    // });
+    //   renderListAndPaginationToUI(optionsUpdated);
+
+    options.sorting = SORT_OPTIONS.filter(item => item.title === value)[0] as Sorting;
+    options.offset = DEFAULT_LIMIT;
+    options.activePage = 1;
+    renderListAndPaginationToUI(options);
+    });
   }
   if (selectOrdering) {
     selectOrdering.innerHTML = orderOptionHTML;
     selectOrdering.addEventListener('change', () => {
-      const optionUpdated = new PaginationOptions({
-        ...options,
-        offset: DEFAULT_LIMIT,
-        activePage: 1,
-        sorting: new Sorting({
-          ...options.sorting,
-          isAscending: !options.sorting.isAscending,
-        }),
-      });
-      renderListAndPaginationToUI(optionUpdated);
+        // const optionsUpdated = new PaginationOptions({
+        //   ...options,
+        // offset: DEFAULT_LIMIT,
+        // activePage: 1,
+        // sorting: new Sorting({
+        //   ...options.sorting,
+        // isAscending: !options.sorting.isAscending,
+        // }),
+        // });
+        // renderListAndPaginationToUI(optionsUpdated);
+
+        options.offset = DEFAULT_LIMIT;
+        options.activePage = 1;
+        options.sorting.isAscending = !options.sorting.isAscending;
+        renderListAndPaginationToUI(options);
     });
   }
 }

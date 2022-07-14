@@ -1,6 +1,4 @@
 
-import { SortValue } from '../enum';
-
 /** Pagination meta info. */
 export interface PaginationOptionsDto {
 
@@ -11,5 +9,5 @@ export interface PaginationOptionsDto {
   readonly limit: number;
 
   /** Sorting options. */
-  readonly ordering: SortValue;
+  readonly ordering: string;
 }

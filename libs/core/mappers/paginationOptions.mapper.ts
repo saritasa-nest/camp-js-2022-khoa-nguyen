@@ -8,10 +8,14 @@ export namespace PaginationOptionsMapper {
    * @param options Page options.
    */
   export function toDto(options: PaginationOptions): PaginationOptionsDto {
+
     return {
       limit: options.limit,
       offset: options.offset,
-      ordering: options.sorting.value,
+
+      // ordering: options.sorting.value,
+
+      ordering: options.sorting.isAscending ? options.sorting.value : `-${options.sorting.value}`,
     };
   }
 }
