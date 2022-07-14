@@ -27,41 +27,40 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
     selectSort.addEventListener('change', () => {
     const { value } = selectSort;
 
-    // const optionsUpdated = new PaginationOptions({
-    //   ...options,
-    //   offset: DEFAULT_LIMIT,
-    //   activePage: 1,
-    //   sorting: new Sorting({
-    //     ...SORT_OPTIONS.filter(item => item.title === value)[0],
-    //   isAscending: options.sorting.isAscending,
-    //   }),
-    // });
-    //   renderListAndPaginationToUI(optionsUpdated);
+    const optionsUpdated = new PaginationOptions({
+      ...options,
+      offset: DEFAULT_LIMIT,
+      activePage: 1,
+      sorting: new Sorting({
+        ...options.sorting,
+        ...SORT_OPTIONS.filter(item => item.title === value)[0],
+      }),
+    });
+      renderListAndPaginationToUI(optionsUpdated);
 
-    options.sorting = SORT_OPTIONS.filter(item => item.title === value)[0] as Sorting;
-    options.offset = DEFAULT_LIMIT;
-    options.activePage = 1;
-    renderListAndPaginationToUI(options);
     });
   }
   if (selectOrdering) {
     selectOrdering.innerHTML = orderOptionHTML;
     selectOrdering.addEventListener('change', () => {
-        // const optionsUpdated = new PaginationOptions({
-        //   ...options,
-        // offset: DEFAULT_LIMIT,
-        // activePage: 1,
-        // sorting: new Sorting({
-        //   ...options.sorting,
-        // isAscending: !options.sorting.isAscending,
-        // }),
-        // });
-        // renderListAndPaginationToUI(optionsUpdated);
+    /** Get type of ordering option.*/
+    function getSelectOptions(): boolean {
+      if (selectOrdering?.value === OrderOption.Ascending) {
+        return true;
+      }
+        return false;
+    }
 
-        options.offset = DEFAULT_LIMIT;
-        options.activePage = 1;
-        options.sorting.isAscending = !options.sorting.isAscending;
-        renderListAndPaginationToUI(options);
+    const optionsUpdated = new PaginationOptions({
+      ...options,
+      offset: DEFAULT_LIMIT,
+      activePage: 1,
+      sorting: new Sorting({
+        ...options.sorting,
+        isAscending: getSelectOptions(),
+      }),
+    });
+    renderListAndPaginationToUI(optionsUpdated);
     });
   }
 }

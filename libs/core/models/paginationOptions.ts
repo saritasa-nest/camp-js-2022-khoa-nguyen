@@ -6,21 +6,19 @@ import { Sorting } from './sorting';
 export class PaginationOptions extends Immerable {
 
   /** Total count of items. */
-  public offset: number;
+  public readonly offset: number;
 
   /** Next page of items. */
-  public limit: number;
+  public readonly limit: number;
 
   /** Previous page of items. */
-  public sorting: Sorting;
-
-  /** Ordering type (Ascending and Descending). */
+  public readonly sorting: Sorting;
 
   /** Total pages of data. */
-  public totalPages: number;
+  public readonly totalPages: number;
 
   /** Active page. */
-  public activePage: number;
+  public readonly activePage: number;
 
   public constructor(data: InitArgsPagination) {
     super();

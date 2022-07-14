@@ -12,7 +12,7 @@ export class Sorting extends Immerable {
   public readonly value: SortValue;
 
   /** Ordering. */
-  public isAscending: boolean;
+  public readonly isAscending: boolean;
 
   public constructor(data: PostInitArgs) {
     super();
