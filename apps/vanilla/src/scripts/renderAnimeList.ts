@@ -1,6 +1,5 @@
+import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 import { formatDate } from '@js-camp/core/utils';
-
-import { PaginationOptions } from '../interface/paginationInterface';
 
 import { fetchAnimeList } from './fetchAnimeList';
 

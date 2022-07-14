@@ -1,7 +1,8 @@
-import { OrderOption, SortValue } from '@js-camp/core/enum';
+import { OrderOption } from '@js-camp/core/enum';
+import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
+import { Sorting } from '@js-camp/core/models/sorting';
 
 import { DEFAULT_LIMIT, SORT_OPTIONS } from '../constants';
-import { PaginationOptions } from '../interface/paginationInterface';
 
 import { renderListAndPaginationToUI } from './renderPagination';
 
@@ -25,7 +26,7 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
     selectSort.innerHTML = sortOptionHTML;
     selectSort.addEventListener('change', () => {
         const { value } = selectSort;
-        options.sorting.value = SORT_OPTIONS.filter(item => item.title === value)[0].value as SortValue;
+        options.sorting = SORT_OPTIONS.filter(item => item.title === value)[0] as Sorting;
         options.offset = DEFAULT_LIMIT;
         options.activePage = 1;
         renderListAndPaginationToUI(options);
@@ -36,7 +37,7 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
     selectOrdering.addEventListener('change', () => {
       options.offset = DEFAULT_LIMIT;
       options.activePage = 1;
-      options.isAscending = !options.isAscending;
+      options.sorting.isAscending = !options.sorting.isAscending;
       renderListAndPaginationToUI(options);
     });
   }

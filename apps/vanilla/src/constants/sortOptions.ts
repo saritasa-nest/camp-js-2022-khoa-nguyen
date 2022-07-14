@@ -2,9 +2,7 @@
 
 import { SortTitle, SortValue } from '@js-camp/core/enum';
 
-import { Sort } from '../interface/sortInterface';
-
-export const SORT_OPTIONS: Sort[] = [
+export const SORT_OPTIONS = [
   {
     title: SortTitle.TitleEnglish,
     value: SortValue.TitleEnglish,

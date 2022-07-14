@@ -1,5 +1,6 @@
+import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
+
 import { DEFAULT_LIMIT } from '../constants';
-import { PaginationOptions } from '../interface/paginationInterface';
 
 import { renderAnimeList } from './renderAnimeList';
 
