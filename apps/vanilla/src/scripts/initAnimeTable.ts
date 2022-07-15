@@ -3,7 +3,7 @@ import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 import { Sorting } from '@js-camp/core/models/sorting';
 
 import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, SORT_OPTIONS } from '../constants';
-import { ORDER_KEY, SORTING_KEY } from '../constants/key';
+import { KEY_ORDER, KEY_SORTING, KEY_TYPE } from '../constants/key';
 import { fetchAnimeList } from '../scripts/fetchAnimeList';
 import { getValueFromLocalStorage } from '../service/localStorage';
 
@@ -20,10 +20,11 @@ export async function initAnimeTable(): Promise<void> {
     activePage: DEFAULT_ACTIVE_PAGE,
     totalPages: 0,
     sorting: new Sorting({
-      ...getValueFromLocalStorage<Sorting>(SORTING_KEY) ?? SORT_OPTIONS[0],
-      isAscending: getValueFromLocalStorage(ORDER_KEY) === OrderOption.Ascending,
+      ...getValueFromLocalStorage<Sorting>(KEY_SORTING) ?? SORT_OPTIONS[0],
+      isAscending: (!getValueFromLocalStorage<OrderOption>(KEY_ORDER) ||
+        getValueFromLocalStorage<OrderOption>(KEY_ORDER) === OrderOption.Ascending),
     }),
-    type: Type.DEFAULT,
+    type: getValueFromLocalStorage<Type>(KEY_TYPE) ?? Type.DEFAULT,
   });
   const animeListInitial = await fetchAnimeList(INITIAL_PAGINATION);
 
