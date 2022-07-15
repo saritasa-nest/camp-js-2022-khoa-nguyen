@@ -13,10 +13,11 @@ import { appAxios } from '../../axios';
 
 const REGISTER_URL = 'auth/register/';
 
-/** Post user information to register.
+/**
+ * Register new user.
  * @param userInfo Registration info of user.
  */
-export async function postUserRegistration(userInfo: User): Promise<Token | HttpError<ErrorUser | null>> {
+export async function registerNewUser(userInfo: User): Promise<Token | HttpError<ErrorUser | null>> {
   try {
     const userDto = UserMapper.toDto(userInfo);
     const response = await appAxios.post<TokenDto>(REGISTER_URL, { ...userDto });

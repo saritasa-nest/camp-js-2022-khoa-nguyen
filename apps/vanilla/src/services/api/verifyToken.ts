@@ -10,10 +10,11 @@ import { appAxios } from '../../axios';
 
 const VERIFY_TOKEN_URL = '/auth/token/verify/';
 
-/** Post token to verify.
+/**
+ * Verify token.
  * @param token Token of verify.
  */
-export async function postTokenToVerify(token: Token): Promise<Token | HttpError<ErrorToken | null>> {
+export async function verifyToken(token: Token): Promise<Token | HttpError<ErrorToken | null>> {
   try {
     const tokenDto = TokenMapper.toDto(token);
     const response = await appAxios.post<TokenDto>(VERIFY_TOKEN_URL, { token: tokenDto.access });
@@ -27,10 +28,11 @@ export async function postTokenToVerify(token: Token): Promise<Token | HttpError
   }
 }
 
-/** Post token to refresh.
+/**
+ * Refresh token.
  * @param token Token to refresh.
  */
-export async function postRefreshToken(token: Token): Promise<Token | HttpError<ErrorToken | null>> {
+export async function refreshToken(token: Token): Promise<Token | HttpError<ErrorToken | null>> {
   try {
     const tokenDto = TokenMapper.toDto(token);
     const response = await appAxios.post<TokenDto>(VERIFY_TOKEN_URL, { refresh: tokenDto.refresh });

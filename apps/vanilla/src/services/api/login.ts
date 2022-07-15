@@ -13,10 +13,11 @@ import { appAxios } from '../../axios';
 
 const LOGIN_URL = 'auth/login/';
 
-/** Post user information to login.
+/**
+ * Perform login action.
  * @param userLoginInfo Login info of user.
  */
-export async function postUserLoginInfo(userLoginInfo: Login): Promise<Token | HttpError<ErrorLogin>> {
+export async function login(userLoginInfo: Login): Promise<Token | HttpError<ErrorLogin>> {
   try {
     const userLoginDto = LoginMapper.toDto(userLoginInfo);
     const response = await appAxios.post<TokenDto>(LOGIN_URL, { ...userLoginDto });

@@ -8,7 +8,8 @@ import { AxiosError } from 'axios';
 
 import { authAxios } from '../../axios';
 
-/** Get user information.
+/**
+ * Get user information.
  * @param token Token of user.
  */
 export async function getProfile(token: Token): Promise<Profile | HttpError<null>> {

@@ -6,7 +6,7 @@ import { queryErrorSpan } from '@js-camp/core/utils';
 import { PROFILE_URL, TOKEN_KEY } from '../../constant';
 
 import { validateConfirmPassword } from '../../scripts/validate';
-import { postUserRegistration } from '../../services/api/register';
+import { registerNewUser } from '../../services/api/register';
 import { setValueToLocalStorage } from '../../services/localStore';
 
 /** Validate register info. */
@@ -33,7 +33,7 @@ function validateRegisterInfo(): void {
         if (isValidPassword === false) {
           return;
         }
-        const result = await postUserRegistration(user);
+        const result = await registerNewUser(user);
         if (result instanceof HttpError) {
           const error = result.data;
           if (error === null || error === undefined) {

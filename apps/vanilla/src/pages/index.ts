@@ -4,8 +4,8 @@ import { Token } from '@js-camp/core/models/token';
 
 import { PROFILE_URL, TOKEN_KEY } from '../constant';
 
-import { postUserLoginInfo } from '../services/api/login';
-import { postRefreshToken, postTokenToVerify } from '../services/api/verifyToken';
+import { login } from '../services/api/login';
+import { refreshToken, verifyToken } from '../services/api/verifyToken';
 import { getValueFromLocalStorage, setValueToLocalStorage } from '../services/localStore';
 
 const form = document.querySelector('.form');
@@ -25,7 +25,7 @@ function validateLogin(): void {
         password: inputPassword.value,
       });
 
-      const result = await postUserLoginInfo(userLoginInfo);
+      const result = await login(userLoginInfo);
       if (result instanceof HttpError) {
         if (errorElement === null || errorElement === undefined) {
           return;
@@ -47,19 +47,19 @@ async function checkValidToken(): Promise<void> {
   if (token === null) {
     return;
   }
-  const response = await postTokenToVerify(token);
+  const response = await verifyToken(token);
   if (response instanceof HttpError) {
-    refreshToken(token);
+    setRefreshedTokenToLocalStore(token);
   }
   window.location.href = PROFILE_URL;
 
 }
 
-/** Refresh token.
+/** Set refreshed token to local store.
  * @param token Token to refresh.
  */
-async function refreshToken(token: Token): Promise<void> {
-  const response = await postRefreshToken(token);
+async function setRefreshedTokenToLocalStore(token: Token): Promise<void> {
+  const response = await refreshToken(token);
   if (response instanceof HttpError) {
     return;
   }

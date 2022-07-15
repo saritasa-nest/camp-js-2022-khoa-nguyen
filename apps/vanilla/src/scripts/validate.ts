@@ -1,10 +1,10 @@
 interface Validation {
 
   /** Password element. */
-  passwordElement: HTMLInputElement;
+  passwordElement: Readonly<HTMLInputElement> ;
 
   /** Confirm Password element. */
-  confirmPasswordElement: HTMLInputElement;
+  confirmPasswordElement: Readonly<HTMLInputElement>;
 }
 
 /**
