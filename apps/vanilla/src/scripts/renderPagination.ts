@@ -94,7 +94,7 @@ export async function renderListAndPaginationToUI(options: PaginationOptions): P
     const animeList = await renderAnimeList(options);
     const optionUpdated = new PaginationOptions({
       ...options,
-      totalPages: Math.ceil(animeList.count / options.offset - 1),
+      totalPages: Math.ceil(animeList.count / options.limit - 1),
     });
     renderPagination(optionUpdated);
     const itemsPageList = document.querySelectorAll('.pagination li:not(.btn)');
