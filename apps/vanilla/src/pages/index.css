@@ -20,20 +20,6 @@
   margin-top: 20px;
 }
 
-.button {
-  margin-top: 20px;
-  padding: 10px 25px;
-  border: none;
-  background-color: var(--primary-light-color);
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.button:hover {
-  color: var(--primary-light-color-2);
-  background-color: var(--primary-color);
-}
-
 .form {
   display: flex;
   flex-direction: column;
@@ -47,13 +33,13 @@
   width: 100%;
 }
 
-.form__item_input {
+.form__input {
   padding: 8px;
   width: 100%;
   margin-top: 10px;
 }
 
-.button-submit {
+.button_submit {
   padding: 15px;
   width: 100%;
   margin-top: 10px;
@@ -73,7 +59,7 @@
   text-align: center;
 }
 
-.form__item_span-error {
+.form__span-error {
   color: var(--primary-font-error-color);
   margin-top: 10px;
 }

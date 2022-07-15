@@ -17,8 +17,8 @@ if (form !== undefined && form !== null) {
   const inputConfirmPassword = form.querySelector('input[data-type=confirmPassword]') as HTMLInputElement;
   const inputFirstName = form.querySelector('input[data-type=firstName]') as HTMLInputElement;
   const inputLastName = form.querySelector('input[data-type=lastName]') as HTMLInputElement;
-  form.addEventListener('submit', async(e): Promise<void> => {
-    e.preventDefault();
+  form.addEventListener('submit', async(event): Promise<void> => {
+    event.preventDefault();
     const user = new User({
       email: inputEmail.value,
       password: inputPassword.value,

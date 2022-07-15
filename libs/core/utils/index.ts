@@ -7,8 +7,8 @@ export function queryErrorSpan(inputElement: HTMLInputElement, message: readonly
   if (!inputElement) {
     return;
   }
-  const { parentElement } = inputElement;
-  const errorElement = parentElement?.querySelector('.form__item_span-error');
+  const parentElement = inputElement.parentElement?.parentElement;
+  const errorElement = parentElement?.querySelector('.form__span-error');
   if (errorElement && message) {
     errorElement.innerHTML = message.map(item => item).join(' ');
   }

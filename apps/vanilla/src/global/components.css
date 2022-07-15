@@ -31,3 +31,17 @@ h2 {
   margin: auto;
   max-width: var(--default-layout-width);
 }
+
+.button {
+  margin-top: 20px;
+  padding: 10px 25px;
+  border: none;
+  background-color: var(--primary-light-color);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.button:hover {
+  color: var(--primary-light-color-2);
+  background-color: var(--primary-color);
+}
