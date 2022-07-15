@@ -23,7 +23,7 @@ export async function postUserLoginInfo(userLoginInfo: Login): Promise<Token | H
     return TokenMapper.fromDto(response.data);
   } catch (error: unknown) {
     const errorWithType = error as AxiosError<HttpErrorDto<ErrorLoginDto>>;
-    if (errorWithType.response) {
+    if (errorWithType.response !== null && errorWithType.response !== undefined) {
       return HttpErrorMapper.fromDto<ErrorLoginDto, ErrorLogin>(errorWithType.response.data, ErrorLoginMapper.fromDto);
     }
     return new HttpError({ detail: 'Unknown error' });

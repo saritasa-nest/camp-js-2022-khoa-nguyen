@@ -20,7 +20,7 @@ export async function postTokenToVerify(token: Token): Promise<Token | HttpError
     return TokenMapper.fromDto(response.data);
   } catch (error: unknown) {
     const errorWithType = error as AxiosError<HttpErrorDto<ErrorTokenDto>>;
-    if (errorWithType.response) {
+    if (errorWithType.response !== null && errorWithType.response !== undefined) {
       return HttpErrorMapper.fromDto<ErrorTokenDto, ErrorToken>(errorWithType.response.data, ErrorTokenMapper.fromDto);
     }
     return new HttpError({ detail: 'Unknown error', data: null });
@@ -37,7 +37,7 @@ export async function postRefreshToken(token: Token): Promise<Token | HttpError<
     return TokenMapper.fromDto(response.data);
   } catch (error: unknown) {
     const errorWithType = error as AxiosError<HttpErrorDto<ErrorTokenDto>>;
-    if (errorWithType.response) {
+    if (errorWithType.response !== null && errorWithType.response !== undefined) {
       return HttpErrorMapper.fromDto<ErrorTokenDto, ErrorToken>(errorWithType.response.data, ErrorTokenMapper.fromDto);
     }
     return new HttpError({ detail: 'Unknown error', data: null });

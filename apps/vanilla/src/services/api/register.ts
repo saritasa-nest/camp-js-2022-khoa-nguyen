@@ -23,7 +23,7 @@ export async function postUserRegistration(userInfo: User): Promise<Token | Http
     return TokenMapper.fromDto(response.data);
   } catch (error: unknown) {
     const errorWithType = error as AxiosError<HttpErrorDto<ErrorUserDto>>;
-    if (errorWithType.response) {
+    if (errorWithType.response !== null && errorWithType.response !== undefined) {
       return HttpErrorMapper.fromDto<ErrorUserDto, ErrorUser>(errorWithType.response.data, ErrorUserMapper.fromDto);
     }
     return new HttpError({ detail: 'Unknown error', data: null });

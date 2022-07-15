@@ -11,7 +11,7 @@ import { setValueToLocalStorage } from '../../services/localStore';
 
 const form = document.querySelector('.form');
 
-if (form) {
+if (form !== undefined && form !== null) {
   const inputEmail = form.querySelector('input[data-type=email]') as HTMLInputElement ;
   const inputPassword = form.querySelector('input[data-type=password]') as HTMLInputElement;
   const inputConfirmPassword = form.querySelector('input[data-type=confirmPassword]') as HTMLInputElement;
@@ -27,13 +27,13 @@ if (form) {
     });
     const isValidPassword = validateConfirmPassword({ passwordElement: inputPassword, confirmPasswordElement: inputConfirmPassword },
       'This field must be matched with password field');
-      if (!isValidPassword) {
+      if (isValidPassword === false) {
         return;
       }
       const result = await postUserRegistration(user);
       if (result instanceof HttpError) {
         const error = result.data;
-        if (!error) {
+        if (error === null || error === undefined) {
           // eslint-disable-next-line no-alert
           alert(result.detail);
           return;

@@ -10,7 +10,7 @@ import { getValueFromLocalStorage, setValueToLocalStorage } from '../services/lo
 
 const form = document.querySelector('.form');
 
-if (form) {
+if (form !== undefined && form !== null) {
   const inputEmail = document.querySelector('input[data-type=email]') as HTMLInputElement ;
   const inputPassword = document.querySelector('input[data-type=password]') as HTMLInputElement;
   const errorElement = document.querySelector('.form__item_span-error');
@@ -23,7 +23,7 @@ if (form) {
 
     const result = await postUserLoginInfo(userLoginInfo);
     if (result instanceof HttpError) {
-      if (!errorElement) {
+      if (errorElement === null || errorElement === undefined) {
         return;
       }
       errorElement.innerHTML = result.detail;
@@ -40,7 +40,7 @@ if (form) {
 /** Check valid token. */
 async function checkValidToken(): Promise<void> {
   const token = getValueFromLocalStorage<Token>(TOKEN_KEY);
-  if (!token) {
+  if (token === null) {
     return;
   }
   const response = await postTokenToVerify(token);
