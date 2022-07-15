@@ -27,8 +27,8 @@ export interface AnimeDto {
   readonly aired: DateRangeDto;
 
   /** Anime type. */
-  readonly type: keyof Type;
+  readonly type: Type;
 
   /** Status of anime. */
-  readonly status: keyof Status;
+  readonly status: Status;
 }

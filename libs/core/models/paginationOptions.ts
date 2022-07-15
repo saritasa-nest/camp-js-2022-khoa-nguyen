@@ -1,4 +1,6 @@
 
+import { Type } from '../enum';
+
 import { Immerable, OmitImmerable } from './immerable';
 import { Sorting } from './sorting';
 
@@ -11,7 +13,7 @@ export class PaginationOptions extends Immerable {
   /** Next page of items. */
   public readonly limit: number;
 
-  /** Previous page of items. */
+  /** Sorting options. */
   public readonly sorting: Sorting;
 
   /** Total pages of data. */
@@ -20,6 +22,9 @@ export class PaginationOptions extends Immerable {
   /** Active page. */
   public readonly activePage: number;
 
+  /** Filter by type. */
+  public readonly type: Type;
+
   public constructor(data: InitArgsPagination) {
     super();
     this.offset = data.offset;
@@ -27,6 +32,7 @@ export class PaginationOptions extends Immerable {
     this.sorting = data.sorting;
     this.totalPages = data.totalPages;
     this.activePage = data.activePage;
+    this.type = data.type;
   }
 }
 

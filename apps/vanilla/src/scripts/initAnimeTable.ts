@@ -1,18 +1,25 @@
+<<<<<<< HEAD
 import { OrderOption } from '@js-camp/core/enum';
 import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 import { Sorting } from '@js-camp/core/models/sorting';
 
 import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, KEY_ORDER, KEY_SORTING, SORT_OPTIONS } from '../constants';
+=======
+import { OrderOption, Type } from '@js-camp/core/enum';
+import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
+import { Sorting } from '@js-camp/core/models/sorting';
+
+import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, SORT_OPTIONS } from '../constants';
+import { KEY_ORDER, KEY_SORTING, KEY_TYPE } from '../constants/key';
+>>>>>>> feature/JC19-370-filter-by-type
 import { fetchAnimeList } from '../scripts/fetchAnimeList';
 import { getValueFromLocalStorage } from '../service/localStorage';
 
-import { renderAnimeList } from './renderAnimeList';
+import { renderFilterByType } from './renderFilterByType';
 import { renderListAndPaginationToUI } from './renderPagination';
 import { renderSortingAndOrdering } from './renderSortingAndOrdering';
 
-/**
- * Init anime table view.
- */
+/** Init anime table view. */
 export async function initAnimeTable(): Promise<void> {
   const INITIAL_PAGINATION: PaginationOptions = new PaginationOptions({
     limit: DEFAULT_LIMIT,
@@ -24,6 +31,7 @@ export async function initAnimeTable(): Promise<void> {
       isAscending: (getValueFromLocalStorage<OrderOption>(KEY_ORDER) === null ||
         getValueFromLocalStorage<OrderOption>(KEY_ORDER) === OrderOption.Ascending),
     }),
+    type: getValueFromLocalStorage<Type>(KEY_TYPE) ?? Type.DEFAULT,
   });
   const animeListInitial = await fetchAnimeList(INITIAL_PAGINATION);
 
@@ -31,7 +39,7 @@ export async function initAnimeTable(): Promise<void> {
     ...INITIAL_PAGINATION,
     totalPages: Math.ceil(animeListInitial.count / DEFAULT_LIMIT) - 1,
   });
-  renderAnimeList(PAGINATION_OPTIONS);
   renderListAndPaginationToUI(PAGINATION_OPTIONS);
   renderSortingAndOrdering(PAGINATION_OPTIONS);
+  renderFilterByType(PAGINATION_OPTIONS);
 }
