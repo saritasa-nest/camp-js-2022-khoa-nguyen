@@ -7,7 +7,6 @@ import { KEY_ORDER, KEY_SORTING, KEY_TYPE } from '../constants/key';
 import { fetchAnimeList } from '../scripts/fetchAnimeList';
 import { getValueFromLocalStorage } from '../service/localStorage';
 
-import { renderAnimeList } from './renderAnimeList';
 import { renderFilterByType } from './renderFilterByType';
 import { renderListAndPaginationToUI } from './renderPagination';
 import { renderSortingAndOrdering } from './renderSortingAndOrdering';
@@ -32,7 +31,6 @@ export async function initAnimeTable(): Promise<void> {
     ...INITIAL_PAGINATION,
     totalPages: Math.ceil(animeListInitial.count / DEFAULT_LIMIT) - 1,
   });
-  renderAnimeList(PAGINATION_OPTIONS);
   renderListAndPaginationToUI(PAGINATION_OPTIONS);
   renderSortingAndOrdering(PAGINATION_OPTIONS);
   renderFilterByType(PAGINATION_OPTIONS);
