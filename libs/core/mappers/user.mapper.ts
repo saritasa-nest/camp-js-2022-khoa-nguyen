@@ -24,7 +24,9 @@ export namespace UserMapper {
   export function toDto(info: User): UserDto {
     return {
       email: info.email,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       first_name: info.firstName,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       last_name: info.lastName,
       password: info.password,
       avatar: info.avatar,
