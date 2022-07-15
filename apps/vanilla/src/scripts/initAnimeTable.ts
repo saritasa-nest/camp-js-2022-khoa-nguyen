@@ -21,7 +21,7 @@ export async function initAnimeTable(): Promise<void> {
     totalPages: 0,
     sorting: new Sorting({
       ...getValueFromLocalStorage<Sorting>(KEY_SORTING) ?? SORT_OPTIONS[0],
-      isAscending: (!getValueFromLocalStorage<OrderOption>(KEY_ORDER) ||
+      isAscending: (getValueFromLocalStorage<OrderOption>(KEY_ORDER) === null ||
         getValueFromLocalStorage<OrderOption>(KEY_ORDER) === OrderOption.Ascending),
     }),
   });
