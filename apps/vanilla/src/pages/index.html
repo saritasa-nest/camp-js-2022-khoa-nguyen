@@ -5,20 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="./index.css" />
-    <title>Vite App</title>
+    <title>Login</title>
   </head>
   <body class="default-layout">
-    <h1 class="title">Saritasa Anime</h1>
-     <!-- Filter -->
-     <div class="filter">
-      <div class="filter__item">
-        <label class="filter__item_title">Sort by</label>
-        <select class="filter__item_select filter__item_select-sort"></select>
-      </div>
-      <div class="filter__item">
-        <label class="filter__item_title">Ordering by</label>
-        <select class="filter__item_select filter__item_select-order"></select>
-      </div>
+    <div class="container">
+      <h1 class="title">Login to Saritasa Anime</h1>
+      <form class="form">
+        <div class="form__item form__item_email">
+          <label>Email
+            <input class="form__input" type="email" data-type="email" required/>
+          </label>
+        </div>
+        <div class="form__item form__item_password">
+          <label>Password
+            <input class="form__input" type="password" data-type="password" required/>
+          </label>
+        </div>
+        <button class="button button_submit" type="submit">Login</button>
+        <span class="form__span-error"></span>
+      </form>
+
+      <p class="text text-center">Don't have an account? Feel free to <span><a class="link" href="./signup/">Register here</a></span></p>
     </div>
 
     <!-- Anime films list -->

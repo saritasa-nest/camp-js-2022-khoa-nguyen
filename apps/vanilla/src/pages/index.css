@@ -1,12 +1,73 @@
 @import url("../global/index.css");
 
+.container {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
 .title {
-  width: 100%;
+  color: var(--primary-color);
   text-align: center;
-  color: var(--primary-font-color-2);
-  text-transform: uppercase;
-  font-size: var(--primary-font-size-title);
-  font-weight: var(--primary-font-weight-title);
+  font-weight: var(--primary-font-weight-heading);
+}
+
+.info {
+  margin-top: 30px;
+}
+
+.info__item {
+  margin-top: 20px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.form__item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.form__input {
+  padding: 0.5rem;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.button_submit {
+  padding: 0.7rem;
+  width: 100%;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  background-color: var(--primary-light-color);
+  border: none;
+  font-weight: bold;
+  font-size: var(--primary-font-size-small);
+}
+
+.text {
+  margin-top: 20px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.form__span-error {
+  color: var(--primary-font-error-color);
+  margin-top: 10px;
+}
+
+.link-below {
+  margin-top: 15px;
 }
 
 .filter {

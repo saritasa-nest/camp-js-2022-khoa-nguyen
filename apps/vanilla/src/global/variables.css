@@ -6,6 +6,7 @@
   /* Text color */
   --primary-font-color: #06283d;
   --primary-font-color-2: #1363df;
+  --primary-font-error-color: #f00;
 
   /* Box shadow color */
   --primary-box-shadow-color: 0 4px 8px 0 rgba(0 0 0 / 20%), 0 6px 20px 0 rgba(0 0 0 / 19%);
@@ -13,11 +14,12 @@
   /* Custom grid columns */
   --grid-template-cols-5: repeat(5, minmax(0, 1fr));
 
-  /* Font size */
-  --primary-font-size-normal: 25px;
-  --primary-font-size-title: 40px;
-
   /* Font weight */
   --primary-font-weight-heading: 500;
   --primary-font-weight-title: 600;
+
+  /* Font size */
+  --primary-font-size-small: 1rem;
+  --primary-font-size-normal: 1.3rem;
+  --primary-font-size-title: 2rem;
 }

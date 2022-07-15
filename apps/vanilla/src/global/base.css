@@ -3,3 +3,7 @@ html {
   font-family: system-ui, sans-serif;
   color: var(--primary-font-color);
 }
+
+* {
+  box-sizing: border-box;
+}

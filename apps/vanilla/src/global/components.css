@@ -14,6 +14,11 @@ a:hover,
   --link-color: var(--primary-light-color);
 }
 
+h2 {
+  font-size: var(--primary-font-size-normal);
+  font-weight: normal;
+}
+
 .links {
   display: flex;
   flex-wrap: wrap;
@@ -23,6 +28,20 @@ a:hover,
 .default-layout {
   --default-layout-width: 1200px;
 
-  margin: 80px auto 0;
+  margin: auto;
   max-width: var(--default-layout-width);
+}
+
+.button {
+  margin-top: 20px;
+  padding: 1rem 2rem;
+  border: none;
+  background-color: var(--primary-light-color);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.button:hover {
+  color: var(--primary-light-color-2);
+  background-color: var(--primary-color);
 }
