@@ -15,7 +15,7 @@ a:hover,
 }
 
 h2 {
-  font-size: 25px;
+  font-size: var(--primary-font-size-normal);
   font-weight: normal;
 }
 
@@ -34,7 +34,7 @@ h2 {
 
 .button {
   margin-top: 20px;
-  padding: 10px 25px;
+  padding: 1rem 2rem;
   border: none;
   background-color: var(--primary-light-color);
   cursor: pointer;

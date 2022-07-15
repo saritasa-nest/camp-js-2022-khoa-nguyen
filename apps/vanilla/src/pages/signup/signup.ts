@@ -41,8 +41,6 @@ function validateRegisterInfo(): void {
         if (result instanceof HttpError) {
           const error = result.data;
           if (error === null || error === undefined) {
-            // eslint-disable-next-line no-alert
-            alert(result.detail);
             return;
           }
           queryErrorSpan(inputEmail, error.email);
@@ -51,8 +49,6 @@ function validateRegisterInfo(): void {
           queryErrorSpan(inputPassword, error.password);
           return;
         }
-        // eslint-disable-next-line no-alert
-        alert('Signup success!');
         setValueToLocalStorage<Token>(TOKEN_KEY, result);
         navigate(PROFILE_URL);
 

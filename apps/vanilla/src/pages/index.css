@@ -34,13 +34,13 @@
 }
 
 .form__input {
-  padding: 8px;
+  padding: 0.5rem;
   width: 100%;
   margin-top: 10px;
 }
 
 .button_submit {
-  padding: 15px;
+  padding: 0.7rem;
   width: 100%;
   margin-top: 10px;
   cursor: pointer;

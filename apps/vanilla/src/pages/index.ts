@@ -37,8 +37,6 @@ function validateLogin(): void {
         errorElement.innerHTML = result.detail;
         return;
       }
-      // eslint-disable-next-line no-alert
-      alert('Login success!');
       setValueToLocalStorage<Token>(TOKEN_KEY, result);
       navigate(PROFILE_URL);
   });
