@@ -11,17 +11,21 @@ import { setValueToLocalStorage } from '../../services/localStore';
 
 /** Validate register info. */
 function validateRegisterInfo(): void {
-  const form = document.querySelector('.form');
+  const form = document.querySelector<HTMLFormElement>('.form');
   if (form === undefined || form === null) {
     return;
   }
-  const inputEmail = form.querySelector('input[data-type=email]') as HTMLInputElement ;
-  const inputPassword = form.querySelector('input[data-type=password]') as HTMLInputElement;
-  const inputConfirmPassword = form.querySelector('input[data-type=confirmPassword]') as HTMLInputElement;
-  const inputFirstName = form.querySelector('input[data-type=firstName]') as HTMLInputElement;
-  const inputLastName = form.querySelector('input[data-type=lastName]') as HTMLInputElement;
+  const inputEmail = form.querySelector<HTMLInputElement>('input[data-type=email]');
+  const inputPassword = form.querySelector<HTMLInputElement>('input[data-type=password]');
+  const inputConfirmPassword = form.querySelector<HTMLInputElement>('input[data-type=confirmPassword]');
+  const inputFirstName = form.querySelector<HTMLInputElement>('input[data-type=firstName]');
+  const inputLastName = form.querySelector<HTMLInputElement>('input[data-type=lastName]');
   form.addEventListener('submit', async(event): Promise<void> => {
       event.preventDefault();
+      if (inputEmail === null || inputFirstName === null || inputConfirmPassword === null ||
+        inputPassword === null || inputLastName === null) {
+        return;
+      }
       const user = new User({
         email: inputEmail.value,
         password: inputPassword.value,

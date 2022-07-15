@@ -9,18 +9,21 @@ import { login } from '../services/api/login';
 import { refreshToken, verifyToken } from '../services/api/verifyToken';
 import { getValueFromLocalStorage, setValueToLocalStorage } from '../services/localStore';
 
-const form = document.querySelector('.form');
+const form = document.querySelector<HTMLFormElement>('.form');
 
 /** Validate login info. */
 function validateLogin(): void {
   if (form === undefined || form === null) {
     return;
   }
-  const inputEmail = document.querySelector('input[data-type=email]') as HTMLInputElement ;
-  const inputPassword = document.querySelector('input[data-type=password]') as HTMLInputElement;
-  const errorElement = document.querySelector('.form__span-error');
+  const inputEmail = form.querySelector<HTMLInputElement>('input[data-type=email]') ;
+  const inputPassword = form.querySelector<HTMLInputElement>('input[data-type=password]');
+  const errorElement = form.querySelector<HTMLSpanElement>('.form__span-error');
   form.addEventListener('submit', async(e): Promise<void> => {
       e.preventDefault();
+      if (inputEmail === null || inputPassword === null) {
+        return;
+      }
       const userLoginInfo = new Login({
         email: inputEmail.value,
         password: inputPassword.value,
@@ -38,7 +41,6 @@ function validateLogin(): void {
       alert('Login success!');
       setValueToLocalStorage<Token>(TOKEN_KEY, result);
       navigate(PROFILE_URL);
-
   });
 }
 
