@@ -1,4 +1,8 @@
 
+export interface Data {
+  readonly [key: string]: string[];
+}
+
 export interface HttpErrorDto<T> extends Error {
 
   /** Error data. */

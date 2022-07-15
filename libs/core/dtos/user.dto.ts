@@ -18,20 +18,4 @@ export interface UserDto {
 }
 
 /** Date error DTO. */
-export interface ErrorUserDto {
-
-  /** Errors for a email field. */
-  readonly email: readonly string[];
-
-  /** Errors for a password field. */
-  readonly password: readonly string[];
-
-  /** Errors for first name field. */
-  readonly first_name: readonly string[];
-
-  /** Errors for last name field. */
-  readonly last_name: readonly string[];
-
-  /** Errors for avatar field. */
-  readonly avatar: readonly string[];
-}
+export type ErrorUserDto = Readonly<Record<keyof UserDto, readonly string[]>>;
