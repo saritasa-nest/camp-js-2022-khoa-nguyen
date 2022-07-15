@@ -3,7 +3,7 @@ import { Login } from '@js-camp/core/models/login';
 import { Token } from '@js-camp/core/models/token';
 import { navigate } from '@js-camp/core/utils';
 
-import { PROFILE_URL, TOKEN_KEY } from '../constants';
+import { HOME_URL, TOKEN_KEY } from '../constants';
 
 import { login } from '../services/api/login';
 import { refreshToken, verifyToken } from '../services/api/verifyToken';
@@ -38,7 +38,7 @@ function validateLogin(): void {
         return;
       }
       setValueToLocalStorage<Token>(TOKEN_KEY, result);
-      navigate(PROFILE_URL);
+      navigate(HOME_URL);
   });
 }
 
@@ -52,7 +52,7 @@ async function checkValidToken(): Promise<void> {
   if (response instanceof HttpError) {
     setRefreshedTokenToLocalStore(token);
   }
-  navigate(PROFILE_URL);
+  navigate(HOME_URL);
 
 }
 
@@ -65,7 +65,7 @@ async function setRefreshedTokenToLocalStore(token: Token): Promise<void> {
     return;
   }
   setValueToLocalStorage<Token>(TOKEN_KEY, response);
-  navigate(PROFILE_URL);
+  navigate(HOME_URL);
 }
 
 validateLogin();

@@ -6,7 +6,7 @@ import { Profile } from '@js-camp/core/models/profile';
 import { Token } from '@js-camp/core/models/token';
 import { AxiosError } from 'axios';
 
-import { authAxios } from '../../axios';
+import { authAxios } from '../../configs';
 
 /**
  * Get user information.
