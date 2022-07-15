@@ -24,10 +24,12 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
     `<option value ="${item}">${item}</option>`
   ))
     .join('');
-  if (selectSort) {
-    selectSort.innerHTML = sortOptionHTML;
-    setDefaultSelected(selectSort, getValueFromLocalStorage<Sorting>(KEY_SORTING)?.title ?? SORT_OPTIONS[0].title);
-    selectSort.addEventListener('change', () => {
+  if (selectSort === null || selectSort === undefined) {
+    return;
+  }
+  selectSort.innerHTML = sortOptionHTML;
+  setDefaultSelected(selectSort, getValueFromLocalStorage<Sorting>(KEY_SORTING)?.title ?? SORT_OPTIONS[0].title);
+  selectSort.addEventListener('change', () => {
       const { value } = selectSort;
     setValueToLocalStorage(KEY_SORTING, SORT_OPTIONS.filter(item => item.title === value)[0]);
     const selectSortingValue = getValueFromLocalStorage<Sorting>(KEY_SORTING) ?? SORT_OPTIONS[0];
@@ -44,11 +46,13 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
       renderListAndPaginationToUI(optionsUpdated);
 
     });
+
+  if (selectOrdering === null || selectOrdering === undefined) {
+    return;
   }
-  if (selectOrdering) {
-    selectOrdering.innerHTML = orderOptionHTML;
-    setDefaultSelected(selectOrdering, getValueFromLocalStorage<OrderOption>(KEY_ORDER) ?? OrderOption.Ascending);
-    selectOrdering.addEventListener('change', () => {
+  selectOrdering.innerHTML = orderOptionHTML;
+  setDefaultSelected(selectOrdering, getValueFromLocalStorage<OrderOption>(KEY_ORDER) ?? OrderOption.Ascending);
+  selectOrdering.addEventListener('change', () => {
 
     setValueToLocalStorage(KEY_ORDER, selectOrdering.value);
     const selectOrderingValue = getValueFromLocalStorage<OrderOption>(KEY_ORDER) ?? OrderOption.Ascending;
@@ -58,7 +62,7 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
       if (selectOrderingValue === OrderOption.Ascending) {
         return true;
       }
-        return false;
+      return false;
     }
 
     const optionsUpdated = new PaginationOptions({
@@ -72,5 +76,4 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
     });
     renderListAndPaginationToUI(optionsUpdated);
     });
-  }
 }
