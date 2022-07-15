@@ -14,7 +14,7 @@ export function formatDate(dateToFormat: Date): string {
  * @param defaultValue Value that need to be on default.
  */
 export function setDefaultSelected(selectElement: HTMLSelectElement, defaultValue: string): void {
-  const optionList = selectElement.querySelectorAll('option') as NodeListOf<HTMLOptionElement>;
+  const optionList = selectElement.querySelectorAll('option');
   optionList.forEach(option => {
     if (!defaultValue) {
       return;
