@@ -6,7 +6,7 @@ import { HttpError } from '@js-camp/core/models/httpError';
 import { ErrorToken, Token } from '@js-camp/core/models/token';
 import { AxiosError } from 'axios';
 
-import { appAxios } from '../../axios';
+import { appAxios } from '../../configs';
 
 const VERIFY_TOKEN_URL = '/auth/token/verify/';
 

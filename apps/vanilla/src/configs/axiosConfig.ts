@@ -1,11 +1,22 @@
-import axios from 'axios';
+import { Token } from '@js-camp/core/models/token';
+import axios, { AxiosInstance } from 'axios';
 
-import { API_KEY, BASE_URL } from '../constants';
-
-export const appAxios = axios.create({
-  baseURL: BASE_URL,
+export const appAxios: AxiosInstance = axios.create({
+  baseURL: import.meta.env.VITE_APP_BASE_URL,
   headers: {
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    'api-key': API_KEY,
+    'Api-Key': import.meta.env.VITE_APP_API_KEY,
   },
 });
+
+/**
+ * @param token Token of user.
+ */
+export function authAxios(token: Token): AxiosInstance {
+  return axios.create({
+    baseURL: import.meta.env.VITE_APP_BASE_URL,
+    headers: {
+      'Api-Key': import.meta.env.VITE_APP_API_KEY,
+      'Authorization': `Bearer ${token.access}`,
+    },
+  });
+}

@@ -1,19 +1,11 @@
-<<<<<<< HEAD
-import { OrderOption } from '@js-camp/core/enum';
-import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
-import { Sorting } from '@js-camp/core/models/sorting';
-
-import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, KEY_ORDER, KEY_SORTING, SORT_OPTIONS } from '../constants';
-=======
 import { OrderOption, Type } from '@js-camp/core/enum';
 import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 import { Sorting } from '@js-camp/core/models/sorting';
 
 import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, SORT_OPTIONS } from '../constants';
 import { KEY_ORDER, KEY_SORTING, KEY_TYPE } from '../constants/key';
->>>>>>> feature/JC19-370-filter-by-type
 import { fetchAnimeList } from '../scripts/fetchAnimeList';
-import { getValueFromLocalStorage } from '../service/localStorage';
+import { getValueFromLocalStorage } from '../services/localStore';
 
 import { renderFilterByType } from './renderFilterByType';
 import { renderListAndPaginationToUI } from './renderPagination';

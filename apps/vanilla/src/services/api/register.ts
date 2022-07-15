@@ -9,7 +9,7 @@ import { Token } from '@js-camp/core/models/token';
 import { ErrorUser, User } from '@js-camp/core/models/user';
 import { AxiosError } from 'axios';
 
-import { appAxios } from '../../axios';
+import { appAxios } from '../../configs';
 
 const REGISTER_URL = 'auth/register/';
 

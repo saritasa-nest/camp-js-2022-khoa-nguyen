@@ -3,7 +3,7 @@ import { Token } from '@js-camp/core/models/token';
 import { User } from '@js-camp/core/models/user';
 import { navigate, queryErrorSpan } from '@js-camp/core/utils';
 
-import { PROFILE_URL, TOKEN_KEY } from '../../constant';
+import { PROFILE_URL, TOKEN_KEY } from '../../constants';
 
 import { validateConfirmPassword } from '../../scripts/validate';
 import { registerNewUser } from '../../services/api/register';

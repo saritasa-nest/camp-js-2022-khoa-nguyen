@@ -2,7 +2,7 @@ import { HttpError } from '@js-camp/core/models/httpError';
 import { Token } from '@js-camp/core/models/token';
 import { navigate } from '@js-camp/core/utils';
 
-import { TOKEN_KEY } from '../../constant';
+import { TOKEN_KEY } from '../../constants';
 import { getProfile } from '../../services/api/getProfile';
 import { getValueFromLocalStorage, removeKeyFromLocalStorage } from '../../services/localStore';
 

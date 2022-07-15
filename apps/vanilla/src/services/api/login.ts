@@ -9,7 +9,7 @@ import { ErrorLogin, Login } from '@js-camp/core/models/login';
 import { Token } from '@js-camp/core/models/token';
 import { AxiosError } from 'axios';
 
-import { appAxios } from '../../axios';
+import { appAxios } from '../../configs';
 
 const LOGIN_URL = 'auth/login/';
 

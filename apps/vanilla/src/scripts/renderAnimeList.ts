@@ -8,7 +8,7 @@ import { formatDate } from '@js-camp/core/utils';
 import { SORT_OPTIONS } from '../constants';
 
 import { KEY_ORDER, KEY_SORTING, KEY_TYPE } from '../constants/key';
-import { getValueFromLocalStorage } from '../service/localStorage';
+import { getValueFromLocalStorage } from '../services/localStore';
 
 import { fetchAnimeList } from './fetchAnimeList';
 

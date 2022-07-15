@@ -4,7 +4,7 @@ import { setDefaultSelected } from '@js-camp/core/utils';
 
 import { FILTER_TYPE_OPTIONS } from '../constants';
 import { KEY_TYPE } from '../constants/key';
-import { getValueFromLocalStorage, setValueToLocalStorage } from '../service/localStorage';
+import { getValueFromLocalStorage, setValueToLocalStorage } from '../services/localStore';
 
 import { renderListAndPaginationToUI } from './renderPagination';
 
