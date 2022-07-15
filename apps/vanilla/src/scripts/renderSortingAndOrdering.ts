@@ -1,6 +1,7 @@
 import { OrderOption } from '@js-camp/core/enum';
 import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 import { Sorting } from '@js-camp/core/models/sorting';
+import { setDefaultSelected } from '@js-camp/core/utils';
 
 import { DEFAULT_LIMIT, SORT_OPTIONS } from '../constants';
 import { KEY_ORDER, KEY_SORTING } from '../constants/key';
@@ -24,8 +25,8 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
   ))
     .join('');
   if (selectSort) {
-    selectSort.value = getValueFromLocalStorage<Sorting>(KEY_SORTING)?.title ?? SORT_OPTIONS[0].title;
     selectSort.innerHTML = sortOptionHTML;
+    setDefaultSelected(selectSort, getValueFromLocalStorage<Sorting>(KEY_SORTING)?.title ?? SORT_OPTIONS[0].title);
     selectSort.addEventListener('change', () => {
       const { value } = selectSort;
     setValueToLocalStorage(KEY_SORTING, SORT_OPTIONS.filter(item => item.title === value)[0]);
@@ -45,8 +46,8 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
     });
   }
   if (selectOrdering) {
-    selectOrdering.value = getValueFromLocalStorage<OrderOption>(KEY_ORDER) ?? OrderOption.Ascending;
     selectOrdering.innerHTML = orderOptionHTML;
+    setDefaultSelected(selectOrdering, getValueFromLocalStorage<OrderOption>(KEY_ORDER) ?? OrderOption.Ascending);
     selectOrdering.addEventListener('change', () => {
 
     setValueToLocalStorage(KEY_ORDER, selectOrdering.value);
