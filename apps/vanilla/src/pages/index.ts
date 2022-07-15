@@ -1,6 +1,7 @@
 import { HttpError } from '@js-camp/core/models/httpError';
 import { Login } from '@js-camp/core/models/login';
 import { Token } from '@js-camp/core/models/token';
+import { navigate } from '@js-camp/core/utils';
 
 import { PROFILE_URL, TOKEN_KEY } from '../constant';
 
@@ -36,7 +37,7 @@ function validateLogin(): void {
       // eslint-disable-next-line no-alert
       alert('Login success!');
       setValueToLocalStorage<Token>(TOKEN_KEY, result);
-      window.location.href = PROFILE_URL;
+      navigate(PROFILE_URL);
 
   });
 }
@@ -51,7 +52,7 @@ async function checkValidToken(): Promise<void> {
   if (response instanceof HttpError) {
     setRefreshedTokenToLocalStore(token);
   }
-  window.location.href = PROFILE_URL;
+  navigate(PROFILE_URL);
 
 }
 
@@ -64,7 +65,7 @@ async function setRefreshedTokenToLocalStore(token: Token): Promise<void> {
     return;
   }
   setValueToLocalStorage<Token>(TOKEN_KEY, response);
-  window.location.href = PROFILE_URL;
+  navigate(PROFILE_URL);
 }
 
 validateLogin();

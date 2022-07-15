@@ -14,3 +14,11 @@ export function queryErrorSpan(inputElement: HTMLInputElement, message: readonly
   }
   errorElement.innerHTML = message.map(item => item).join(' ');
 }
+
+/**
+ * Navigate pages.
+ * @param url The url of page with need to be navigated.
+ */
+export function navigate(url: string): void {
+  window.location.href = url;
+}

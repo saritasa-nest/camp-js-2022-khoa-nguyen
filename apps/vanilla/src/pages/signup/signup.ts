@@ -1,7 +1,7 @@
 import { HttpError } from '@js-camp/core/models/httpError';
 import { Token } from '@js-camp/core/models/token';
 import { User } from '@js-camp/core/models/user';
-import { queryErrorSpan } from '@js-camp/core/utils';
+import { navigate, queryErrorSpan } from '@js-camp/core/utils';
 
 import { PROFILE_URL, TOKEN_KEY } from '../../constant';
 
@@ -50,7 +50,8 @@ function validateRegisterInfo(): void {
         // eslint-disable-next-line no-alert
         alert('Signup success!');
         setValueToLocalStorage<Token>(TOKEN_KEY, result);
-        window.location.href = PROFILE_URL;
+        navigate(PROFILE_URL);
+
     });
 }
 
