@@ -12,9 +12,7 @@ export namespace PaginationOptionsMapper {
     return {
       limit: options.limit,
       offset: options.offset,
-
-      // ordering: options.sorting.value,
-
+      search: options.search,
       ordering: options.sorting.isAscending ? options.sorting.value : `-${options.sorting.value}`,
     };
   }

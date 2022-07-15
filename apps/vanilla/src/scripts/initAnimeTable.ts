@@ -2,12 +2,13 @@ import { OrderOption } from '@js-camp/core/enum';
 import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 import { Sorting } from '@js-camp/core/models/sorting';
 
-import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, KEY_ORDER, KEY_SORTING, SORT_OPTIONS } from '../constants';
+import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, DEFAULT_SEARCH, KEY_ORDER, KEY_SORTING, SORT_OPTIONS } from '../constants';
 import { fetchAnimeList } from '../scripts/fetchAnimeList';
 import { getValueFromLocalStorage } from '../service/localStorage';
 
 import { renderAnimeList } from './renderAnimeList';
 import { renderListAndPaginationToUI } from './renderPagination';
+import { renderSearchingAndHandle } from './renderSearching';
 import { renderSortingAndOrdering } from './renderSortingAndOrdering';
 
 /**
@@ -24,14 +25,16 @@ export async function initAnimeTable(): Promise<void> {
       isAscending: (getValueFromLocalStorage<OrderOption>(KEY_ORDER) === null ||
         getValueFromLocalStorage<OrderOption>(KEY_ORDER) === OrderOption.Ascending),
     }),
+    search: DEFAULT_SEARCH,
   });
   const animeListInitial = await fetchAnimeList(INITIAL_PAGINATION);
 
   const PAGINATION_OPTIONS: PaginationOptions = new PaginationOptions({
     ...INITIAL_PAGINATION,
-    totalPages: Math.ceil(animeListInitial.count / DEFAULT_LIMIT) - 1,
+    totalPages: Math.ceil(animeListInitial.count / DEFAULT_LIMIT),
   });
   renderAnimeList(PAGINATION_OPTIONS);
   renderListAndPaginationToUI(PAGINATION_OPTIONS);
   renderSortingAndOrdering(PAGINATION_OPTIONS);
+  renderSearchingAndHandle(PAGINATION_OPTIONS);
 }

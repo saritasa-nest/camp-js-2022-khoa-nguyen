@@ -10,4 +10,7 @@ export interface PaginationOptionsDto {
 
   /** Sorting options. */
   readonly ordering: string;
+
+  /** Search items by name. */
+  readonly search: string;
 }

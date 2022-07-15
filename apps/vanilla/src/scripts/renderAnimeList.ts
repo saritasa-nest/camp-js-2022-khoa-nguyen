@@ -27,7 +27,7 @@ export async function renderAnimeList(options: PaginationOptions): Promise<Pagin
         isAscending: (getValueFromLocalStorage<OrderOption>(KEY_ORDER) === null ||
         getValueFromLocalStorage<OrderOption>(KEY_ORDER) === OrderOption.Ascending),
       }),
-      offset: options.activePage * options.limit,
+      offset: (options.activePage - 1) * options.limit,
     });
     const animeList = await fetchAnimeList(optionUpdated);
 
