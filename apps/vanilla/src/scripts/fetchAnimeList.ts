@@ -16,14 +16,10 @@ import { appAxios } from '../configs';
  */
 export async function fetchAnimeList(options: PaginationOptions): Promise<Pagination<Anime>> {
   try {
-    const optionsDto = PaginationOptionsMapper.toDto(options);
+    const params = PaginationOptionsMapper.toDto(options);
     const result = await appAxios.get<PaginationDto<AnimeDto>>(`anime/anime/`,
       {
-        params: {
-          limit: optionsDto.limit,
-          offset: optionsDto.offset,
-          ordering: optionsDto.ordering,
-        },
+        params,
       });
     return PaginationMapper.fromDto<AnimeDto, Anime>(result.data, AnimeMapper.fromDto);
   } catch (error: unknown) {

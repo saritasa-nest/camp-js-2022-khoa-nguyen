@@ -1,5 +1,14 @@
+import { OrderOption } from '@js-camp/core/enum';
+import { Anime } from '@js-camp/core/models/anime';
+import { Pagination } from '@js-camp/core/models/pagination';
 import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
+import { Sorting } from '@js-camp/core/models/sorting';
 import { formatDate } from '@js-camp/core/utils';
+
+import { SORT_OPTIONS } from '../constants';
+
+import { KEY_ORDER, KEY_SORTING } from '../constants/key';
+import { getValueFromLocalStorage } from '../service/localStorage';
 
 import { fetchAnimeList } from './fetchAnimeList';
 
@@ -9,16 +18,19 @@ const container = document.querySelector('.table');
  * Render anime list.
  * @param options Options of pagination.
  */
-export async function renderAnimeList(options: PaginationOptions): Promise<void> {
+export async function renderAnimeList(options: PaginationOptions): Promise<Pagination<Anime>> {
   try {
     const optionUpdated = new PaginationOptions({
       ...options,
+      sorting: new Sorting({
+        ...getValueFromLocalStorage<Sorting>(KEY_SORTING) ?? SORT_OPTIONS[0],
+        isAscending: (!getValueFromLocalStorage<OrderOption>(KEY_ORDER) ||
+        getValueFromLocalStorage<OrderOption>(KEY_ORDER) === OrderOption.Ascending),
+      }),
       offset: options.activePage * options.limit,
     });
     const animeList = await fetchAnimeList(optionUpdated);
-    if (animeList instanceof Error) {
-      return;
-    }
+
     const htmlTableContent = animeList.results.map(element => (
       `
         <tr class="table__row">
@@ -51,6 +63,7 @@ export async function renderAnimeList(options: PaginationOptions): Promise<void>
 
     `;
     }
+    return animeList;
   } catch (error: unknown) {
     if (error instanceof Error) {
       throw new Error(`Unable to render Anime list ${error.message}`);
