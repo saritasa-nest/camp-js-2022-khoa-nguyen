@@ -1,6 +1,7 @@
-import { OrderOption, Type } from '@js-camp/core/enum';
+import { Type } from '@js-camp/core/enum';
 import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 import { setDefaultSelected } from '@js-camp/core/utils';
+
 import { FILTER_TYPE_OPTIONS } from '../constants';
 import { KEY_TYPE } from '../constants/key';
 import { getValueFromLocalStorage, setValueToLocalStorage } from '../service/localStorage';
