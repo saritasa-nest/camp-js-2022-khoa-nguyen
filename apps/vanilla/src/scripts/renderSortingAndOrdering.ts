@@ -3,8 +3,8 @@ import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 import { Sorting } from '@js-camp/core/models/sorting';
 import { setDefaultSelected } from '@js-camp/core/utils';
 
-import { DEFAULT_LIMIT, SORT_OPTIONS } from '../constants';
-import { KEY_ORDER, KEY_SORTING } from '../constants/key';
+import { DEFAULT_LIMIT, DEFAULT_SEARCH, SORT_OPTIONS } from '../constants';
+import { KEY_ORDER, KEY_SEARCHING, KEY_SORTING } from '../constants/key';
 import { getValueFromLocalStorage, setValueToLocalStorage } from '../service/localStorage';
 
 import { renderListAndPaginationToUI } from './renderPagination';
@@ -42,6 +42,7 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
         ...options.sorting,
         ...selectSortingValue,
       }),
+      search: getValueFromLocalStorage(KEY_SEARCHING) ?? DEFAULT_SEARCH,
     });
       renderListAndPaginationToUI(optionsUpdated);
 
@@ -73,6 +74,7 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
         ...options.sorting,
         isAscending: getSelectOptions(),
       }),
+      search: getValueFromLocalStorage(KEY_SEARCHING) ?? DEFAULT_SEARCH,
     });
     renderListAndPaginationToUI(optionsUpdated);
     });

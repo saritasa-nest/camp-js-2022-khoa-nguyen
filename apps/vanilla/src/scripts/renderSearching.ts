@@ -1,6 +1,7 @@
 import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 
-import { DEFAULT_LIMIT } from '../constants';
+import { DEFAULT_LIMIT, KEY_SEARCHING } from '../constants';
+import { setValueToLocalStorage } from '../service/localStorage';
 
 import { renderAnimeList } from './renderAnimeList';
 
@@ -16,6 +17,7 @@ export function renderSearchingAndHandle(options: PaginationOptions): void {
   }
   button.addEventListener('click', () => {
     const searchString = input.value;
+    setValueToLocalStorage(KEY_SEARCHING, searchString);
     const optionsUpdated = new PaginationOptions({
       ...options,
       offset: DEFAULT_LIMIT,
