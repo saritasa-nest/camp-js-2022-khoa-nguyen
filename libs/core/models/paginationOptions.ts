@@ -1,5 +1,5 @@
 
-import { Type } from '../enum';
+import { TypeModel } from '../enum';
 
 import { Immerable, OmitImmerable } from './immerable';
 import { Sorting } from './sorting';
@@ -23,7 +23,7 @@ export class PaginationOptions extends Immerable {
   public readonly activePage: number;
 
   /** Filter by type. */
-  public readonly type: Type;
+  public readonly type: TypeModel;
 
   public constructor(data: InitArgsPagination) {
     super();

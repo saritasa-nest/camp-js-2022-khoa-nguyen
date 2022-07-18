@@ -3,8 +3,8 @@
 export interface DateRangeDto {
 
   /** Start date. */
-  readonly start: string;
+  readonly start: string | null;
 
   /** End date. */
-  readonly end: string;
+  readonly end: string | null;
 }

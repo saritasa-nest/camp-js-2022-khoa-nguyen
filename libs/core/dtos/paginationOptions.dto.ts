@@ -1,4 +1,4 @@
-import { Type } from '../enum';
+import { TypeDto } from '../enum';
 
 /** Pagination meta info. */
 export interface PaginationOptionsDto {
@@ -13,5 +13,5 @@ export interface PaginationOptionsDto {
   readonly ordering: string;
 
   /** Filter by types. */
-  readonly type: Type;
+  readonly type: TypeDto;
 }

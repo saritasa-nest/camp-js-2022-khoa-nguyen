@@ -1,4 +1,4 @@
-import { OrderOption, Type } from '@js-camp/core/enum';
+import { OrderOption, TypeModel } from '@js-camp/core/enum';
 import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 import { Sorting } from '@js-camp/core/models/sorting';
 
@@ -23,7 +23,7 @@ export async function initAnimeTable(): Promise<void> {
       isAscending: (getValueFromLocalStorage<OrderOption>(KEY_ORDER) === null ||
         getValueFromLocalStorage<OrderOption>(KEY_ORDER) === OrderOption.Ascending),
     }),
-    type: getValueFromLocalStorage<Type>(KEY_TYPE) ?? Type.DEFAULT,
+    type: getValueFromLocalStorage<TypeModel>(KEY_TYPE) ?? TypeModel.Default,
   });
   const animeListInitial = await fetchAnimeList(INITIAL_PAGINATION);
 
