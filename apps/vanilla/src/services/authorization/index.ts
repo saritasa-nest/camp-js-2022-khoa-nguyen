@@ -4,7 +4,7 @@ import { Token } from '@js-camp/core/models/token';
 import { ErrorUser, User } from '@js-camp/core/models/user';
 import { navigate } from '@js-camp/core/utils';
 
-import { KEY_TOKEN, HOME_URL } from '../../constants';
+import { HOME_URL, KEY_TOKEN } from '../../constants';
 import { login } from '../api/login';
 
 import { registerNewUser } from '../api/register';
@@ -47,9 +47,7 @@ export namespace AuthorizationService {
     navigate(HOME_URL);
   }
 
-  /**
-   * Check if user is logged.
-   */
+  /** Check if user is logged. */
   export async function isLoggedIn(): Promise<boolean> {
     const token = LocalStorageService.getValue<Token>(KEY_TOKEN);
     if (token == null) {
@@ -60,5 +58,10 @@ export namespace AuthorizationService {
       return false;
     }
     return true;
+  }
+
+  /** Log user out. */
+  export function logOut(): void {
+    LocalStorageService.remove(KEY_TOKEN);
   }
 }
