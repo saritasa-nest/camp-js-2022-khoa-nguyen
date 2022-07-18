@@ -1,5 +1,8 @@
 import { Token } from '@js-camp/core/models/token';
-import axios, { AxiosInstance } from 'axios';
+import axios from 'axios';
+
+import { TOKEN_KEY } from '../constant';
+import { LocalStorageService } from '../services/localStore';
 
 export const appAxios = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_URL,
@@ -8,15 +11,17 @@ export const appAxios = axios.create({
   },
 });
 
-/**
- * @param token Token of user.
- */
-export function authAxios(token: Token): AxiosInstance {
-  return axios.create({
-    baseURL: import.meta.env.VITE_APP_BASE_URL,
-    headers: {
-      'Api-Key': import.meta.env.VITE_APP_API_KEY,
-      'Authorization': `Bearer ${token.access}`,
+appAxios.interceptors.request.use(config => {
+  const token = LocalStorageService.getValue<Token>(TOKEN_KEY);
+  if (!token) {
+    return config;
+  }
+  return {
+    ...config,
+      headers: {
+      ...config.headers,
+        Authorization: `Bearer ${token?.access}`,
     },
-  });
+  };
 }
+, error => Promise.reject(error));

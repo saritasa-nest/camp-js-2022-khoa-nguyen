@@ -17,7 +17,7 @@ async function displayProfile(): Promise<void> {
   if (token === null) {
     return;
   }
-  const profile = await getProfile(token);
+  const profile = await getProfile();
   const titleElement = document.querySelector('.title');
   const infoWrapper = document.querySelector('.info');
   if (profile instanceof HttpError) {

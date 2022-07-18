@@ -22,6 +22,5 @@ export async function login(userLoginInfo: Login): Promise<Token | HttpError<Err
     return TokenMapper.fromDto(response.data);
   } catch (error: unknown) {
     return getError<ErrorLoginDto, ErrorLogin>(error, ErrorLoginMapper.fromDto);
-
   }
 }
