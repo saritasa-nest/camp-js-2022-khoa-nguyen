@@ -1,3 +1,5 @@
+import { KEY_ORDER, KEY_SEARCHING, KEY_SORTING, KEY_TYPE } from '../../constants';
+
 export namespace LocalStorageService {
 
   /**
@@ -36,6 +38,9 @@ export namespace LocalStorageService {
    * Clear value from local storage.
    */
   export function clear(): void {
-    localStorage.clear();
+    localStorage.removeItem(KEY_ORDER);
+    localStorage.removeItem(KEY_SEARCHING);
+    localStorage.removeItem(KEY_TYPE);
+    localStorage.removeItem(KEY_SORTING);
   }
 }

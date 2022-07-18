@@ -10,6 +10,7 @@ import { renderFilterByType } from './renderFilterByType';
 import { renderListOnActivePage } from './renderPagination';
 import { renderSearchingAndHandle } from './renderSearching';
 import { renderSortingAndOrdering } from './renderSortingAndOrdering';
+import { renderHeader } from './renderHeader';
 
 /** Init anime table view. */
 export function initAnimeTable(): void {
@@ -28,7 +29,7 @@ export function initAnimeTable(): void {
     type: LocalStorageService.getValue<TypeModel>(KEY_TYPE) ?? TypeModel.Default,
     search: LocalStorageService.getValue<TypeModel>(KEY_SEARCHING) ?? DEFAULT_SEARCH,
   });
-
+  renderHeader();
   renderListOnActivePage(INITIAL_PAGINATION);
   renderSortingAndOrdering(INITIAL_PAGINATION);
   renderFilterByType(INITIAL_PAGINATION);

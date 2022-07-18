@@ -12,7 +12,7 @@ import { LocalStorageService } from '../services/localStore';
 
 import { throwError } from '../utils';
 
-import { fetchAnimeList } from './fetchAnimeList';
+import { fetchAnimeList } from '../services/api/fetchAnimeList';
 
 const container = document.querySelector('.table');
 

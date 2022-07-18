@@ -1,13 +1,8 @@
-import { HttpError } from '@js-camp/core/models/httpError';
-import { Token } from '@js-camp/core/models/token';
-import { User } from '@js-camp/core/models/user';
-import { navigate, queryErrorSpan } from '@js-camp/core/utils';
-
-import { PROFILE_URL, KEY_TOKEN } from '../../constants';
+import { ErrorUser, User } from '@js-camp/core/models/user';
+import { queryErrorSpan } from '@js-camp/core/utils';
 
 import { validateConfirmPassword } from '../../scripts/validate';
-import { registerNewUser } from '../../services/api/register';
-import { LocalStorageService } from '../../services/localStore';
+import { AuthorizationService } from '../../services/authorization';
 
 /** Validate register info. */
 function validateRegisterInfo(): void {
@@ -18,7 +13,7 @@ function validateRegisterInfo(): void {
     const inputConfirmPassword = form.querySelector<HTMLInputElement>('input[data-type=confirmPassword]');
     const inputFirstName = form.querySelector<HTMLInputElement>('input[data-type=firstName]');
     const inputLastName = form.querySelector<HTMLInputElement>('input[data-type=lastName]');
-    form.addEventListener('submit', async(event): Promise<void> => {
+    form.addEventListener('submit', async event => {
       event.preventDefault();
       if (
         inputEmail == null ||
@@ -40,20 +35,13 @@ function validateRegisterInfo(): void {
       if (!isValidPassword) {
         return;
       }
-      const result = await registerNewUser(user);
-      if (result instanceof HttpError) {
-        const error = result.data;
-        if (error == null) {
-          return;
-        }
-        queryErrorSpan(inputEmail, error.email);
-        queryErrorSpan(inputFirstName, error.firstName);
-        queryErrorSpan(inputLastName, error.lastName);
-        queryErrorSpan(inputPassword, error.password);
-        return;
+      const result = await AuthorizationService.signUp(user);
+      if (result instanceof ErrorUser) {
+        queryErrorSpan(inputEmail, result.email);
+        queryErrorSpan(inputFirstName, result.firstName);
+        queryErrorSpan(inputLastName, result.lastName);
+        queryErrorSpan(inputPassword, result.password);
       }
-      LocalStorageService.setValue<Token>(KEY_TOKEN, result);
-      navigate(PROFILE_URL);
     });
   }
 

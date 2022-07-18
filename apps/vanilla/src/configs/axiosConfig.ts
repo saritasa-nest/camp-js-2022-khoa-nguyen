@@ -1,7 +1,9 @@
+import { HttpError } from '@js-camp/core/models/httpError';
 import { Token } from '@js-camp/core/models/token';
 import axios from 'axios';
 
 import { KEY_TOKEN } from '../constants';
+import { refreshToken } from '../services/api/verifyToken';
 import { LocalStorageService } from '../services/localStore';
 
 export const appAxios = axios.create({
@@ -13,6 +15,7 @@ export const appAxios = axios.create({
 
 appAxios.interceptors.request.use(config => {
   const token = LocalStorageService.getValue<Token>(KEY_TOKEN);
+
   if (!token) {
     return config;
   }
@@ -25,3 +28,17 @@ appAxios.interceptors.request.use(config => {
   };
 }
 , error => Promise.reject(error));
+
+appAxios.interceptors.response.use(response => response, async error => {
+  const token = LocalStorageService.getValue<Token>(KEY_TOKEN);
+  if (token) {
+    if (error.response.status === 401) {
+      const refreshedToken = await refreshToken(token);
+      if (refreshedToken instanceof HttpError) {
+        return;
+      }
+      LocalStorageService.setValue<Token>(KEY_TOKEN, refreshedToken);
+    }
+  }
+  return Promise.reject(error);
+});
