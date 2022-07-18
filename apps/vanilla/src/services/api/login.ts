@@ -10,8 +10,7 @@ import { Token } from '@js-camp/core/models/token';
 import { AxiosError } from 'axios';
 
 import { appAxios } from '../../configs';
-
-const LOGIN_URL = 'auth/login/';
+import { LOGIN_API } from '../../constants';
 
 /**
  * Perform login action.
@@ -20,7 +19,7 @@ const LOGIN_URL = 'auth/login/';
 export async function login(userLoginInfo: Login): Promise<Token | HttpError<ErrorLogin>> {
   try {
     const userLoginDto = LoginMapper.toDto(userLoginInfo);
-    const response = await appAxios.post<TokenDto>(LOGIN_URL, { ...userLoginDto });
+    const response = await appAxios.post<TokenDto>(LOGIN_API, { ...userLoginDto });
     return TokenMapper.fromDto(response.data);
   } catch (error: unknown) {
     const errorWithType = error as AxiosError<HttpErrorDto<ErrorLoginDto>>;

@@ -2,14 +2,14 @@ import { HttpError } from '@js-camp/core/models/httpError';
 import { Token } from '@js-camp/core/models/token';
 import { navigate } from '@js-camp/core/utils';
 
-import { TOKEN_KEY } from '../../constants';
+import { LOGIN_URL, TOKEN_KEY } from '../../constants';
 import { getProfile } from '../../services/api/getProfile';
-import { getValueFromLocalStorage, removeKeyFromLocalStorage } from '../../services/localStore';
+import { LocalStorageService } from '../../services/localStore';
 
-const token = getValueFromLocalStorage<Token>(TOKEN_KEY);
+const token = LocalStorageService.getValue<Token>(TOKEN_KEY);
 
 if (token === null) {
-  navigate('../index.html');
+  navigate(LOGIN_URL);
 }
 
 /** Display user profile on screen. */
@@ -17,7 +17,7 @@ async function displayProfile(): Promise<void> {
   if (token === null) {
     return;
   }
-  const profile = await getProfile(token);
+  const profile = await getProfile();
   const titleElement = document.querySelector('.title');
   const infoWrapper = document.querySelector('.info');
   if (profile instanceof HttpError) {
@@ -63,8 +63,8 @@ async function displayProfile(): Promise<void> {
 }
 
 document.querySelector('.button')?.addEventListener('click', () => {
-  navigate('../index.html');
-  removeKeyFromLocalStorage(TOKEN_KEY);
+  navigate(LOGIN_URL);
+  LocalStorageService.remove(TOKEN_KEY);
 });
 
 displayProfile();

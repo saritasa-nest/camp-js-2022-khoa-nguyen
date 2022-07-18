@@ -10,8 +10,7 @@ import { ErrorUser, User } from '@js-camp/core/models/user';
 import { AxiosError } from 'axios';
 
 import { appAxios } from '../../configs';
-
-const REGISTER_URL = 'auth/register/';
+import { REGISTER_API } from '../../constants';
 
 /**
  * Register new user.
@@ -20,7 +19,7 @@ const REGISTER_URL = 'auth/register/';
 export async function registerNewUser(userInfo: User): Promise<Token | HttpError<ErrorUser | null>> {
   try {
     const userDto = UserMapper.toDto(userInfo);
-    const response = await appAxios.post<TokenDto>(REGISTER_URL, { ...userDto });
+    const response = await appAxios.post<TokenDto>(REGISTER_API, { ...userDto });
     return TokenMapper.fromDto(response.data);
   } catch (error: unknown) {
     const errorWithType = error as AxiosError<HttpErrorDto<ErrorUserDto>>;

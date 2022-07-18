@@ -7,17 +7,16 @@ import { ErrorToken, Token } from '@js-camp/core/models/token';
 import { AxiosError } from 'axios';
 
 import { appAxios } from '../../configs';
-
-const VERIFY_TOKEN_URL = '/auth/token/verify/';
+import { VERIFY_TOKEN_API } from '../../constants';
 
 /**
  * Verify token.
- * @param token Token of verify.
+ * @param token Token to verify.
  */
 export async function verifyToken(token: Token): Promise<Token | HttpError<ErrorToken | null>> {
   try {
     const tokenDto = TokenMapper.toDto(token);
-    const response = await appAxios.post<TokenDto>(VERIFY_TOKEN_URL, { token: tokenDto.access });
+    const response = await appAxios.post<TokenDto>(VERIFY_TOKEN_API, { token: tokenDto.access });
     return TokenMapper.fromDto(response.data);
   } catch (error: unknown) {
     const errorWithType = error as AxiosError<HttpErrorDto<ErrorTokenDto>>;
@@ -35,7 +34,7 @@ export async function verifyToken(token: Token): Promise<Token | HttpError<Error
 export async function refreshToken(token: Token): Promise<Token | HttpError<ErrorToken | null>> {
   try {
     const tokenDto = TokenMapper.toDto(token);
-    const response = await appAxios.post<TokenDto>(VERIFY_TOKEN_URL, { refresh: tokenDto.refresh });
+    const response = await appAxios.post<TokenDto>(VERIFY_TOKEN_API, { refresh: tokenDto.refresh });
     return TokenMapper.fromDto(response.data);
   } catch (error: unknown) {
     const errorWithType = error as AxiosError<HttpErrorDto<ErrorTokenDto>>;

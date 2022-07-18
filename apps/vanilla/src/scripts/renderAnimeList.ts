@@ -8,7 +8,7 @@ import { formatDate } from '@js-camp/core/utils';
 import { SORT_OPTIONS } from '../constants';
 
 import { KEY_ORDER, KEY_SORTING, KEY_TYPE } from '../constants/key';
-import { getValueFromLocalStorage } from '../services/localStore';
+import { LocalStorageService } from '../services/localStore';
 
 import { fetchAnimeList } from './fetchAnimeList';
 
@@ -23,11 +23,11 @@ export async function renderAnimeList(options: PaginationOptions): Promise<Pagin
     const optionUpdated = new PaginationOptions({
       ...options,
       sorting: new Sorting({
-        ...getValueFromLocalStorage<Sorting>(KEY_SORTING) ?? SORT_OPTIONS[0],
-        isAscending: (!getValueFromLocalStorage<OrderOption>(KEY_ORDER) ||
-        getValueFromLocalStorage<OrderOption>(KEY_ORDER) === OrderOption.Ascending),
+        ...LocalStorageService.getValue<Sorting>(KEY_SORTING) ?? SORT_OPTIONS[0],
+        isAscending: (!LocalStorageService.getValue<OrderOption>(KEY_ORDER) ||
+        LocalStorageService.getValue<OrderOption>(KEY_ORDER) === OrderOption.Ascending),
       }),
-      type: getValueFromLocalStorage<TypeModel>(KEY_TYPE) ?? TypeModel.Default,
+      type: LocalStorageService.getValue<TypeModel>(KEY_TYPE) ?? TypeModel.Default,
       offset: options.activePage * options.limit,
     });
     const animeList = await fetchAnimeList(optionUpdated);

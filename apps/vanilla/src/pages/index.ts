@@ -7,44 +7,43 @@ import { HOME_URL, TOKEN_KEY } from '../constants';
 
 import { login } from '../services/api/login';
 import { refreshToken, verifyToken } from '../services/api/verifyToken';
-import { getValueFromLocalStorage, setValueToLocalStorage } from '../services/localStore';
-
-const form = document.querySelector<HTMLFormElement>('.form');
+import { LocalStorageService } from '../services/localStore';
 
 /** Validate login info. */
 function validateLogin(): void {
-  if (form === undefined || form === null) {
-    return;
-  }
-  const inputEmail = form.querySelector<HTMLInputElement>('input[data-type=email]') ;
-  const inputPassword = form.querySelector<HTMLInputElement>('input[data-type=password]');
-  const errorElement = form.querySelector<HTMLSpanElement>('.form__span-error');
-  form.addEventListener('submit', async(e): Promise<void> => {
-      e.preventDefault();
-      if (inputEmail === null || inputPassword === null) {
-        return;
-      }
-      const userLoginInfo = new Login({
-        email: inputEmail.value,
-        password: inputPassword.value,
-      });
-
-      const result = await login(userLoginInfo);
-      if (result instanceof HttpError) {
-        if (errorElement === null || errorElement === undefined) {
+  const form = document.querySelector<HTMLFormElement>('.form');
+  if (form != null) {
+    const inputEmail = form.querySelector<HTMLInputElement>('input[data-type=email]') ;
+    const inputPassword = form.querySelector<HTMLInputElement>('input[data-type=password]');
+    const errorElement = form.querySelector<HTMLSpanElement>('.form__span-error');
+    form.addEventListener('submit', async e => {
+        e.preventDefault();
+        if (inputEmail === null || inputPassword === null) {
           return;
         }
-        errorElement.innerHTML = result.detail;
-        return;
-      }
-      setValueToLocalStorage<Token>(TOKEN_KEY, result);
-      navigate(HOME_URL);
-  });
+        const userLoginInfo = new Login({
+          email: inputEmail.value,
+          password: inputPassword.value,
+        });
+
+        const result = await login(userLoginInfo);
+        if (result instanceof HttpError) {
+          if (errorElement === null || errorElement === undefined) {
+            return;
+          }
+          errorElement.innerHTML = result.detail;
+          return;
+        }
+        LocalStorageService.setValue<Token>(TOKEN_KEY, result);
+        navigate(HOME_URL);
+    });
+  }
+
 }
 
 /** Check valid token. */
 async function checkValidToken(): Promise<void> {
-  const token = getValueFromLocalStorage<Token>(TOKEN_KEY);
+  const token = LocalStorageService.getValue<Token>(TOKEN_KEY);
   if (token === null) {
     return;
   }
@@ -56,7 +55,8 @@ async function checkValidToken(): Promise<void> {
 
 }
 
-/** Set refreshed token to local store.
+/**
+ * Set refreshed token to local store.
  * @param token Token to refresh.
  */
 async function setRefreshedTokenToLocalStore(token: Token): Promise<void> {
@@ -64,7 +64,7 @@ async function setRefreshedTokenToLocalStore(token: Token): Promise<void> {
   if (response instanceof HttpError) {
     return;
   }
-  setValueToLocalStorage<Token>(TOKEN_KEY, response);
+  LocalStorageService.setValue<Token>(TOKEN_KEY, response);
   navigate(HOME_URL);
 }
 
