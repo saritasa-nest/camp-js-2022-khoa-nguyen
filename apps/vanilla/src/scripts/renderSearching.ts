@@ -3,7 +3,7 @@ import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 import { DEFAULT_LIMIT, KEY_SEARCHING } from '../constants';
 import { LocalStorageService } from '../services/localStore';
 
-import { renderAnimeList } from './renderAnimeList';
+import { renderListOnActivePage } from './renderPagination';
 
 /**
  * Render search result to UI.
@@ -24,6 +24,6 @@ export function renderSearchingAndHandle(options: PaginationOptions): void {
       activePage: 1,
       search: searchString,
     });
-    renderAnimeList(optionsUpdated);
+    renderListOnActivePage(optionsUpdated);
   });
 }

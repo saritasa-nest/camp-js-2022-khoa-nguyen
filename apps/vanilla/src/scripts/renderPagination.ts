@@ -31,7 +31,12 @@ function renderPaginationItems(options: PaginationOptions): string {
   const FIRST_PAGE = 1;
   const PAGE_RANGE = 5;
   const PAGE_STEP = 2;
-
+  if (totalPages === 0) {
+    return '';
+  }
+  if (totalPages < PAGE_RANGE) {
+    return renderRangeOfPagination(activePage, FIRST_PAGE, activePage);
+  }
   if (activePage <= PAGE_STEP) {
     return renderRangeOfPagination(activePage, FIRST_PAGE, PAGE_RANGE);
   }
@@ -105,7 +110,7 @@ export async function renderListOnActivePage(options: PaginationOptions): Promis
     }
     const optionUpdated = new PaginationOptions({
       ...options,
-      totalPages: Math.ceil(animeList.count / DEFAULT_LIMIT - 1),
+      totalPages: Math.ceil(animeList.count / DEFAULT_LIMIT),
     });
     renderPagination(optionUpdated);
     const itemsPageList = document.querySelectorAll('.pagination li:not(.btn)');
