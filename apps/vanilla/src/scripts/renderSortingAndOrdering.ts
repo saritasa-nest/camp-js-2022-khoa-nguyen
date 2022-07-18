@@ -5,7 +5,7 @@ import { Sorting } from '@js-camp/core/models/sorting';
 import { DEFAULT_OFFSET, DEFAULT_SEARCH, SORT_OPTIONS } from '../constants';
 import { KEY_ORDER, KEY_SEARCHING, KEY_SORTING } from '../constants/key';
 import { LocalStorageService } from '../services/localStore';
-import { setDefaultSelected } from '../util';
+import { setDefaultSelected } from '../utils';
 
 import { renderListOnActivePage } from './renderPagination';
 

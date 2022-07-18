@@ -14,3 +14,5 @@ export function setDefaultSelected(selectElement: HTMLSelectElement, defaultValu
     }
   });
 }
+
+export * from './handleError';

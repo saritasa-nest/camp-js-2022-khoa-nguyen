@@ -10,8 +10,9 @@ import { DEFAULT_LIMIT, SORT_OPTIONS } from '../constants';
 import { KEY_ORDER, KEY_SORTING, KEY_TYPE } from '../constants/key';
 import { LocalStorageService } from '../services/localStore';
 
+import { throwError } from '../utils';
+
 import { fetchAnimeList } from './fetchAnimeList';
-import { throwError } from './getError';
 
 const container = document.querySelector('.table');
 

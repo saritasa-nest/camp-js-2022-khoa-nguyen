@@ -4,7 +4,7 @@ import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 import { DEFAULT_OFFSET, DEFAULT_SEARCH, FILTER_TYPE_OPTIONS } from '../constants';
 import { KEY_SEARCHING, KEY_TYPE } from '../constants/key';
 import { LocalStorageService } from '../services/localStore';
-import { setDefaultSelected } from '../util';
+import { setDefaultSelected } from '../utils';
 
 import { renderListOnActivePage } from './renderPagination';
 

@@ -9,7 +9,7 @@ import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 
 import { appAxios } from '../configs';
 
-import { throwError } from './getError';
+import { throwError } from '../utils';
 
 /**
  * Fetch anime data with corresponding limit, offset and ordering.

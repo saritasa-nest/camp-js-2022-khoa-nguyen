@@ -3,7 +3,7 @@ import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 import { DEFAULT_LIMIT, DEFAULT_SEARCH, KEY_SEARCHING } from '../constants';
 import { LocalStorageService } from '../services/localStore';
 
-import { throwError } from './getError';
+import { throwError } from '../utils';
 
 import { renderAnimeList } from './renderAnimeList';
 

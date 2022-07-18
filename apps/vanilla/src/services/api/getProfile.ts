@@ -5,7 +5,7 @@ import { HttpError } from '@js-camp/core/models/httpError';
 import { Profile } from '@js-camp/core/models/profile';
 import { AxiosError } from 'axios';
 
-import { appAxios } from '../../configs';
+import { appAxios } from '../../configs/axiosConfig';
 
 import { PROFILE_API } from '../../constants';
 
