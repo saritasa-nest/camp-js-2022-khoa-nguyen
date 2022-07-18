@@ -55,21 +55,13 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
     LocalStorageService.setValue(KEY_ORDER, selectOrdering.value);
     const selectOrderingValue = LocalStorageService.getValue<OrderOption>(KEY_ORDER) ?? OrderOption.Ascending;
 
-    /** Get type of ordering option.*/
-    function getSelectOptions(): boolean {
-      if (selectOrderingValue === OrderOption.Ascending) {
-        return true;
-      }
-      return false;
-    }
-
     const optionsUpdated = new PaginationOptions({
       ...options,
       offset: DEFAULT_LIMIT,
       activePage: 1,
       sorting: new Sorting({
         ...options.sorting,
-        isAscending: getSelectOptions(),
+        isAscending: selectOrderingValue === OrderOption.Ascending,
       }),
     });
     renderListAndPaginationToUI(optionsUpdated);
