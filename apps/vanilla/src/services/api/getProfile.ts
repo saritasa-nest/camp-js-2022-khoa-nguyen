@@ -7,6 +7,7 @@ import { Token } from '@js-camp/core/models/token';
 import { AxiosError } from 'axios';
 
 import { authAxios } from '../../axios';
+import { PROFILE_API } from '../../constant';
 
 /**
  * Get user information.
@@ -14,7 +15,7 @@ import { authAxios } from '../../axios';
  */
 export async function getProfile(token: Token): Promise<Profile | HttpError<null>> {
   try {
-    const result = await authAxios(token).get('/users/profile/');
+    const result = await authAxios(token).get(PROFILE_API);
     return ProfileMapper.fromDto(result.data);
   } catch (error: unknown) {
     const errorWithType = error as AxiosError<HttpErrorDto<null>>;

@@ -7,7 +7,7 @@ import { PROFILE_URL, TOKEN_KEY } from '../../constant';
 
 import { validateConfirmPassword } from '../../scripts/validate';
 import { registerNewUser } from '../../services/api/register';
-import { setValueToLocalStorage } from '../../services/localStore';
+import { LocalStorageService } from '../../services/localStore';
 
 /** Validate register info. */
 function validateRegisterInfo(): void {
@@ -22,8 +22,13 @@ function validateRegisterInfo(): void {
   const inputLastName = form.querySelector<HTMLInputElement>('input[data-type=lastName]');
   form.addEventListener('submit', async(event): Promise<void> => {
       event.preventDefault();
-      if (inputEmail === null || inputFirstName === null || inputConfirmPassword === null ||
-        inputPassword === null || inputLastName === null) {
+      if (
+        inputEmail === null ||
+        inputFirstName === null ||
+        inputConfirmPassword === null ||
+        inputPassword === null ||
+        inputLastName === null
+      ) {
         return;
       }
       const user = new User({
@@ -34,7 +39,7 @@ function validateRegisterInfo(): void {
       });
       const isValidPassword = validateConfirmPassword({ passwordElement: inputPassword, confirmPasswordElement: inputConfirmPassword },
         'This field must be matched with password field');
-        if (isValidPassword === false) {
+        if (!isValidPassword) {
           return;
         }
         const result = await registerNewUser(user);
@@ -49,7 +54,7 @@ function validateRegisterInfo(): void {
           queryErrorSpan(inputPassword, error.password);
           return;
         }
-        setValueToLocalStorage<Token>(TOKEN_KEY, result);
+        LocalStorageService.setValue<Token>(TOKEN_KEY, result);
         navigate(PROFILE_URL);
 
     });

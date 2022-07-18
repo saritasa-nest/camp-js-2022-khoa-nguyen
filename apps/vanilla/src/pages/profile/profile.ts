@@ -4,9 +4,9 @@ import { navigate } from '@js-camp/core/utils';
 
 import { HOME_URL, TOKEN_KEY } from '../../constant';
 import { getProfile } from '../../services/api/getProfile';
-import { getValueFromLocalStorage, removeKeyFromLocalStorage } from '../../services/localStore';
+import { LocalStorageService } from '../../services/localStore';
 
-const token = getValueFromLocalStorage<Token>(TOKEN_KEY);
+const token = LocalStorageService.getValue<Token>(TOKEN_KEY);
 
 if (token === null) {
   navigate(HOME_URL);
@@ -64,7 +64,7 @@ async function displayProfile(): Promise<void> {
 
 document.querySelector('.button')?.addEventListener('click', () => {
   navigate(HOME_URL);
-  removeKeyFromLocalStorage(TOKEN_KEY);
+  LocalStorageService.remove(TOKEN_KEY);
 });
 
 displayProfile();

@@ -7,7 +7,7 @@ import { PROFILE_URL, TOKEN_KEY } from '../constant';
 
 import { login } from '../services/api/login';
 import { refreshToken, verifyToken } from '../services/api/verifyToken';
-import { getValueFromLocalStorage, setValueToLocalStorage } from '../services/localStore';
+import { LocalStorageService } from '../services/localStore';
 
 const form = document.querySelector<HTMLFormElement>('.form');
 
@@ -35,7 +35,7 @@ function validateLogin(): void {
           errorElement.innerHTML = result.detail;
           return;
         }
-        setValueToLocalStorage<Token>(TOKEN_KEY, result);
+        LocalStorageService.setValue<Token>(TOKEN_KEY, result);
         navigate(PROFILE_URL);
     });
   }
@@ -44,7 +44,7 @@ function validateLogin(): void {
 
 /** Check valid token. */
 async function checkValidToken(): Promise<void> {
-  const token = getValueFromLocalStorage<Token>(TOKEN_KEY);
+  const token = LocalStorageService.getValue<Token>(TOKEN_KEY);
   if (token === null) {
     return;
   }
@@ -65,7 +65,7 @@ async function setRefreshedTokenToLocalStore(token: Token): Promise<void> {
   if (response instanceof HttpError) {
     return;
   }
-  setValueToLocalStorage<Token>(TOKEN_KEY, response);
+  LocalStorageService.setValue<Token>(TOKEN_KEY, response);
   navigate(PROFILE_URL);
 }
 
