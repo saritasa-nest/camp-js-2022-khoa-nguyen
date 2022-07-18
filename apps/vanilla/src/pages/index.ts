@@ -13,33 +13,33 @@ const form = document.querySelector<HTMLFormElement>('.form');
 
 /** Validate login info. */
 function validateLogin(): void {
-  if (form === undefined || form === null) {
-    return;
-  }
-  const inputEmail = form.querySelector<HTMLInputElement>('input[data-type=email]') ;
-  const inputPassword = form.querySelector<HTMLInputElement>('input[data-type=password]');
-  const errorElement = form.querySelector<HTMLSpanElement>('.form__span-error');
-  form.addEventListener('submit', async(e): Promise<void> => {
-      e.preventDefault();
-      if (inputEmail === null || inputPassword === null) {
-        return;
-      }
-      const userLoginInfo = new Login({
-        email: inputEmail.value,
-        password: inputPassword.value,
-      });
-
-      const result = await login(userLoginInfo);
-      if (result instanceof HttpError) {
-        if (errorElement === null || errorElement === undefined) {
+  if (form !== null) {
+    const inputEmail = form.querySelector<HTMLInputElement>('input[data-type=email]') ;
+    const inputPassword = form.querySelector<HTMLInputElement>('input[data-type=password]');
+    const errorElement = form.querySelector<HTMLSpanElement>('.form__span-error');
+    form.addEventListener('submit', async e => {
+        e.preventDefault();
+        if (inputEmail === null || inputPassword === null) {
           return;
         }
-        errorElement.innerHTML = result.detail;
-        return;
-      }
-      setValueToLocalStorage<Token>(TOKEN_KEY, result);
-      navigate(PROFILE_URL);
-  });
+        const userLoginInfo = new Login({
+          email: inputEmail.value,
+          password: inputPassword.value,
+        });
+
+        const result = await login(userLoginInfo);
+        if (result instanceof HttpError) {
+          if (errorElement === null || errorElement === undefined) {
+            return;
+          }
+          errorElement.innerHTML = result.detail;
+          return;
+        }
+        setValueToLocalStorage<Token>(TOKEN_KEY, result);
+        navigate(PROFILE_URL);
+    });
+  }
+
 }
 
 /** Check valid token. */
@@ -56,7 +56,8 @@ async function checkValidToken(): Promise<void> {
 
 }
 
-/** Set refreshed token to local store.
+/**
+ * Set refreshed token to local store.
  * @param token Token to refresh.
  */
 async function setRefreshedTokenToLocalStore(token: Token): Promise<void> {

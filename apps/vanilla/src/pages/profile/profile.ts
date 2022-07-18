@@ -2,14 +2,14 @@ import { HttpError } from '@js-camp/core/models/httpError';
 import { Token } from '@js-camp/core/models/token';
 import { navigate } from '@js-camp/core/utils';
 
-import { TOKEN_KEY } from '../../constant';
+import { HOME_URL, TOKEN_KEY } from '../../constant';
 import { getProfile } from '../../services/api/getProfile';
 import { getValueFromLocalStorage, removeKeyFromLocalStorage } from '../../services/localStore';
 
 const token = getValueFromLocalStorage<Token>(TOKEN_KEY);
 
 if (token === null) {
-  navigate('../index.html');
+  navigate(HOME_URL);
 }
 
 /** Display user profile on screen. */
@@ -63,7 +63,7 @@ async function displayProfile(): Promise<void> {
 }
 
 document.querySelector('.button')?.addEventListener('click', () => {
-  navigate('../index.html');
+  navigate(HOME_URL);
   removeKeyFromLocalStorage(TOKEN_KEY);
 });
 
