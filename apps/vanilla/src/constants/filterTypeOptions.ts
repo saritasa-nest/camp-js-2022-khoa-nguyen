@@ -1,34 +1,44 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import { Type } from '@js-camp/core/enum';
+/** Options of type interface. */
+interface FilterType {
 
-export const FILTER_TYPE_OPTIONS = [
+  /** Title of options. */
+  title: string;
+
+  /** Value of options. */
+  value: TypeModel;
+}
+
+import { TypeModel } from '@js-camp/core/enum';
+
+export const FILTER_TYPE_OPTIONS: FilterType[] = [
   {
     title: 'Default',
-    value: Type.DEFAULT,
+    value: TypeModel.Default,
   },
   {
     title: 'Movie',
-    value: Type.MOVIE,
+    value: TypeModel.Movie,
   },
   {
     title: 'Music',
-    value: Type.MUSIC,
+    value: TypeModel.Music,
   },
   {
     title: 'Ona',
-    value: Type.ONA,
+    value: TypeModel.Ona,
   },
   {
     title: 'Ova',
-    value: Type.OVA,
+    value: TypeModel.Ova,
   },
   {
     title: 'Special',
-    value: Type.SPECIAL,
+    value: TypeModel.Special,
   },
   {
     title: 'TV',
-    value: Type.TV,
+    value: TypeModel.Tv,
   },
 ];

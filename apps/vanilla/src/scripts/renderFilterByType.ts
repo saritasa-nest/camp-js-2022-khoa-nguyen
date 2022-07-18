@@ -1,10 +1,10 @@
-import { Type } from '@js-camp/core/enum';
+import { TypeModel } from '@js-camp/core/enum';
 import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 import { setDefaultSelected } from '@js-camp/core/utils';
 
 import { FILTER_TYPE_OPTIONS } from '../constants';
 import { KEY_TYPE } from '../constants/key';
-import { getValueFromLocalStorage, setValueToLocalStorage } from '../service/localStorage';
+import { LocalStorageService } from '../service/localStorage';
 
 import { renderListAndPaginationToUI } from './renderPagination';
 
@@ -19,11 +19,12 @@ export function renderFilterByType(options: PaginationOptions): void {
     return;
   }
   selectType.innerHTML = typeOptionHTML;
-  setDefaultSelected(selectType, FILTER_TYPE_OPTIONS.filter(item => item.value === getValueFromLocalStorage<Type>(KEY_TYPE))[0]?.title ??
+  setDefaultSelected(selectType, FILTER_TYPE_OPTIONS.filter(item =>
+    item.value === LocalStorageService.getValue<TypeModel>(KEY_TYPE))[0]?.title ??
     FILTER_TYPE_OPTIONS[0].title);
   selectType.addEventListener('change', () => {
-    setValueToLocalStorage(KEY_TYPE, FILTER_TYPE_OPTIONS.filter(item => selectType.value === item.title)[0].value);
-    const valueType = getValueFromLocalStorage<Type>(KEY_TYPE) ?? Type.DEFAULT;
+    LocalStorageService.setValue(KEY_TYPE, FILTER_TYPE_OPTIONS.filter(item => selectType.value === item.title)[0].value);
+    const valueType = LocalStorageService.getValue<TypeModel>(KEY_TYPE) ?? TypeModel.Default;
     const optionsUpdated = new PaginationOptions({
       ...options,
       activePage: 1,

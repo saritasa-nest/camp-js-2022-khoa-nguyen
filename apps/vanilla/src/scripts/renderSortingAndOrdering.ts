@@ -5,7 +5,7 @@ import { setDefaultSelected } from '@js-camp/core/utils';
 
 import { DEFAULT_LIMIT, SORT_OPTIONS } from '../constants';
 import { KEY_ORDER, KEY_SORTING } from '../constants/key';
-import { getValueFromLocalStorage, setValueToLocalStorage } from '../service/localStorage';
+import { LocalStorageService } from '../service/localStorage';
 
 import { renderListAndPaginationToUI } from './renderPagination';
 
@@ -28,12 +28,11 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
     return;
   }
   selectSort.innerHTML = sortOptionHTML;
-  setDefaultSelected(selectSort, getValueFromLocalStorage<Sorting>(KEY_SORTING)?.title ?? SORT_OPTIONS[0].title);
+  setDefaultSelected(selectSort, LocalStorageService.getValue<Sorting>(KEY_SORTING)?.title ?? SORT_OPTIONS[0].title);
   selectSort.addEventListener('change', () => {
-      const { value } = selectSort;
-    setValueToLocalStorage(KEY_SORTING, SORT_OPTIONS.filter(item => item.title === value)[0]);
-    const selectSortingValue = getValueFromLocalStorage<Sorting>(KEY_SORTING) ?? SORT_OPTIONS[0];
-
+    const { value } = selectSort;
+    LocalStorageService.setValue(KEY_SORTING, SORT_OPTIONS.filter(item => item.title === value)[0]);
+    const selectSortingValue = LocalStorageService.getValue<Sorting>(KEY_SORTING) ?? SORT_OPTIONS[0];
     const optionsUpdated = new PaginationOptions({
       ...options,
       offset: DEFAULT_LIMIT,
@@ -44,18 +43,17 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
       }),
     });
       renderListAndPaginationToUI(optionsUpdated);
-
     });
 
   if (selectOrdering === null || selectOrdering === undefined) {
     return;
   }
   selectOrdering.innerHTML = orderOptionHTML;
-  setDefaultSelected(selectOrdering, getValueFromLocalStorage<OrderOption>(KEY_ORDER) ?? OrderOption.Ascending);
+  setDefaultSelected(selectOrdering, LocalStorageService.getValue<OrderOption>(KEY_ORDER) ?? OrderOption.Ascending);
   selectOrdering.addEventListener('change', () => {
 
-    setValueToLocalStorage(KEY_ORDER, selectOrdering.value);
-    const selectOrderingValue = getValueFromLocalStorage<OrderOption>(KEY_ORDER) ?? OrderOption.Ascending;
+    LocalStorageService.setValue(KEY_ORDER, selectOrdering.value);
+    const selectOrderingValue = LocalStorageService.getValue<OrderOption>(KEY_ORDER) ?? OrderOption.Ascending;
 
     /** Get type of ordering option.*/
     function getSelectOptions(): boolean {

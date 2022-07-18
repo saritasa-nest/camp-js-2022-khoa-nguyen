@@ -1,11 +1,11 @@
-import { OrderOption, Type } from '@js-camp/core/enum';
+import { OrderOption, TypeModel } from '@js-camp/core/enum';
 import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 import { Sorting } from '@js-camp/core/models/sorting';
 
 import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, SORT_OPTIONS } from '../constants';
 import { KEY_ORDER, KEY_SORTING, KEY_TYPE } from '../constants/key';
 import { fetchAnimeList } from '../scripts/fetchAnimeList';
-import { getValueFromLocalStorage } from '../service/localStorage';
+import { LocalStorageService } from '../service/localStorage';
 
 import { renderFilterByType } from './renderFilterByType';
 import { renderListAndPaginationToUI } from './renderPagination';
@@ -19,11 +19,11 @@ export async function initAnimeTable(): Promise<void> {
     activePage: DEFAULT_ACTIVE_PAGE,
     totalPages: 0,
     sorting: new Sorting({
-      ...getValueFromLocalStorage<Sorting>(KEY_SORTING) ?? SORT_OPTIONS[0],
-      isAscending: (getValueFromLocalStorage<OrderOption>(KEY_ORDER) === null ||
-        getValueFromLocalStorage<OrderOption>(KEY_ORDER) === OrderOption.Ascending),
+      ...LocalStorageService.getValue<Sorting>(KEY_SORTING) ?? SORT_OPTIONS[0],
+      isAscending: (LocalStorageService.getValue<OrderOption>(KEY_ORDER) === null ||
+      LocalStorageService.getValue<OrderOption>(KEY_ORDER) === OrderOption.Ascending),
     }),
-    type: getValueFromLocalStorage<Type>(KEY_TYPE) ?? Type.DEFAULT,
+    type: LocalStorageService.getValue<TypeModel>(KEY_TYPE) ?? TypeModel.Default,
   });
   const animeListInitial = await fetchAnimeList(INITIAL_PAGINATION);
 

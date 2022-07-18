@@ -1,4 +1,4 @@
-import { Type, Status } from '../enum/anime';
+import { StatusModel, TypeModel } from '../enum';
 
 import { DateRangeDto } from './dateRange.dto';
 
@@ -9,7 +9,7 @@ export interface AnimeDto {
   readonly id: number;
 
   /** Date created. */
-  readonly created: number;
+  readonly created: string;
 
   /** Date modified. */
   readonly modified: string;
@@ -27,8 +27,8 @@ export interface AnimeDto {
   readonly aired: DateRangeDto;
 
   /** Anime type. */
-  readonly type: Type;
+  readonly type: TypeModel;
 
   /** Status of anime. */
-  readonly status: Status;
+  readonly status: StatusModel;
 }

@@ -1,4 +1,4 @@
-import { OrderOption, Type } from '@js-camp/core/enum';
+import { OrderOption, TypeModel } from '@js-camp/core/enum';
 import { Anime } from '@js-camp/core/models/anime';
 import { Pagination } from '@js-camp/core/models/pagination';
 import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
@@ -8,7 +8,7 @@ import { formatDate } from '@js-camp/core/utils';
 import { SORT_OPTIONS } from '../constants';
 
 import { KEY_ORDER, KEY_SORTING, KEY_TYPE } from '../constants/key';
-import { getValueFromLocalStorage } from '../service/localStorage';
+import { LocalStorageService } from '../service/localStorage';
 
 import { fetchAnimeList } from './fetchAnimeList';
 
@@ -23,11 +23,11 @@ export async function renderAnimeList(options: PaginationOptions): Promise<Pagin
     const optionUpdated = new PaginationOptions({
       ...options,
       sorting: new Sorting({
-        ...getValueFromLocalStorage<Sorting>(KEY_SORTING) ?? SORT_OPTIONS[0],
-        isAscending: (!getValueFromLocalStorage<OrderOption>(KEY_ORDER) ||
-        getValueFromLocalStorage<OrderOption>(KEY_ORDER) === OrderOption.Ascending),
+        ...LocalStorageService.getValue<Sorting>(KEY_SORTING) ?? SORT_OPTIONS[0],
+        isAscending: (!LocalStorageService.getValue<OrderOption>(KEY_ORDER) ||
+        LocalStorageService.getValue<OrderOption>(KEY_ORDER) === OrderOption.Ascending),
       }),
-      type: getValueFromLocalStorage<Type>(KEY_TYPE) ?? Type.DEFAULT,
+      type: LocalStorageService.getValue<TypeModel>(KEY_TYPE) ?? TypeModel.Default,
       offset: options.activePage * options.limit,
     });
     const animeList = await fetchAnimeList(optionUpdated);
@@ -47,7 +47,7 @@ export async function renderAnimeList(options: PaginationOptions): Promise<Pagin
       `
     )).join('');
 
-    if (container) {
+    if (container !== null && container !== undefined) {
       container.innerHTML = `
       <table>
         <caption class="table__caption" >Anime list</caption>
@@ -61,7 +61,6 @@ export async function renderAnimeList(options: PaginationOptions): Promise<Pagin
         </tr>
         ${htmlTableContent}
       </table>
-
     `;
     }
     return animeList;
