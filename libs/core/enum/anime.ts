@@ -1,23 +1,39 @@
 
-/** Anime type. */
-export enum Type {
-  ONA = 'Ona',
+/** Anime type dto. */
+export enum TypeDto {
+  ONA = 'ONA',
   TV = 'TV',
-  MOVIE = 'Movie',
-  SPECIAL = 'Special',
-  MUSIC = 'Music',
-  OVA = 'Ova',
-  UNDEFINED = 'Undefined',
+  MOVIE = 'MOVIE',
+  SPECIAL = 'SPECIAL',
+  MUSIC = 'MUSIC',
+  OVA = 'OVA',
+  DEFAULT = '',
 }
 
-/** Anime status. */
-export enum Status {
+/** Anime status dto. */
+export enum StatusDto {
+  AIRING = 'AIRING',
+  FINISHED = 'FINISHED',
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  NOT_YET_AIRED = 'NOT_YET_AIRED',
+  DEFAULT = '',
+}
 
-  // Airing = 'AIRING',
-  // Finished = 'FINISHED',
-  // NotYetAir = 'NOT_YET_AIRED',
-  AIRING = 'Airing',
-  FINISHED = 'Finished',
-  NOT_YET_AIRED = 'Not yet aired',
-  UNDEFINED = 'Undefined',
+/** Anime type model. */
+export enum TypeModel {
+  Ona = 'Ona',
+  Tv = 'Tv',
+  Movie = 'Movie',
+  Special = 'Special',
+  Music = 'Music',
+  Ova = 'Ova',
+  Default = '',
+}
+
+/** Anime status model. */
+export enum StatusModel {
+  Airing = 'Airing',
+  Finished = 'Finished',
+  NotAired = 'Not yet aired',
+  Default = '',
 }

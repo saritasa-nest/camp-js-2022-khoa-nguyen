@@ -1,4 +1,4 @@
-import { Type, Status } from '../enum/anime';
+import { StatusDto, TypeDto } from '../enum/anime';
 
 import { DateRangeDto } from './dateRange.dto';
 
@@ -27,8 +27,8 @@ export interface AnimeDto {
   readonly aired: DateRangeDto;
 
   /** Anime type. */
-  readonly type: keyof Type;
+  readonly type: TypeDto;
 
   /** Status of anime. */
-  readonly status: keyof Status;
+  readonly status: StatusDto;
 }
