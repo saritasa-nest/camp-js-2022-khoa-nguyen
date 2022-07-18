@@ -1,11 +1,11 @@
 import { OrderOption } from '@js-camp/core/enum';
 import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 import { Sorting } from '@js-camp/core/models/sorting';
-import { setDefaultSelected } from '@js-camp/core/utils';
 
 import { DEFAULT_LIMIT, SORT_OPTIONS } from '../constants';
 import { KEY_ORDER, KEY_SORTING } from '../constants/key';
 import { getValueFromLocalStorage, setValueToLocalStorage } from '../service/localStorage';
+import { setDefaultSelected } from '../utils';
 
 import { renderListAndPaginationToUI } from './renderPagination';
 

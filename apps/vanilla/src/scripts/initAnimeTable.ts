@@ -10,9 +10,7 @@ import { renderAnimeList } from './renderAnimeList';
 import { renderListAndPaginationToUI } from './renderPagination';
 import { renderSortingAndOrdering } from './renderSortingAndOrdering';
 
-/**
- * Init anime table view.
- */
+/** Init anime table view. */
 export async function initAnimeTable(): Promise<void> {
   const INITIAL_PAGINATION: PaginationOptions = new PaginationOptions({
     limit: DEFAULT_LIMIT,
