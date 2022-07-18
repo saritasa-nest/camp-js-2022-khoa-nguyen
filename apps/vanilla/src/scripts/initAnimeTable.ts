@@ -8,7 +8,7 @@ import { fetchAnimeList } from '../scripts/fetchAnimeList';
 import { LocalStorageService } from '../service/localStorage';
 
 import { renderFilterByType } from './renderFilterByType';
-import { renderListAndPaginationToUI } from './renderPagination';
+import { renderListAnimeWithActivePage } from './renderPagination';
 import { renderSortingAndOrdering } from './renderSortingAndOrdering';
 
 /** Init anime table view. */
@@ -31,7 +31,7 @@ export async function initAnimeTable(): Promise<void> {
     ...INITIAL_PAGINATION,
     totalPages: Math.ceil(animeListInitial.count / DEFAULT_LIMIT) - 1,
   });
-  renderListAndPaginationToUI(PAGINATION_OPTIONS);
+  renderListAnimeWithActivePage(PAGINATION_OPTIONS);
   renderSortingAndOrdering(PAGINATION_OPTIONS);
   renderFilterByType(PAGINATION_OPTIONS);
 }

@@ -2,6 +2,8 @@ import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 
 import { DEFAULT_LIMIT } from '../constants';
 
+import { throwError } from './getError';
+
 import { renderAnimeList } from './renderAnimeList';
 
 const paginationContainer = document.querySelector('.pagination');
@@ -61,7 +63,7 @@ function renderPagination(options: PaginationOptions): void {
         activePage: 1,
         offset: DEFAULT_LIMIT * options.activePage,
       });
-      renderListAndPaginationToUI(optionUpdated);
+      renderListAnimeWithActivePage(optionUpdated);
     });
 
   buttonLastPage?.addEventListener('click', () => {
@@ -70,7 +72,7 @@ function renderPagination(options: PaginationOptions): void {
         activePage: options.totalPages,
         offset: DEFAULT_LIMIT * options.activePage,
       });
-      renderListAndPaginationToUI(optionUpdated);
+      renderListAnimeWithActivePage(optionUpdated);
     });
 
   if (options.activePage === options.totalPages) {
@@ -90,7 +92,7 @@ function renderPagination(options: PaginationOptions): void {
  * Render anime list and pagination to UI.
  * @param options Options of pagination.
  */
-export async function renderListAndPaginationToUI(options: PaginationOptions): Promise<void> {
+export async function renderListAnimeWithActivePage(options: PaginationOptions): Promise<void> {
   try {
     const animeList = await renderAnimeList(options);
     const optionUpdated = new PaginationOptions({
@@ -111,14 +113,10 @@ export async function renderListAndPaginationToUI(options: PaginationOptions): P
           offset: DEFAULT_LIMIT * numPage,
           activePage: numPage,
         });
-        renderListAndPaginationToUI(optionUpdatedTrigger);
+        renderListAnimeWithActivePage(optionUpdatedTrigger);
       });
     });
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      throw new Error(`Unable to render UI ${error.message}`);
-    } else {
-      throw new Error('Unexpected error!');
-    }
+    throwError(error, 'Unable to render UI ');
   }
 }

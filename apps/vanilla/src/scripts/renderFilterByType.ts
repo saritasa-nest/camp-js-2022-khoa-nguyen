@@ -6,16 +6,17 @@ import { FILTER_TYPE_OPTIONS } from '../constants';
 import { KEY_TYPE } from '../constants/key';
 import { LocalStorageService } from '../service/localStorage';
 
-import { renderListAndPaginationToUI } from './renderPagination';
+import { renderListAnimeWithActivePage } from './renderPagination';
 
 const selectType = document.querySelector<HTMLSelectElement>('.filter__item_select-type');
 
-/** Render filter by type.
+/**
+ * Render filter by type.
  * @param options Pagination options.
  */
 export function renderFilterByType(options: PaginationOptions): void {
   const typeOptionHTML = FILTER_TYPE_OPTIONS.map(item => `<option value="${item.title}">${item.title}</option>`).join('');
-  if (selectType === null || selectType === undefined) {
+  if (selectType == null) {
     return;
   }
   selectType.innerHTML = typeOptionHTML;
@@ -30,6 +31,6 @@ export function renderFilterByType(options: PaginationOptions): void {
       activePage: 1,
       type: valueType,
     });
-    renderListAndPaginationToUI(optionsUpdated);
+    renderListAnimeWithActivePage(optionsUpdated);
   });
 }

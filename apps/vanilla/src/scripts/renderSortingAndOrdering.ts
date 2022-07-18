@@ -7,7 +7,7 @@ import { DEFAULT_LIMIT, SORT_OPTIONS } from '../constants';
 import { KEY_ORDER, KEY_SORTING } from '../constants/key';
 import { LocalStorageService } from '../service/localStorage';
 
-import { renderListAndPaginationToUI } from './renderPagination';
+import { renderListAnimeWithActivePage } from './renderPagination';
 
 const selectSort = document.querySelector<HTMLSelectElement>('.filter__item_select-sort');
 const selectOrdering = document.querySelector<HTMLSelectElement>('.filter__item_select-order');
@@ -16,6 +16,9 @@ const selectOrdering = document.querySelector<HTMLSelectElement>('.filter__item_
  * @param options Options of pagination.
  */
 export function renderSortingAndOrdering(options: PaginationOptions): void {
+  if (selectSort === null || selectSort === undefined) {
+    return;
+  }
   const sortOptionHTML = SORT_OPTIONS.map(item => (
     `<option value="${item.title}">${item.title}</option>`
   )).join('');
@@ -24,9 +27,6 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
     `<option value ="${item}">${item}</option>`
   ))
     .join('');
-  if (selectSort === null || selectSort === undefined) {
-    return;
-  }
   selectSort.innerHTML = sortOptionHTML;
   setDefaultSelected(selectSort, LocalStorageService.getValue<Sorting>(KEY_SORTING)?.title ?? SORT_OPTIONS[0].title);
   selectSort.addEventListener('change', () => {
@@ -42,7 +42,7 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
         ...selectSortingValue,
       }),
     });
-      renderListAndPaginationToUI(optionsUpdated);
+      renderListAnimeWithActivePage(optionsUpdated);
     });
 
   if (selectOrdering === null || selectOrdering === undefined) {
@@ -64,6 +64,6 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
         isAscending: selectOrderingValue === OrderOption.Ascending,
       }),
     });
-    renderListAndPaginationToUI(optionsUpdated);
+    renderListAnimeWithActivePage(optionsUpdated);
     });
 }
