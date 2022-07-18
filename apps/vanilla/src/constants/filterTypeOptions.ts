@@ -1,8 +1,18 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
+/** Options of type interface. */
+interface FilterType {
+
+  /** Title of options. */
+  title: string;
+
+  /** Value of options. */
+  value: TypeModel;
+}
+
 import { TypeModel } from '@js-camp/core/enum';
 
-export const FILTER_TYPE_OPTIONS = [
+export const FILTER_TYPE_OPTIONS: FilterType[] = [
   {
     title: 'Default',
     value: TypeModel.Default,

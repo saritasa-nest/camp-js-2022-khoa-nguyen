@@ -30,8 +30,8 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
   selectSort.innerHTML = sortOptionHTML;
   setDefaultSelected(selectSort, LocalStorageService.getValue<Sorting>(KEY_SORTING)?.title ?? SORT_OPTIONS[0].title);
   selectSort.addEventListener('change', () => {
-      const { value } = selectSort;
-      LocalStorageService.setValue(KEY_SORTING, SORT_OPTIONS.filter(item => item.title === value)[0]);
+    const { value } = selectSort;
+    LocalStorageService.setValue(KEY_SORTING, SORT_OPTIONS.filter(item => item.title === value)[0]);
     const selectSortingValue = LocalStorageService.getValue<Sorting>(KEY_SORTING) ?? SORT_OPTIONS[0];
 
     const optionsUpdated = new PaginationOptions({
@@ -44,7 +44,6 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
       }),
     });
       renderListAndPaginationToUI(optionsUpdated);
-
     });
 
   if (selectOrdering === null || selectOrdering === undefined) {

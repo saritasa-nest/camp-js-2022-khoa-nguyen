@@ -47,7 +47,7 @@ export async function renderAnimeList(options: PaginationOptions): Promise<Pagin
       `
     )).join('');
 
-    if (container) {
+    if (container !== null && container !== undefined) {
       container.innerHTML = `
       <table>
         <caption class="table__caption" >Anime list</caption>
@@ -61,7 +61,6 @@ export async function renderAnimeList(options: PaginationOptions): Promise<Pagin
         </tr>
         ${htmlTableContent}
       </table>
-
     `;
     }
     return animeList;
