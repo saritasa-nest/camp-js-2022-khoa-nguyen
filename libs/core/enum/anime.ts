@@ -1,5 +1,5 @@
 
-/** Anime type. */
+/** Anime type dto. */
 export enum TypeDto {
   ONA = 'ONA',
   TV = 'TV',
@@ -10,7 +10,7 @@ export enum TypeDto {
   DEFAULT = '',
 }
 
-/** Anime status. */
+/** Anime status dto. */
 export enum StatusDto {
   AIRING = 'AIRING',
   FINISHED = 'FINISHED',
@@ -19,7 +19,7 @@ export enum StatusDto {
   DEFAULT = '',
 }
 
-/** Anime type. */
+/** Anime type model. */
 export enum TypeModel {
   Ona = 'Ona',
   Tv = 'Tv',
@@ -30,7 +30,7 @@ export enum TypeModel {
   Default = '',
 }
 
-/** Anime status. */
+/** Anime status model. */
 export enum StatusModel {
   Airing = 'Airing',
   Finished = 'Finished',
