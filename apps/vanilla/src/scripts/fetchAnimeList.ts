@@ -9,11 +9,13 @@ import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 
 import { appAxios } from '../configs';
 
+import { throwError } from './getError';
+
 /**
  * Fetch anime data with corresponding limit, offset and ordering.
  * @param options Options settings of pagination.
  */
-export async function fetchAnimeList(options: PaginationOptions): Promise<Pagination<Anime>> {
+export async function fetchAnimeList(options: PaginationOptions): Promise<Pagination<Anime> | null> {
   try {
     const params = PaginationOptionsMapper.toDto(options);
     const result = await appAxios.get<PaginationDto<AnimeDto>>(`anime/anime/`,
@@ -22,10 +24,7 @@ export async function fetchAnimeList(options: PaginationOptions): Promise<Pagina
       });
     return PaginationMapper.fromDto<AnimeDto, Anime>(result.data, AnimeMapper.fromDto);
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      throw new Error(`Failed to get anime list: ${error.message}`);
-    } else {
-      throw new Error('Unexpected error!');
-    }
+    throwError(error, 'Unable to get anime data');
+    return null;
   }
 }

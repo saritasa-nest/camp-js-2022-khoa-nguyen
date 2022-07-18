@@ -4,15 +4,15 @@ import { Sorting } from '@js-camp/core/models/sorting';
 
 import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, SORT_OPTIONS } from '../constants';
 import { KEY_ORDER, KEY_SORTING, KEY_TYPE } from '../constants/key';
-import { fetchAnimeList } from '../scripts/fetchAnimeList';
 import { LocalStorageService } from '../services/localStore';
 
 import { renderFilterByType } from './renderFilterByType';
-import { renderListAndPaginationToUI } from './renderPagination';
+import { renderListOnActivePage } from './renderPagination';
 import { renderSortingAndOrdering } from './renderSortingAndOrdering';
 
 /** Init anime table view. */
-export async function initAnimeTable(): Promise<void> {
+export function initAnimeTable(): void {
+  LocalStorageService.clear();
   const INITIAL_PAGINATION: PaginationOptions = new PaginationOptions({
     limit: DEFAULT_LIMIT,
     offset: DEFAULT_OFFSET,
@@ -25,13 +25,8 @@ export async function initAnimeTable(): Promise<void> {
     }),
     type: LocalStorageService.getValue<TypeModel>(KEY_TYPE) ?? TypeModel.Default,
   });
-  const animeListInitial = await fetchAnimeList(INITIAL_PAGINATION);
 
-  const PAGINATION_OPTIONS: PaginationOptions = new PaginationOptions({
-    ...INITIAL_PAGINATION,
-    totalPages: Math.ceil(animeListInitial.count / DEFAULT_LIMIT) - 1,
-  });
-  renderListAndPaginationToUI(PAGINATION_OPTIONS);
-  renderSortingAndOrdering(PAGINATION_OPTIONS);
-  renderFilterByType(PAGINATION_OPTIONS);
+  renderListOnActivePage(INITIAL_PAGINATION);
+  renderSortingAndOrdering(INITIAL_PAGINATION);
+  renderFilterByType(INITIAL_PAGINATION);
 }

@@ -32,4 +32,10 @@ export namespace LocalStorageService {
     localStorage.removeItem(key);
   }
 
+  /**
+   * Clear value from local storage.
+   */
+  export function clear(): void {
+    localStorage.clear();
+  }
 }

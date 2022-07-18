@@ -2,12 +2,12 @@ import { OrderOption } from '@js-camp/core/enum';
 import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 import { Sorting } from '@js-camp/core/models/sorting';
 
-import { DEFAULT_LIMIT, SORT_OPTIONS } from '../constants';
+import { DEFAULT_OFFSET, SORT_OPTIONS } from '../constants';
 import { KEY_ORDER, KEY_SORTING } from '../constants/key';
 import { LocalStorageService } from '../services/localStore';
 import { setDefaultSelected } from '../util';
 
-import { renderListAndPaginationToUI } from './renderPagination';
+import { renderListOnActivePage } from './renderPagination';
 
 const selectSort = document.querySelector<HTMLSelectElement>('.filter__item_select-sort');
 const selectOrdering = document.querySelector<HTMLSelectElement>('.filter__item_select-order');
@@ -35,14 +35,14 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
     const selectSortingValue = LocalStorageService.getValue<Sorting>(KEY_SORTING) ?? SORT_OPTIONS[0];
     const optionsUpdated = new PaginationOptions({
       ...options,
-      offset: DEFAULT_LIMIT,
+      offset: DEFAULT_OFFSET,
       activePage: 1,
       sorting: new Sorting({
         ...options.sorting,
         ...selectSortingValue,
       }),
     });
-      renderListAndPaginationToUI(optionsUpdated);
+      renderListOnActivePage(optionsUpdated);
     });
 
   if (selectOrdering === null || selectOrdering === undefined) {
@@ -55,23 +55,15 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
     LocalStorageService.setValue(KEY_ORDER, selectOrdering.value);
     const selectOrderingValue = LocalStorageService.getValue<OrderOption>(KEY_ORDER) ?? OrderOption.Ascending;
 
-    /** Get type of ordering option.*/
-    function getSelectOptions(): boolean {
-      if (selectOrderingValue === OrderOption.Ascending) {
-        return true;
-      }
-      return false;
-    }
-
     const optionsUpdated = new PaginationOptions({
       ...options,
-      offset: DEFAULT_LIMIT,
+      offset: DEFAULT_OFFSET,
       activePage: 1,
       sorting: new Sorting({
         ...options.sorting,
-        isAscending: getSelectOptions(),
+        isAscending: selectOrderingValue === OrderOption.Ascending,
       }),
     });
-    renderListAndPaginationToUI(optionsUpdated);
+    renderListOnActivePage(optionsUpdated);
     });
 }

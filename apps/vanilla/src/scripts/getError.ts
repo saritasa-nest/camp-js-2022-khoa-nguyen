@@ -15,3 +15,16 @@ export function getError<ErrorDto, Error>(error: unknown, mapperError: (error: E
   }
   return new HttpError({ detail: 'Unknown error', data: null });
 }
+
+/**
+ * Throw errors.
+ * @param error Error catched.
+ * @param message Message of error.
+ */
+export function throwError(error: unknown, message: string): void {
+  if (error instanceof Error) {
+    throw new Error(`${message} ${error.message}`);
+  } else {
+    throw new Error('Unexpected error!');
+  }
+}

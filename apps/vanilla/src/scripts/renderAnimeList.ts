@@ -11,6 +11,7 @@ import { KEY_ORDER, KEY_SORTING, KEY_TYPE } from '../constants/key';
 import { LocalStorageService } from '../services/localStore';
 
 import { fetchAnimeList } from './fetchAnimeList';
+import { throwError } from './getError';
 
 const container = document.querySelector('.table');
 
@@ -18,13 +19,13 @@ const container = document.querySelector('.table');
  * Render anime list.
  * @param options Options of pagination.
  */
-export async function renderAnimeList(options: PaginationOptions): Promise<Pagination<Anime>> {
+export async function renderAnimeList(options: PaginationOptions): Promise<Pagination<Anime> | null> {
   try {
     const optionUpdated = new PaginationOptions({
       ...options,
       sorting: new Sorting({
         ...LocalStorageService.getValue<Sorting>(KEY_SORTING) ?? SORT_OPTIONS[0],
-        isAscending: (!LocalStorageService.getValue<OrderOption>(KEY_ORDER) ||
+        isAscending: (LocalStorageService.getValue<OrderOption>(KEY_ORDER) == null ||
         LocalStorageService.getValue<OrderOption>(KEY_ORDER) === OrderOption.Ascending),
       }),
       type: LocalStorageService.getValue<TypeModel>(KEY_TYPE) ?? TypeModel.Default,
@@ -32,7 +33,7 @@ export async function renderAnimeList(options: PaginationOptions): Promise<Pagin
     });
     const animeList = await fetchAnimeList(optionUpdated);
 
-    const htmlTableContent = animeList.results.map(element => (
+    const htmlTableContent = animeList?.results.map(element => (
       `
         <tr class="table__row">
           <th class="table__row_item table__row_item_thumb">
@@ -65,10 +66,7 @@ export async function renderAnimeList(options: PaginationOptions): Promise<Pagin
     }
     return animeList;
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      throw new Error(`Unable to render Anime list ${error.message}`);
-    } else {
-      throw new Error('Unexpected error!');
-    }
+    throwError(error, 'Failed to render anime list');
+    return null;
   }
 }
