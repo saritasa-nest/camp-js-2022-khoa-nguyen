@@ -3,7 +3,7 @@ import { Token } from '@js-camp/core/models/token';
 import { User } from '@js-camp/core/models/user';
 import { navigate, queryErrorSpan } from '@js-camp/core/utils';
 
-import { PROFILE_URL, TOKEN_KEY } from '../../constants';
+import { PROFILE_URL, KEY_TOKEN } from '../../constants';
 
 import { validateConfirmPassword } from '../../scripts/validate';
 import { registerNewUser } from '../../services/api/register';
@@ -21,11 +21,11 @@ function validateRegisterInfo(): void {
     form.addEventListener('submit', async(event): Promise<void> => {
       event.preventDefault();
       if (
-        inputEmail === null ||
-        inputFirstName === null ||
-        inputConfirmPassword === null ||
-        inputPassword === null ||
-        inputLastName === null
+        inputEmail == null ||
+        inputFirstName == null ||
+        inputConfirmPassword == null ||
+        inputPassword == null ||
+        inputLastName == null
       ) {
         return;
       }
@@ -43,7 +43,7 @@ function validateRegisterInfo(): void {
       const result = await registerNewUser(user);
       if (result instanceof HttpError) {
         const error = result.data;
-        if (error === null || error === undefined) {
+        if (error == null) {
           return;
         }
         queryErrorSpan(inputEmail, error.email);
@@ -52,7 +52,7 @@ function validateRegisterInfo(): void {
         queryErrorSpan(inputPassword, error.password);
         return;
       }
-      LocalStorageService.setValue<Token>(TOKEN_KEY, result);
+      LocalStorageService.setValue<Token>(KEY_TOKEN, result);
       navigate(PROFILE_URL);
     });
   }

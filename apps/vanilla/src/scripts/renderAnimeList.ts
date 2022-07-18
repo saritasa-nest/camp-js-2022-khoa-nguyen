@@ -49,7 +49,7 @@ export async function renderAnimeList(options: PaginationOptions): Promise<Pagin
       `
     )).join('');
 
-    if (container !== null && container !== undefined) {
+    if (container != null) {
       container.innerHTML = `
       <table>
         <caption class="table__caption" >Anime list</caption>

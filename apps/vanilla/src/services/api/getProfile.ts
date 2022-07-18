@@ -18,7 +18,7 @@ export async function getProfile(): Promise<Profile | HttpError<null>> {
     return ProfileMapper.fromDto(result.data);
   } catch (error: unknown) {
     const errorWithType = error as AxiosError<HttpErrorDto<null>>;
-    if (errorWithType.response !== null && errorWithType.response !== undefined) {
+    if (errorWithType.response != null) {
       return HttpErrorMapper.fromDtoWithNull(errorWithType.response.data);
     }
     return new HttpError({ detail: 'Unknown error' });

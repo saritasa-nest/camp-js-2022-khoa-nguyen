@@ -10,7 +10,7 @@ import { AxiosError } from 'axios';
  */
 export function getError<ErrorDto, Error>(error: unknown, mapperError: (error: ErrorDto) => Error): HttpError<Error | null> {
   const errorWithType = error as AxiosError<HttpErrorDto<ErrorDto>>;
-  if (errorWithType.response !== null && errorWithType.response !== undefined) {
+  if (errorWithType.response != null) {
     return HttpErrorMapper.fromDto<ErrorDto, Error>(errorWithType.response.data, mapperError);
   }
   return new HttpError({ detail: 'Unknown error', data: null });

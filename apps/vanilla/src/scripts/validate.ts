@@ -17,7 +17,7 @@ export function validateConfirmPassword(validationObject: Validation, message: s
   const passwordValue = passwordElement?.value;
   const confirmPasswordValue = confirmPasswordElement?.value;
   const errorElement = confirmPasswordElement.parentElement?.parentElement?.querySelector('.form__span-error');
-  if (errorElement === null || errorElement === undefined) {
+  if (errorElement == null) {
     return false;
   }
   if (passwordValue === confirmPasswordValue) {

@@ -2,19 +2,19 @@ import { HttpError } from '@js-camp/core/models/httpError';
 import { Token } from '@js-camp/core/models/token';
 import { navigate } from '@js-camp/core/utils';
 
-import { LOGIN_URL, TOKEN_KEY } from '../../constants';
+import { LOGIN_URL, KEY_TOKEN } from '../../constants';
 import { getProfile } from '../../services/api/getProfile';
 import { LocalStorageService } from '../../services/localStore';
 
-const token = LocalStorageService.getValue<Token>(TOKEN_KEY);
+const token = LocalStorageService.getValue<Token>(KEY_TOKEN);
 
-if (token === null) {
+if (token == null) {
   navigate(LOGIN_URL);
 }
 
 /** Display user profile on screen. */
 async function displayProfile(): Promise<void> {
-  if (token === null) {
+  if (token == null) {
     return;
   }
   const profile = await getProfile();
@@ -46,10 +46,10 @@ async function displayProfile(): Promise<void> {
       value: profile.modified.toLocaleString(),
     },
   ];
-  if (titleElement === null || titleElement === undefined) {
+  if (titleElement == null) {
     return;
   }
-  if (infoWrapper === null || infoWrapper === undefined) {
+  if (infoWrapper == null) {
     return;
   }
   const profileHTML = PROFILE_INFO.map(item => `
@@ -64,7 +64,7 @@ async function displayProfile(): Promise<void> {
 
 document.querySelector('.button')?.addEventListener('click', () => {
   navigate(LOGIN_URL);
-  LocalStorageService.remove(TOKEN_KEY);
+  LocalStorageService.remove(KEY_TOKEN);
 });
 
 displayProfile();

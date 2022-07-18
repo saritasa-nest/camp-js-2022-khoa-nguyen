@@ -6,7 +6,7 @@
 export function setDefaultSelected(selectElement: HTMLSelectElement, defaultValue: string): void {
   const optionList = selectElement.querySelectorAll('option');
   optionList.forEach(option => {
-    if (defaultValue === null || defaultValue === undefined) {
+    if (defaultValue == null) {
       return;
     }
     if (option.value === defaultValue) {

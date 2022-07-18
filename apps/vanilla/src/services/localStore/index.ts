@@ -7,7 +7,7 @@ export namespace LocalStorageService {
    */
   export function getValue<T>(key: string): T | null {
     const localValue = localStorage.getItem(key);
-    if (localValue !== null) {
+    if (localValue != null) {
       return JSON.parse(localValue);
     }
     return null;
@@ -19,7 +19,7 @@ export namespace LocalStorageService {
    * @param value Value that needs to be stored.
    */
   export function setValue<T>(key: string, value: T): void {
-    if (value !== undefined) {
+    if (value != null) {
       localStorage.setItem(key, JSON.stringify(value));
     }
   }

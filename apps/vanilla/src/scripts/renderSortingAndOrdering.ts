@@ -24,7 +24,7 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
     `<option value ="${item}">${item}</option>`
   ))
     .join('');
-  if (selectSort === null || selectSort === undefined) {
+  if (selectSort == null) {
     return;
   }
   selectSort.innerHTML = sortOptionHTML;
@@ -46,7 +46,7 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
       renderListOnActivePage(optionsUpdated);
     });
 
-  if (selectOrdering === null || selectOrdering === undefined) {
+  if (selectOrdering == null) {
     return;
   }
   selectOrdering.innerHTML = orderOptionHTML;

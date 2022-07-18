@@ -3,7 +3,7 @@ import { Login } from '@js-camp/core/models/login';
 import { Token } from '@js-camp/core/models/token';
 import { navigate } from '@js-camp/core/utils';
 
-import { HOME_URL, TOKEN_KEY } from '../constants';
+import { HOME_URL, KEY_TOKEN } from '../constants';
 
 import { login } from '../services/api/login';
 import { refreshToken, verifyToken } from '../services/api/verifyToken';
@@ -18,7 +18,7 @@ function validateLogin(): void {
     const errorElement = form.querySelector<HTMLSpanElement>('.form__span-error');
     form.addEventListener('submit', async e => {
         e.preventDefault();
-        if (inputEmail === null || inputPassword === null) {
+        if (inputEmail == null || inputPassword == null) {
           return;
         }
         const userLoginInfo = new Login({
@@ -34,7 +34,7 @@ function validateLogin(): void {
           errorElement.innerHTML = result.detail;
           return;
         }
-        LocalStorageService.setValue<Token>(TOKEN_KEY, result);
+        LocalStorageService.setValue<Token>(KEY_TOKEN, result);
         navigate(HOME_URL);
     });
   }
@@ -43,8 +43,8 @@ function validateLogin(): void {
 
 /** Check valid token. */
 async function checkValidToken(): Promise<void> {
-  const token = LocalStorageService.getValue<Token>(TOKEN_KEY);
-  if (token === null) {
+  const token = LocalStorageService.getValue<Token>(KEY_TOKEN);
+  if (token == null) {
     return;
   }
   const response = await verifyToken(token);
@@ -64,7 +64,7 @@ async function setRefreshedTokenToLocalStore(token: Token): Promise<void> {
   if (response instanceof HttpError) {
     return;
   }
-  LocalStorageService.setValue<Token>(TOKEN_KEY, response);
+  LocalStorageService.setValue<Token>(KEY_TOKEN, response);
   navigate(HOME_URL);
 }
 

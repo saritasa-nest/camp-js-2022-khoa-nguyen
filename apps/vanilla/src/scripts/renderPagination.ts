@@ -54,7 +54,7 @@ function renderPaginationItems(options: PaginationOptions): string {
  * @param options Options of pagination.
  */
 function renderPagination(options: PaginationOptions): void {
-  if (paginationContainer === null || paginationContainer === undefined) {
+  if (paginationContainer == null) {
     return;
   }
   paginationContainer.innerHTML = `
@@ -105,7 +105,7 @@ function renderPagination(options: PaginationOptions): void {
 export async function renderListOnActivePage(options: PaginationOptions): Promise<void> {
   try {
     const animeList = await renderAnimeList(options);
-    if (animeList === null) {
+    if (animeList == null) {
       throw new Error('Anime list is null');
     }
     const optionUpdated = new PaginationOptions({
@@ -117,7 +117,7 @@ export async function renderListOnActivePage(options: PaginationOptions): Promis
     itemsPageList.forEach(item => {
       item.addEventListener('click', () => {
         const strPage = item.childNodes[0].childNodes[0].nodeValue;
-        if (strPage === null || strPage === undefined) {
+        if (strPage == null) {
           return;
         }
         const numPage = Number.parseInt(strPage, 10);

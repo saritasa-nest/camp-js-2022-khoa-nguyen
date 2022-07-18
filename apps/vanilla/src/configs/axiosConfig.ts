@@ -1,7 +1,7 @@
 import { Token } from '@js-camp/core/models/token';
 import axios from 'axios';
 
-import { TOKEN_KEY } from '../constants';
+import { KEY_TOKEN } from '../constants';
 import { LocalStorageService } from '../services/localStore';
 
 export const appAxios = axios.create({
@@ -12,7 +12,7 @@ export const appAxios = axios.create({
 });
 
 appAxios.interceptors.request.use(config => {
-  const token = LocalStorageService.getValue<Token>(TOKEN_KEY);
+  const token = LocalStorageService.getValue<Token>(KEY_TOKEN);
   if (!token) {
     return config;
   }

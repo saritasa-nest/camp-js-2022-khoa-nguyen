@@ -12,7 +12,7 @@ import { renderListOnActivePage } from './renderPagination';
 export function renderSearchingAndHandle(options: PaginationOptions): void {
   const input = document.querySelector<HTMLInputElement>('.search__form-input');
   const button = document.querySelector('.search__form-button');
-  if (input === null || button === null) {
+  if (input == null || button == null) {
     return;
   }
   button.addEventListener('click', () => {
