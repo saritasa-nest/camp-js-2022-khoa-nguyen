@@ -33,7 +33,6 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
     const { value } = selectSort;
     LocalStorageService.setValue(KEY_SORTING, SORT_OPTIONS.filter(item => item.title === value)[0]);
     const selectSortingValue = LocalStorageService.getValue<Sorting>(KEY_SORTING) ?? SORT_OPTIONS[0];
-
     const optionsUpdated = new PaginationOptions({
       ...options,
       offset: DEFAULT_LIMIT,
