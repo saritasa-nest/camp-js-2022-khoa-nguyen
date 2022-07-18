@@ -28,8 +28,12 @@ export async function renderAnimeList(options: PaginationOptions): Promise<Pagin
         isAscending: (LocalStorageService.getValue<OrderOption>(KEY_ORDER) == null ||
         LocalStorageService.getValue<OrderOption>(KEY_ORDER) === OrderOption.Ascending),
       }),
+<<<<<<< HEAD
       type: LocalStorageService.getValue<TypeModel>(KEY_TYPE) ?? TypeModel.Default,
       offset: options.activePage * options.limit,
+=======
+      offset: (options.activePage - 1) * options.limit,
+>>>>>>> origin/feature/JC19-382-add-searching
     });
     const animeList = await fetchAnimeList(optionUpdated);
 

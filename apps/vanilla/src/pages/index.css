@@ -70,6 +70,16 @@
   margin-top: 15px;
 }
 
+.search__title {
+  font-size: var(--primary-font-size-normal);
+  color: var(--primary-font-color);
+}
+
+.search__form {
+  display: flex;
+  align-items: center;
+}
+
 .filter {
   display: flex;
   justify-content: space-between;

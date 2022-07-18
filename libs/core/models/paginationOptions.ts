@@ -19,6 +19,9 @@ export class PaginationOptions extends Immerable {
   /** Total pages of data. */
   public readonly totalPages: number;
 
+  /** Search items by name. */
+  public readonly search: string;
+
   /** Active page. */
   public readonly activePage: number;
 
@@ -33,6 +36,7 @@ export class PaginationOptions extends Immerable {
     this.totalPages = data.totalPages;
     this.activePage = data.activePage;
     this.type = data.type;
+    this.search = data.search;
   }
 }
 

@@ -1,4 +1,4 @@
-import { TypeDto, StatusDto } from '../enum/anime';
+import { StatusDto, TypeDto } from '../enum/anime';
 
 import { DateRangeDto } from './dateRange.dto';
 

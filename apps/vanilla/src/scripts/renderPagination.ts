@@ -1,6 +1,7 @@
 import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 
-import { DEFAULT_LIMIT } from '../constants';
+import { DEFAULT_LIMIT, DEFAULT_SEARCH, KEY_SEARCHING } from '../constants';
+import { getValueFromLocalStorage } from '../service/localStorage';
 
 import { throwError } from './getError';
 
@@ -64,6 +65,7 @@ function renderPagination(options: PaginationOptions): void {
         ...options,
         activePage: 1,
         offset: DEFAULT_LIMIT * options.activePage,
+        search: getValueFromLocalStorage(KEY_SEARCHING) ?? DEFAULT_SEARCH,
       });
       renderListOnActivePage(optionUpdated);
     });
@@ -73,6 +75,7 @@ function renderPagination(options: PaginationOptions): void {
         ...options,
         activePage: options.totalPages,
         offset: DEFAULT_LIMIT * options.activePage,
+        search: getValueFromLocalStorage(KEY_SEARCHING) ?? DEFAULT_SEARCH,
       });
       renderListOnActivePage(optionUpdated);
     });
@@ -117,6 +120,7 @@ export async function renderListOnActivePage(options: PaginationOptions): Promis
           ...options,
           offset: DEFAULT_LIMIT * (numPage - 1),
           activePage: numPage,
+          search: getValueFromLocalStorage(KEY_SEARCHING) ?? DEFAULT_SEARCH,
         });
         renderListOnActivePage(optionUpdatedTrigger);
       });

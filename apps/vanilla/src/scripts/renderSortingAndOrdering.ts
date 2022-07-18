@@ -41,6 +41,7 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
         ...options.sorting,
         ...selectSortingValue,
       }),
+      search: getValueFromLocalStorage(KEY_SEARCHING) ?? DEFAULT_SEARCH,
     });
       renderListOnActivePage(optionsUpdated);
     });
@@ -63,6 +64,7 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
         ...options.sorting,
         isAscending: selectOrderingValue === OrderOption.Ascending,
       }),
+      search: getValueFromLocalStorage(KEY_SEARCHING) ?? DEFAULT_SEARCH,
     });
     renderListOnActivePage(optionsUpdated);
     });

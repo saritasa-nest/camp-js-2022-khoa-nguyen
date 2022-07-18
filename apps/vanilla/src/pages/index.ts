@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { HttpError } from '@js-camp/core/models/httpError';
 import { Login } from '@js-camp/core/models/login';
 import { Token } from '@js-camp/core/models/token';
@@ -70,3 +71,10 @@ async function setRefreshedTokenToLocalStore(token: Token): Promise<void> {
 
 validateLogin();
 checkValidToken();
+=======
+import { initAnimeTable } from '../scripts/initAnimeTable';
+import { resetStorage } from '../utils/resetLocalStorage';
+
+resetStorage();
+initAnimeTable();
+>>>>>>> origin/feature/JC19-382-add-searching
