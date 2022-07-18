@@ -5,7 +5,7 @@ import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 import { Sorting } from '@js-camp/core/models/sorting';
 import { formatDate } from '@js-camp/core/utils';
 
-import { SORT_OPTIONS } from '../constants';
+import { DEFAULT_LIMIT, SORT_OPTIONS } from '../constants';
 
 import { KEY_ORDER, KEY_SORTING, KEY_TYPE } from '../constants/key';
 import { LocalStorageService } from '../services/localStore';
@@ -29,7 +29,7 @@ export async function renderAnimeList(options: PaginationOptions): Promise<Pagin
         LocalStorageService.getValue<OrderOption>(KEY_ORDER) === OrderOption.Ascending),
       }),
       type: LocalStorageService.getValue<TypeModel>(KEY_TYPE) ?? TypeModel.Default,
-      offset: options.activePage * options.limit,
+      offset: (options.activePage - 1) * DEFAULT_LIMIT,
     });
     const animeList = await fetchAnimeList(optionUpdated);
 

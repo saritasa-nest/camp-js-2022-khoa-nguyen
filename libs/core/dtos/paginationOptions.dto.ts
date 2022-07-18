@@ -14,4 +14,7 @@ export interface PaginationOptionsDto {
 
   /** Filter by types. */
   readonly type: TypeDto;
+
+  /** Search items by name. */
+  readonly search: string;
 }

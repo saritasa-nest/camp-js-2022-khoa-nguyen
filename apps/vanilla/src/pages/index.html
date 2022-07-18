@@ -8,24 +8,24 @@
     <title>Login</title>
   </head>
   <body class="default-layout">
-    <div class="container">
-      <h1 class="title">Login to Saritasa Anime</h1>
-      <form class="form">
-        <div class="form__item form__item_email">
-          <label>Email
-            <input class="form__input" type="email" data-type="email" required/>
-          </label>
-        </div>
-        <div class="form__item form__item_password">
-          <label>Password
-            <input class="form__input" type="password" data-type="password" required/>
-          </label>
-        </div>
-        <button class="button button_submit" type="submit">Login</button>
-        <span class="form__span-error"></span>
-      </form>
-
-      <p class="text text-center">Don't have an account? Feel free to <span><a class="link" href="./signup/">Register here</a></span></p>
+    <h1 class="title">Saritasa Anime</h1>
+    <div class="search">
+      <div class="search__title">Search: </div>
+      <div class="search__form">
+        <input class="search__form-input" />
+        <button class="btn search__form-button" type="button">Search</button>
+      </div>
+    </div>
+     <!-- Filter -->
+     <div class="filter">
+      <div class="filter__item">
+        <label class="filter__item_title">Sort by</label>
+        <select class="filter__item_select filter__item_select-sort"></select>
+      </div>
+      <div class="filter__item">
+        <label class="filter__item_title">Ordering by</label>
+        <select class="filter__item_select filter__item_select-order"></select>
+      </div>
     </div>
 
     <!-- Anime films list -->
