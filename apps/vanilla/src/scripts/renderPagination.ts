@@ -23,7 +23,8 @@ function renderRangeOfPagination(activePage: number, from: number, to: number): 
   return innerHTML;
 }
 
-/**  Render items of pagination.
+/**
+ * Render items of pagination.
  * @param options Options of pagination.
  */
 function renderPaginationItems(options: PaginationOptions): string {
