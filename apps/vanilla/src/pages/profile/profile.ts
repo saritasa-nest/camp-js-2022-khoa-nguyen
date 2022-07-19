@@ -3,6 +3,7 @@ import { Token } from '@js-camp/core/models/token';
 import { navigate } from '@js-camp/core/utils';
 
 import { LOGIN_URL, KEY_TOKEN } from '../../constants';
+import { renderHeader } from '../../scripts/renderHeader';
 import { getProfile } from '../../services/api/getProfile';
 import { LocalStorageService } from '../../services/localStore';
 
@@ -68,3 +69,4 @@ document.querySelector('.button')?.addEventListener('click', () => {
 });
 
 displayProfile();
+renderHeader();

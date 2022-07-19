@@ -23,7 +23,7 @@ async function getUIHeader(): Promise<string> {
     return `
     <div class="header__navigation">
       <a href="${PROFILE_URL}" class="link header_link">Profile</a>
-      <a href="#" class="link header_link">Home</a>
+      <a href="${HOME_URL}" class="link header_link">Home</a>
     </div>
     <div div class="header__user">
       <a href="#" class="link header_link link_logout">Log out</a>
@@ -38,5 +38,4 @@ async function getUIHeader(): Promise<string> {
     <a href="${LOGIN_URL}" class="link header_link">Log in</a>
   </div>
 `;
-
 }

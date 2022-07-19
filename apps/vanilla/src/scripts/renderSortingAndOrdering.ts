@@ -2,7 +2,7 @@ import { OrderOption } from '@js-camp/core/enum';
 import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 import { Sorting } from '@js-camp/core/models/sorting';
 
-import { DEFAULT_OFFSET, DEFAULT_SEARCH, SORT_OPTIONS } from '../constants';
+import { DEFAULT_ACTIVE_PAGE, DEFAULT_OFFSET, DEFAULT_SEARCH, SORT_OPTIONS } from '../constants';
 import { KEY_ORDER, KEY_SEARCHING, KEY_SORTING } from '../constants/key';
 import { LocalStorageService } from '../services/localStore';
 import { setDefaultSelected } from '../utils';
@@ -36,7 +36,7 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
     const optionsUpdated = new PaginationOptions({
       ...options,
       offset: DEFAULT_OFFSET,
-      activePage: 1,
+      activePage: DEFAULT_ACTIVE_PAGE,
       sorting: new Sorting({
         ...options.sorting,
         ...selectSortingValue,
@@ -59,7 +59,7 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
     const optionsUpdated = new PaginationOptions({
       ...options,
       offset: DEFAULT_OFFSET,
-      activePage: 1,
+      activePage: DEFAULT_ACTIVE_PAGE,
       sorting: new Sorting({
         ...options.sorting,
         isAscending: selectOrderingValue === OrderOption.Ascending,

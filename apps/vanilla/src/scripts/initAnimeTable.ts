@@ -2,7 +2,7 @@ import { OrderOption, TypeModel } from '@js-camp/core/enum';
 import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 import { Sorting } from '@js-camp/core/models/sorting';
 
-import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, DEFAULT_SEARCH, SORT_OPTIONS } from '../constants';
+import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, DEFAULT_SEARCH, DEFAULT_TOTAL_PAGE, SORT_OPTIONS } from '../constants';
 import { KEY_ORDER, KEY_SEARCHING, KEY_SORTING, KEY_TYPE } from '../constants/key';
 import { LocalStorageService } from '../services/localStore';
 
@@ -20,7 +20,7 @@ export function initAnimeTable(): void {
     limit: DEFAULT_LIMIT,
     offset: DEFAULT_OFFSET,
     activePage: DEFAULT_ACTIVE_PAGE,
-    totalPages: 0,
+    totalPages: DEFAULT_TOTAL_PAGE,
     sorting: new Sorting({
       ...LocalStorageService.getValue<Sorting>(KEY_SORTING) ?? SORT_OPTIONS[0],
       isAscending: (LocalStorageService.getValue<OrderOption>(KEY_ORDER) === null ||

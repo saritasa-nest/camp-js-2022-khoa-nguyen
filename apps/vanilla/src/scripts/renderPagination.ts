@@ -1,6 +1,6 @@
 import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 
-import { DEFAULT_LIMIT, DEFAULT_SEARCH, KEY_SEARCHING } from '../constants';
+import { DEFAULT_LIMIT, DEFAULT_SEARCH, DEFAULT_TOTAL_PAGE, FIRST_PAGE, KEY_SEARCHING, PAGE_RANGE, PAGE_STEP } from '../constants';
 import { LocalStorageService } from '../services/localStore';
 
 import { throwError } from '../utils';
@@ -28,10 +28,8 @@ function renderRangeOfPagination(activePage: number, from: number, to: number): 
  */
 function renderPaginationItems(options: PaginationOptions): string {
   const { activePage, totalPages } = options;
-  const FIRST_PAGE = 1;
-  const PAGE_RANGE = 5;
-  const PAGE_STEP = 2;
-  if (totalPages === 0) {
+
+  if (totalPages === DEFAULT_TOTAL_PAGE) {
     return '';
   }
   if (totalPages < PAGE_RANGE) {

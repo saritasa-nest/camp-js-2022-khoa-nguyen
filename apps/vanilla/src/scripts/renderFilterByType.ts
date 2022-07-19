@@ -1,7 +1,7 @@
 import { TypeModel } from '@js-camp/core/enum';
 import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 
-import { DEFAULT_OFFSET, DEFAULT_SEARCH, FILTER_TYPE_OPTIONS } from '../constants';
+import { DEFAULT_ACTIVE_PAGE, DEFAULT_OFFSET, DEFAULT_SEARCH, FILTER_TYPE_OPTIONS } from '../constants';
 import { KEY_SEARCHING, KEY_TYPE } from '../constants/key';
 import { LocalStorageService } from '../services/localStore';
 import { setDefaultSelected } from '../utils';
@@ -29,7 +29,7 @@ export function renderFilterByType(options: PaginationOptions): void {
     const optionsUpdated = new PaginationOptions({
       ...options,
       offset: DEFAULT_OFFSET,
-      activePage: 1,
+      activePage: DEFAULT_ACTIVE_PAGE,
       type: valueType,
       search: LocalStorageService.getValue(KEY_SEARCHING) ?? DEFAULT_SEARCH,
     });

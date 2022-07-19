@@ -1,6 +1,6 @@
 import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 
-import { DEFAULT_LIMIT, KEY_SEARCHING } from '../constants';
+import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, KEY_SEARCHING } from '../constants';
 import { LocalStorageService } from '../services/localStore';
 
 import { renderListOnActivePage } from './renderPagination';
@@ -21,7 +21,7 @@ export function renderSearchingAndHandle(options: PaginationOptions): void {
     const optionsUpdated = new PaginationOptions({
       ...options,
       offset: DEFAULT_LIMIT,
-      activePage: 1,
+      activePage: DEFAULT_ACTIVE_PAGE,
       search: searchString,
     });
     renderListOnActivePage(optionsUpdated);
