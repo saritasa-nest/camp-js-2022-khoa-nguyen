@@ -4,15 +4,15 @@
 interface FilterType {
 
   /** Title of options. */
-  title: string;
+  readonly title: string;
 
   /** Value of options. */
-  value: TypeModel;
+  readonly value: TypeModel;
 }
 
 import { TypeModel } from '@js-camp/core/enum';
 
-export const FILTER_TYPE_OPTIONS: FilterType[] = [
+export const FILTER_TYPE_OPTIONS: readonly FilterType[] = [
   {
     title: 'Default',
     value: TypeModel.Default,
