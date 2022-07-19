@@ -7,38 +7,38 @@ interface FilterType {
   title: string;
 
   /** Value of options. */
-  value: TypeModel;
+  value: Type;
 }
 
-import { TypeModel } from '@js-camp/core/enum';
+import { Type } from '@js-camp/core/enum';
 
 export const FILTER_TYPE_OPTIONS: FilterType[] = [
   {
     title: 'Default',
-    value: TypeModel.Default,
+    value: Type.Default,
   },
   {
     title: 'Movie',
-    value: TypeModel.Movie,
+    value: Type.Movie,
   },
   {
     title: 'Music',
-    value: TypeModel.Music,
+    value: Type.Music,
   },
   {
     title: 'Ona',
-    value: TypeModel.Ona,
+    value: Type.Ona,
   },
   {
     title: 'Ova',
-    value: TypeModel.Ova,
+    value: Type.Ova,
   },
   {
     title: 'Special',
-    value: TypeModel.Special,
+    value: Type.Special,
   },
   {
     title: 'TV',
-    value: TypeModel.Tv,
+    value: Type.Tv,
   },
 ];

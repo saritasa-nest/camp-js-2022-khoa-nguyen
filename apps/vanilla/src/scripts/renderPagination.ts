@@ -2,8 +2,6 @@ import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 
 import { DEFAULT_LIMIT } from '../constants';
 
-import { throwError } from './getError';
-
 import { renderAnimeList } from './renderAnimeList';
 
 const paginationContainer = document.querySelector('.pagination');
@@ -117,6 +115,10 @@ export async function renderListAnimeWithActivePage(options: PaginationOptions):
       });
     });
   } catch (error: unknown) {
-    throwError(error, 'Unable to render UI ');
+    if (error instanceof Error) {
+      throw new Error(`Unable to render Anime list ${error.message}`);
+    } else {
+      throw new Error('Unexpected error!');
+    }
   }
 }

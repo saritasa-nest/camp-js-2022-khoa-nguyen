@@ -1,13 +1,13 @@
 
 /** Anime type. */
 export enum Type {
-  ONA = 'ONA',
-  TV = 'TV',
-  MOVIE = 'MOVIE',
-  SPECIAL = 'SPECIAL',
-  MUSIC = 'MUSIC',
-  OVA = 'OVA',
-  DEFAULT = '',
+  Ona = 'ONA',
+  Tv = 'TV',
+  Movie = 'MOVIE',
+  Special = 'SPECIAL',
+  Music = 'MUSIC',
+  Ova = 'OVA',
+  Default = '',
 }
 
 /** Anime status. */

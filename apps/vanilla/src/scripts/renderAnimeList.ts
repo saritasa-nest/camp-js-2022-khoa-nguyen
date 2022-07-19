@@ -1,4 +1,4 @@
-import { OrderOption, TypeModel } from '@js-camp/core/enum';
+import { OrderOption, Type } from '@js-camp/core/enum';
 import { Anime } from '@js-camp/core/models/anime';
 import { Pagination } from '@js-camp/core/models/pagination';
 import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
@@ -27,7 +27,7 @@ export async function renderAnimeList(options: PaginationOptions): Promise<Pagin
         isAscending: (!LocalStorageService.getValue<OrderOption>(KEY_ORDER) ||
         LocalStorageService.getValue<OrderOption>(KEY_ORDER) === OrderOption.Ascending),
       }),
-      type: LocalStorageService.getValue<TypeModel>(KEY_TYPE) ?? TypeModel.Default,
+      type: LocalStorageService.getValue<Type>(KEY_TYPE) ?? Type.Default,
       offset: options.activePage * options.limit,
     });
     const animeList = await fetchAnimeList(optionUpdated);

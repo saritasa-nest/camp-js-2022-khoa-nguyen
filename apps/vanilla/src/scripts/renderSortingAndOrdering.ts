@@ -3,7 +3,7 @@ import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 import { Sorting } from '@js-camp/core/models/sorting';
 import { setDefaultSelected } from '@js-camp/core/utils';
 
-import { DEFAULT_LIMIT, SORT_OPTIONS } from '../constants';
+import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, SORT_OPTIONS } from '../constants';
 import { KEY_ORDER, KEY_SORTING } from '../constants/key';
 import { LocalStorageService } from '../service/localStorage';
 
@@ -58,7 +58,7 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
     const optionsUpdated = new PaginationOptions({
       ...options,
       offset: DEFAULT_LIMIT,
-      activePage: 1,
+      activePage: DEFAULT_ACTIVE_PAGE,
       sorting: new Sorting({
         ...options.sorting,
         isAscending: selectOrderingValue === OrderOption.Ascending,
