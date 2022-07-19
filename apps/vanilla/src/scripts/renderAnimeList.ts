@@ -3,7 +3,6 @@ import { Anime } from '@js-camp/core/models/anime';
 import { Pagination } from '@js-camp/core/models/pagination';
 import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 import { Sorting } from '@js-camp/core/models/sorting';
-import { formatDate } from '@js-camp/core/utils';
 
 import { SORT_OPTIONS } from '../constants';
 
@@ -39,7 +38,7 @@ export async function renderAnimeList(options: PaginationOptions): Promise<Pagin
           </th>
           <th class="table__row_item">${element.titleEnglish}</th>
           <th class="table__row_item">${element.titleJapan}</th>
-          <th class="table__row_item">${element.aired.start ? formatDate(element.aired.start) : ''}</th>
+          <th class="table__row_item">${element.aired.start ? element.aired.start.toLocaleDateString() : ''}</th>
           <th class="table__row_item">${element.type}</th>
           <th class="table__row_item">${element.status}</th>
         </tr>
