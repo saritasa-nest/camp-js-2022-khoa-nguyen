@@ -12,7 +12,8 @@ import { renderListAnimeWithActivePage } from './renderPagination';
 const selectSort = document.querySelector<HTMLSelectElement>('.filter__item_select-sort');
 const selectOrdering = document.querySelector<HTMLSelectElement>('.filter__item_select-order');
 
-/** Init and render sorting and ordering list, hence render corresponding list anime.
+/**
+ * Init and render sorting and ordering list, hence render corresponding list anime.
  * @param options Options of pagination.
  */
 export function renderSortingAndOrdering(options: PaginationOptions): void {
@@ -21,7 +22,8 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
   }
   const sortOptionHTML = SORT_OPTIONS.map(item => (
     `<option value="${item.title}">${item.title}</option>`
-  )).join('');
+  ))
+    .join('');
 
   const orderOptionHTML = Object.keys(OrderOption).map(item => (
     `<option value ="${item}">${item}</option>`

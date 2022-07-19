@@ -48,9 +48,9 @@ function renderPagination(options: PaginationOptions): void {
     return;
   }
   paginationContainer.innerHTML = `
-      <li class="button__first waves-effect"><a href="#!"><i class="material-icons">First</i></a></li>
+      <li class="button__move button__first waves-effect"><a href="#!"><i class="material-icons">First</i></a></li>
       ${renderPaginationItems(options)}
-      <li class="button__last waves-effect"><a href="#!"><i class="material-icons">Last</i></a></li>
+      <li class="button__move button__last waves-effect"><a href="#!"><i class="material-icons">Last</i></a></li>
   `;
   const buttonFirstPage = document.querySelector('.button__first');
   const buttonLastPage = document.querySelector('.button__last');
@@ -98,7 +98,7 @@ export async function renderListAnimeWithActivePage(options: PaginationOptions):
       totalPages: Math.ceil(animeList.count / options.limit - 1),
     });
     renderPagination(optionUpdated);
-    const itemsPageList = document.querySelectorAll('.pagination li:not(.btn)');
+    const itemsPageList = document.querySelectorAll('.pagination li:not(.button__move)');
     itemsPageList.forEach(item => {
       item.addEventListener('click', () => {
         const strPage = item.childNodes[0].childNodes[0].nodeValue;
