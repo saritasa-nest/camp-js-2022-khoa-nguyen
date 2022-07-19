@@ -92,6 +92,9 @@ function expandImage(imageElement: HTMLDivElement): void {
  * @param trailerID Trailer ID of anime.
  */
 function renderPopupTrailer(trailerID: string | null): void {
+  if (trailerID == null) {
+    return;
+  }
   const modalPopup = document.createElement('div');
   modalPopup.classList.add('detail__popup');
   modalPopup.innerHTML = `
