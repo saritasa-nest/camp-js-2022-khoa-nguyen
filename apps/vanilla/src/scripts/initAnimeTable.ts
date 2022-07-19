@@ -1,5 +1,5 @@
 import { OrderOption, TypeModel } from '@js-camp/core/enum';
-import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
+import { AnimeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
 import { Sorting } from '@js-camp/core/models/sorting';
 
 import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, DEFAULT_SEARCH, DEFAULT_TOTAL_PAGE, SORT_OPTIONS } from '../constants';
@@ -16,7 +16,7 @@ import { renderHeader } from './renderHeader';
 export function initAnimeTable(): void {
   LocalStorageService.clear();
 
-  const INITIAL_PAGINATION: PaginationOptions = new PaginationOptions({
+  const INITIAL_PAGINATION: AnimeListQueryOptions = new AnimeListQueryOptions({
     limit: DEFAULT_LIMIT,
     offset: DEFAULT_OFFSET,
     activePage: DEFAULT_ACTIVE_PAGE,

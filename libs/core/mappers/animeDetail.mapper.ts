@@ -1,4 +1,4 @@
-import { AnimeDetailDto } from '../dtos/animeDetail';
+import { AnimeDetailDto } from '../dtos/animeDetail.dto';
 import { StatusDto, TypeDto } from '../enum';
 import { AnimeDetail } from '../models/animeDetail';
 

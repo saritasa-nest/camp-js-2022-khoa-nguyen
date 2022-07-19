@@ -1,8 +1,8 @@
-import { PaginationOptionsDto } from '../dtos/paginationOptions.dto';
+import { AnimeListQueryOptionsDto } from '../dtos/animeListQueryOptions.dto';
 import { TypeDto, TypeModel } from '../enum';
-import { PaginationOptions } from '../models/paginationOptions';
+import { AnimeListQueryOptions } from '../models/animeListQueryOptions';
 
-export namespace PaginationOptionsMapper {
+export namespace AnimeListQueryOptionsMapper {
   const typeModelToDto: Readonly<Record<TypeModel, TypeDto>> = {
     [TypeModel.Movie]: TypeDto.Movie,
     [TypeModel.Ona]: TypeDto.Ona,
@@ -17,7 +17,7 @@ export namespace PaginationOptionsMapper {
    * Maps dto to model.
    * @param options Page options.
    */
-  export function toDto(options: PaginationOptions): PaginationOptionsDto {
+  export function toDto(options: AnimeListQueryOptions): AnimeListQueryOptionsDto {
 
     const type = typeModelToDto[options.type] ?? TypeDto.Default;
 

@@ -1,4 +1,4 @@
-import { AnimeDetailDto } from '@js-camp/core/dtos/animeDetail';
+import { AnimeDetailDto } from '@js-camp/core/dtos/animeDetail.dto';
 import { AnimeDetailMapper } from '@js-camp/core/mappers/animeDetail.mapper';
 import { AnimeDetail } from '@js-camp/core/models/animeDetail';
 import { navigate } from '@js-camp/core/utils';

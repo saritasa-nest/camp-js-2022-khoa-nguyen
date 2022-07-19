@@ -1,5 +1,5 @@
 import { TypeModel } from '@js-camp/core/enum';
-import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
+import { AnimeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
 
 import { DEFAULT_ACTIVE_PAGE, DEFAULT_OFFSET, DEFAULT_SEARCH, FILTER_TYPE_OPTIONS } from '../constants';
 import { KEY_SEARCHING, KEY_TYPE } from '../constants/key';
@@ -14,7 +14,7 @@ const selectType = document.querySelector<HTMLSelectElement>('.filter__item_sele
  * Render filter by type.
  * @param options Pagination options.
  */
-export function renderFilterByType(options: PaginationOptions): void {
+export function renderFilterByType(options: AnimeListQueryOptions): void {
   const typeOptionHTML = FILTER_TYPE_OPTIONS.map(item => `<option value="${item.title}">${item.title}</option>`).join('');
   if (selectType == null) {
     return;
@@ -26,7 +26,7 @@ export function renderFilterByType(options: PaginationOptions): void {
   selectType.addEventListener('change', () => {
     LocalStorageService.setValue(KEY_TYPE, FILTER_TYPE_OPTIONS.filter(item => selectType.value === item.title)[0].value);
     const valueType = LocalStorageService.getValue<TypeModel>(KEY_TYPE) ?? TypeModel.Default;
-    const optionsUpdated = new PaginationOptions({
+    const optionsUpdated = new AnimeListQueryOptions({
       ...options,
       offset: DEFAULT_OFFSET,
       activePage: DEFAULT_ACTIVE_PAGE,
