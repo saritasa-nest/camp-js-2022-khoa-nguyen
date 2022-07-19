@@ -4,13 +4,13 @@ import { PaginationOptions } from '../models/paginationOptions';
 
 export namespace PaginationOptionsMapper {
   const typeModelToDto: Readonly<Record<TypeModel, TypeDto>> = {
-    [TypeModel.Movie]: TypeDto.MOVIE,
-    [TypeModel.Ona]: TypeDto.ONA,
-    [TypeModel.Ova]: TypeDto.OVA,
-    [TypeModel.Special]: TypeDto.SPECIAL,
-    [TypeModel.Music]: TypeDto.MUSIC,
-    [TypeModel.Tv]: TypeDto.TV,
-    [TypeModel.Default]: TypeDto.DEFAULT,
+    [TypeModel.Movie]: TypeDto.Movie,
+    [TypeModel.Ona]: TypeDto.Ona,
+    [TypeModel.Ova]: TypeDto.Ova,
+    [TypeModel.Special]: TypeDto.Special,
+    [TypeModel.Music]: TypeDto.Music,
+    [TypeModel.Tv]: TypeDto.Tv,
+    [TypeModel.Default]: TypeDto.Default,
   };
 
   /**
@@ -19,7 +19,7 @@ export namespace PaginationOptionsMapper {
    */
   export function toDto(options: PaginationOptions): PaginationOptionsDto {
 
-    const type = typeModelToDto[options.type] ?? TypeDto.DEFAULT;
+    const type = typeModelToDto[options.type] ?? TypeDto.Default;
 
     return {
       limit: options.limit,

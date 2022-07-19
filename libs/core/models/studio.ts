@@ -1,9 +1,7 @@
-import { GenresTypeModel } from '../enum/genresType';
-
 import { Immerable, OmitImmerable } from './immerable';
 
-/** Genre. */
-export class Genre extends Immerable {
+/** Studio. */
+export class Studio extends Immerable {
 
   /** Id. */
   public readonly id: number;
@@ -17,17 +15,13 @@ export class Genre extends Immerable {
   /** Modified date. */
   public readonly modified: string;
 
-  /** Type of genres. */
-  public readonly type: GenresTypeModel;
-
   public constructor(data: PostInitArgs) {
     super();
     this.id = data.id;
     this.name = data.name;
     this.created = data.created;
     this.modified = data.modified;
-    this.type = data.type;
   }
 }
 
-type PostInitArgs = OmitImmerable<Genre>;
+type PostInitArgs = OmitImmerable<Studio>;

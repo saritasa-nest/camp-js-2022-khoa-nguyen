@@ -21,7 +21,7 @@ export interface AnimeDto {
   readonly title_jpn: string;
 
   /** Thumbnail of anime. */
-  readonly image: string;
+  readonly image: string | null;
 
   /** Aired date. */
   readonly aired: DateRangeDto;

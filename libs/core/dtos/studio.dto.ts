@@ -1,7 +1,5 @@
-import { GenresTypeDTO } from '../enum/genresType';
-
-/** Genre DTO. */
-export interface GenreDto {
+/** Studio DTO. */
+export interface StudioDto {
 
   /** Id. */
   readonly id: number;
@@ -14,7 +12,4 @@ export interface GenreDto {
 
   /** Time of the last modification, for example, "2014-12-20T17:30:50.416Z". */
   readonly modified: string;
-
-  /** DTO type. */
-  readonly type: GenresTypeDTO;
 }

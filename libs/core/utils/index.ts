@@ -1,14 +1,5 @@
 
 /**
- * Format date into mm/dd/yyyy.
- * @param dateToFormat Date to format.
- */
-export function formatDate(dateToFormat: Date): string {
-  const newDate = new Date(dateToFormat);
-  return newDate.toLocaleDateString('en-us');
-}
-
-/**
  * Query and add message error into tag span with class error.
  * @param inputElement Input element.
  * @param message Error message.

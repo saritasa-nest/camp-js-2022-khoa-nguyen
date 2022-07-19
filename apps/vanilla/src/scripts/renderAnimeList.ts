@@ -3,11 +3,11 @@ import { Anime } from '@js-camp/core/models/anime';
 import { Pagination } from '@js-camp/core/models/pagination';
 import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 import { Sorting } from '@js-camp/core/models/sorting';
-import { formatDate } from '@js-camp/core/utils';
+import { navigate } from '@js-camp/core/utils';
 
-import { DEFAULT_LIMIT, SORT_OPTIONS } from '../constants';
+import { DEFAULT_LIMIT, DETAIL_URL, SORT_OPTIONS } from '../constants';
 
-import { KEY_ORDER, KEY_SORTING, KEY_TYPE } from '../constants/key';
+import { KEY_ANIME, KEY_ORDER, KEY_SORTING, KEY_TYPE } from '../constants/key';
 import { LocalStorageService } from '../services/localStore';
 
 import { throwError } from '../utils';
@@ -15,24 +15,13 @@ import { throwError } from '../utils';
 import { fetchAnimeList } from '../services/api/fetchAnimeList';
 import { AuthorizationService } from '../services/authorization';
 
-// /**
-//  * Move to detail anime.
-//  * @param id Id of anime.
-//  */
-// export async function moveToDetail(id: string) {
-//   if (AuthorizationService.isLoggedIn()) {
-
-//   } else {
-
-//   }
-// }
-
 /**
  * Move to detail anime.
  * @param id Id of anime.
  */
-export function moveToDetail(id: number) {
-  console.log(id);
+export function moveToDetail(id: number): void {
+  LocalStorageService.setValue(KEY_ANIME, id);
+  navigate(DETAIL_URL);
 }
 
 /**
@@ -66,7 +55,7 @@ export async function renderAnimeList(options: PaginationOptions): Promise<Pagin
         </tr>
     `;
     }
-    animeList?.results.forEach(element => {
+    animeList?.results.forEach(async element => {
       const row = document.createElement('tr');
       row.classList.add('table__row');
       row.innerHTML = `
@@ -75,11 +64,13 @@ export async function renderAnimeList(options: PaginationOptions): Promise<Pagin
         </th>
         <th class="table__row_item">${element.titleEnglish}</th>
         <th class="table__row_item">${element.titleJapan}</th>
-        <th class="table__row_item">${element.aired.start ? formatDate(element.aired.start) : ''}</th>
+        <th class="table__row_item">${element.aired.start ? element.aired.start.toLocaleDateString() : ''}</th>
         <th class="table__row_item">${element.type}</th>
         <th class="table__row_item">${element.status}</th>
     `;
+    if (await AuthorizationService.isLoggedIn()) {
       row.addEventListener('click', () => moveToDetail(element.id));
+    }
       container?.appendChild(row);
     });
 
