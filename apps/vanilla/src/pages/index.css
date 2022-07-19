@@ -9,14 +9,16 @@
   font-weight: var(--primary-font-weight-title);
 }
 
-.search__title {
+.form {
   font-size: var(--primary-font-size-normal);
   color: var(--primary-font-color);
-}
-
-.search__form {
   display: flex;
   align-items: center;
+  width: 100%;
+}
+
+.form__label {
+  flex: 1;
 }
 
 .filter {
