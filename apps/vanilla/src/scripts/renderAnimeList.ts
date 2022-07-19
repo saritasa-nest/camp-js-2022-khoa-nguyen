@@ -29,7 +29,7 @@ export function moveToDetail(id: number): void {
  * @param options Options of pagination.
  */
 export async function renderAnimeList(options: PaginationOptions): Promise<Pagination<Anime> | null> {
-  const container = document.querySelector('.table');
+  const container = document.querySelector<HTMLTableElement>('.table');
   try {
     const optionUpdated = new PaginationOptions({
       ...options,

@@ -23,4 +23,7 @@
   --primary-font-size-small: 1rem;
   --primary-font-size-normal: 1.3rem;
   --primary-font-size-title: 2rem;
+
+  /* Backdrop color */
+  --primary-backdrop-color: rgba(0 0 0 / 60.3%);
 }
