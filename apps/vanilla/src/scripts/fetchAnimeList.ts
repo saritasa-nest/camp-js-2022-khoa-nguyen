@@ -3,10 +3,10 @@ import { AnimeDto } from '@js-camp/core/dtos/anime.dto';
 import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
-import { PaginationOptionsMapper } from '@js-camp/core/mappers/paginationOptions.mapper';
+import { AnimeListQueryOptionsMapper } from '@js-camp/core/mappers/animeListQueryOptions.mapper';
 import { Anime } from '@js-camp/core/models/anime';
 import { Pagination } from '@js-camp/core/models/pagination';
-import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
+import { AnimeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
 
 import { appAxios } from '../configs';
 
@@ -14,9 +14,9 @@ import { appAxios } from '../configs';
  * Fetch anime data with corresponding limit, offset and ordering.
  * @param options Options settings of pagination.
  */
-export async function fetchAnimeList(options: PaginationOptions): Promise<Pagination<Anime>> {
+export async function fetchAnimeList(options: AnimeListQueryOptions): Promise<Pagination<Anime>> {
   try {
-    const params = PaginationOptionsMapper.toDto(options);
+    const params = AnimeListQueryOptionsMapper.toDto(options);
     const result = await appAxios.get<PaginationDto<AnimeDto>>(`anime/anime/`,
       {
         params,

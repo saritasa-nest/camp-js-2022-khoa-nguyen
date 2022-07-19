@@ -1,13 +1,13 @@
 import { OrderOption } from '@js-camp/core/enum';
 import { Anime } from '@js-camp/core/models/anime';
 import { Pagination } from '@js-camp/core/models/pagination';
-import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
+import { AnimeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
 import { Sorting } from '@js-camp/core/models/sorting';
 
 import { SORT_OPTIONS } from '../constants';
 
 import { KEY_ORDER, KEY_SORTING } from '../constants/key';
-import { getValueFromLocalStorage } from '../service/localStorage';
+import { LocalStorageService } from '../service/localStorage';
 
 import { fetchAnimeList } from './fetchAnimeList';
 
@@ -17,14 +17,14 @@ const container = document.querySelector('.table');
  * Render anime list.
  * @param options Options of pagination.
  */
-export async function renderAnimeList(options: PaginationOptions): Promise<Pagination<Anime>> {
+export async function renderAnimeList(options: AnimeListQueryOptions): Promise<Pagination<Anime>> {
   try {
-    const optionUpdated = new PaginationOptions({
+    const optionUpdated = new AnimeListQueryOptions({
       ...options,
       sorting: new Sorting({
-        ...getValueFromLocalStorage<Sorting>(KEY_SORTING) ?? SORT_OPTIONS[0],
-        isAscending: (getValueFromLocalStorage<OrderOption>(KEY_ORDER) === null ||
-        getValueFromLocalStorage<OrderOption>(KEY_ORDER) === OrderOption.Ascending),
+        ...LocalStorageService.getValue<Sorting>(KEY_SORTING) ?? SORT_OPTIONS[0],
+        isAscending: (LocalStorageService.getValue<OrderOption>(KEY_ORDER) === null ||
+        LocalStorageService.getValue<OrderOption>(KEY_ORDER) === OrderOption.Ascending),
       }),
       offset: options.activePage * options.limit,
     });
@@ -37,7 +37,7 @@ export async function renderAnimeList(options: PaginationOptions): Promise<Pagin
             <img class= "table__row_item_thumb__img" src="${element.image}" alt="${element.titleEnglish}" />
           </th>
           <th class="table__row_item">${element.titleEnglish}</th>
-          <th class="table__row_item">${element.titleJapan}</th>
+          <th class="table__row_item">${element.titleJapanese}</th>
           <th class="table__row_item">${element.aired.start ? element.aired.start.toLocaleDateString() : ''}</th>
           <th class="table__row_item">${element.type}</th>
           <th class="table__row_item">${element.status}</th>

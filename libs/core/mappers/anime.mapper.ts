@@ -33,9 +33,9 @@ export namespace AnimeMapper {
     return new Anime({
       id: dto.id,
       titleEnglish: dto.title_eng,
-      titleJapan: dto.title_jpn,
+      titleJapanese: dto.title_jpn,
       image: dto.image,
-      aired: DateRangeMapper.fromDto({ start: dto.aired.start, end: dto.aired.end }),
+      aired: DateRangeMapper.fromDto({ ...dto.aired }),
       type,
       status,
     });

@@ -1,4 +1,4 @@
-import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
+import { AnimeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
 
 import { DEFAULT_LIMIT } from '../constants';
 
@@ -23,7 +23,7 @@ function renderRangeOfPagination(activePage: number, from: number, to: number): 
 /**  Render items of pagination.
  * @param options Options of pagination.
  */
-function renderPaginationItems(options: PaginationOptions): string {
+function renderPaginationItems(options: AnimeListQueryOptions): string {
   const { activePage, totalPages } = options;
   const FIRST_PAGE = 1;
   const PAGE_RANGE = 5;
@@ -43,7 +43,7 @@ function renderPaginationItems(options: PaginationOptions): string {
  * Render pagination with buttons First and Last.
  * @param options Options of pagination.
  */
-function renderPagination(options: PaginationOptions): void {
+function renderPagination(options: AnimeListQueryOptions): void {
   if (paginationContainer === null || paginationContainer === undefined) {
     return;
   }
@@ -56,7 +56,7 @@ function renderPagination(options: PaginationOptions): void {
   const buttonLastPage = document.querySelector('.button__last');
 
   buttonFirstPage?.addEventListener('click', () => {
-      const optionUpdated = new PaginationOptions({
+      const optionUpdated = new AnimeListQueryOptions({
         ...options,
         activePage: 1,
         offset: DEFAULT_LIMIT * options.activePage,
@@ -65,7 +65,7 @@ function renderPagination(options: PaginationOptions): void {
     });
 
   buttonLastPage?.addEventListener('click', () => {
-      const optionUpdated = new PaginationOptions({
+      const optionUpdated = new AnimeListQueryOptions({
         ...options,
         activePage: options.totalPages,
         offset: DEFAULT_LIMIT * options.activePage,
@@ -90,10 +90,10 @@ function renderPagination(options: PaginationOptions): void {
  * Render anime list and pagination to UI.
  * @param options Options of pagination.
  */
-export async function renderListAndPaginationToUI(options: PaginationOptions): Promise<void> {
+export async function renderListAndPaginationToUI(options: AnimeListQueryOptions): Promise<void> {
   try {
     const animeList = await renderAnimeList(options);
-    const optionUpdated = new PaginationOptions({
+    const optionUpdated = new AnimeListQueryOptions({
       ...options,
       totalPages: Math.ceil(animeList.count / options.limit - 1),
     });
@@ -106,7 +106,7 @@ export async function renderListAndPaginationToUI(options: PaginationOptions): P
           return;
         }
         const numPage = Number.parseInt(strPage, 10);
-        const optionUpdatedTrigger = new PaginationOptions({
+        const optionUpdatedTrigger = new AnimeListQueryOptions({
           ...options,
           offset: DEFAULT_LIMIT * numPage,
           activePage: numPage,
