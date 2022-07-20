@@ -1,5 +1,5 @@
 
-import { SORT_OPTIONS } from '../constants';
+import { KEY_ORDER, KEY_SORTING, SORT_OPTIONS } from '../constants';
 import { OrderOption } from '../enum';
 import { SearchParamsService } from '../services/searchParams';
 import { setDefaultSelected } from '../utils';
@@ -32,7 +32,7 @@ export function renderSortingAndOrdering(): void {
     SORT_OPTIONS[0].title);
   selectSort.addEventListener('change', () => {
     const { value } = selectSort;
-    SearchParamsService.setSearchParamToUrl('sortBy', SORT_OPTIONS.filter(item => item.title === value)[0].value);
+    SearchParamsService.setSearchParamToUrl(KEY_SORTING, SORT_OPTIONS.filter(item => item.title === value)[0].value);
     renderListOnActivePage(getInitialQueryParams());
     });
 
@@ -40,9 +40,9 @@ export function renderSortingAndOrdering(): void {
     return;
   }
   selectOrdering.innerHTML = orderOptionHTML;
-  setDefaultSelected(selectOrdering, searchParam.ordering === 'des' ? OrderOption.Descending : OrderOption.Ascending);
+  setDefaultSelected(selectOrdering, searchParam.ordering ?? OrderOption.Ascending);
   selectOrdering.addEventListener('change', () => {
-    SearchParamsService.setSearchParamToUrl('ordering',
+    SearchParamsService.setSearchParamToUrl(KEY_ORDER,
       selectOrdering.value === OrderOption.Ascending ? OrderOption.Ascending : OrderOption.Descending);
     renderListOnActivePage(getInitialQueryParams());
   });

@@ -17,7 +17,7 @@ export async function renderHeader(): Promise<void> {
   });
 }
 
-/** Render header function. */
+/** Render header UI. */
 async function getUIHeader(): Promise<string> {
   if (await AuthorizationService.isLoggedIn()) {
     return `

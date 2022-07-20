@@ -1,5 +1,5 @@
 
-import { FILTER_TYPE_OPTIONS } from '../constants';
+import { FILTER_TYPE_OPTIONS, KEY_ACTIVE_PAGE, KEY_TYPE } from '../constants';
 import { SearchParamsService } from '../services/searchParams';
 import { setDefaultSelected } from '../utils';
 
@@ -20,8 +20,8 @@ export function renderFilterByType(): void {
   setDefaultSelected(selectType, searchParams.type != null ? FILTER_TYPE_OPTIONS.filter(item =>
     item.value === searchParams.type)[0].title : FILTER_TYPE_OPTIONS[0].title) ;
   selectType.addEventListener('change', () => {
-    SearchParamsService.setSearchParamToUrl('type', FILTER_TYPE_OPTIONS.filter(item => selectType.value === item.title)[0].value);
-    SearchParamsService.removeParam('page');
+    SearchParamsService.setSearchParamToUrl(KEY_TYPE, FILTER_TYPE_OPTIONS.filter(item => selectType.value === item.title)[0].value);
+    SearchParamsService.removeParam(KEY_ACTIVE_PAGE);
     renderListOnActivePage(getInitialQueryParams());
   });
 }

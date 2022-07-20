@@ -32,13 +32,6 @@ export async function renderAnimeList(options: AnimeListQueryOptions): Promise<P
   try {
     const optionUpdated = new AnimeListQueryOptions({
       ...options,
-
-      // sorting: new Sorting({
-      //   ...LocalStorageService.getValue<Sorting>(KEY_SORTING) ?? SORT_OPTIONS[0],
-      //   isAscending: (LocalStorageService.getValue<OrderOption>(KEY_ORDER) == null ||
-      //   LocalStorageService.getValue<OrderOption>(KEY_ORDER) === OrderOption.Ascending),
-      // }),
-      // type: LocalStorageService.getValue<TypeModel>(KEY_TYPE) ?? TypeModel.Default,
       offset: (options.activePage - 1) * DEFAULT_LIMIT,
     });
     const animeList = await fetchAnimeList(optionUpdated);

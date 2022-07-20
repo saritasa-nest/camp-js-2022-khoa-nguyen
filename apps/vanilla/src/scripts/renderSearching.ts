@@ -1,4 +1,5 @@
 
+import { KEY_ACTIVE_PAGE, KEY_SEARCHING } from '../constants';
 import { SearchParamsService } from '../services/searchParams';
 
 import { getInitialQueryParams } from './initAnimeTable';
@@ -14,8 +15,8 @@ export function renderSearchingAndHandle(): void {
   }
   button.addEventListener('click', () => {
     const searchString = input.value;
-    SearchParamsService.setSearchParamToUrl('search', searchString);
-    SearchParamsService.removeParam('page');
+    SearchParamsService.setSearchParamToUrl(KEY_SEARCHING, searchString);
+    SearchParamsService.removeParam(KEY_ACTIVE_PAGE);
     renderListOnActivePage(getInitialQueryParams());
   });
 }

@@ -2,7 +2,7 @@
 import { TypeDto } from '@js-camp/core/dtos/anime.dto';
 import { SortValue } from '@js-camp/core/models/sorting';
 
-import { HOME_URL } from '../../constants';
+import { HOME_URL, KEY_ACTIVE_PAGE, KEY_ORDER, KEY_SEARCHING, KEY_SORTING, KEY_TYPE } from '../../constants';
 import { OrderOption } from '../../enum';
 import { getInitialQueryParams } from '../../scripts/initAnimeTable';
 
@@ -61,11 +61,11 @@ export namespace SearchParamsService {
   export function getSearchParams(): SearchParam {
     const params = new URLSearchParams(window.location.search);
     return {
-      page: params.get('page') != null ? Number(params.get('page')) : null,
-      search: params.get('search'),
-      ordering: params.get('ordering'),
-      sortBy: params.get('sortBy') != null ? params.get('sortBy') as SortValue : null,
-      type: params.get('type') != null ? params.get('type') as TypeDto : null,
+      page: params.get(KEY_ACTIVE_PAGE) != null ? Number(params.get(KEY_ACTIVE_PAGE)) : null,
+      search: params.get(KEY_SEARCHING),
+      ordering: params.get(KEY_ORDER),
+      sortBy: params.get(KEY_SORTING) != null ? params.get(KEY_SORTING) as SortValue : null,
+      type: params.get(KEY_TYPE) != null ? params.get(KEY_TYPE) as TypeDto : null,
     };
   }
 
