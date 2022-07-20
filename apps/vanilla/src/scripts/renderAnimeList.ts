@@ -61,12 +61,11 @@ export async function renderAnimeList(options: AnimeListQueryOptions): Promise<P
         <th class="table__row_item">${element.type}</th>
         <th class="table__row_item">${element.status}</th>
     `;
-    if (isLoggedIn) {
-      row.addEventListener('click', () => moveToDetail(element.id));
-    }
+      if (isLoggedIn) {
+        row.addEventListener('click', () => moveToDetail(element.id));
+      }
       container?.appendChild(row);
     });
-
     return animeList;
   } catch (error: unknown) {
     throwError(error, 'Failed to render anime list');
