@@ -5,3 +5,4 @@ export const PROFILE_API = 'users/profile/';
 export const LOGIN_API = 'auth/login/';
 export const REGISTER_API = 'auth/register/';
 export const VERIFY_TOKEN_API = '/auth/token/verify/';
+export const REFRESH_TOKEN_API = '/auth/token/refresh/';

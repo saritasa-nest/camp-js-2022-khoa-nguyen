@@ -30,6 +30,7 @@ export function moveToDetail(id: number): void {
  */
 export async function renderAnimeList(options: AnimeListQueryOptions): Promise<Pagination<Anime> | null> {
   const container = document.querySelector<HTMLTableElement>('.table');
+  const isLoggedIn = await AuthorizationService.isLoggedIn();
   try {
     const optionUpdated = new AnimeListQueryOptions({
       ...options,
@@ -55,7 +56,7 @@ export async function renderAnimeList(options: AnimeListQueryOptions): Promise<P
         </tr>
     `;
     }
-    animeList?.results.forEach(async element => {
+    animeList?.results.forEach(element => {
       const row = document.createElement('tr');
       row.classList.add('table__row');
       row.innerHTML = `
@@ -68,7 +69,7 @@ export async function renderAnimeList(options: AnimeListQueryOptions): Promise<P
         <th class="table__row_item">${element.type}</th>
         <th class="table__row_item">${element.status}</th>
     `;
-    if (await AuthorizationService.isLoggedIn()) {
+    if (isLoggedIn) {
       row.addEventListener('click', () => moveToDetail(element.id));
     }
       container?.appendChild(row);

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-
 /** Options of type interface. */
 interface FilterType {
 

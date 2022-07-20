@@ -1,11 +1,12 @@
 import { OrderOption } from '@js-camp/core/enum';
-import { AnimeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
 import { Sorting } from '@js-camp/core/models/sorting';
 
-import { DEFAULT_ACTIVE_PAGE, DEFAULT_OFFSET, DEFAULT_SEARCH, SORT_OPTIONS } from '../constants';
-import { KEY_ORDER, KEY_SEARCHING, KEY_SORTING } from '../constants/key';
+import { SORT_OPTIONS } from '../constants';
+import { KEY_ORDER, KEY_SORTING } from '../constants/key';
 import { LocalStorageService } from '../services/localStore';
 import { setDefaultSelected } from '../utils';
+
+import { INITIAL_PAGINATION } from './initAnimeTable';
 
 import { renderListOnActivePage } from './renderPagination';
 
@@ -14,9 +15,8 @@ const selectOrdering = document.querySelector<HTMLSelectElement>('.filter__item_
 
 /**
  * Init and render sorting and ordering list, hence render corresponding list anime.
- * @param options Options of pagination.
  */
-export function renderSortingAndOrdering(options: AnimeListQueryOptions): void {
+export function renderSortingAndOrdering(): void {
   const sortOptionHTML = SORT_OPTIONS.map(item => (
     `<option value="${item.title}">${item.title}</option>`
   ))
@@ -34,18 +34,7 @@ export function renderSortingAndOrdering(options: AnimeListQueryOptions): void {
   selectSort.addEventListener('change', () => {
     const { value } = selectSort;
     LocalStorageService.setValue(KEY_SORTING, SORT_OPTIONS.filter(item => item.title === value)[0]);
-    const selectSortingValue = LocalStorageService.getValue<Sorting>(KEY_SORTING) ?? SORT_OPTIONS[0];
-    const optionsUpdated = new AnimeListQueryOptions({
-      ...options,
-      offset: DEFAULT_OFFSET,
-      activePage: DEFAULT_ACTIVE_PAGE,
-      sorting: new Sorting({
-        ...options.sorting,
-        ...selectSortingValue,
-      }),
-      search: LocalStorageService.getValue(KEY_SEARCHING) ?? DEFAULT_SEARCH,
-    });
-      renderListOnActivePage(optionsUpdated);
+    renderListOnActivePage(INITIAL_PAGINATION);
     });
 
   if (selectOrdering == null) {
@@ -54,20 +43,7 @@ export function renderSortingAndOrdering(options: AnimeListQueryOptions): void {
   selectOrdering.innerHTML = orderOptionHTML;
   setDefaultSelected(selectOrdering, LocalStorageService.getValue<OrderOption>(KEY_ORDER) ?? OrderOption.Ascending);
   selectOrdering.addEventListener('change', () => {
-
     LocalStorageService.setValue(KEY_ORDER, selectOrdering.value);
-    const selectOrderingValue = LocalStorageService.getValue<OrderOption>(KEY_ORDER) ?? OrderOption.Ascending;
-
-    const optionsUpdated = new AnimeListQueryOptions({
-      ...options,
-      offset: DEFAULT_OFFSET,
-      activePage: DEFAULT_ACTIVE_PAGE,
-      sorting: new Sorting({
-        ...options.sorting,
-        isAscending: selectOrderingValue === OrderOption.Ascending,
-      }),
-      search: LocalStorageService.getValue(KEY_SEARCHING) ?? DEFAULT_SEARCH,
-    });
-    renderListOnActivePage(optionsUpdated);
-    });
+    renderListOnActivePage(INITIAL_PAGINATION);
+  });
 }
