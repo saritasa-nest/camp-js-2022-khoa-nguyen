@@ -1,5 +1,6 @@
+import { TypeDto } from '../dtos/anime.dto';
 import { AnimeListQueryOptionsDto } from '../dtos/animeListQueryOptions.dto';
-import { TypeDto, TypeModel } from '../enum';
+import { TypeModel } from '../models/anime';
 import { AnimeListQueryOptions } from '../models/animeListQueryOptions';
 
 export namespace AnimeListQueryOptionsMapper {

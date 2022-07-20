@@ -1,7 +1,25 @@
-import { StatusModel, TypeModel } from '../enum/anime';
 import { Immerable, OmitImmerable } from '../models/immerable';
 
 import { DateRange } from './dateRange';
+
+/** Anime type model. */
+export enum TypeModel {
+  Ona = 'Ona',
+  Tv = 'Tv',
+  Movie = 'Movie',
+  Special = 'Special',
+  Music = 'Music',
+  Ova = 'Ova',
+  Default = '',
+}
+
+/** Anime status model. */
+export enum StatusModel {
+  Airing = 'Airing',
+  Finished = 'Finished',
+  NotAired = 'Not yet aired',
+  Default = '',
+}
 
 /** Base model for anime. */
 export class Anime extends Immerable {

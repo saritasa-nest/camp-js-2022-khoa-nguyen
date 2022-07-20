@@ -1,4 +1,5 @@
-import { OrderOption, TypeModel } from '@js-camp/core/enum';
+import { OrderOption } from '@js-camp/core/enum';
+import { TypeModel } from '@js-camp/core/models/anime';
 import { AnimeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
 import { Sorting } from '@js-camp/core/models/sorting';
 
@@ -6,7 +7,7 @@ import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, DEFAULT_SEARCH, DEF
 import { KEY_ORDER, KEY_SEARCHING, KEY_SORTING, KEY_TYPE } from '../constants/key';
 import { LocalStorageService } from '../services/localStore';
 
-export const INITIAL_PAGINATION: AnimeListQueryOptions = new AnimeListQueryOptions({
+export const INITIAL_QUERY_PARAMS: AnimeListQueryOptions = new AnimeListQueryOptions({
   limit: DEFAULT_LIMIT,
   offset: DEFAULT_OFFSET,
   activePage: DEFAULT_ACTIVE_PAGE,

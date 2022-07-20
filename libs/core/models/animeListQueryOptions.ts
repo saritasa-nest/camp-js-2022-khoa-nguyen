@@ -1,6 +1,5 @@
 
-import { TypeModel } from '../enum';
-
+import { TypeModel } from './anime';
 import { Immerable, OmitImmerable } from './immerable';
 import { Sorting } from './sorting';
 

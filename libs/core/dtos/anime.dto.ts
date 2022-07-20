@@ -1,6 +1,23 @@
-import { TypeDto, StatusDto } from '../enum/anime';
-
 import { DateRangeDto } from './dateRange.dto';
+
+/** Anime type dto. */
+export enum TypeDto {
+  Ona = 'ONA',
+  Tv = 'TV',
+  Movie = 'MOVIE',
+  Special = 'SPECIAL',
+  Music = 'MUSIC',
+  Ova = 'OVA',
+  Default = '',
+}
+
+/** Anime status dto. */
+export enum StatusDto {
+  Airing = 'AIRING',
+  Finished = 'FINISHED',
+  NotAired = 'NOT_YET_AIRED',
+  Default = '',
+}
 
 /** Anime data. */
 export interface AnimeDto {

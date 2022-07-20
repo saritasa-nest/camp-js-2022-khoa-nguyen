@@ -1,11 +1,25 @@
-import { AnimeDto } from '../dtos/anime.dto';
-import { StatusDto, TypeDto } from '../enum';
-import { Anime } from '../models/anime';
+import { AnimeDto, StatusDto, TypeDto } from '../dtos/anime.dto';
+import { Anime, StatusModel, TypeModel } from '../models/anime';
 
 import { DateRangeMapper } from './dateRange.mapper';
-import { statusDtoToModel, typeDtoToModel } from './record.mapper';
 
 export namespace AnimeMapper {
+  const typeDtoToModel: Readonly<Record<TypeDto, TypeModel>> = {
+    [TypeDto.Movie]: TypeModel.Movie,
+    [TypeDto.Ona]: TypeModel.Ona,
+    [TypeDto.Ova]: TypeModel.Ova,
+    [TypeDto.Special]: TypeModel.Special,
+    [TypeDto.Music]: TypeModel.Music,
+    [TypeDto.Tv]: TypeModel.Tv,
+    [TypeDto.Default]: TypeModel.Default,
+  };
+
+  const statusDtoToModel: Readonly<Record<StatusDto, StatusModel>> = {
+    [StatusDto.Airing]: StatusModel.Airing,
+    [StatusDto.NotAired]: StatusModel.NotAired,
+    [StatusDto.Finished]: StatusModel.Finished,
+    [StatusDto.Default]: StatusModel.Default,
+  };
 
   /**
    * Maps dto to model.

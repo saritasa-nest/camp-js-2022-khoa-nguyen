@@ -1,3 +1,5 @@
+import { TypeModel } from '@js-camp/core/models/anime';
+
 /** Options of type interface. */
 interface FilterType {
 
@@ -7,8 +9,6 @@ interface FilterType {
   /** Value of options. */
   readonly value: TypeModel;
 }
-
-import { TypeModel } from '@js-camp/core/enum';
 
 export const FILTER_TYPE_OPTIONS: readonly FilterType[] = [
   {

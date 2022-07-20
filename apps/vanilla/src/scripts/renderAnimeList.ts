@@ -1,5 +1,5 @@
-import { OrderOption, TypeModel } from '@js-camp/core/enum';
-import { Anime } from '@js-camp/core/models/anime';
+import { OrderOption } from '@js-camp/core/enum';
+import { Anime, TypeModel } from '@js-camp/core/models/anime';
 import { Pagination } from '@js-camp/core/models/pagination';
 import { AnimeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
 import { Sorting } from '@js-camp/core/models/sorting';

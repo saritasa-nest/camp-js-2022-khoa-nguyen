@@ -1,4 +1,4 @@
-import { INITIAL_PAGINATION } from '../../scripts/initAnimeTable';
+import { INITIAL_QUERY_PARAMS } from '../../scripts/initAnimeTable';
 import { renderFilterByType } from '../../scripts/renderFilterByType';
 import { renderHeader } from '../../scripts/renderHeader';
 import { renderListOnActivePage } from '../../scripts/renderPagination';
@@ -10,7 +10,7 @@ import { LocalStorageService } from '../../services/localStore';
 function renderAnimeTable(): void {
   LocalStorageService.clear();
   renderHeader();
-  renderListOnActivePage(INITIAL_PAGINATION);
+  renderListOnActivePage(INITIAL_QUERY_PARAMS);
   renderSortingAndOrdering();
   renderFilterByType();
   renderSearchingAndHandle();

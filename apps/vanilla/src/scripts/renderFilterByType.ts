@@ -1,11 +1,12 @@
-import { TypeModel } from '@js-camp/core/enum';
+
+import { TypeModel } from '@js-camp/core/models/anime';
 
 import { FILTER_TYPE_OPTIONS } from '../constants';
 import { KEY_TYPE } from '../constants/key';
 import { LocalStorageService } from '../services/localStore';
 import { setDefaultSelected } from '../utils';
 
-import { INITIAL_PAGINATION } from './initAnimeTable';
+import { INITIAL_QUERY_PARAMS } from './initAnimeTable';
 
 import { renderListOnActivePage } from './renderPagination';
 
@@ -26,6 +27,6 @@ export function renderFilterByType(): void {
     FILTER_TYPE_OPTIONS[0].title);
   selectType.addEventListener('change', () => {
     LocalStorageService.setValue(KEY_TYPE, FILTER_TYPE_OPTIONS.filter(item => selectType.value === item.title)[0].value);
-    renderListOnActivePage(INITIAL_PAGINATION);
+    renderListOnActivePage(INITIAL_QUERY_PARAMS);
   });
 }
