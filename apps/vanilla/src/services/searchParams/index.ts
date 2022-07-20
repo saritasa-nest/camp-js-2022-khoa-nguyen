@@ -27,19 +27,6 @@ interface SearchParam {
 
 export namespace SearchParamsService {
 
-  /** Transform anime list query options to url search param. */
-  export function animeListQueryOptionsToSearchParam(): URLSearchParams {
-    const options = getInitialQueryParams();
-    const searchParam = {
-      page: options.activePage.toString(),
-      search: options.search,
-      ordering: options.sorting.isAscending ? OrderOption.Ascending : OrderOption.Descending,
-      sortBy: options.sorting.value,
-      type: options.type,
-    };
-    return new URLSearchParams(searchParam);
-  }
-
   /**
    * Transform anime list query options to url search param.
    * @param key URL search params.
