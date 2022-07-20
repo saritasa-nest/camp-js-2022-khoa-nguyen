@@ -1,13 +1,13 @@
-import { PaginationOptionsDto } from '../dtos/paginationOptions.dto';
-import { PaginationOptions } from '../models/paginationOptions';
+import { animeListQueryOptionsDto } from '../dtos/animeListQueryOptions.dto';
+import { animeListQueryOptions } from '../models/animeListQueryOptions';
 
-export namespace PaginationOptionsMapper {
+export namespace animeListQueryOptionsMapper {
 
   /**
    * Maps dto to model.
    * @param options Page options.
    */
-  export function toDto(options: PaginationOptions): PaginationOptionsDto {
+  export function toDto(options: animeListQueryOptions): animeListQueryOptionsDto {
 
     return {
       limit: options.limit,

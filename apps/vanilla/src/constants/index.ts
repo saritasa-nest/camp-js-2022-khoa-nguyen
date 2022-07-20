@@ -1,4 +1,4 @@
 export * from './apiConstants';
-export * from './paginationOptions';
+export * from './animeListQueryOptions';
 export * from './sortOptions';
 export * from './key';

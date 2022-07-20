@@ -3,7 +3,7 @@
 .title {
   width: 100%;
   text-align: center;
-  color: var(--primary-font-color-2);
+  color: var(--font-color-primary-2);
   text-transform: uppercase;
   font-size: var(--primary-font-size-title);
   font-weight: var(--primary-font-weight-title);
@@ -11,7 +11,7 @@
 
 .form {
   font-size: var(--primary-font-size-normal);
-  color: var(--primary-font-color);
+  color: var(--font-color-primary);
   display: flex;
   align-items: center;
   width: 100%;
@@ -34,7 +34,7 @@
 
 .filter__item_title {
   font-size: var(--primary-font-size-normal);
-  color: var(--primary-font-color);
+  color: var(--font-color-primary);
 }
 
 .filter__item_select {

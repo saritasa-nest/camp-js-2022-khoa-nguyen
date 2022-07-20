@@ -1,5 +1,5 @@
 import { OrderOption } from '@js-camp/core/enum';
-import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
+import { animeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
 import { Sorting } from '@js-camp/core/models/sorting';
 
 import { DEFAULT_LIMIT, DEFAULT_SEARCH, SORT_OPTIONS } from '../constants';
@@ -15,7 +15,7 @@ const selectOrdering = document.querySelector<HTMLSelectElement>('.filter__item_
 /** Init and render sorting and ordering list, hence render corresponding list anime.
  * @param options Options of pagination.
  */
-export function renderSortingAndOrdering(options: PaginationOptions): void {
+export function renderSortingAndOrdering(options: animeListQueryOptions): void {
   const sortOptionHTML = SORT_OPTIONS.map(item => (
     `<option value="${item.title}">${item.title}</option>`
   )).join('');
@@ -34,7 +34,7 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
     setValueToLocalStorage(KEY_SORTING, SORT_OPTIONS.filter(item => item.title === value)[0]);
     const selectSortingValue = getValueFromLocalStorage<Sorting>(KEY_SORTING) ?? SORT_OPTIONS[0];
 
-    const optionsUpdated = new PaginationOptions({
+    const optionsUpdated = new animeListQueryOptions({
       ...options,
       offset: DEFAULT_LIMIT,
       activePage: 1,
@@ -66,7 +66,7 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
       return false;
     }
 
-    const optionsUpdated = new PaginationOptions({
+    const optionsUpdated = new animeListQueryOptions({
       ...options,
       offset: DEFAULT_LIMIT,
       activePage: 1,

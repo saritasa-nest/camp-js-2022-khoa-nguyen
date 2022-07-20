@@ -1,7 +1,7 @@
 import { OrderOption } from '@js-camp/core/enum';
 import { Anime } from '@js-camp/core/models/anime';
 import { Pagination } from '@js-camp/core/models/pagination';
-import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
+import { animeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
 import { Sorting } from '@js-camp/core/models/sorting';
 import { formatDate } from '@js-camp/core/utils';
 
@@ -18,9 +18,9 @@ const container = document.querySelector('.table');
  * Render anime list.
  * @param options Options of pagination.
  */
-export async function renderAnimeList(options: PaginationOptions): Promise<Pagination<Anime>> {
+export async function renderAnimeList(options: animeListQueryOptions): Promise<Pagination<Anime>> {
   try {
-    const optionUpdated = new PaginationOptions({
+    const optionUpdated = new animeListQueryOptions({
       ...options,
       sorting: new Sorting({
         ...getValueFromLocalStorage<Sorting>(KEY_SORTING) ?? SORT_OPTIONS[0],
