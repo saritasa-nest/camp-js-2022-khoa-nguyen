@@ -33,12 +33,13 @@ function renderDetailAnime(anime: AnimeDetail | null): void {
     `;
     return;
   }
-  const htmlStudiosList = anime.studiosData.map(item => `
-      <h2>${item.name}</h2>
+
+  const htmlStudiosList = anime.studiosData.map(studio => `
+      <h2>${studio.name}</h2>
   `).join('');
 
-  const htmlGenreList = anime.genresData.map(item => `
-      <h2>${item.name}</h2>
+  const htmlGenreList = anime.genresData.map(genre => `
+      <h2>${genre.name}</h2>
   `).join('');
 
   detailWrapper.innerHTML += `
