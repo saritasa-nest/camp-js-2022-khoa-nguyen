@@ -1,4 +1,4 @@
-import { SortTitle, SortValue } from '@js-camp/core/enum';
+import { SortTitle, SortValue } from '@js-camp/core/models/sorting';
 
 export const SORT_OPTIONS = [
   {

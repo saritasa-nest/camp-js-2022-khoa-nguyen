@@ -1,6 +1,12 @@
-import { GenresTypeModel } from '../enum/genresType';
-
 import { Immerable, OmitImmerable } from './immerable';
+
+/** Genres type model. */
+export enum GenresTypeModel {
+  Genres = 'Genres',
+  ExplicitGenres = 'Explicit genres',
+  Themes = 'Themes',
+  Demographics = 'Demographics',
+}
 
 /** Genre. */
 export class Genre extends Immerable {

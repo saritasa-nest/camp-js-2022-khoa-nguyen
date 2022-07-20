@@ -1,8 +1,8 @@
-import { OrderOption } from '@js-camp/core/enum';
 import { Sorting } from '@js-camp/core/models/sorting';
 
 import { SORT_OPTIONS } from '../constants';
 import { KEY_ORDER, KEY_SORTING } from '../constants/key';
+import { OrderOption } from '../enum';
 import { LocalStorageService } from '../services/localStore';
 import { setDefaultSelected } from '../utils';
 

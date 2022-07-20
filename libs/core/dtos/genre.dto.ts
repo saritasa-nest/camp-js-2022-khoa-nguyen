@@ -1,4 +1,10 @@
-import { GenresTypeDTO } from '../enum/genresType';
+/** Genres type dto. */
+export enum GenresTypeDTO {
+  Genres = 'GENRES',
+  ExplicitGenres = 'EXPLICIT_GENRES',
+  Themes = 'THEMES',
+  Demographics = 'DEMOGRAPHICS',
+}
 
 /** Genre DTO. */
 export interface GenreDto {

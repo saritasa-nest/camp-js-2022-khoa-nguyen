@@ -1,10 +1,11 @@
+import { StatusDto, TypeDto } from '../dtos/anime.dto';
 import { AnimeDetailDto } from '../dtos/animeDetail.dto';
-import { StatusDto, TypeDto } from '../enum';
 import { AnimeDetail } from '../models/animeDetail';
+
+import { AnimeMapper } from './anime.mapper';
 
 import { DateRangeMapper } from './dateRange.mapper';
 import { GenreMapper } from './genre.mapper';
-import { statusDtoToModel, typeDtoToModel } from './record.mapper';
 
 import { StudioMapper } from './studio.mapper';
 
@@ -15,8 +16,8 @@ export namespace AnimeDetailMapper {
    * @param dto Anime detail dto.
    */
   export function fromDto(dto: AnimeDetailDto): AnimeDetail {
-    const type = typeDtoToModel[dto.type] ?? TypeDto.Default;
-    const status = statusDtoToModel[dto.status] ?? StatusDto.Default;
+    const type = AnimeMapper.typeDtoToModel[dto.type] ?? TypeDto.Default;
+    const status = AnimeMapper.statusDtoToModel[dto.status] ?? StatusDto.Default;
     return new AnimeDetail({
       trailerYoutubeId: dto.trailer_youtube_id,
       airing: dto.airing,

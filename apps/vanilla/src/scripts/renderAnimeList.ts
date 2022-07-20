@@ -1,4 +1,3 @@
-import { OrderOption } from '@js-camp/core/enum';
 import { Anime, TypeModel } from '@js-camp/core/models/anime';
 import { Pagination } from '@js-camp/core/models/pagination';
 import { AnimeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
@@ -14,6 +13,7 @@ import { throwError } from '../utils';
 
 import { fetchAnimeList } from '../services/api/fetchAnimeList';
 import { AuthorizationService } from '../services/authorization';
+import { OrderOption } from '../enum';
 
 /**
  * Move to detail anime.
