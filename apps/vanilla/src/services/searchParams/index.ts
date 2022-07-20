@@ -37,8 +37,7 @@ export namespace SearchParamsService {
       sortBy: options.sorting.value,
       type: options.type,
     };
-    const params = new URLSearchParams(searchParam);
-    return params;
+    return new URLSearchParams(searchParam);
   }
 
   /**
