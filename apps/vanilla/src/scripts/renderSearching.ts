@@ -1,14 +1,11 @@
 
-import { KEY_SEARCHING } from '../constants';
-import { LocalStorageService } from '../services/localStore';
+import { SearchParamsService } from '../services/searchParams';
 
 import { getInitialQueryParams } from './initAnimeTable';
 
 import { renderListOnActivePage } from './renderPagination';
 
-/**
- * Render search result to UI.
- */
+/** Render search result to UI. */
 export function renderSearchingAndHandle(): void {
   const input = document.querySelector<HTMLInputElement>('.search__form-input');
   const button = document.querySelector('.search__form-button');
@@ -17,7 +14,8 @@ export function renderSearchingAndHandle(): void {
   }
   button.addEventListener('click', () => {
     const searchString = input.value;
-    LocalStorageService.setValue(KEY_SEARCHING, searchString);
+    SearchParamsService.setSearchParamToUrl('search', searchString);
+    SearchParamsService.removeParam('page');
     renderListOnActivePage(getInitialQueryParams());
   });
 }

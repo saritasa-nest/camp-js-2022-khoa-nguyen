@@ -1,19 +1,17 @@
-import { Anime, TypeModel } from '@js-camp/core/models/anime';
-import { Pagination } from '@js-camp/core/models/pagination';
+import { Anime } from '@js-camp/core/models/anime';
 import { AnimeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
-import { Sorting } from '@js-camp/core/models/sorting';
+import { Pagination } from '@js-camp/core/models/pagination';
 import { navigate } from '@js-camp/core/utils';
 
-import { DEFAULT_LIMIT, DETAIL_URL, SORT_OPTIONS } from '../constants';
+import { DEFAULT_LIMIT, DETAIL_URL } from '../constants';
 
-import { KEY_ANIME, KEY_ORDER, KEY_SORTING, KEY_TYPE } from '../constants/key';
+import { KEY_ANIME } from '../constants/key';
 import { LocalStorageService } from '../services/localStore';
 
 import { throwError } from '../utils';
 
 import { fetchAnimeList } from '../services/api/fetchAnimeList';
 import { AuthorizationService } from '../services/authorization';
-import { OrderOption } from '../enum';
 
 /**
  * Move to detail anime.
@@ -34,12 +32,13 @@ export async function renderAnimeList(options: AnimeListQueryOptions): Promise<P
   try {
     const optionUpdated = new AnimeListQueryOptions({
       ...options,
-      sorting: new Sorting({
-        ...LocalStorageService.getValue<Sorting>(KEY_SORTING) ?? SORT_OPTIONS[0],
-        isAscending: (LocalStorageService.getValue<OrderOption>(KEY_ORDER) == null ||
-        LocalStorageService.getValue<OrderOption>(KEY_ORDER) === OrderOption.Ascending),
-      }),
-      type: LocalStorageService.getValue<TypeModel>(KEY_TYPE) ?? TypeModel.Default,
+
+      // sorting: new Sorting({
+      //   ...LocalStorageService.getValue<Sorting>(KEY_SORTING) ?? SORT_OPTIONS[0],
+      //   isAscending: (LocalStorageService.getValue<OrderOption>(KEY_ORDER) == null ||
+      //   LocalStorageService.getValue<OrderOption>(KEY_ORDER) === OrderOption.Ascending),
+      // }),
+      // type: LocalStorageService.getValue<TypeModel>(KEY_TYPE) ?? TypeModel.Default,
       offset: (options.activePage - 1) * DEFAULT_LIMIT,
     });
     const animeList = await fetchAnimeList(optionUpdated);

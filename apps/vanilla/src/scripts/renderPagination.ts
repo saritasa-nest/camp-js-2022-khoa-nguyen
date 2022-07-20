@@ -1,8 +1,11 @@
 import { AnimeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
 
 import { DEFAULT_LIMIT, DEFAULT_TOTAL_PAGE, FIRST_PAGE, PAGE_RANGE, PAGE_STEP } from '../constants';
+import { SearchParamsService } from '../services/searchParams';
 
 import { throwError } from '../utils';
+
+import { getInitialQueryParams } from './initAnimeTable';
 
 import { renderAnimeList } from './renderAnimeList';
 
@@ -64,21 +67,13 @@ function renderPagination(options: AnimeListQueryOptions): void {
   const buttonLastPage = document.querySelector('.button__last');
 
   buttonFirstPage?.addEventListener('click', () => {
-      const optionUpdated = new AnimeListQueryOptions({
-        ...options,
-        activePage: 1,
-        offset: DEFAULT_LIMIT * (options.activePage - 1),
-      });
-      renderListOnActivePage(optionUpdated);
+      SearchParamsService.setSearchParamToUrl('page', FIRST_PAGE.toString());
+      renderListOnActivePage(getInitialQueryParams());
     });
 
   buttonLastPage?.addEventListener('click', () => {
-      const optionUpdated = new AnimeListQueryOptions({
-        ...options,
-        activePage: options.totalPages,
-        offset: DEFAULT_LIMIT * (options.activePage - 1),
-      });
-      renderListOnActivePage(optionUpdated);
+    SearchParamsService.setSearchParamToUrl('page', options.totalPages.toString());
+    renderListOnActivePage(getInitialQueryParams());
     });
 
   if (options.activePage === options.totalPages) {
@@ -117,12 +112,8 @@ export async function renderListOnActivePage(options: AnimeListQueryOptions): Pr
           return;
         }
         const numPage = Number.parseInt(strPage, 10);
-        const optionUpdatedTrigger = new AnimeListQueryOptions({
-          ...options,
-          offset: DEFAULT_LIMIT * (numPage - 1),
-          activePage: numPage,
-        });
-        renderListOnActivePage(optionUpdatedTrigger);
+        SearchParamsService.setSearchParamToUrl('page', numPage.toString());
+        renderListOnActivePage(getInitialQueryParams());
       });
     });
   } catch (error: unknown) {

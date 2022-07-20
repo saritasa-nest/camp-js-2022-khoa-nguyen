@@ -1,4 +1,4 @@
-import { TypeModel } from '@js-camp/core/models/anime';
+import { TypeDto } from '@js-camp/core/dtos/anime.dto';
 
 /** Options of type interface. */
 interface FilterType {
@@ -7,36 +7,36 @@ interface FilterType {
   readonly title: string;
 
   /** Value of options. */
-  readonly value: TypeModel;
+  readonly value: TypeDto;
 }
 
 export const FILTER_TYPE_OPTIONS: readonly FilterType[] = [
   {
     title: 'Default',
-    value: TypeModel.Default,
+    value: TypeDto.Default,
   },
   {
     title: 'Movie',
-    value: TypeModel.Movie,
+    value: TypeDto.Movie,
   },
   {
     title: 'Music',
-    value: TypeModel.Music,
+    value: TypeDto.Music,
   },
   {
     title: 'Ona',
-    value: TypeModel.Ona,
+    value: TypeDto.Ona,
   },
   {
     title: 'Ova',
-    value: TypeModel.Ova,
+    value: TypeDto.Ova,
   },
   {
     title: 'Special',
-    value: TypeModel.Special,
+    value: TypeDto.Special,
   },
   {
     title: 'TV',
-    value: TypeModel.Tv,
+    value: TypeDto.Tv,
   },
 ];

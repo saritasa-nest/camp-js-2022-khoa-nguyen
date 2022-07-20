@@ -1,9 +1,7 @@
-import { Sorting } from '@js-camp/core/models/sorting';
 
 import { SORT_OPTIONS } from '../constants';
-import { KEY_ORDER, KEY_SORTING } from '../constants/key';
 import { OrderOption } from '../enum';
-import { LocalStorageService } from '../services/localStore';
+import { SearchParamsService } from '../services/searchParams';
 import { setDefaultSelected } from '../utils';
 
 import { getInitialQueryParams } from './initAnimeTable';
@@ -13,10 +11,9 @@ import { renderListOnActivePage } from './renderPagination';
 const selectSort = document.querySelector<HTMLSelectElement>('.filter__item_select-sort');
 const selectOrdering = document.querySelector<HTMLSelectElement>('.filter__item_select-order');
 
-/**
- * Init and render sorting and ordering list, hence render corresponding list anime.
- */
+/** Init and render sorting and ordering list, hence render corresponding list anime. */
 export function renderSortingAndOrdering(): void {
+  const searchParam = SearchParamsService.getSearchParams();
   const sortOptionHTML = SORT_OPTIONS.map(item => (
     `<option value="${item.title}">${item.title}</option>`
   ))
@@ -30,10 +27,12 @@ export function renderSortingAndOrdering(): void {
     return;
   }
   selectSort.innerHTML = sortOptionHTML;
-  setDefaultSelected(selectSort, LocalStorageService.getValue<Sorting>(KEY_SORTING)?.title ?? SORT_OPTIONS[0].title);
+  setDefaultSelected(selectSort, searchParam.sortBy != null ?
+    SORT_OPTIONS.filter(item => item.value === searchParam.sortBy)[0].title :
+    SORT_OPTIONS[0].title);
   selectSort.addEventListener('change', () => {
     const { value } = selectSort;
-    LocalStorageService.setValue(KEY_SORTING, SORT_OPTIONS.filter(item => item.title === value)[0]);
+    SearchParamsService.setSearchParamToUrl('sortBy', SORT_OPTIONS.filter(item => item.title === value)[0].value);
     renderListOnActivePage(getInitialQueryParams());
     });
 
@@ -41,9 +40,10 @@ export function renderSortingAndOrdering(): void {
     return;
   }
   selectOrdering.innerHTML = orderOptionHTML;
-  setDefaultSelected(selectOrdering, LocalStorageService.getValue<OrderOption>(KEY_ORDER) ?? OrderOption.Ascending);
+  setDefaultSelected(selectOrdering, searchParam.ordering === 'des' ? OrderOption.Descending : OrderOption.Ascending);
   selectOrdering.addEventListener('change', () => {
-    LocalStorageService.setValue(KEY_ORDER, selectOrdering.value);
+    SearchParamsService.setSearchParamToUrl('ordering',
+      selectOrdering.value === OrderOption.Ascending ? OrderOption.Ascending : OrderOption.Descending);
     renderListOnActivePage(getInitialQueryParams());
   });
 }

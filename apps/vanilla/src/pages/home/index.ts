@@ -1,4 +1,3 @@
-import { HOME_URL } from '../../constants';
 import { getInitialQueryParams } from '../../scripts/initAnimeTable';
 import { renderFilterByType } from '../../scripts/renderFilterByType';
 import { renderHeader } from '../../scripts/renderHeader';
@@ -18,13 +17,3 @@ function renderAnimeTable(): void {
 }
 
 renderAnimeTable();
-
-/** Demo search param. */
-function demoSearchParam(): void {
-  const searchParam = { offset: 'Demo', limit: 'Test' };
-  const params = new URLSearchParams(searchParam);
-  console.log(params.toString());
-  window.history.pushState({}, HOME_URL, `?${params.toString()}`);
-}
-
-demoSearchParam();
