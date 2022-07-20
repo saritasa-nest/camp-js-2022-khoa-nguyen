@@ -10,19 +10,19 @@ import { getInitialQueryParams } from '../../scripts/initAnimeTable';
 interface SearchParam {
 
   /** Active page. */
-  page: number | null;
+  readonly page: number | null;
 
   /** Search value. */
-  search: string | null;
+  readonly search: string | null;
 
   /** Ordering. */
-  ordering: string | null;
+  readonly ordering: string | null;
 
   /** Sort by. */
-  sortBy: SortValue | null;
+  readonly sortBy: SortValue | null;
 
   /** Filter by type. */
-  type: TypeDto | null;
+  readonly type: TypeDto | null;
 }
 
 export namespace SearchParamsService {

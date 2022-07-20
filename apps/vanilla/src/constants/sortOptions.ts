@@ -1,6 +1,16 @@
 import { SortTitle, SortValue } from '@js-camp/core/models/sorting';
 
-export const SORT_OPTIONS = [
+/** Options of type interface. */
+interface SortingOptions {
+
+  /** Title of options. */
+  readonly title: SortTitle;
+
+  /** Value of options. */
+  readonly value: SortValue;
+}
+
+export const SORT_OPTIONS: readonly SortingOptions[] = [
   {
     title: SortTitle.TitleEnglish,
     value: SortValue.TitleEnglish,
