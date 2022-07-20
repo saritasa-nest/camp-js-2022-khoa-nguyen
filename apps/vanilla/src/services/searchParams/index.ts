@@ -55,7 +55,7 @@ export namespace SearchParamsService {
 
   /**
    * Remove search param.
-   * @param key Key ti delete.
+   * @param key Key to delete.
    */
   export function removeParam(key: string): void {
     const params = new URLSearchParams(window.location.search);
