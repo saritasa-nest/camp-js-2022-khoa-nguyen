@@ -1,6 +1,6 @@
 import { AnimeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
 
-import { DEFAULT_LIMIT, DEFAULT_TOTAL_PAGE, FIRST_PAGE, PAGE_RANGE, PAGE_STEP } from '../constants';
+import { DEFAULT_LIMIT, DEFAULT_TOTAL_PAGE, FIRST_PAGE, KEY_ACTIVE_PAGE, PAGE_RANGE, PAGE_STEP } from '../constants';
 import { SearchParamsService } from '../services/searchParams';
 
 import { throwError } from '../utils';
@@ -67,12 +67,12 @@ function renderPagination(options: AnimeListQueryOptions): void {
   const buttonLastPage = document.querySelector('.button__last');
 
   buttonFirstPage?.addEventListener('click', () => {
-      SearchParamsService.setSearchParamToUrl('page', FIRST_PAGE.toString());
+      SearchParamsService.setSearchParamToUrl(KEY_ACTIVE_PAGE, FIRST_PAGE.toString());
       renderListOnActivePage(getInitialQueryParams());
     });
 
   buttonLastPage?.addEventListener('click', () => {
-    SearchParamsService.setSearchParamToUrl('page', options.totalPages.toString());
+    SearchParamsService.setSearchParamToUrl(KEY_ACTIVE_PAGE, options.totalPages.toString());
     renderListOnActivePage(getInitialQueryParams());
     });
 
@@ -112,7 +112,7 @@ export async function renderListOnActivePage(options: AnimeListQueryOptions): Pr
           return;
         }
         const numPage = Number.parseInt(strPage, 10);
-        SearchParamsService.setSearchParamToUrl('page', numPage.toString());
+        SearchParamsService.setSearchParamToUrl(KEY_ACTIVE_PAGE, numPage.toString());
         renderListOnActivePage(getInitialQueryParams());
       });
     });
