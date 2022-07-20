@@ -1,4 +1,5 @@
-import { INITIAL_QUERY_PARAMS } from '../../scripts/initAnimeTable';
+import { HOME_URL } from '../../constants';
+import { getInitialQueryParams } from '../../scripts/initAnimeTable';
 import { renderFilterByType } from '../../scripts/renderFilterByType';
 import { renderHeader } from '../../scripts/renderHeader';
 import { renderListOnActivePage } from '../../scripts/renderPagination';
@@ -10,10 +11,20 @@ import { LocalStorageService } from '../../services/localStore';
 function renderAnimeTable(): void {
   LocalStorageService.clear();
   renderHeader();
-  renderListOnActivePage(INITIAL_QUERY_PARAMS);
+  renderListOnActivePage(getInitialQueryParams());
   renderSortingAndOrdering();
   renderFilterByType();
   renderSearchingAndHandle();
 }
 
 renderAnimeTable();
+
+/** Demo search param. */
+function demoSearchParam(): void {
+  const searchParam = { offset: 'Demo', limit: 'Test' };
+  const params = new URLSearchParams(searchParam);
+  console.log(params.toString());
+  window.history.pushState({}, HOME_URL, `?${params.toString()}`);
+}
+
+demoSearchParam();

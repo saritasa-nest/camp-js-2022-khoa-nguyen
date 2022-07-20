@@ -7,16 +7,19 @@ import { KEY_ORDER, KEY_SEARCHING, KEY_SORTING, KEY_TYPE } from '../constants/ke
 import { OrderOption } from '../enum';
 import { LocalStorageService } from '../services/localStore';
 
-export const INITIAL_QUERY_PARAMS: AnimeListQueryOptions = new AnimeListQueryOptions({
-  limit: DEFAULT_LIMIT,
-  offset: DEFAULT_OFFSET,
-  activePage: DEFAULT_ACTIVE_PAGE,
-  totalPages: DEFAULT_TOTAL_PAGE,
-  sorting: new Sorting({
-    ...LocalStorageService.getValue<Sorting>(KEY_SORTING) ?? SORT_OPTIONS[0],
-    isAscending: (LocalStorageService.getValue<OrderOption>(KEY_ORDER) === null ||
-    LocalStorageService.getValue<OrderOption>(KEY_ORDER) === OrderOption.Ascending),
-  }),
-  type: LocalStorageService.getValue<TypeModel>(KEY_TYPE) ?? TypeModel.Default,
-  search: LocalStorageService.getValue<TypeModel>(KEY_SEARCHING) ?? DEFAULT_SEARCH,
-});
+/** Get initial query params. */
+export function getInitialQueryParams(): AnimeListQueryOptions {
+  return new AnimeListQueryOptions({
+    limit: DEFAULT_LIMIT,
+    offset: DEFAULT_OFFSET,
+    activePage: DEFAULT_ACTIVE_PAGE,
+    totalPages: DEFAULT_TOTAL_PAGE,
+    sorting: new Sorting({
+      ...LocalStorageService.getValue<Sorting>(KEY_SORTING) ?? SORT_OPTIONS[0],
+      isAscending: (LocalStorageService.getValue<OrderOption>(KEY_ORDER) === null ||
+      LocalStorageService.getValue<OrderOption>(KEY_ORDER) === OrderOption.Ascending),
+    }),
+    type: LocalStorageService.getValue<TypeModel>(KEY_TYPE) ?? TypeModel.Default,
+    search: LocalStorageService.getValue<TypeModel>(KEY_SEARCHING) ?? DEFAULT_SEARCH,
+  });
+}

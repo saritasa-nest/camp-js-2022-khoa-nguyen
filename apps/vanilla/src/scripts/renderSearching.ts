@@ -2,7 +2,7 @@
 import { KEY_SEARCHING } from '../constants';
 import { LocalStorageService } from '../services/localStore';
 
-import { INITIAL_QUERY_PARAMS } from './initAnimeTable';
+import { getInitialQueryParams } from './initAnimeTable';
 
 import { renderListOnActivePage } from './renderPagination';
 
@@ -18,6 +18,6 @@ export function renderSearchingAndHandle(): void {
   button.addEventListener('click', () => {
     const searchString = input.value;
     LocalStorageService.setValue(KEY_SEARCHING, searchString);
-    renderListOnActivePage(INITIAL_QUERY_PARAMS);
+    renderListOnActivePage(getInitialQueryParams());
   });
 }

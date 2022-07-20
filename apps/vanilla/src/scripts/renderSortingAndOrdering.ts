@@ -6,7 +6,7 @@ import { OrderOption } from '../enum';
 import { LocalStorageService } from '../services/localStore';
 import { setDefaultSelected } from '../utils';
 
-import { INITIAL_QUERY_PARAMS } from './initAnimeTable';
+import { getInitialQueryParams } from './initAnimeTable';
 
 import { renderListOnActivePage } from './renderPagination';
 
@@ -34,7 +34,7 @@ export function renderSortingAndOrdering(): void {
   selectSort.addEventListener('change', () => {
     const { value } = selectSort;
     LocalStorageService.setValue(KEY_SORTING, SORT_OPTIONS.filter(item => item.title === value)[0]);
-    renderListOnActivePage(INITIAL_QUERY_PARAMS);
+    renderListOnActivePage(getInitialQueryParams());
     });
 
   if (selectOrdering == null) {
@@ -44,6 +44,6 @@ export function renderSortingAndOrdering(): void {
   setDefaultSelected(selectOrdering, LocalStorageService.getValue<OrderOption>(KEY_ORDER) ?? OrderOption.Ascending);
   selectOrdering.addEventListener('change', () => {
     LocalStorageService.setValue(KEY_ORDER, selectOrdering.value);
-    renderListOnActivePage(INITIAL_QUERY_PARAMS);
+    renderListOnActivePage(getInitialQueryParams());
   });
 }
