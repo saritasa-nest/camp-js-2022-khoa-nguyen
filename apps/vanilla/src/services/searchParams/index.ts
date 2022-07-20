@@ -3,8 +3,6 @@ import { TypeDto } from '@js-camp/core/dtos/anime.dto';
 import { SortValue } from '@js-camp/core/models/sorting';
 
 import { HOME_URL, KEY_ACTIVE_PAGE, KEY_ORDER, KEY_SEARCHING, KEY_SORTING, KEY_TYPE } from '../../constants';
-import { OrderOption } from '../../enum';
-import { getInitialQueryParams } from '../../scripts/initAnimeTable';
 
 /** Search param interface. */
 interface SearchParam {
