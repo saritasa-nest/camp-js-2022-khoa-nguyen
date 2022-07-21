@@ -24,6 +24,7 @@ appAxios.interceptors.request.use(config => {
     ...config,
       headers: {
       ...config.headers,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         Authorization: `Bearer ${token?.access}`,
     },
   };
