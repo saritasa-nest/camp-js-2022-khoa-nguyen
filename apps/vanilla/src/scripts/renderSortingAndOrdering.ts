@@ -27,9 +27,11 @@ export function renderSortingAndOrdering(): void {
     return;
   }
   selectSort.innerHTML = sortOptionHTML;
+
   setDefaultSelected(selectSort, searchParam.sortBy != null ?
     SORT_OPTIONS.filter(item => item.value === searchParam.sortBy)[0].title :
     SORT_OPTIONS[0].title);
+
   selectSort.addEventListener('change', () => {
     const { value } = selectSort;
     SearchParamsService.setSearchParamToUrl(KEY_SORTING, SORT_OPTIONS.filter(item => item.title === value)[0].value);
@@ -40,7 +42,9 @@ export function renderSortingAndOrdering(): void {
     return;
   }
   selectOrdering.innerHTML = orderOptionHTML;
+
   setDefaultSelected(selectOrdering, searchParam.ordering ?? OrderOption.Ascending);
+
   selectOrdering.addEventListener('change', () => {
     SearchParamsService.setSearchParamToUrl(KEY_ORDER,
       selectOrdering.value === OrderOption.Ascending ? OrderOption.Ascending : OrderOption.Descending);
