@@ -2,7 +2,7 @@ import { Immerable, OmitImmerable } from './immerable';
 import { Sorting } from './sorting';
 
 /** Pagination meta info. */
-export class animeListQueryOptions extends Immerable {
+export class AnimeListQueryOptions extends Immerable {
 
   /** Total count of items. */
   public readonly offset: number;
@@ -33,4 +33,4 @@ export class animeListQueryOptions extends Immerable {
   }
 }
 
-type InitArgsPagination = OmitImmerable<animeListQueryOptions>;
+type InitArgsPagination = OmitImmerable<AnimeListQueryOptions>;

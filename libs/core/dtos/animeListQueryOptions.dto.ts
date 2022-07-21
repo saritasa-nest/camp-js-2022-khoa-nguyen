@@ -1,6 +1,6 @@
 
 /** Pagination meta info. */
-export interface animeListQueryOptionsDto {
+export interface AnimeListQueryOptionsDto {
 
   /** Offset of page. */
   readonly offset: number;

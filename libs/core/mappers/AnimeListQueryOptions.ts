@@ -1,13 +1,13 @@
-import { animeListQueryOptionsDto } from '../dtos/animeListQueryOptions.dto';
-import { animeListQueryOptions } from '../models/animeListQueryOptions';
+import { AnimeListQueryOptionsDto } from '../dtos/animeListQueryOptions.dto';
+import { AnimeListQueryOptions } from '../models/animeListQueryOptions';
 
-export namespace animeListQueryOptionsMapper {
+export namespace AnimeListQueryOptionsMapper {
 
   /**
    * Maps dto to model.
    * @param options Page options.
    */
-  export function toDto(options: animeListQueryOptions): animeListQueryOptionsDto {
+  export function toDto(options: AnimeListQueryOptions): AnimeListQueryOptionsDto {
 
     return {
       limit: options.limit,
