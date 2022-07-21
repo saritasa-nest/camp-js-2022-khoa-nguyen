@@ -19,8 +19,8 @@ async function displayProfile(): Promise<void> {
     return;
   }
   const profile = await getProfile();
-  const titleElement = document.querySelector('.title');
-  const infoWrapper = document.querySelector('.info');
+  const titleElement = document.querySelector('.profile__title');
+  const infoWrapper = document.querySelector('.profile__info');
   if (profile instanceof HttpError) {
     return;
   }
@@ -47,10 +47,7 @@ async function displayProfile(): Promise<void> {
       value: profile.modified.toLocaleString(),
     },
   ];
-  if (titleElement == null) {
-    return;
-  }
-  if (infoWrapper == null) {
+  if (titleElement == null || infoWrapper == null) {
     return;
   }
   const profileHTML = PROFILE_INFO.map(item => `
@@ -63,7 +60,7 @@ async function displayProfile(): Promise<void> {
   infoWrapper.innerHTML = profileHTML;
 }
 
-document.querySelector('.button')?.addEventListener('click', () => {
+document.querySelector('.profile__button')?.addEventListener('click', () => {
   navigate(LOGIN_URL);
   LocalStorageService.remove(KEY_TOKEN);
 });

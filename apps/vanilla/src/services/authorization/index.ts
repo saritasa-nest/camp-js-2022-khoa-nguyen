@@ -54,10 +54,7 @@ export namespace AuthorizationService {
       return false;
     }
     const result = await verifyToken(token);
-    if (result instanceof HttpError) {
-      return false;
-    }
-    return true;
+    return !(result instanceof HttpError);
   }
 
   /** Log user out. */

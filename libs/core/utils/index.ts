@@ -9,7 +9,7 @@ export function queryErrorSpan(inputElement: HTMLInputElement, message: readonly
     return;
   }
   const parentElement = inputElement.parentElement?.parentElement;
-  const errorElement = parentElement?.querySelector('.form__span-error');
+  const errorElement = parentElement?.querySelector('.form__span_error');
   if (errorElement === null || errorElement === undefined || message === undefined || message === null) {
     return;
   }

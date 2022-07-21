@@ -14,7 +14,7 @@
   font-weight: var(--primary-font-weight-heading);
 }
 
-.info {
+.profile__info {
   margin-top: 30px;
 }
 
@@ -61,12 +61,12 @@
   text-align: center;
 }
 
-.form__span-error {
+.form__span_error {
   color: var(--primary-font-error-color);
   margin-top: 10px;
 }
 
-.link-below {
+.link_below {
   margin-top: 15px;
 }
 
@@ -91,12 +91,12 @@
   flex: 1;
 }
 
-.filter__item_title {
+.filter__title {
   font-size: var(--primary-font-size-normal);
   color: var(--primary-font-color);
 }
 
-.filter__item_select {
+.filter__select {
   display: block;
   margin-top: 10px;
 }

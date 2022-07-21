@@ -7,7 +7,7 @@ import { getInitialQueryParams } from './initAnimeTable';
 
 import { renderListOnActivePage } from './renderPagination';
 
-const selectType = document.querySelector<HTMLSelectElement>('.filter__item_select-type');
+const selectType = document.querySelector<HTMLSelectElement>('.filter__select_type');
 
 /** Render filter by type. */
 export function renderFilterByType(): void {

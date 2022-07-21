@@ -18,30 +18,31 @@ async function checkIsLoggedIn(): Promise<void> {
 /** Validate login info. */
 function validateLogin(): void {
   const form = document.querySelector<HTMLFormElement>('.form');
-  if (form != null) {
-    const inputEmail = form.querySelector<HTMLInputElement>('input[data-type=email]') ;
-    const inputPassword = form.querySelector<HTMLInputElement>('input[data-type=password]');
-    const errorElement = form.querySelector<HTMLSpanElement>('.form__span-error');
-    form.addEventListener('submit', async e => {
-        e.preventDefault();
-        if (inputEmail == null || inputPassword == null) {
-          return;
-        }
-        const userLoginInfo = new Login({
-          email: inputEmail.value,
-          password: inputPassword.value,
-        });
-
-        const result = await AuthorizationService.getToken(userLoginInfo);
-        if (result instanceof HttpError) {
-          if (errorElement == null) {
-            return;
-          }
-          errorElement.innerHTML = result.detail;
-        }
-    });
+  if (form == null) {
+    return;
   }
+  const inputEmail = form.querySelector<HTMLInputElement>('input[data-type=email]') ;
+  const inputPassword = form.querySelector<HTMLInputElement>('input[data-type=password]');
+  const errorElement = form.querySelector<HTMLSpanElement>('.form__span_error');
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    if (inputEmail == null || inputPassword == null) {
+      return;
+    }
+    const userLoginInfo = new Login({
+      email: inputEmail.value,
+      password: inputPassword.value,
+    });
 
+    const result = await AuthorizationService.getToken(userLoginInfo);
+    if (!(result instanceof HttpError)) {
+      return;
+    }
+    if (errorElement == null) {
+      return;
+    }
+    errorElement.innerHTML = result.detail;
+  });
 }
 
 checkIsLoggedIn();

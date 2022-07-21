@@ -8,8 +8,8 @@ import { renderListOnActivePage } from './renderPagination';
 
 /** Render search result to UI. */
 export function renderSearchingAndHandle(): void {
-  const input = document.querySelector<HTMLInputElement>('.search__form-input');
-  const button = document.querySelector('.search__form-button');
+  const input = document.querySelector<HTMLInputElement>('.search__input');
+  const button = document.querySelector('.search__button');
   if (input == null || button == null) {
     return;
   }

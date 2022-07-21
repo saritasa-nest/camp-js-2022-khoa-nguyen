@@ -31,13 +31,11 @@ appAxios.interceptors.request.use(config => {
 
 appAxios.interceptors.response.use(response => response, async error => {
   const token = LocalStorageService.getValue<Token>(KEY_TOKEN);
-  if (token) {
-    if (error.response.status === 401) {
-      const refreshedToken = await refreshToken(token);
-      if (refreshedToken instanceof HttpError) {
-        return;
-      }
+  if (token != null && error.response.status === 401) {
+    const refreshedToken = await refreshToken(token);
+    if (!(refreshedToken instanceof HttpError)) {
       LocalStorageService.setValue<Token>(KEY_TOKEN, refreshedToken);
+      return;
     }
   }
   return Promise.reject(error);
