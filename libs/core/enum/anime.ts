@@ -1,22 +1,21 @@
 
 /** Anime type dto. */
 export enum TypeDto {
-  ONA = 'ONA',
-  TV = 'TV',
-  MOVIE = 'MOVIE',
-  SPECIAL = 'SPECIAL',
-  MUSIC = 'MUSIC',
-  OVA = 'OVA',
-  DEFAULT = '',
+  Ona = 'ONA',
+  Tv = 'TV',
+  Movie = 'MOVIE',
+  Special = 'SPECIAL',
+  Music = 'MUSIC',
+  Ova = 'OVA',
+  Default = '',
 }
 
 /** Anime status dto. */
 export enum StatusDto {
-  AIRING = 'AIRING',
-  FINISHED = 'FINISHED',
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  NOT_YET_AIRED = 'NOT_YET_AIRED',
-  DEFAULT = '',
+  Airing = 'AIRING',
+  Finished = 'FINISHED',
+  NotAired = 'NOT_YET_AIRED',
+  Default = '',
 }
 
 /** Anime type model. */

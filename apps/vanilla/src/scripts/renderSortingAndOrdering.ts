@@ -28,11 +28,11 @@ export function renderSortingAndOrdering(options: AnimeListQueryOptions): void {
     return;
   }
   selectSort.innerHTML = sortOptionHTML;
-  setDefaultSelected(selectSort, getValueFromLocalStorage<Sorting>(KEY_SORTING)?.title ?? SORT_OPTIONS[0].title);
+  setDefaultSelected(selectSort, LocalStorageService.getValue<Sorting>(KEY_SORTING)?.title ?? SORT_OPTIONS[0].title);
   selectSort.addEventListener('change', () => {
       const { value } = selectSort;
-    setValueToLocalStorage(KEY_SORTING, SORT_OPTIONS.filter(item => item.title === value)[0]);
-    const selectSortingValue = getValueFromLocalStorage<Sorting>(KEY_SORTING) ?? SORT_OPTIONS[0];
+      LocalStorageService.setValue(KEY_SORTING, SORT_OPTIONS.filter(item => item.title === value)[0]);
+    const selectSortingValue = LocalStorageService.getValue<Sorting>(KEY_SORTING) ?? SORT_OPTIONS[0];
 
     const optionsUpdated = new AnimeListQueryOptions({
       ...options,
@@ -52,11 +52,11 @@ export function renderSortingAndOrdering(options: AnimeListQueryOptions): void {
     return;
   }
   selectOrdering.innerHTML = orderOptionHTML;
-  setDefaultSelected(selectOrdering, getValueFromLocalStorage<OrderOption>(KEY_ORDER) ?? OrderOption.Ascending);
+  setDefaultSelected(selectOrdering, LocalStorageService.getValue<OrderOption>(KEY_ORDER) ?? OrderOption.Ascending);
   selectOrdering.addEventListener('change', () => {
 
-    setValueToLocalStorage(KEY_ORDER, selectOrdering.value);
-    const selectOrderingValue = getValueFromLocalStorage<OrderOption>(KEY_ORDER) ?? OrderOption.Ascending;
+    LocalStorageService.setValue(KEY_ORDER, selectOrdering.value);
+    const selectOrderingValue = LocalStorageService.getValue<OrderOption>(KEY_ORDER) ?? OrderOption.Ascending;
 
     /** Get type of ordering option.*/
     function getSelectOptions(): boolean {

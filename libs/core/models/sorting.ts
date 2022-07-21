@@ -8,7 +8,7 @@ export class Sorting extends Immerable {
   /** Title of sorting. */
   public readonly title: SortTitle;
 
-  /** Name of sorting. */
+  /** API value of sorting. */
   public readonly value: SortValue;
 
   /** Ordering. */
