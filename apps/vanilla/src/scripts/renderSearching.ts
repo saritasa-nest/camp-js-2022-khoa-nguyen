@@ -1,7 +1,7 @@
 import { AnimeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
 
 import { DEFAULT_LIMIT, DEFAULT_SEARCH, KEY_SEARCHING } from '../constants';
-import { setValueToLocalStorage } from '../service/localStorage';
+import { LocalStorageService } from '../service/localStorage';
 
 import { renderAnimeList } from './renderAnimeList';
 
@@ -18,7 +18,7 @@ export function searchingHandler(options: AnimeListQueryOptions): void {
     event.preventDefault();
     const formData = new FormData(event.target as HTMLFormElement);
     const searchString = formData.get('search')?.toString() ?? DEFAULT_SEARCH;
-    setValueToLocalStorage(KEY_SEARCHING, searchString);
+    LocalStorageService.setValue(KEY_SEARCHING, searchString);
     const optionsUpdated = new AnimeListQueryOptions({
       ...options,
       offset: DEFAULT_LIMIT,

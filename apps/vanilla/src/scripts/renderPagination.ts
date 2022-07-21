@@ -1,7 +1,7 @@
 import { AnimeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
 
 import { DEFAULT_LIMIT, DEFAULT_SEARCH, KEY_SEARCHING } from '../constants';
-import { getValueFromLocalStorage } from '../service/localStorage';
+import { LocalStorageService } from '../service/localStorage';
 
 import { renderAnimeList } from './renderAnimeList';
 
@@ -61,7 +61,7 @@ function renderPagination(options: AnimeListQueryOptions): void {
         ...options,
         activePage: 1,
         offset: DEFAULT_LIMIT * options.activePage,
-        search: getValueFromLocalStorage(KEY_SEARCHING) ?? DEFAULT_SEARCH,
+        search: LocalStorageService.getValue(KEY_SEARCHING) ?? DEFAULT_SEARCH,
       });
       renderListAndPaginationToUI(optionUpdated);
     });
@@ -71,7 +71,7 @@ function renderPagination(options: AnimeListQueryOptions): void {
         ...options,
         activePage: options.totalPages,
         offset: DEFAULT_LIMIT * options.activePage,
-        search: getValueFromLocalStorage(KEY_SEARCHING) ?? DEFAULT_SEARCH,
+        search: LocalStorageService.getValue(KEY_SEARCHING) ?? DEFAULT_SEARCH,
       });
       renderListAndPaginationToUI(optionUpdated);
     });
@@ -113,7 +113,7 @@ export async function renderListAndPaginationToUI(options: AnimeListQueryOptions
           ...options,
           offset: DEFAULT_LIMIT * numPage,
           activePage: numPage,
-          search: getValueFromLocalStorage(KEY_SEARCHING) ?? DEFAULT_SEARCH,
+          search: LocalStorageService.getValue(KEY_SEARCHING) ?? DEFAULT_SEARCH,
         });
         renderListAndPaginationToUI(optionUpdatedTrigger);
       });

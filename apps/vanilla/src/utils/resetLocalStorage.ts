@@ -1,8 +1,8 @@
 import { KEY_SEARCHING, KEY_SORTING } from '../constants';
-import { setValueToLocalStorage } from '../service/localStorage';
+import { LocalStorageService } from '../service/localStorage';
 
 /** Reset value in local storage.*/
 export function resetStorage(): void {
-  setValueToLocalStorage(KEY_SEARCHING, '');
-  setValueToLocalStorage(KEY_SORTING, '');
+  LocalStorageService.setValue(KEY_SEARCHING, '');
+  LocalStorageService.setValue(KEY_SORTING, '');
 }
