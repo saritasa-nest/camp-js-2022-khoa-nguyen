@@ -16,7 +16,7 @@ export const appAxios = axios.create({
 appAxios.interceptors.request.use(config => {
   const token = LocalStorageService.getValue<Token>(KEY_TOKEN);
 
-  if (!token) {
+  if (token == null) {
     return config;
   }
   return {
