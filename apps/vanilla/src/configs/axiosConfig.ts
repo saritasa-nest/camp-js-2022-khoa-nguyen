@@ -9,6 +9,7 @@ import { LocalStorageService } from '../services/localStore';
 export const appAxios = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_URL,
   headers: {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     'Api-Key': import.meta.env.VITE_APP_API_KEY,
   },
 });
