@@ -15,6 +15,6 @@ export interface AnimeListQueryOptionsDto {
   /** Filter by types. */
   readonly type: TypeDto;
 
-  /** Search items by name. */
+  /** Search items by title. */
   readonly search: string;
 }
