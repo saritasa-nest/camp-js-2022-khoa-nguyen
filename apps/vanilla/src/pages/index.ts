@@ -35,10 +35,7 @@ function validateLogin(): void {
     });
 
     const result = await AuthorizationService.getToken(userLoginInfo);
-    if (!(result instanceof HttpError)) {
-      return;
-    }
-    if (errorElement == null) {
+    if (!(result instanceof HttpError) || errorElement == null) {
       return;
     }
     errorElement.innerHTML = result.detail;

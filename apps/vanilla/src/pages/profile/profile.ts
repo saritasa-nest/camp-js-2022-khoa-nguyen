@@ -15,13 +15,15 @@ if (token == null) {
 
 /** Display user profile on screen. */
 async function displayProfile(): Promise<void> {
-  if (token == null) {
-    return;
-  }
   const profile = await getProfile();
   const titleElement = document.querySelector('.profile__title');
   const infoWrapper = document.querySelector('.profile__info');
-  if (profile instanceof HttpError) {
+  if (
+    token == null ||
+    titleElement == null ||
+    infoWrapper == null ||
+    profile instanceof HttpError
+  ) {
     return;
   }
   const PROFILE_INFO = [
@@ -47,9 +49,6 @@ async function displayProfile(): Promise<void> {
       value: profile.modified.toLocaleString(),
     },
   ];
-  if (titleElement == null || infoWrapper == null) {
-    return;
-  }
   const profileHTML = PROFILE_INFO.map(item => `
     <div class = "info__item">
       <h2>${item.title}</h2>

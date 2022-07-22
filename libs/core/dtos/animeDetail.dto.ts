@@ -15,13 +15,13 @@ export interface AnimeDetailDto extends AnimeDto {
   readonly synopsis: string;
 
   /** List studio id. */
-  readonly studios: readonly number[];
+  readonly studios: readonly StudioDto['id'][];
 
   /** Studio data. */
   readonly studios_data: readonly StudioDto[];
 
   /** List genres id. */
-  readonly genres: readonly number[];
+  readonly genres: readonly GenreDto['id'][];
 
   /** Genre list. */
   readonly genres_data: readonly GenreDto[];

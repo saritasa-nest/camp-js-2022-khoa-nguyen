@@ -11,32 +11,32 @@ export class AnimeDetail extends Anime {
   public readonly trailerYoutubeId: string | null;
 
   /** Airing at the moment. */
-  public readonly airing: boolean;
+  public readonly isAiring: boolean;
 
   /** Synopsis. */
   public readonly synopsis: string;
 
   /** List studio id. */
-  public readonly studios: readonly number[];
+  public readonly studioIds: readonly Studio['id'][];
 
   /** Studio data. */
-  public readonly studiosData: readonly Studio[];
+  public readonly studios: readonly Studio[];
 
   /** List genres id. */
-  public readonly genres: readonly number[];
+  public readonly genresIds: readonly Genre['id'][];
 
   /** Genre list. */
-  public readonly genresData: readonly Genre[];
+  public readonly genres: readonly Genre[];
 
   public constructor(data: AnimeInitArgs) {
     super(data);
     this.trailerYoutubeId = data.trailerYoutubeId;
-    this.airing = data.airing;
+    this.isAiring = data.isAiring;
     this.synopsis = data.synopsis;
+    this.studioIds = data.studioIds;
     this.studios = data.studios;
-    this.studiosData = data.studiosData;
+    this.genresIds = data.genresIds;
     this.genres = data.genres;
-    this.genresData = data.genresData;
   }
 }
 

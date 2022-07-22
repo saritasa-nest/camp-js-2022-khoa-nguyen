@@ -42,7 +42,7 @@
   cursor: pointer;
 }
 
-.button__trailer {
+.button_trailer {
   width: 100%;
   margin-top: 20px;
 }
@@ -74,7 +74,7 @@
   padding: 1rem;
 }
 
-.button__popup_close {
+.button_close {
   width: fit-content;
   align-self: flex-end;
   padding: 0.5rem;

@@ -18,8 +18,10 @@ export function renderFilterByType(): void {
   }
   selectType.innerHTML = typeOptionHTML;
 
-  setDefaultSelected(selectType, searchParams.type != null ? FILTER_TYPE_OPTIONS.filter(item =>
-    item.value === searchParams.type)[0].title : FILTER_TYPE_OPTIONS[0].title) ;
+  setDefaultSelected(selectType, searchParams.type != null ?
+    FILTER_TYPE_OPTIONS.filter(item =>
+    item.value === searchParams.type)[0].title :
+    FILTER_TYPE_OPTIONS[0].title) ;
 
   selectType.addEventListener('change', () => {
     SearchParamsService.setSearchParamToUrl(KEY_TYPE, FILTER_TYPE_OPTIONS.filter(item => selectType.value === item.title)[0].value);
