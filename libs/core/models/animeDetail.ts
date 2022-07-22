@@ -22,7 +22,7 @@ export class AnimeDetail extends Anime {
   /** Studio data. */
   public readonly studios: readonly Studio[];
 
-  /** List genres id. */
+  /** List genre id. */
   public readonly genresIds: readonly Genre['id'][];
 
   /** Genre list. */
