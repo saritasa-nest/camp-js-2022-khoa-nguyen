@@ -1,17 +1,28 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
+/** Api service methods. */
 @Injectable({
   providedIn: 'root',
 })
+
+/** Api service methods. */
 export class ApiService {
-  private const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
+  private BASE_URL = 'https://api.camp-js.saritasa.rocks/api/v1/';
 
-  constructor(private api: HttpClient) { }
+  public constructor(private api: HttpClient) { }
 
+  /**
+   *  Api service constructors.
+   * @param url Url of api call.
+   */
   public getData<T>(url: string): Observable<T> {
-    const finishedUrl = '${BASE_URL}';
-    return this.api.get<T>(url, this.ht);
+    try {
+      const finishedUrl = this.BASE_URL + url;
+      return this.api.get<T>(finishedUrl);
+    } catch (error: unknown) {
+      throw new Error((error as Error).message);
+    }
   }
 }
