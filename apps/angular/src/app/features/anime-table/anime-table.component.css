@@ -1,0 +1,40 @@
+.table__caption {
+  opacity: 0;
+}
+
+.table__row_item {
+  font-weight: var(--primary-font-weight-heading);
+  border: 1px solid var(--primary-light-color);
+  width: 20%;
+  padding: 20px;
+  text-align: center;
+}
+
+.table_row {
+  transition: 0.5s ease;
+}
+
+.table__row:hover {
+  background-color: var(--primary-light-color-2);
+  cursor: pointer;
+}
+
+.table__row:first-child {
+  background-color: var(--primary-color);
+  color: var(--primary-light-color-2);
+}
+
+.table__row:first-child > .table__row_item {
+  background-color: var(--primary-color);
+  color: var(--primary-light-color-2);
+  text-align: center;
+}
+
+.table__row_item_thumb {
+  padding: 0;
+}
+
+.table__row_item_thumb__img {
+  width: 100%;
+  display: block;
+}

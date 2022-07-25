@@ -1,0 +1,23 @@
+<div>
+  <table class="table">
+    <caption class="table__caption">Anime table</caption>
+    <tr class="table__row">
+      <th class="table__row_item">Thumbnail</th>
+      <th class="table__row_item">English title</th>
+      <th class="table__row_item">Japanese title</th>
+      <th class="table__row_item">Aired start</th>
+      <th class="table__row_item">Type</th>
+      <th class="table__row_item">Status</th>
+    </tr>
+    <tr class="table__row">
+      <th class="table__row_item table__row_item_thumb">
+        <img class= "table__row_item_thumb__img" src="${element.image}" alt="${element.titleEnglish}" />
+      </th>
+      <th class="table__row_item">element.titleEnglish}</th>
+      <th class="table__row_item">element.titleJapan}</th>
+      <th class="table__row_item">element.aired.start ? element.aired.start.toLocaleDateString() : ''}</th>
+      <th class="table__row_item">element.type}</th>
+      <th class="table__row_item">element.status}</th>
+    </tr>
+  </table>
+</div>
