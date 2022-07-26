@@ -20,7 +20,6 @@ export class ApiService {
    * @param params Query params.
    */
   public getData<Dto, ParamDto>(url: string, params?: ParamDto): Observable<Dto> {
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     try {
       const finishedUrl = BASE_URL + url;
       return this.api.get<Dto>(finishedUrl, { params: { ...params } });
