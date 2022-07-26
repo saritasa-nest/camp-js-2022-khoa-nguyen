@@ -21,7 +21,7 @@ export class AnimeTableComponent implements OnInit {
   /** Pagination result. */
   public result: Pagination<Anime> | undefined | null;
 
-  /** Default query anime list. */
+  /** Default query options anime list. */
   public defaultQuery = new AnimeListQueryOptions({
     limit: DEFAULT_LIMIT,
     offset: DEFAULT_OFFSET,
