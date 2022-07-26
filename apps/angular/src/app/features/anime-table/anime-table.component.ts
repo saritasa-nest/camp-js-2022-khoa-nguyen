@@ -36,7 +36,7 @@ export class AnimeTableComponent implements OnInit {
 
   public constructor(private anime: AnimeService) {}
 
-  /** Init anime table. */
+  /** Init anime list table. */
   public ngOnInit(): void {
     this.anime.getAnimeList(this.defaultQuery).subscribe(data => {
       this.result = data;
