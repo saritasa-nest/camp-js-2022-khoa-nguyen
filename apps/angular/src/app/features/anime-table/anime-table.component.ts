@@ -1,4 +1,5 @@
 import { Component, NgIterable, OnInit } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
 import { Anime } from '@js-camp/core/models/anime';
 import { AnimeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
 import { Pagination } from '@js-camp/core/models/pagination';
@@ -33,6 +34,11 @@ export class AnimeTableComponent implements OnInit {
       isAscending: true,
     }),
   });
+
+  // /** Default query anime list. */
+  // public handlePaginationChange(event: PageEvent): void {
+  //   console.log('CHanged');
+  // }
 
   public constructor(private anime: AnimeService) {}
 

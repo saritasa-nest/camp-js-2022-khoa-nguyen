@@ -19,9 +19,15 @@
   cursor: pointer;
 }
 
-.table__row:first-child {
+.table__row_caption {
+  background: #000;
   background-color: var(--primary-color);
   color: var(--primary-light-color-2);
+}
+
+.table__row_caption:hover {
+  background-color: var(--primary-color);
+  cursor: default;
 }
 
 .table__row:first-child > .table__row_item {

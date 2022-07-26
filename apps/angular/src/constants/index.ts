@@ -29,3 +29,4 @@ export function getAnimeQueryList(): AnimeListQueryOptions {
     }),
   });
 }
+export const ANIME_LIST_API = 'anime/anime/';

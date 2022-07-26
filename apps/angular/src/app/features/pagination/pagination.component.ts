@@ -1,11 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { PageEvent } from '@angular/material/paginator';
-import { getAnimeQueryList } from 'apps/angular/src/constants';
 
-import { AnimeService } from '../../services/anime.service';
-import { AnimeTableComponent } from '../anime-table/anime-table.component';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
-/** Pagination options */
+/** Pagination options. */
 @Component({
   selector: 'camp-pagination',
   templateUrl: './pagination.component.html',
@@ -14,14 +10,12 @@ import { AnimeTableComponent } from '../anime-table/anime-table.component';
 
 /** Init pagination component. */
 export class PaginationComponent implements OnInit {
-  @Input name;
 
-  public constructor(private animeService: AnimeService) {}
+  /** Change event component.
+   * @param event Event page change.
+   */
+  @Output() public pageChange = new EventEmitter();
 
-  OnPageChange(event: PageEvent): void {
-    const startIndex = event.pageIndex * event.pageSize;
-    this.animeService.getAnimeList(getAnimeQueryList()).subscribe;
-  }
-
+  /** Init pagination component. */
   public ngOnInit(): void {}
 }
