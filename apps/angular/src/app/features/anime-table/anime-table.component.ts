@@ -1,12 +1,12 @@
 import { Component, NgIterable, OnInit } from '@angular/core';
-import { AnimeDto } from '@js-camp/core/dtos/anime.dto';
-import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
-import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
-import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 import { Anime } from '@js-camp/core/models/anime';
+import { AnimeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
 import { Pagination } from '@js-camp/core/models/pagination';
+import { Sorting, SortTitle, SortValue } from '@js-camp/core/models/sorting';
 
-import { ApiService } from '../../services/api.service';
+import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, DEFAULT_TOTAL_PAGE } from '../../../constants';
+
+import { AnimeService } from '../../services/anime.service';
 
 /** Anime table list. */
 @Component({
@@ -21,13 +21,26 @@ export class AnimeTableComponent implements OnInit {
   /** Pagination result. */
   public result: Pagination<Anime> | undefined | null;
 
-  public constructor(private api: ApiService) {}
+  /** Default query anime list. */
+  public defaultQuery = new AnimeListQueryOptions({
+    limit: DEFAULT_LIMIT,
+    offset: DEFAULT_OFFSET,
+    activePage: DEFAULT_ACTIVE_PAGE,
+    totalPages: DEFAULT_TOTAL_PAGE,
+    sorting: new Sorting({
+      title: SortTitle.TitleEnglish,
+      value: SortValue.TitleEnglish,
+      isAscending: true,
+    }),
+  });
+
+  public constructor(private anime: AnimeService) {}
 
   /** Init anime table. */
   public ngOnInit(): void {
-    this.api.getData<PaginationDto<AnimeDto>>('anime/anime/').subscribe(data => {
-      this.result = PaginationMapper.fromDto<AnimeDto, Anime>(data, AnimeMapper.fromDto);
-      this.animeList = this.result.results;
+    this.anime.getAnimeList(this.defaultQuery).subscribe(data => {
+      this.result = data;
+      this.animeList = data.results;
     });
   }
 }

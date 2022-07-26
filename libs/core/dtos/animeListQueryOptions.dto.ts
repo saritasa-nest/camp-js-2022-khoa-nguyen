@@ -13,8 +13,8 @@ export interface AnimeListQueryOptionsDto {
   readonly ordering: string;
 
   /** Filter by types. */
-  readonly type: TypeDto;
+  readonly type?: TypeDto;
 
   /** Search items by name. */
-  readonly search: string;
+  readonly search?: string;
 }

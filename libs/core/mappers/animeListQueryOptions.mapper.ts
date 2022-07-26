@@ -20,12 +20,12 @@ export namespace AnimeListQueryOptionsMapper {
    */
   export function toDto(options: AnimeListQueryOptions): AnimeListQueryOptionsDto {
 
-    const type = typeModelToDto[options.type] ?? TypeDto.Default;
+    const type = options.type == null ? TypeDto.Default : (typeModelToDto[options.type] ?? TypeDto.Default);
 
     return {
       limit: options.limit,
       offset: options.offset,
-      search: options.search,
+      search: options.search == null ? '' : options.search,
       ordering: options.sorting.isAscending ? options.sorting.value : `-${options.sorting.value}`,
       type,
     };

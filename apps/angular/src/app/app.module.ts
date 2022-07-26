@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { HttpClientModule } from '@angular/common/http';
 
+import { MatSliderModule } from '@angular/material/slider';
+
 import { SharedModule } from './../shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,7 +13,7 @@ import { AnimeTableComponent } from './features/anime-table/anime-table.componen
 /** App module. */
 @NgModule({
   declarations: [AppComponent, AnimeTableComponent],
-  imports: [BrowserModule, SharedModule, AppRoutingModule, HttpClientModule],
+  imports: [BrowserModule, SharedModule, AppRoutingModule, HttpClientModule, MatSliderModule],
   providers: [],
   bootstrap: [AppComponent],
 })
