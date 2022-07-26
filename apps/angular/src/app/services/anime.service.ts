@@ -10,6 +10,8 @@ import { AnimeListQueryOptions } from '@js-camp/core/models/animeListQueryOption
 import { Pagination } from '@js-camp/core/models/pagination';
 import { map, Observable } from 'rxjs';
 
+import { ANIME_LIST_API } from '../../constants';
+
 import { ApiService } from './api.service';
 
 /** Anime services. */
@@ -34,7 +36,7 @@ export class AnimeService {
    */
   public getAnimeList(paramsModel: AnimeListQueryOptions): Observable<Pagination<Anime>> {
     const paramDto = AnimeListQueryOptionsMapper.toDto(paramsModel);
-    return this.api.getData<PaginationDto<AnimeDto>, AnimeListQueryOptionsDto>('anime/anime/', paramDto)
+    return this.api.getData<PaginationDto<AnimeDto>, AnimeListQueryOptionsDto>(ANIME_LIST_API, paramDto)
       .pipe(map((data: PaginationDto<AnimeDto>) => PaginationMapper.fromDto<AnimeDto, Anime>(data, AnimeMapper.fromDto)));
   }
 }
