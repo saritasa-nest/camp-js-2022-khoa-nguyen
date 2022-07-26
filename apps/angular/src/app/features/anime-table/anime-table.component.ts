@@ -1,8 +1,9 @@
-import { Component, NgIterable, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Anime } from '@js-camp/core/models/anime';
 import { AnimeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
 import { Pagination } from '@js-camp/core/models/pagination';
 import { Sorting, SortTitle, SortValue } from '@js-camp/core/models/sorting';
+import { Observable } from 'rxjs';
 
 import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, DEFAULT_TOTAL_PAGE } from '../../../constants';
 
@@ -15,11 +16,9 @@ import { AnimeService } from '../../services/anime.service';
   styleUrls: ['./anime-table.component.css'],
 })
 export class AnimeTableComponent implements OnInit {
-  /** Anime list. */
-  public animeList: NgIterable<Anime> | undefined | null;
 
   /** Pagination result. */
-  public result: Pagination<Anime> | undefined | null;
+  public result$: Observable<Pagination<Anime>> | undefined | null;
 
   /** Default query options of anime list. */
   public defaultQuery = new AnimeListQueryOptions({
@@ -38,9 +37,11 @@ export class AnimeTableComponent implements OnInit {
 
   /** Init anime list table. */
   public ngOnInit(): void {
-    this.anime.getAnimeList(this.defaultQuery).subscribe(data => {
-      this.result = data;
-      this.animeList = data.results;
-    });
+    this.getResultUsingAsyncPipe();
+  }
+
+  /** Get result of api call using async pipe method. */
+  public getResultUsingAsyncPipe(): void {
+    this.result$ = this.anime.getAnimeList(this.defaultQuery);
   }
 }

@@ -9,7 +9,7 @@
       <th scope="row" class="table__row_item">Type</th>
       <th scope="row" class="table__row_item">Status</th>
     </tr>
-    <tr *ngFor="let item of animeList" class="table__row">
+    <tr *ngFor="let item of (result$ | async)?.results" class="table__row">
       <th scope="row" class="table__row_item table__row_item_thumb">
         <img class= "table__row_item_thumb__img" src="{{item.image}}" alt="{{item.titleEnglish}}" />
       </th>
