@@ -27,3 +27,49 @@
   /* Backdrop color */
   --primary-backdrop-color: rgba(0 0 0 / 60.3%);
 }
+
+a,
+:link,
+.link {
+  --link-color: var(--primary-color);
+
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+a:hover,
+:link:hover,
+.link:hover {
+  --link-color: var(--primary-light-color);
+}
+
+h2 {
+  font-size: var(--primary-font-size-normal);
+  font-weight: normal;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.default-layout {
+  --default-layout-width: 1200px;
+
+  margin: auto;
+  max-width: var(--default-layout-width);
+}
+
+.button {
+  padding: 1rem 2rem;
+  border: none;
+  background-color: var(--primary-light-color);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.button:hover {
+  color: var(--primary-light-color-2);
+  background-color: var(--primary-color);
+}

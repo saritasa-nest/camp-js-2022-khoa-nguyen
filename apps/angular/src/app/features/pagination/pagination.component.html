@@ -1,0 +1,8 @@
+<div class="pagination">
+  <mat-paginator (page) = "OnPageChange($event)" [length]="140" [pageSize]="25"></mat-paginator>
+  <div class="pagination__inputPage">
+    <input class="pagination__input" type="number" placeholder="Enter page number"/>
+    <button class="button pagination__button" type="button">Go to</button>
+  </div>
+</div>
+
