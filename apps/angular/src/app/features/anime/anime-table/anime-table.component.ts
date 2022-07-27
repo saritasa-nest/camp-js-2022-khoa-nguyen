@@ -5,9 +5,9 @@ import { Pagination } from '@js-camp/core/models/pagination';
 import { Sorting, SortTitle, SortValue } from '@js-camp/core/models/sorting';
 import { Observable } from 'rxjs';
 
-import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, DEFAULT_TOTAL_PAGE } from '../../../constants';
+import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, DEFAULT_TOTAL_PAGE } from '../../../../constants';
 
-import { AnimeService } from '../../services/anime.service';
+import { AnimeService } from '../../../services/anime.service';
 
 /** Anime table list. */
 @Component({
@@ -37,11 +37,20 @@ export class AnimeTableComponent implements OnInit {
 
   /** Init anime list table. */
   public ngOnInit(): void {
-    this.getResultUsingAsyncPipe();
+    this.getResult();
   }
 
-  /** Get result of api call using async pipe method. */
-  public getResultUsingAsyncPipe(): void {
+  /**
+   *  Track anime list.
+   * @param item Track by per item.
+   * @param index Item index.
+   */
+  public trackByAnime(index: number, item: Anime): Anime['id'] {
+    return item.id;
+  }
+
+  /** Get result of anime api call. */
+  public getResult(): void {
     this.result$ = this.anime.getAnimeList(this.defaultQuery);
   }
 }
