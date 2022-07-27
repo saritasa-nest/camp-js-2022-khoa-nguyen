@@ -94,3 +94,13 @@ export const SORT_OPTIONS: readonly SortingOptions[] = [
     value: SortValue.Status,
   },
 ];
+
+export const key = {
+  order: 'ordering',
+  sorting: 'sortBy',
+  type: 'type',
+  token: 'token',
+  searching: 'search',
+  anime: 'anime',
+  activePage: 'page',
+};

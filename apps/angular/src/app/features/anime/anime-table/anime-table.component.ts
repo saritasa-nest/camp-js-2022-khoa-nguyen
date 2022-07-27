@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
+import { Router } from '@angular/router';
 import { Anime } from '@js-camp/core/models/anime';
 import { AnimeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
 import { Pagination } from '@js-camp/core/models/pagination';
 import { Sorting, SortTitle, SortValue } from '@js-camp/core/models/sorting';
 import { Observable } from 'rxjs';
 
-import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, DEFAULT_TOTAL_PAGE, FILTER_TYPE_OPTIONS, SORT_OPTIONS } from '../../../../constants';
+import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, DEFAULT_TOTAL_PAGE, FILTER_TYPE_OPTIONS, SORT_OPTIONS, key } from '../../../../constants';
 
 import { AnimeService } from '../../../services/anime.service';
 
@@ -41,22 +42,15 @@ export class AnimeTableComponent implements OnInit {
   /** Filter by type options. */
   public readonly filterTypeOptions = FILTER_TYPE_OPTIONS;
 
-  public constructor(private anime: AnimeService) {}
+  public constructor(private anime: AnimeService, private router: Router) {}
 
   /**
    * Handle change active page of pagination.
    * @param event OnChange event of pagination.
    */
   public handlePageChange(event: PageEvent): void {
-    this.result$ = this.anime.getAnimeList(
-      new AnimeListQueryOptions(
-        {
-          ...this.defaultQuery,
-          activePage: event.pageIndex - 1,
-          offset: DEFAULT_LIMIT * event.pageIndex,
-        },
-      ),
-    );
+    this.router.navigate(['/'], { queryParams: { [key.activePage]: event.pageIndex + 1 } });
+    this.result$ = this.anime.getAnimeList();
   }
 
   /** Init anime list table. */
@@ -75,7 +69,7 @@ export class AnimeTableComponent implements OnInit {
 
   /** Get result of anime api call. */
   public getResult(): void {
-    this.result$ = this.anime.getAnimeList(this.defaultQuery);
+    this.result$ = this.anime.getAnimeList();
   }
 
   /** Type of form control. */
