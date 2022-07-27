@@ -44,3 +44,10 @@
   width: 100%;
   display: block;
 }
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}

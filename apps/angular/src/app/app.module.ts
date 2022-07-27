@@ -5,12 +5,13 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { MatSliderModule } from '@angular/material/slider';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { SharedModule } from './../shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AnimeTableComponent } from './features/anime-table/anime-table.component';
-import { PaginationComponent } from './features/pagination/pagination.component';
+import { PaginationComponent } from './features/anime/pagination/pagination.component';
+import { AnimeTableComponent } from './features/anime/anime-table/anime-table.component';
 
 /** App module. */
 @NgModule({
@@ -21,6 +22,7 @@ import { PaginationComponent } from './features/pagination/pagination.component'
     AppRoutingModule,
     HttpClientModule,
     MatSliderModule,
+    MatProgressSpinnerModule,
     MatPaginatorModule,
   ],
   providers: [],

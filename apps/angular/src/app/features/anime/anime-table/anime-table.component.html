@@ -1,6 +1,6 @@
 <div>
   <camp-pagination (pageChange)="handlePageChange($event)"></camp-pagination>
-  <table class="table">
+  <table class="table" *ngIf="(result$ | async)?.results;else Loading">
     <caption class="table__caption">Anime table</caption>
     <tr class="table__row table__row_caption">
       <th scope="row" class="table__row_item">Thumbnail</th>
@@ -10,9 +10,9 @@
       <th scope="row" class="table__row_item">Type</th>
       <th scope="row" class="table__row_item">Status</th>
     </tr>
-    <tr *ngFor="let item of (result$ | async)?.results" class="table__row">
+    <tr *ngFor="let item of (result$ | async)?.results; trackBy: trackByAnime" class="table__row">
       <th scope="row" class="table__row_item table__row_item_thumb">
-        <img class= "table__row_item_thumb__img" src="{{item.image}}" alt="{{item.titleEnglish}}" />
+        <img class= "table__row_item_thumb__img" [src]="item.image" [alt]="item.titleEnglish" />
       </th>
       <th scope="row" class="table__row_item">{{item.titleEnglish}}</th>
       <th scope="row" class="table__row_item">{{item.titleJapan}}</th>
@@ -22,4 +22,10 @@
     </tr>
   </table>
 </div>
+
+<ng-template #Loading>
+  <div ngClass="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>
 
