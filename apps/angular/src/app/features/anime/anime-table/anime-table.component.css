@@ -51,3 +51,18 @@
   justify-content: center;
   height: 100vh;
 }
+
+.filter {
+  display: flex;
+  margin-top: 20px;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.filter__item {
+  flex: 1;
+}
+
+.search {
+  width: 100%;
+}

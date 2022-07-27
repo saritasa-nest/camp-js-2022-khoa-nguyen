@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { Anime } from '@js-camp/core/models/anime';
 import { AnimeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
@@ -6,7 +7,7 @@ import { Pagination } from '@js-camp/core/models/pagination';
 import { Sorting, SortTitle, SortValue } from '@js-camp/core/models/sorting';
 import { Observable } from 'rxjs';
 
-import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, DEFAULT_TOTAL_PAGE } from '../../../../constants';
+import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, DEFAULT_TOTAL_PAGE, FILTER_TYPE_OPTIONS, SORT_OPTIONS } from '../../../../constants';
 
 import { AnimeService } from '../../../services/anime.service';
 
@@ -34,6 +35,12 @@ export class AnimeTableComponent implements OnInit {
     }),
   });
 
+  /** Sorting options. */
+  public readonly sortingOptions = SORT_OPTIONS;
+
+  /** Filter by type options. */
+  public readonly filterTypeOptions = FILTER_TYPE_OPTIONS;
+
   public constructor(private anime: AnimeService) {}
 
   /**
@@ -60,9 +67,9 @@ export class AnimeTableComponent implements OnInit {
   /**
    *  Track anime list.
    * @param item Track by per item.
-   * @param index Item index.
+   * @param _index Item index.
    */
-  public trackByAnime(index: number, item: Anime): Anime['id'] {
+  public trackByAnime(_index: number, item: Anime): Anime['id'] {
     return item.id;
   }
 
@@ -70,4 +77,11 @@ export class AnimeTableComponent implements OnInit {
   public getResult(): void {
     this.result$ = this.anime.getAnimeList(this.defaultQuery);
   }
+
+  /** Type of form control. */
+  public types = new FormControl('');
+
+  /** Input of form control. */
+  public search = new FormControl('');
+
 }

@@ -1,6 +1,36 @@
 <div>
   <camp-pagination (pageChange)="handlePageChange($event)"></camp-pagination>
+  <div class="filter">
+    <mat-form-field appearance="fill" class="filter__item">
+      <mat-label>Choose an option</mat-label>
+      <mat-select>
+        <mat-option *ngFor="let item of sortingOptions" [value]="item.value">{{item.title}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="filter__item">
+      <mat-label>Choose type</mat-label>
+      <mat-select [formControl]="types" multiple>
+        <mat-select-trigger>
+          {{types.value?.[0] || ''}}
+          <span *ngIf="(types.value?.length || 0) > 1" class="example-additional-selection">
+            (+{{(types.value?.length || 0) - 1}} {{types.value?.length === 2 ? 'other' : 'others'}})
+          </span>
+        </mat-select-trigger>
+        <mat-option *ngFor="let topping of filterTypeOptions" [value]="topping.value">{{topping.title}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <mat-form-field class="search">
+    <mat-label>Search</mat-label>
+    <input type="text" matInput [formControl]="search"
+           placeholder="Search title anime ... ">
+  </mat-form-field>
+
   <table class="table" *ngIf="(result$ | async)?.results;else Loading">
+
+
     <caption class="table__caption">Anime table</caption>
     <tr class="table__row table__row_caption">
       <th scope="row" class="table__row_item">Thumbnail</th>

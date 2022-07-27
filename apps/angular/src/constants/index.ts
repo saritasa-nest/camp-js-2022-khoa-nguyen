@@ -1,6 +1,8 @@
 import { AnimeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
 import { Sorting, SortTitle, SortValue } from '@js-camp/core/models/sorting';
 
+import { TypeDto } from '@js-camp/core/dtos/anime.dto';
+
 import { environment } from '../environments/environment';
 
 export const BASE_URL = environment.apiUrl;
@@ -30,3 +32,65 @@ export function getAnimeQueryList(): AnimeListQueryOptions {
   });
 }
 export const ANIME_LIST_API = 'anime/anime/';
+
+/** Options of type interface. */
+interface FilterType {
+
+  /** Title of options. */
+  readonly title: string;
+
+  /** Value of options. */
+  readonly value: TypeDto;
+}
+
+export const FILTER_TYPE_OPTIONS: readonly FilterType[] = [
+  {
+    title: 'Movie',
+    value: TypeDto.Movie,
+  },
+  {
+    title: 'Music',
+    value: TypeDto.Music,
+  },
+  {
+    title: 'Ona',
+    value: TypeDto.Ona,
+  },
+  {
+    title: 'Ova',
+    value: TypeDto.Ova,
+  },
+  {
+    title: 'Special',
+    value: TypeDto.Special,
+  },
+  {
+    title: 'TV',
+    value: TypeDto.Tv,
+  },
+];
+
+/** Options of type interface. */
+interface SortingOptions {
+
+  /** Title of options. */
+  readonly title: SortTitle;
+
+  /** Value of options. */
+  readonly value: SortValue;
+}
+
+export const SORT_OPTIONS: readonly SortingOptions[] = [
+  {
+    title: SortTitle.TitleEnglish,
+    value: SortValue.TitleEnglish,
+  },
+  {
+    title: SortTitle.AiredStartDate,
+    value: SortValue.AiredStartDate,
+  },
+  {
+    title: SortTitle.Status,
+    value: SortValue.Status,
+  },
+];
