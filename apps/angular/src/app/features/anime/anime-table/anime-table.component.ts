@@ -43,9 +43,9 @@ export class AnimeTableComponent implements OnInit {
   /**
    *  Track anime list.
    * @param item Track by per item.
-   * @param index Item index.
+   * @param _index Item index.
    */
-  public trackByAnime(index: number, item: Anime): Anime['id'] {
+  public trackByAnime(_index: number, item: Anime): Anime['id'] {
     return item.id;
   }
 
