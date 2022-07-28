@@ -2,8 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute } from '@angular/router';
 
-import { key } from '../../../../constants';
-
 /** Pagination options. */
 @Component({
   selector: 'camp-pagination',
