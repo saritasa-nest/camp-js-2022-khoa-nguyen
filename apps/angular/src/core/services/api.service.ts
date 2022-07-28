@@ -12,7 +12,7 @@ import { BASE_URL } from '../../constants';
 /** Api service methods. */
 export class ApiService {
 
-  public constructor(private api: HttpClient) { }
+  public constructor(private readonly httpClient: HttpClient) { }
 
   /**
    *  Api service constructors.
@@ -22,7 +22,7 @@ export class ApiService {
   public getData<Dto, ParamDto>(url: string, params?: ParamDto): Observable<Dto> {
     try {
       const finishedUrl = BASE_URL + url;
-      return this.api.get<Dto>(finishedUrl, { params: { ...params } });
+      return this.httpClient.get<Dto>(finishedUrl, { params: { ...params } });
     } catch (error: unknown) {
       throw new Error((error as Error).message);
     }

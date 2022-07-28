@@ -24,9 +24,9 @@ export class AnimeService {
 
   /**
    * Anime services.
-   * @param api Api methods.
+   * @param apiService Api methods.
    */
-  public constructor(private api: ApiService) {
+  public constructor(private readonly apiService: ApiService) {
 
   }
 
@@ -36,7 +36,7 @@ export class AnimeService {
    */
   public getAnimeList(paramsModel: AnimeListQueryOptions): Observable<Pagination<Anime>> {
     const paramDto = AnimeListQueryOptionsMapper.toDto(paramsModel);
-    return this.api.getData<PaginationDto<AnimeDto>, AnimeListQueryOptionsDto>(ANIME_LIST_API, paramDto)
+    return this.apiService.getData<PaginationDto<AnimeDto>, AnimeListQueryOptionsDto>(ANIME_LIST_API, paramDto)
       .pipe(map(data => PaginationMapper.fromDto<AnimeDto, Anime>(data, AnimeMapper.fromDto)));
   }
 }

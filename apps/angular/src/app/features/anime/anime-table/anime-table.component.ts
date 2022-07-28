@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 
 import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, DEFAULT_TOTAL_PAGE } from '../../../../constants';
 
-import { AnimeService } from '../../../services/anime.service';
+import { AnimeService } from '../../../../core/services/anime.service';
 
 /** Anime table list. */
 @Component({
@@ -18,7 +18,7 @@ import { AnimeService } from '../../../services/anime.service';
 export class AnimeTableComponent implements OnInit {
 
   /** Pagination result. */
-  public result$: Observable<Pagination<Anime>> | undefined | null;
+  public readonly result$: Observable<Pagination<Anime>>;
 
   /** Default query options of anime list. */
   public defaultQuery = new AnimeListQueryOptions({
@@ -33,12 +33,12 @@ export class AnimeTableComponent implements OnInit {
     }),
   });
 
-  public constructor(private anime: AnimeService) {}
+  public constructor(private animeService: AnimeService) {
+    this.result$ = this.animeService.getAnimeList(this.defaultQuery);
+  }
 
   /** Init anime list table. */
-  public ngOnInit(): void {
-    this.getResult();
-  }
+  public ngOnInit(): void { }
 
   /**
    *  Track anime list.
@@ -47,10 +47,5 @@ export class AnimeTableComponent implements OnInit {
    */
   public trackByAnime(_index: number, item: Anime): Anime['id'] {
     return item.id;
-  }
-
-  /** Get result of anime api call. */
-  public getResult(): void {
-    this.result$ = this.anime.getAnimeList(this.defaultQuery);
   }
 }
