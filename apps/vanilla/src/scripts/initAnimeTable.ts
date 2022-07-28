@@ -8,7 +8,7 @@ import { LocalStorageService } from '../service/localStorage';
 
 import { renderAnimeList } from './renderAnimeList';
 import { renderListAndPaginationToUI } from './renderPagination';
-import { searchingHandler } from './renderSearching';
+import { handleSearch } from './renderSearching';
 import { renderSortingAndOrdering } from './renderSortingAndOrdering';
 
 /** Init anime table view. */
@@ -34,5 +34,5 @@ export async function initAnimeTable(): Promise<void> {
   renderAnimeList(PAGINATION_OPTIONS);
   renderListAndPaginationToUI(PAGINATION_OPTIONS);
   renderSortingAndOrdering(PAGINATION_OPTIONS);
-  searchingHandler(PAGINATION_OPTIONS);
+  handleSearch(PAGINATION_OPTIONS);
 }

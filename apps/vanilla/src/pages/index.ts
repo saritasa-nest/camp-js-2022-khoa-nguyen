@@ -1,5 +1,5 @@
 import { initAnimeTable } from '../scripts/initAnimeTable';
-import { resetStorage } from '../utils/resetLocalStorage';
+import { clearFilterOption } from '../utils/resetLocalStorage';
 
-resetStorage();
+clearFilterOption();
 initAnimeTable();

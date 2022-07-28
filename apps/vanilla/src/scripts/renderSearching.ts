@@ -9,7 +9,7 @@ import { renderAnimeList } from './renderAnimeList';
  * Render search result to UI.
  * @param options Pagination option.
  */
-export function searchingHandler(options: AnimeListQueryOptions): void {
+export function handleSearch(options: AnimeListQueryOptions): void {
   const form = document.querySelector<HTMLFormElement>('.form');
   if (form === null) {
     return;
