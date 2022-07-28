@@ -2,8 +2,8 @@ import { OrderOption } from '@js-camp/core/enum';
 import { AnimeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
 import { Sorting } from '@js-camp/core/models/sorting';
 
-import { DEFAULT_LIMIT, SORT_OPTIONS } from '../constants';
-import { KEY_ORDER, KEY_SORTING } from '../constants/key';
+import { DEFAULT_LIMIT, DEFAULT_SEARCH, SORT_OPTIONS } from '../constants';
+import { KEY_ORDER, KEY_SEARCHING, KEY_SORTING } from '../constants/key';
 import { LocalStorageService } from '../service/localStorage';
 import { setDefaultSelected } from '../utils';
 
@@ -42,6 +42,7 @@ export function renderSortingAndOrdering(options: AnimeListQueryOptions): void {
         ...options.sorting,
         ...selectSortingValue,
       }),
+      search: LocalStorageService.getValue(KEY_SEARCHING) ?? DEFAULT_SEARCH,
     });
       renderListAndPaginationToUI(optionsUpdated);
 
@@ -73,6 +74,7 @@ export function renderSortingAndOrdering(options: AnimeListQueryOptions): void {
         ...options.sorting,
         isAscending: getSelectOptions(),
       }),
+      search: LocalStorageService.getValue(KEY_SEARCHING) ?? DEFAULT_SEARCH,
     });
     renderListAndPaginationToUI(optionsUpdated);
     });

@@ -26,7 +26,7 @@ export async function renderAnimeList(options: AnimeListQueryOptions): Promise<P
         isAscending: (LocalStorageService.getValue<OrderOption>(KEY_ORDER) === null ||
         LocalStorageService.getValue<OrderOption>(KEY_ORDER) === OrderOption.Ascending),
       }),
-      offset: options.activePage * options.limit,
+      offset: (options.activePage - 1) * options.limit,
     });
     const animeList = await fetchAnimeList(optionUpdated);
 
