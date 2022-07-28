@@ -17,20 +17,6 @@ export const FIRST_PAGE = 1;
 export const PAGE_RANGE = 5;
 export const PAGE_STEP = 2;
 
-/** Get anime list. */
-export function getAnimeQueryList(): AnimeListQueryOptions {
-  return new AnimeListQueryOptions({
-    limit: DEFAULT_LIMIT,
-    offset: DEFAULT_OFFSET,
-    activePage: DEFAULT_ACTIVE_PAGE,
-    totalPages: DEFAULT_TOTAL_PAGE,
-    sorting: new Sorting({
-      title: SortTitle.TitleEnglish,
-      value: SortValue.TitleEnglish,
-      isAscending: true,
-    }),
-  });
-}
 export const ANIME_LIST_API = 'anime/anime/';
 
 /** Options of type interface. */
@@ -95,6 +81,33 @@ export const SORT_OPTIONS: readonly SortingOptions[] = [
   },
 ];
 
+/** Options of ordering.. */
+export enum OrderOption {
+  Ascending = 'Ascending',
+  Descending = 'Descending',
+}
+
+/** Options of ordering. */
+interface OrderOptions {
+
+  /** Title of options. */
+  readonly title: string;
+
+  /** Value of options. */
+  readonly value: OrderOption;
+}
+
+export const ORDERING_OPTIONS: readonly OrderOptions[] = [
+  {
+    title: OrderOption.Ascending,
+    value: OrderOption.Ascending,
+  },
+  {
+    title: OrderOption.Descending,
+    value: OrderOption.Descending,
+  },
+];
+
 export const key = {
   order: 'ordering',
   sorting: 'sortBy',
@@ -104,3 +117,15 @@ export const key = {
   anime: 'anime',
   activePage: 'page',
 };
+
+export const DEFAULT_ANIME_LIST_QUERY: AnimeListQueryOptions = new AnimeListQueryOptions({
+  limit: DEFAULT_LIMIT,
+  offset: DEFAULT_OFFSET,
+  activePage: DEFAULT_ACTIVE_PAGE,
+  totalPages: DEFAULT_TOTAL_PAGE,
+  sorting: new Sorting({
+    title: SortTitle.TitleEnglish,
+    value: SortValue.TitleEnglish,
+    isAscending: true,
+  }),
+});

@@ -1,10 +1,17 @@
 <div>
-  <camp-pagination (pageChange)="handlePageChange($event)"></camp-pagination>
+  <camp-pagination [activePage]="activePage" [totalItems]="(result$ | async)?.count" (pageChange)="handlePageChange($event)"></camp-pagination>
   <div class="filter">
     <mat-form-field appearance="fill" class="filter__item">
-      <mat-label>Choose an option</mat-label>
+      <mat-label>Choose an sorting option</mat-label>
       <mat-select>
         <mat-option *ngFor="let item of sortingOptions" [value]="item.value">{{item.title}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="filter__item">
+      <mat-label>Choose ordering</mat-label>
+      <mat-select>
+        <mat-option *ngFor="let item of orderingOptions" [value]="item.value">{{item.title}}</mat-option>
       </mat-select>
     </mat-form-field>
 
@@ -17,7 +24,7 @@
             (+{{(types.value?.length || 0) - 1}} {{types.value?.length === 2 ? 'other' : 'others'}})
           </span>
         </mat-select-trigger>
-        <mat-option *ngFor="let topping of filterTypeOptions" [value]="topping.value">{{topping.title}}</mat-option>
+        <mat-option *ngFor="let topping of filterTypeOptions;" [value]="topping.value">{{topping.title}}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>

@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Anime } from '@js-camp/core/models/anime';
 import { AnimeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
 import { Pagination } from '@js-camp/core/models/pagination';
-import { Sorting, SortTitle, SortValue } from '@js-camp/core/models/sorting';
+
 import { Observable } from 'rxjs';
 
-import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, DEFAULT_TOTAL_PAGE, FILTER_TYPE_OPTIONS, SORT_OPTIONS, key } from '../../../../constants';
+import { AnimeService } from '../../../../core/services/anime.service';
 
-import { AnimeService } from '../../../services/anime.service';
+import { DEFAULT_ANIME_LIST_QUERY, DEFAULT_LIMIT, FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, SORT_OPTIONS } from '../../../../constants';
 
 /** Anime table list. */
 @Component({
@@ -23,34 +23,38 @@ export class AnimeTableComponent implements OnInit {
   /** Pagination result. */
   public result$: Observable<Pagination<Anime>> | undefined | null;
 
-  /** Default query options of anime list. */
-  public defaultQuery = new AnimeListQueryOptions({
-    limit: DEFAULT_LIMIT,
-    offset: DEFAULT_OFFSET,
-    activePage: DEFAULT_ACTIVE_PAGE,
-    totalPages: DEFAULT_TOTAL_PAGE,
-    sorting: new Sorting({
-      title: SortTitle.TitleEnglish,
-      value: SortValue.TitleEnglish,
-      isAscending: true,
-    }),
-  });
-
   /** Sorting options. */
   public readonly sortingOptions = SORT_OPTIONS;
 
   /** Filter by type options. */
   public readonly filterTypeOptions = FILTER_TYPE_OPTIONS;
 
-  public constructor(private anime: AnimeService, private router: Router) {}
+  /** Sorting options. */
+  public readonly orderingOptions = ORDERING_OPTIONS;
+
+  /** Sorting options. */
+  public activePage = 1;
+
+  public constructor(private anime: AnimeService, private router: Router, private activeRoute: ActivatedRoute) {
+
+  }
 
   /**
    * Handle change active page of pagination.
    * @param event OnChange event of pagination.
    */
   public handlePageChange(event: PageEvent): void {
-    this.router.navigate(['/'], { queryParams: { [key.activePage]: event.pageIndex + 1 } });
-    this.result$ = this.anime.getAnimeList();
+    this.activePage = event.pageIndex + 1;
+    this.result$ = this.anime.getAnimeList(this.getAnimeListQueryOptions());
+  }
+
+  /** Sorting options. */
+  public getAnimeListQueryOptions(): AnimeListQueryOptions {
+    return new AnimeListQueryOptions({
+      ...DEFAULT_ANIME_LIST_QUERY,
+      activePage: this.activePage,
+      offset: (Number(this.activePage) - 1) * DEFAULT_LIMIT,
+    });
   }
 
   /** Init anime list table. */

@@ -4,7 +4,7 @@ import { TypeModel } from '../models/anime';
 import { AnimeListQueryOptions } from '../models/animeListQueryOptions';
 
 export namespace AnimeListQueryOptionsMapper {
-  const typeModelToDto: Readonly<Record<TypeModel, TypeDto>> = {
+  export const typeModelToDto: Readonly<Record<TypeModel, TypeDto>> = {
     [TypeModel.Movie]: TypeDto.Movie,
     [TypeModel.Ona]: TypeDto.Ona,
     [TypeModel.Ova]: TypeDto.Ova,

@@ -1,6 +1,8 @@
-
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
+import { ActivatedRoute } from '@angular/router';
+
+import { key } from '../../../../constants';
 
 /** Pagination options. */
 @Component({
@@ -17,6 +19,16 @@ export class PaginationComponent implements OnInit {
    */
   @Output() public pageChange = new EventEmitter<PageEvent>();
 
+  /** Total items of pagination. */
+  @Input() public totalItems: number | undefined;
+
+  public constructor(private activeRoute: ActivatedRoute) {
+
+  }
+
+  /** Active page of pagination. */
+  @Input() public activePage: number | undefined;
+
   /**
    * Handle pagination change and emit the status.
    * @param event Page event of pagination.
@@ -26,6 +38,7 @@ export class PaginationComponent implements OnInit {
   }
 
   /** Init pagination component. */
-  public ngOnInit(): void {}
+  public ngOnInit(): void {
+  }
 
 }
