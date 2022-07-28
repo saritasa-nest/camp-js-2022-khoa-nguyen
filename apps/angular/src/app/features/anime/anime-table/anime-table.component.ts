@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Anime } from '@js-camp/core/models/anime';
 import { AnimeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
 import { Pagination } from '@js-camp/core/models/pagination';
 
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 import { AnimeService } from '../../../../core/services/anime.service';
 
@@ -21,7 +20,7 @@ import { DEFAULT_ANIME_LIST_QUERY, DEFAULT_LIMIT, FILTER_TYPE_OPTIONS, ORDERING_
 export class AnimeTableComponent implements OnInit {
 
   /** Pagination result. */
-  public result$: Observable<Pagination<Anime>> | undefined | null;
+  public readonly result$: Observable<Pagination<Anime>>;
 
   /** Sorting options. */
   public readonly sortingOptions = SORT_OPTIONS;
@@ -35,8 +34,15 @@ export class AnimeTableComponent implements OnInit {
   /** Sorting options. */
   public activePage = 1;
 
-  public constructor(private anime: AnimeService, private router: Router, private activeRoute: ActivatedRoute) {
+  /** Sorting options. */
+  public totalPages = 0;
 
+  public constructor(private animeService: AnimeService) {
+    this.result$ = this.animeService.getAnimeList(this.getAnimeListQueryOptions()).pipe(
+      tap(pagination => {
+        this.totalPages = pagination.count;
+      }),
+    );
   }
 
   /**
@@ -44,8 +50,8 @@ export class AnimeTableComponent implements OnInit {
    * @param event OnChange event of pagination.
    */
   public handlePageChange(event: PageEvent): void {
-    this.activePage = event.pageIndex + 1;
-    this.result$ = this.anime.getAnimeList(this.getAnimeListQueryOptions());
+    // this.activePage = event.pageIndex + 1;
+    // this.animeService.setUrl({ page: event.pageIndex + 1 });
   }
 
   /** Sorting options. */
@@ -58,9 +64,7 @@ export class AnimeTableComponent implements OnInit {
   }
 
   /** Init anime list table. */
-  public ngOnInit(): void {
-    this.getResult();
-  }
+  public ngOnInit(): void { }
 
   /**
    *  Track anime list.
@@ -69,11 +73,6 @@ export class AnimeTableComponent implements OnInit {
    */
   public trackByAnime(_index: number, item: Anime): Anime['id'] {
     return item.id;
-  }
-
-  /** Get result of anime api call. */
-  public getResult(): void {
-    this.result$ = this.anime.getAnimeList();
   }
 
   /** Type of form control. */
