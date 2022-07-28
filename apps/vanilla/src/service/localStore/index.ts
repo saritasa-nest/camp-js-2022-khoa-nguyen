@@ -1,3 +1,4 @@
+import { KEY_ORDER, KEY_SORTING } from '../../constants';
 
 export namespace LocalStorageService {
 
@@ -8,7 +9,7 @@ export namespace LocalStorageService {
    */
   export function getValue<T>(key: string): T | null {
     const localValue = localStorage.getItem(key);
-    if (localValue !== null) {
+    if (localValue != null) {
       return JSON.parse(localValue);
     }
     return null;
@@ -20,7 +21,7 @@ export namespace LocalStorageService {
    * @param value Value that needs to be stored.
    */
   export function setValue<T>(key: string, value: T): void {
-    if (value !== undefined) {
+    if (value != null) {
       localStorage.setItem(key, JSON.stringify(value));
     }
   }
@@ -33,4 +34,11 @@ export namespace LocalStorageService {
     localStorage.removeItem(key);
   }
 
+  /**
+   * Clear value from local storage.
+   */
+  export function clear(): void {
+    localStorage.removeItem(KEY_ORDER);
+    localStorage.removeItem(KEY_SORTING);
+  }
 }

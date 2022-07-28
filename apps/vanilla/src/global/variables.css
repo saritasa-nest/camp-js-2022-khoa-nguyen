@@ -7,6 +7,9 @@
   --primary-font-color: #06283d;
   --primary-font-color-2: #1363df;
 
+  /* Disable color */
+  --primary-disable-color: #c2cddd;
+
   /* Box shadow color */
   --primary-box-shadow-color: 0 4px 8px 0 rgba(0 0 0 / 20%), 0 6px 20px 0 rgba(0 0 0 / 19%);
 

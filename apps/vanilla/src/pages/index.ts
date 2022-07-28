@@ -1,3 +1,11 @@
-import { initAnimeTable } from '../scripts/initAnimeTable';
+import { getInitialQueryParams } from '../scripts/initAnimeTable';
+import { renderListOnActivePage } from '../scripts/renderPagination';
+import { renderSortingAndOrdering } from '../scripts/renderSortingAndOrdering';
 
-initAnimeTable();
+/** Render anime table. */
+function renderAnimeTable(): void {
+  renderListOnActivePage(getInitialQueryParams());
+  renderSortingAndOrdering();
+}
+
+renderAnimeTable();
