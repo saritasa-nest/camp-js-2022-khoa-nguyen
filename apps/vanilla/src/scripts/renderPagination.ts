@@ -20,7 +20,7 @@ const paginationContainer = document.querySelector('.pagination');
 function renderRangeOfPagination(activePage: number, from: number, to: number): string {
   let innerHTML = '';
   for (let i = from; i <= to; i++) {
-    innerHTML = innerHTML.concat(`<button class="button__pagination ${activePage === i ? 'button_active' : ''}">${i}</button>`, '');
+    innerHTML = innerHTML.concat(`<button class="pagination__button ${activePage === i ? 'button_active' : ''}">${i}</button>`, '');
   }
   return innerHTML;
 }
@@ -59,12 +59,12 @@ function renderPagination(options: AnimeListQueryOptions): void {
     return;
   }
   paginationContainer.innerHTML = `
-  <button class="button__pagination_first">First</button>
+  <button class="pagination__button_first">First</button>
   ${renderPaginationItems(options)}
-  <button class="button__pagination_last">Last</button>
+  <button class="pagination__button_last">Last</button>
   `;
-  const buttonFirstPage = document.querySelector<HTMLButtonElement>('.button__pagination_first');
-  const buttonLastPage = document.querySelector<HTMLButtonElement>('.button__pagination_last');
+  const buttonFirstPage = document.querySelector<HTMLButtonElement>('.pagination__button_first');
+  const buttonLastPage = document.querySelector<HTMLButtonElement>('.pagination__button_last');
   if (buttonFirstPage == null || buttonLastPage == null) {
     return;
   }
@@ -119,7 +119,7 @@ export async function renderListOnActivePage(options: AnimeListQueryOptions): Pr
       totalPages: Math.ceil(animeList.count / DEFAULT_LIMIT),
     });
     renderPagination(optionUpdated);
-    const itemsPageList = document.querySelectorAll('.pagination .button__pagination');
+    const itemsPageList = document.querySelectorAll('.pagination .pagination__button');
     itemsPageList.forEach(item => {
 
       /** Handle click event in pagination items. */
