@@ -49,7 +49,7 @@
     </tr>
     <tr *ngFor="let item of animeList; trackBy: trackByAnime" class="table__row">
       <th scope="row" class="table__cell table__cell_thumb">
-        <img class= "table__cell_thumb__img" [src]="item.image" [alt]="item.titleEnglish" />
+        <img class= "table__img" [src]="item.image" [alt]="item.titleEnglish" />
       </th>
       <th scope="row" class="table__cell">{{item.titleEnglish}}</th>
       <th scope="row" class="table__cell">{{item.titleJapan}}</th>
