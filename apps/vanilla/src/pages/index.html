@@ -3,13 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="./index.css" />
-    <title>Vite App</title>
+    <title>Login</title>
   </head>
   <body class="default-layout">
-    <h1 class="title">Main page ⚡</h1>
-    <div class="links">
-      <a href="/example/">Go to example page</a>
+    <div class="container login">
+      <h1 class="title login__title">Login to Saritasa Anime</h1>
+      <form class="form login__form">
+        <div class="form__item form__item_email">
+          <label>Email
+            <input class="form__input" type="email" data-type="email" required/>
+          </label>
+        </div>
+        <div class="form__item form__item_password">
+          <label>Password
+            <input class="form__input" type="password" data-type="password" required/>
+          </label>
+        </div>
+        <button class="button button_submit" type="submit">Login</button>
+        <span class="form__span_error"></span>
+      </form>
+
+      <p class="text text-center">Don't have an account? Feel free to <a class="link" href="./signup/">Register here</a></p>
     </div>
     <script type="module" src="./index.ts"></script>
   </body>
