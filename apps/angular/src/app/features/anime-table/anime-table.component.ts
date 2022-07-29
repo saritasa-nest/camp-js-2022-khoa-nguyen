@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 
 import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, DEFAULT_TOTAL_PAGE } from '../../../constants';
 
-import { AnimeService } from '../../services/anime.service';
+import { AnimeService } from '../../../core/services/anime.service';
 
 /** Anime table list. */
 @Component({
@@ -42,6 +42,7 @@ export class AnimeTableComponent implements OnInit {
 
   /** Get result of api call using async pipe method. */
   public getResultUsingAsyncPipe(): void {
+    //* * */
     this.result$ = this.anime.getAnimeList(this.defaultQuery);
   }
 }
