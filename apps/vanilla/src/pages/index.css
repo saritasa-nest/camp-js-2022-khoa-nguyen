@@ -105,7 +105,7 @@
   opacity: 0;
 }
 
-.table__row_item {
+.table__cell {
   font-weight: var(--primary-font-weight-heading);
   border: 1px solid var(--primary-light-color);
   width: 20%;
@@ -127,17 +127,17 @@
   color: var(--primary-light-color-2);
 }
 
-.table__row:first-child > .table__row_item {
+.table__row:first-child > .table__cell {
   background-color: var(--primary-color);
   color: var(--primary-light-color-2);
   text-align: center;
 }
 
-.table__row_item_thumb {
+.table__cell_thumb {
   padding: 0;
 }
 
-.table__row_item_thumb__img {
+.table__img {
   width: 100%;
   display: block;
 }
