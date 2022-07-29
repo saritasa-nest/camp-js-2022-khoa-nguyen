@@ -20,7 +20,7 @@ const paginationContainer = document.querySelector('.pagination');
 function renderRangeOfPagination(activePage: number, from: number, to: number): string {
   let innerHTML = '';
   for (let i = from; i <= to; i++) {
-    innerHTML = innerHTML.concat(`<li class="waves-effect ${activePage === i ? 'active' : ''}"><a>${i}</a></li>`, '');
+    innerHTML = innerHTML.concat(`<button class="pagination__button ${activePage === i ? 'button_active' : ''}">${i}</button>`, '');
   }
   return innerHTML;
 }
@@ -59,33 +59,48 @@ function renderPagination(options: AnimeListQueryOptions): void {
     return;
   }
   paginationContainer.innerHTML = `
-      <li class="button_move button__first waves-effect"><a href="#!"><i class="material-icons">First</i></a></li>
-      ${renderPaginationItems(options)}
-      <li class="button_move button__last waves-effect"><a href="#!"><i class="material-icons">Last</i></a></li>
+  <button class="pagination__button_first">First</button>
+  ${renderPaginationItems(options)}
+  <button class="pagination__button_last">Last</button>
   `;
-  const buttonFirstPage = document.querySelector('.button__first');
-  const buttonLastPage = document.querySelector('.button__last');
+  const buttonFirstPage = document.querySelector<HTMLButtonElement>('.pagination__button_first');
+  const buttonLastPage = document.querySelector<HTMLButtonElement>('.pagination__button_last');
+  if (buttonFirstPage == null || buttonLastPage == null) {
+    return;
+  }
 
-  buttonFirstPage?.addEventListener('click', () => {
-      SearchParamsService.setSearchParamToUrl(KEY_ACTIVE_PAGE, FIRST_PAGE.toString());
+  /**
+   * Render pagination with buttons First and Last.
+   * @param pageActive Active page.
+   * @param element Element to remove click event.
+   */
+  function handleMoveToPageSide(element: HTMLButtonElement, pageActive: string): EventListener {
+    return () => {
+      SearchParamsService.setSearchParamToUrl(KEY_ACTIVE_PAGE, pageActive);
       renderListOnActivePage(getInitialQueryParams());
-    });
+      element?.removeEventListener('click', handleMoveToPageSide(element, FIRST_PAGE.toString()));
+    };
+  }
 
-  buttonLastPage?.addEventListener('click', () => {
-    SearchParamsService.setSearchParamToUrl(KEY_ACTIVE_PAGE, options.totalPages.toString());
-    renderListOnActivePage(getInitialQueryParams());
-    });
+  buttonFirstPage.addEventListener('click', handleMoveToPageSide(buttonFirstPage, FIRST_PAGE.toString()));
+  buttonLastPage.addEventListener('click', handleMoveToPageSide(buttonLastPage, options.totalPages.toString()));
 
   if (options.activePage === options.totalPages) {
-    buttonLastPage?.classList.add('disabled');
+    buttonLastPage.classList.add('button_disable');
+    buttonLastPage.disabled = true;
   } else {
-    buttonLastPage?.classList.remove('disabled');
+    buttonLastPage.classList.remove('button_disable');
+    buttonLastPage.disabled = false;
   }
 
   if (options.activePage === 1) {
-    buttonFirstPage?.classList.add('disabled');
+    buttonFirstPage.classList.add('button_disable');
+    buttonFirstPage.disabled = true;
+
   } else {
-    buttonFirstPage?.classList.remove('disabled');
+    buttonFirstPage?.classList.remove('button_disable');
+    buttonFirstPage.disabled = false;
+
   }
 }
 
@@ -104,17 +119,21 @@ export async function renderListOnActivePage(options: AnimeListQueryOptions): Pr
       totalPages: Math.ceil(animeList.count / DEFAULT_LIMIT),
     });
     renderPagination(optionUpdated);
-    const itemsPageList = document.querySelectorAll('.pagination li:not(.button_move)');
+    const itemsPageList = document.querySelectorAll('.pagination .pagination__button');
     itemsPageList.forEach(item => {
-      item.addEventListener('click', () => {
-        const strPage = item.childNodes[0].childNodes[0].nodeValue;
-        if (strPage == null) {
-          return;
-        }
-        const numPage = Number.parseInt(strPage, 10);
-        SearchParamsService.setSearchParamToUrl(KEY_ACTIVE_PAGE, numPage.toString());
-        renderListOnActivePage(getInitialQueryParams());
-      });
+
+      /** Handle click event in pagination items. */
+      function handlePaginationItemClicked(): void {
+          const strPage = item.childNodes[0].nodeValue;
+          if (strPage == null) {
+            return;
+          }
+          const numPage = Number.parseInt(strPage, 10);
+          SearchParamsService.setSearchParamToUrl(KEY_ACTIVE_PAGE, numPage.toString());
+          renderListOnActivePage(getInitialQueryParams());
+          item.removeEventListener('click', handlePaginationItemClicked);
+      }
+      item.addEventListener('click', handlePaginationItemClicked);
     });
   } catch (error: unknown) {
     throwError(error, 'Failed to load pagination');

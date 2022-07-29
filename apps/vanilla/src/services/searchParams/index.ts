@@ -2,7 +2,7 @@
 import { TypeDto } from '@js-camp/core/dtos/anime.dto';
 import { SortValue } from '@js-camp/core/models/sorting';
 
-import { HOME_URL, KEY_ACTIVE_PAGE, KEY_ORDER, KEY_SEARCHING, KEY_SORTING, KEY_TYPE } from '../../constants';
+import { HOME_URL, KEY_ACTIVE_PAGE, KEY_ANIME, KEY_ORDER, KEY_SEARCHING, KEY_SORTING, KEY_TYPE } from '../../constants';
 
 /** Search param interface. */
 interface SearchParam {
@@ -21,6 +21,9 @@ interface SearchParam {
 
   /** Filter by type. */
   readonly type: TypeDto | null;
+
+  /** Filter by type. */
+  readonly animeId: string | null;
 }
 
 export namespace SearchParamsService {
@@ -50,6 +53,7 @@ export namespace SearchParamsService {
       ordering: params.get(KEY_ORDER),
       sortBy: params.get(KEY_SORTING) != null ? params.get(KEY_SORTING) as SortValue : null,
       type: params.get(KEY_TYPE) != null ? params.get(KEY_TYPE) as TypeDto : null,
+      animeId: params.get(KEY_ANIME),
     };
   }
 

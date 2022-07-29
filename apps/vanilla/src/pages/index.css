@@ -113,7 +113,7 @@
   text-align: center;
 }
 
-.table_row {
+.table__row {
   transition: 0.5s ease;
 }
 
@@ -172,4 +172,20 @@
 
 .wrapper {
   margin-top: 100px;
+}
+
+.button_active {
+  background-color: var(--primary-color);
+  color: var(--primary-light-color-2);
+}
+
+.button_disable {
+  background-color: var(--primary-disable-color);
+  border: none;
+  color: var(--primary-light-color-2);
+  cursor: default;
+}
+
+.pagination__button {
+  cursor: pointer;
 }
