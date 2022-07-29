@@ -53,7 +53,7 @@ export async function renderAnimeList(options: AnimeListQueryOptions): Promise<P
       row.classList.add('table__row');
       row.innerHTML = `
         <th class="table__cell table__cell_thumb">
-          <img class= "table__cell_thumb__img" src="${element.image}" alt="${element.titleEnglish}" />
+          <img class= "table__img" src="${element.image}" alt="${element.titleEnglish}" />
         </th>
         <th class="table__cell">${element.titleEnglish}</th>
         <th class="table__cell">${element.titleJapan}</th>
