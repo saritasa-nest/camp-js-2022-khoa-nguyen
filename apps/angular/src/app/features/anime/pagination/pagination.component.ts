@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute } from '@angular/router';
 
@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
   selector: 'camp-pagination',
   templateUrl: './pagination.component.html',
   styleUrls: ['./pagination.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 /** Init pagination component. */
@@ -18,14 +19,14 @@ export class PaginationComponent {
   @Output() public pageChange = new EventEmitter<PageEvent>();
 
   /** Total items of pagination. */
-  @Input() public totalItems: number | undefined;
+  @Input() public totalItems: number | null = 0;
 
   public constructor(private activeRoute: ActivatedRoute) {
 
   }
 
   /** Active page of pagination. */
-  @Input() public activePage: number | undefined;
+  @Input() public activePage: number | null = 0;
 
   /**
    * Handle pagination change and emit the status.

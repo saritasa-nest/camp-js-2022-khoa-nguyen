@@ -1,5 +1,5 @@
-<div>
-  <camp-pagination [activePage]="activePage" [totalItems]="totalPages" (pageChange)="handlePageChange($event)"></camp-pagination>
+<ng-container *ngIf="(result$ | async) as animeList; else Loading">
+  <camp-pagination [activePage]="activePage$ | async" [totalItems]="animeList.count" (pageChange)="handlePageChange($event)"></camp-pagination>
   <div class="filter">
     <mat-form-field appearance="fill" class="filter__item">
       <mat-label>Choose an sorting option</mat-label>
@@ -35,7 +35,7 @@
            placeholder="Search title anime ... ">
   </mat-form-field>
 
-  <table class="table" *ngIf="(result$ | async)?.results as animeList;else Loading">
+  <table class="table">
 
 
     <caption class="table__caption">Anime table</caption>
@@ -47,7 +47,7 @@
       <th scope="row" class="table__cell">Type</th>
       <th scope="row" class="table__cell">Status</th>
     </tr>
-    <tr *ngFor="let item of animeList; trackBy: trackByAnime" class="table__row">
+    <tr *ngFor="let item of animeList.results; trackBy: trackByAnime" class="table__row">
       <th scope="row" class="table__cell table__cell_thumb">
         <img class= "table__img" [src]="item.image" [alt]="item.titleEnglish" />
       </th>
@@ -58,7 +58,7 @@
       <th scope="row" class="table__cell">{{item.status}}</th>
     </tr>
   </table>
-</div>
+</ng-container>
 
 <ng-template #Loading>
   <div ngClass="loading">

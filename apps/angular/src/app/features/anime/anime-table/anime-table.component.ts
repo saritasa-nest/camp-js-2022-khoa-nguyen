@@ -1,25 +1,26 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { Anime } from '@js-camp/core/models/anime';
-import { AnimeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
 import { Pagination } from '@js-camp/core/models/pagination';
 
-import { map, Observable, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, map, Observable, switchMap, tap } from 'rxjs';
 
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { SortValue } from '@js-camp/core/models/sorting';
 
-import { AnimeService, QueryUrl } from '../../../../core/services/anime.service';
+import { AnimeService } from '../../../../core/services/anime.service';
 
-import { DEFAULT_ANIME_LIST_QUERY, DEFAULT_LIMIT, FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS } from '../../../../constants';
+import { FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS } from '../../../../constants';
 
 /** Anime table list. */
 @Component({
   selector: 'camp-anime-table',
   templateUrl: './anime-table.component.html',
   styleUrls: ['./anime-table.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+
 })
 export class AnimeTableComponent {
 
@@ -36,10 +37,10 @@ export class AnimeTableComponent {
   public readonly orderingOptions = ORDERING_OPTIONS;
 
   /** Sorting options. */
-  public activePage = 1;
+  public readonly activePage$ = new BehaviorSubject<number>(0);
 
   /** Sorting options. */
-  public totalPages = 0;
+  public readonly totalItems$ = new BehaviorSubject<number>(0);
 
   public constructor(
     private readonly animeService: AnimeService,
@@ -52,20 +53,14 @@ export class AnimeTableComponent {
       //   this.sortBy = new FormControl(params.sortBy);
       // }),
       map(paramsURL => this.animeService.urlParamToAnimeQueryOptions(paramsURL)),
+      tap(paramModel => {
+        this.activePage$.next(paramModel.activePage);
+      }),
       switchMap(paramModel => this.animeService.getAnimeList(paramModel)),
       tap(pagination => {
-        this.totalPages = pagination.count;
+        this.totalItems$.next(pagination.count);
       }),
     );
-  }
-
-  /** Sorting options. */
-  public getAnimeListQueryOptions(): AnimeListQueryOptions {
-    return new AnimeListQueryOptions({
-      ...DEFAULT_ANIME_LIST_QUERY,
-      activePage: this.activePage,
-      offset: (Number(this.activePage) - 1) * DEFAULT_LIMIT,
-    });
   }
 
   /**
@@ -94,7 +89,6 @@ export class AnimeTableComponent {
    * @param event OnChange event of pagination.
    */
   public handlePageChange(event: PageEvent): void {
-    this.activePage = event.pageIndex + 1;
     this.animeService.setUrl({ page: event.pageIndex + 1 });
   }
 
