@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="../index.css" />
+    <title>Vite App</title>
+  </head>
+  <header class="header">
+
+  </header>
+  <body class="default-layout">
+    <div class="wrapper">
+      <h1 class="title">Saritasa Anime</h1>
+      <div class="search">
+        <h1 class="search__title">Search</h1>
+        <div class="search__form">
+          <input class="search__input" />
+          <button class="button search__button" type="button">Search</button>
+        </div>
+      </div>
+       <div class="filter">
+        <div class="filter__item">
+          <label class="filter__title">Sort by
+            <select class="filter__select filter__select_sort"></select>
+          </label>
+        </div>
+        <div class="filter__item">
+          <label class="filter__title">Ordering by
+            <select class="filter__select filter__select_order"></select>
+          </label>
+        </div>
+        <div class="filter__item">
+          <label class="filter__title">Type
+            <select class="filter__select filter__select_type"></select>
+          </label>
+        </div>
+      </div>
+
+      <div>
+        <table aria-label="AnimeTable" class="table">
+          <th>Header</th>
+          <caption class="table__caption">Anime list</caption>
+        </table>
+      </div>
+      <ul class="pagination"></ul>
+    </div>
+    <script type="module" src="./index.ts"></script>
+  </body>
+</html>
