@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Anime } from '@js-camp/core/models/anime';
 import { AnimeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
 import { Pagination } from '@js-camp/core/models/pagination';
 import { Sorting, SortTitle, SortValue } from '@js-camp/core/models/sorting';
 import { Observable } from 'rxjs';
 
-import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, DEFAULT_TOTAL_PAGE } from '../../../constants';
+import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, DEFAULT_TOTAL_PAGE } from '../../../../constants';
 
-import { AnimeService } from '../../../core/services/anime.service';
+import { AnimeService } from '../../../../core/services/anime.service';
 
 /** Anime table list. */
 @Component({
@@ -15,10 +15,10 @@ import { AnimeService } from '../../../core/services/anime.service';
   templateUrl: './anime-table.component.html',
   styleUrls: ['./anime-table.component.css'],
 })
-export class AnimeTableComponent implements OnInit {
+export class AnimeTableComponent {
 
   /** Pagination result. */
-  public result$: Observable<Pagination<Anime>> | undefined | null;
+  public readonly result$: Observable<Pagination<Anime>>;
 
   /** Default query options of anime list. */
   public defaultQuery = new AnimeListQueryOptions({
@@ -33,16 +33,16 @@ export class AnimeTableComponent implements OnInit {
     }),
   });
 
-  public constructor(private anime: AnimeService) {}
-
-  /** Init anime list table. */
-  public ngOnInit(): void {
-    this.getResultUsingAsyncPipe();
+  public constructor(private readonly animeService: AnimeService) {
+    this.result$ = animeService.getAnimeList(this.defaultQuery);
   }
 
-  /** Get result of api call using async pipe method. */
-  public getResultUsingAsyncPipe(): void {
-    //* * */
-    this.result$ = this.anime.getAnimeList(this.defaultQuery);
+  /**
+   * Track anime list.
+   * @param item Track by per item.
+   * @param _index Item index.
+   */
+  public trackByAnime(_index: number, item: Anime): Anime['id'] {
+    return item.id;
   }
 }

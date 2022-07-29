@@ -39,12 +39,12 @@ export async function renderAnimeList(options: AnimeListQueryOptions): Promise<P
     if (container != null) {
       container.innerHTML = `
         <tr class="table__row">
-          <th class="table__row_item">Thumbnail</th>
-          <th class="table__row_item">English title</th>
-          <th class="table__row_item">Japanese title</th>
-          <th class="table__row_item">Aired start</th>
-          <th class="table__row_item">Type</th>
-          <th class="table__row_item">Status</th>
+          <th class="table__cell">Thumbnail</th>
+          <th class="table__cell">English title</th>
+          <th class="table__cell">Japanese title</th>
+          <th class="table__cell">Aired start</th>
+          <th class="table__cell">Type</th>
+          <th class="table__cell">Status</th>
         </tr>
     `;
     }
@@ -52,14 +52,14 @@ export async function renderAnimeList(options: AnimeListQueryOptions): Promise<P
       const row = document.createElement('tr');
       row.classList.add('table__row');
       row.innerHTML = `
-        <th class="table__row_item table__row_item_thumb">
-          <img class= "table__row_item_thumb__img" src="${element.image}" alt="${element.titleEnglish}" />
+        <th class="table__cell table__cell_thumb">
+          <img class= "table__img" src="${element.image}" alt="${element.titleEnglish}" />
         </th>
-        <th class="table__row_item">${element.titleEnglish}</th>
-        <th class="table__row_item">${element.titleJapan}</th>
-        <th class="table__row_item">${element.aired.start ? element.aired.start.toLocaleDateString() : ''}</th>
-        <th class="table__row_item">${element.type}</th>
-        <th class="table__row_item">${element.status}</th>
+        <th class="table__cell">${element.titleEnglish}</th>
+        <th class="table__cell">${element.titleJapan}</th>
+        <th class="table__cell">${element.aired.start ? element.aired.start.toLocaleDateString() : ''}</th>
+        <th class="table__cell">${element.type}</th>
+        <th class="table__cell">${element.status}</th>
     `;
       if (isLoggedIn) {
         row.addEventListener('click', () => moveToDetail(element.id));
