@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Anime } from '@js-camp/core/models/anime';
 import { AnimeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
 import { Pagination } from '@js-camp/core/models/pagination';
@@ -15,7 +15,7 @@ import { AnimeService } from '../../../../core/services/anime.service';
   templateUrl: './anime-table.component.html',
   styleUrls: ['./anime-table.component.css'],
 })
-export class AnimeTableComponent implements OnInit {
+export class AnimeTableComponent {
 
   /** Pagination result. */
   public readonly result$: Observable<Pagination<Anime>>;
@@ -36,9 +36,6 @@ export class AnimeTableComponent implements OnInit {
   public constructor(private animeService: AnimeService) {
     this.result$ = this.animeService.getAnimeList(this.defaultQuery);
   }
-
-  /** Init anime list table. */
-  public ngOnInit(): void { }
 
   /**
    *  Track anime list.
