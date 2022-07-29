@@ -1,16 +1,14 @@
-/* eslint-disable @typescript-eslint/naming-convention */
+import { Type } from '@js-camp/core/enum';
 
 /** Options of type interface. */
 interface FilterType {
 
   /** Title of options. */
-  title: string;
+  readonly title: string;
 
   /** Value of options. */
-  value: Type;
+  readonly value: Type;
 }
-
-import { Type } from '@js-camp/core/enum';
 
 export const FILTER_TYPE_OPTIONS: FilterType[] = [
   {
