@@ -12,7 +12,7 @@ import { SortValue } from '@js-camp/core/models/sorting';
 
 import { MatSelectChange } from '@angular/material/select';
 
-import { AnimeService, QueryUrl } from '../../../../core/services/anime.service';
+import { AnimeService, QueryUrl } from '../../../../core/services';
 
 import { FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS } from '../../../../constants';
 
