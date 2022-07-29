@@ -10,7 +10,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { SortValue } from '@js-camp/core/models/sorting';
 
-import { AnimeService } from '../../../../core/services/anime.service';
+import { MatSelectChange } from '@angular/material/select';
+
+import { AnimeService, QueryUrl } from '../../../../core/services/anime.service';
 
 import { FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS } from '../../../../constants';
 
@@ -49,9 +51,12 @@ export class AnimeTableComponent {
   ) {
     this.result$ = this.activateRoute.queryParams.pipe(
 
-      // tap((params: QueryUrl) => {
-      //   this.sortBy = new FormControl(params.sortBy);
-      // }),
+      tap((params: QueryUrl) => {
+        if (params.sortBy != null && params.ordering != null) {
+          this.sortBy$.next(params.sortBy);
+          this.ordering$.next(params.ordering);
+        }
+      }),
       map(paramsURL => this.animeService.urlParamToAnimeQueryOptions(paramsURL)),
       tap(paramModel => {
         this.activePage$.next(paramModel.activePage);
@@ -79,10 +84,10 @@ export class AnimeTableComponent {
   public search = new FormControl('');
 
   /**  Sort value of form control. */
-  public sortBy = new FormControl<SortValue | undefined>(SortValue.TitleEnglish);
+  public sortBy$ = new BehaviorSubject<SortValue>(SortValue.TitleEnglish);
 
   /**  Ordering value of form control. */
-  public ordering = new FormControl('');
+  public ordering$ = new BehaviorSubject<OrderOption>(OrderOption.Ascending);
 
   /**
    * Handle change active page of pagination.
@@ -94,17 +99,17 @@ export class AnimeTableComponent {
 
   /**
    * Handle change sort by options of anime list.
-   * @param value Current sortby value of anime list.
+   * @param event Current sortby value of anime list.
    */
-  public handleSortByChange(value: SortValue): void {
-    this.animeService.setUrl({ sortBy: value });
+  public handleSortByChange(event: MatSelectChange): void {
+    this.animeService.setUrl({ sortBy: event.value });
   }
 
   /**
    * Handle change ordering options of anime list.
-   * @param value Current ordering value of anime list.
+   * @param event Current ordering value of anime list.
    */
-  public handleOrderingChange(value: OrderOption): void {
-    this.animeService.setUrl({ ordering: value });
+  public handleOrderingChange(event: MatSelectChange): void {
+    this.animeService.setUrl({ ordering: event.value });
   }
 }

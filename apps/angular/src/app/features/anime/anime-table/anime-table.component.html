@@ -1,16 +1,16 @@
 <ng-container *ngIf="(result$ | async) as animeList; else Loading">
-  <camp-pagination [activePage]="activePage$ | async" [totalItems]="animeList.count" (pageChange)="handlePageChange($event)"></camp-pagination>
+  <camp-pagination [activePage]="activePage$ | async" [totalItems]="totalItems$| async" (pageChange)="handlePageChange($event)"></camp-pagination>
   <div class="filter">
     <mat-form-field appearance="fill" class="filter__item">
       <mat-label>Choose an sorting option</mat-label>
-      <mat-select [ngModel]="sortBy" (ngModelChange)="handleSortByChange($event)">
+      <mat-select [value]="sortBy$ | async" (selectionChange)="handleSortByChange($event)">
         <mat-option *ngFor="let item of sortingOptions" [value]="item.value">{{item.title}}</mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="filter__item">
       <mat-label>Choose ordering</mat-label>
-      <mat-select [ngModel]="ordering" (ngModelChange)="handleOrderingChange($event)">
+      <mat-select [value]="ordering$ | async" (selectionChange)="handleOrderingChange($event)">
         <mat-option *ngFor="let item of orderingOptions" [value]="item.value">{{item.title}}</mat-option>
       </mat-select>
     </mat-form-field>
