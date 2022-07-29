@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute } from '@angular/router';
 
@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 
 /** Init pagination component. */
-export class PaginationComponent implements OnInit {
+export class PaginationComponent {
 
   /** Change event component.
    * @param event Event page change.
@@ -33,10 +33,6 @@ export class PaginationComponent implements OnInit {
    */
   public onPaginationChange(event: PageEvent): void {
     this.pageChange.emit(event);
-  }
-
-  /** Init pagination component. */
-  public ngOnInit(): void {
   }
 
 }

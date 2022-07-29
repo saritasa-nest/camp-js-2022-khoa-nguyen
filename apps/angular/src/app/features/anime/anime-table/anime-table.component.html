@@ -3,14 +3,14 @@
   <div class="filter">
     <mat-form-field appearance="fill" class="filter__item">
       <mat-label>Choose an sorting option</mat-label>
-      <mat-select>
+      <mat-select [ngModel]="sortBy" (ngModelChange)="handleSortByChange($event)">
         <mat-option *ngFor="let item of sortingOptions" [value]="item.value">{{item.title}}</mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="filter__item">
       <mat-label>Choose ordering</mat-label>
-      <mat-select>
+      <mat-select [ngModel]="ordering" (ngModelChange)="handleOrderingChange($event)">
         <mat-option *ngFor="let item of orderingOptions" [value]="item.value">{{item.title}}</mat-option>
       </mat-select>
     </mat-form-field>
