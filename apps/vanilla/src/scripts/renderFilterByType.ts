@@ -1,39 +1,31 @@
-import { Type } from '@js-camp/core/enum';
-import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
 
+import { FILTER_TYPE_OPTIONS, KEY_ACTIVE_PAGE, KEY_TYPE } from '../constants';
+import { SearchParamsService } from '../services/searchParams';
 import { setDefaultSelected } from '../utils';
 
-import { DEFAULT_ACTIVE_PAGE, FILTER_TYPE_OPTIONS } from '../constants';
-import { KEY_TYPE } from '../constants/key';
-import { LocalStorageService } from '../service/localStorage';
+import { getInitialQueryParams } from './initAnimeTable';
 
-import { renderListAnimeWithActivePage } from './renderPagination';
+import { renderListOnActivePage } from './renderPagination';
 
-const selectType = document.querySelector<HTMLSelectElement>('.filter__item_select-type');
+const selectType = document.querySelector<HTMLSelectElement>('.filter__select_type');
 
-/**
- * Render filter by type.
- * @param options Pagination options.
- */
-export function renderFilterByType(options: PaginationOptions): void {
+/** Render filter by type. */
+export function renderFilterByType(): void {
   const typeOptionHTML = FILTER_TYPE_OPTIONS.map(item => `<option value="${item.title}">${item.title}</option>`).join('');
+  const searchParams = SearchParamsService.getSearchParams();
   if (selectType == null) {
     return;
   }
   selectType.innerHTML = typeOptionHTML;
 
-  setDefaultSelected(selectType, FILTER_TYPE_OPTIONS.filter(item =>
-    item.value === LocalStorageService.getValue<Type>(KEY_TYPE))[0]?.title ??
-    FILTER_TYPE_OPTIONS[0].title);
+  setDefaultSelected(selectType, searchParams.type != null ?
+    FILTER_TYPE_OPTIONS.filter(item =>
+    item.value === searchParams.type)[0].title :
+    FILTER_TYPE_OPTIONS[0].title) ;
 
   selectType.addEventListener('change', () => {
-    LocalStorageService.setValue(KEY_TYPE, FILTER_TYPE_OPTIONS.filter(item => selectType.value === item.title)[0].value);
-    const valueType = LocalStorageService.getValue<Type>(KEY_TYPE) ?? Type.Default;
-    const optionsUpdated = new PaginationOptions({
-      ...options,
-      activePage: DEFAULT_ACTIVE_PAGE,
-      type: valueType,
-    });
-    renderListAnimeWithActivePage(optionsUpdated);
+    SearchParamsService.setSearchParamToUrl(KEY_TYPE, FILTER_TYPE_OPTIONS.filter(item => selectType.value === item.title)[0].value);
+    SearchParamsService.removeParam(KEY_ACTIVE_PAGE);
+    renderListOnActivePage(getInitialQueryParams());
   });
 }

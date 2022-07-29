@@ -12,3 +12,24 @@ export function setDefaultSelected(selectElement: HTMLSelectElement, defaultValu
     }
   });
 }
+
+/**
+ * Navigate pages.
+ * @param url The url of page with need to be navigated.
+ */
+export function navigate(url: string): void {
+  window.location.href = url;
+}
+
+/**
+ * Throw errors.
+ * @param error Error catched.
+ * @param message Message of error.
+ */
+export function throwError(error: unknown, message: string): void {
+  if (error instanceof Error) {
+    throw new Error(`${message} ${error.message}`);
+  } else {
+    throw new Error('Unexpected error!');
+  }
+}

@@ -1,7 +1,7 @@
-import { TypeDto } from '../enum';
+import { TypeDto } from './anime.dto';
 
 /** Pagination meta info. */
-export interface PaginationOptionsDto {
+export interface AnimeListQueryOptionsDto {
 
   /** Offset of page. */
   readonly offset: number;

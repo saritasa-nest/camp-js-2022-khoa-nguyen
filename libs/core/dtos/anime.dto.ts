@@ -1,6 +1,23 @@
-import { StatusModel, TypeModel } from '../enum';
-
 import { DateRangeDto } from './dateRange.dto';
+
+/** Anime type dto. */
+export enum TypeDto {
+  Ona = 'ONA',
+  Tv = 'TV',
+  Movie = 'MOVIE',
+  Special = 'SPECIAL',
+  Music = 'MUSIC',
+  Ova = 'OVA',
+  Default = '',
+}
+
+/** Anime status dto. */
+export enum StatusDto {
+  Airing = 'AIRING',
+  Finished = 'FINISHED',
+  NotAired = 'NOT_YET_AIRED',
+  Default = '',
+}
 
 /** Anime data. */
 export interface AnimeDto {
@@ -21,14 +38,14 @@ export interface AnimeDto {
   readonly title_jpn: string;
 
   /** Thumbnail of anime. */
-  readonly image: string;
+  readonly image: string | null;
 
   /** Aired date. */
   readonly aired: DateRangeDto;
 
   /** Anime type. */
-  readonly type: TypeModel;
+  readonly type: TypeDto;
 
   /** Status of anime. */
-  readonly status: StatusModel;
+  readonly status: StatusDto;
 }

@@ -1,11 +1,10 @@
 
-import { Type } from '../enum';
-
+import { TypeModel } from './anime';
 import { Immerable, OmitImmerable } from './immerable';
 import { Sorting } from './sorting';
 
 /** Pagination meta info. */
-export class PaginationOptions extends Immerable {
+export class AnimeListQueryOptions extends Immerable {
 
   /** Total count of items. */
   public readonly offset: number;
@@ -23,7 +22,7 @@ export class PaginationOptions extends Immerable {
   public readonly activePage: number;
 
   /** Filter by type. */
-  public readonly type: Type;
+  public readonly type: TypeModel;
 
   public constructor(data: InitArgsPagination) {
     super();
@@ -36,4 +35,4 @@ export class PaginationOptions extends Immerable {
   }
 }
 
-type InitArgsPagination = OmitImmerable<PaginationOptions>;
+type InitArgsPagination = OmitImmerable<AnimeListQueryOptions>;

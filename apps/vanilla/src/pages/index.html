@@ -4,32 +4,41 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link rel="stylesheet" href="./index.css" />
+    <link rel="stylesheet" href="../index.css" />
     <title>Vite App</title>
   </head>
+  <header class="header">
+
+  </header>
   <body class="default-layout">
-    <h1 class="title">Saritasa Anime</h1>
-     <!-- Filter -->
-     <div class="filter">
-      <div class="filter__item">
-        <label class="filter__item_title">Sort by</label>
-        <select class="filter__item_select filter__item_select-sort"></select>
-      </div>
-      <div class="filter__item">
-        <label class="filter__item_title">Ordering by</label>
-        <select class="filter__item_select filter__item_select-order"></select>
+    <div class="wrapper">
+      <h1 class="title">Saritasa Anime</h1>
+       <div class="filter">
+        <div class="filter__item">
+          <label class="filter__title">Sort by
+            <select class="filter__select filter__select_sort"></select>
+          </label>
+        </div>
+        <div class="filter__item">
+          <label class="filter__title">Ordering by
+            <select class="filter__select filter__select_order"></select>
+          </label>
+        </div>
+        <div class="filter__item">
+          <label class="filter__title">Type
+            <select class="filter__select filter__select_type"></select>
+          </label>
+        </div>
       </div>
 
-      <div class="filter__item">
-        <label class="filter__item_title">Type</label>
-        <select class="filter__item_select filter__item_select-type"></select>
+      <div>
+        <table aria-label="AnimeTable" class="table">
+          <th>Header</th>
+          <caption class="table__caption">Anime list</caption>
+        </table>
       </div>
+      <ul class="pagination"></ul>
     </div>
-
-    <!-- Anime films list -->
-    <div class="table"></div>
-    <!-- Pagination -->
-    <ul class="pagination"></ul>
     <script type="module" src="./index.ts"></script>
   </body>
 </html>

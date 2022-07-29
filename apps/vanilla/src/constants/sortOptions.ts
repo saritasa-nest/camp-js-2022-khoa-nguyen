@@ -1,8 +1,16 @@
-/* eslint-disable @typescript-eslint/naming-convention */
+import { SortTitle, SortValue } from '@js-camp/core/models/sorting';
 
-import { SortTitle, SortValue } from '@js-camp/core/enum';
+/** Options of type interface. */
+interface SortingOptions {
 
-export const SORT_OPTIONS = [
+  /** Title of options. */
+  readonly title: SortTitle;
+
+  /** Value of options. */
+  readonly value: SortValue;
+}
+
+export const SORT_OPTIONS: readonly SortingOptions[] = [
   {
     title: SortTitle.TitleEnglish,
     value: SortValue.TitleEnglish,

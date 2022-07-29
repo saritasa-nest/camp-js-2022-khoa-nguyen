@@ -1,37 +1,25 @@
-import { OrderOption, Type } from '@js-camp/core/enum';
-import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
+import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
+import { TypeModel } from '@js-camp/core/models/anime';
+import { AnimeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
 import { Sorting } from '@js-camp/core/models/sorting';
 
 import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, DEFAULT_OFFSET, DEFAULT_TOTAL_PAGE, SORT_OPTIONS } from '../constants';
-import { KEY_ORDER, KEY_SORTING, KEY_TYPE } from '../constants/key';
-import { fetchAnimeList } from '../scripts/fetchAnimeList';
-import { LocalStorageService } from '../service/localStorage';
+import { OrderOption } from '../enum';
+import { SearchParamsService } from '../services/searchParams';
 
-import { renderFilterByType } from './renderFilterByType';
-import { renderListAnimeWithActivePage } from './renderPagination';
-import { renderSortingAndOrdering } from './renderSortingAndOrdering';
-
-/** Init anime table view. */
-export async function initAnimeTable(): Promise<void> {
-  const INITIAL_PAGINATION: PaginationOptions = new PaginationOptions({
+/** Get initial query params. */
+export function getInitialQueryParams(): AnimeListQueryOptions {
+  const searchParam = SearchParamsService.getSearchParams();
+  return new AnimeListQueryOptions({
     limit: DEFAULT_LIMIT,
     offset: DEFAULT_OFFSET,
-    activePage: DEFAULT_ACTIVE_PAGE,
+    activePage: searchParam.page ?? DEFAULT_ACTIVE_PAGE,
     totalPages: DEFAULT_TOTAL_PAGE,
     sorting: new Sorting({
-      ...LocalStorageService.getValue<Sorting>(KEY_SORTING) ?? SORT_OPTIONS[0],
-      isAscending: (LocalStorageService.getValue<OrderOption>(KEY_ORDER) === null ||
-      LocalStorageService.getValue<OrderOption>(KEY_ORDER) === OrderOption.Ascending),
+      title: searchParam.sortBy != null ? SORT_OPTIONS.filter(item => searchParam.sortBy === item.value)[0].title : SORT_OPTIONS[0].title,
+      value: searchParam.sortBy ?? SORT_OPTIONS[0].value,
+      isAscending: searchParam.ordering === OrderOption.Ascending || searchParam.ordering == null,
     }),
-    type: LocalStorageService.getValue<Type>(KEY_TYPE) ?? Type.Default,
+    type: searchParam.type != null ? AnimeMapper.typeDtoToModel[searchParam.type] : TypeModel.Default,
   });
-  const animeListInitial = await fetchAnimeList(INITIAL_PAGINATION);
-
-  const PAGINATION_OPTIONS: PaginationOptions = new PaginationOptions({
-    ...INITIAL_PAGINATION,
-    totalPages: Math.ceil(animeListInitial.count / DEFAULT_LIMIT) - 1,
-  });
-  renderListAnimeWithActivePage(PAGINATION_OPTIONS);
-  renderSortingAndOrdering(PAGINATION_OPTIONS);
-  renderFilterByType(PAGINATION_OPTIONS);
 }

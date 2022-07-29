@@ -1,6 +1,11 @@
-import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
+import { AnimeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
 
-import { DEFAULT_LIMIT } from '../constants';
+import { DEFAULT_LIMIT, DEFAULT_TOTAL_PAGE, FIRST_PAGE, KEY_ACTIVE_PAGE, PAGE_RANGE, PAGE_STEP } from '../constants';
+import { SearchParamsService } from '../services/searchParams';
+
+import { throwError } from '../utils';
+
+import { getInitialQueryParams } from './initAnimeTable';
 
 import { renderAnimeList } from './renderAnimeList';
 
@@ -15,25 +20,31 @@ const paginationContainer = document.querySelector('.pagination');
 function renderRangeOfPagination(activePage: number, from: number, to: number): string {
   let innerHTML = '';
   for (let i = from; i <= to; i++) {
-    innerHTML = innerHTML.concat(`<li class="waves-effect ${activePage === i ? 'active' : ''}"><a>${i}</a></li>`, '');
+    innerHTML = innerHTML.concat(`<button class="pagination__button ${activePage === i ? 'button_active' : ''}">${i}</button>`, '');
   }
   return innerHTML;
 }
 
-/**  Render items of pagination.
+/**
+ * Render items of pagination.
  * @param options Options of pagination.
  */
-function renderPaginationItems(options: PaginationOptions): string {
+function renderPaginationItems(options: AnimeListQueryOptions): string {
   const { activePage, totalPages } = options;
-  const FIRST_PAGE = 1;
-  const PAGE_RANGE = 5;
-  const PAGE_STEP = 2;
 
+  if (totalPages === DEFAULT_TOTAL_PAGE) {
+    return '';
+  }
+  if (totalPages < PAGE_RANGE) {
+    return renderRangeOfPagination(activePage, FIRST_PAGE, activePage);
+  }
   if (activePage <= PAGE_STEP) {
     return renderRangeOfPagination(activePage, FIRST_PAGE, PAGE_RANGE);
-  } else if (activePage > PAGE_STEP && activePage < totalPages - PAGE_STEP) {
+  }
+  if (activePage > PAGE_STEP && activePage < totalPages - PAGE_STEP) {
     return renderRangeOfPagination(activePage, activePage - PAGE_STEP, activePage + PAGE_STEP);
-  } else if (activePage >= totalPages - PAGE_STEP) {
+  }
+  if (activePage >= totalPages - PAGE_STEP) {
     return renderRangeOfPagination(activePage, totalPages - PAGE_STEP * 2, totalPages);
   }
   return '';
@@ -43,46 +54,53 @@ function renderPaginationItems(options: PaginationOptions): string {
  * Render pagination with buttons First and Last.
  * @param options Options of pagination.
  */
-function renderPagination(options: PaginationOptions): void {
-  if (paginationContainer === null || paginationContainer === undefined) {
+function renderPagination(options: AnimeListQueryOptions): void {
+  if (paginationContainer == null) {
     return;
   }
   paginationContainer.innerHTML = `
-      <li class="button__move button__first waves-effect"><a href="#!"><i class="material-icons">First</i></a></li>
-      ${renderPaginationItems(options)}
-      <li class="button__move button__last waves-effect"><a href="#!"><i class="material-icons">Last</i></a></li>
+  <button class="pagination__button_first">First</button>
+  ${renderPaginationItems(options)}
+  <button class="pagination__button_last">Last</button>
   `;
-  const buttonFirstPage = document.querySelector('.button__first');
-  const buttonLastPage = document.querySelector('.button__last');
+  const buttonFirstPage = document.querySelector<HTMLButtonElement>('.pagination__button_first');
+  const buttonLastPage = document.querySelector<HTMLButtonElement>('.pagination__button_last');
+  if (buttonFirstPage == null || buttonLastPage == null) {
+    return;
+  }
 
-  buttonFirstPage?.addEventListener('click', () => {
-      const optionUpdated = new PaginationOptions({
-        ...options,
-        activePage: 1,
-        offset: DEFAULT_LIMIT * options.activePage,
-      });
-      renderListAnimeWithActivePage(optionUpdated);
-    });
+  /**
+   * Render pagination with buttons First and Last.
+   * @param pageActive Active page.
+   * @param element Element to remove click event.
+   */
+  function handleMoveToPageSide(element: HTMLButtonElement, pageActive: string): EventListener {
+    return () => {
+      SearchParamsService.setSearchParamToUrl(KEY_ACTIVE_PAGE, pageActive);
+      renderListOnActivePage(getInitialQueryParams());
+      element?.removeEventListener('click', handleMoveToPageSide(element, FIRST_PAGE.toString()));
+    };
+  }
 
-  buttonLastPage?.addEventListener('click', () => {
-      const optionUpdated = new PaginationOptions({
-        ...options,
-        activePage: options.totalPages,
-        offset: DEFAULT_LIMIT * options.activePage,
-      });
-      renderListAnimeWithActivePage(optionUpdated);
-    });
+  buttonFirstPage.addEventListener('click', handleMoveToPageSide(buttonFirstPage, FIRST_PAGE.toString()));
+  buttonLastPage.addEventListener('click', handleMoveToPageSide(buttonLastPage, options.totalPages.toString()));
 
   if (options.activePage === options.totalPages) {
-    buttonLastPage?.classList.add('disabled');
+    buttonLastPage.classList.add('button_disable');
+    buttonLastPage.disabled = true;
   } else {
-    buttonLastPage?.classList.remove('disabled');
+    buttonLastPage.classList.remove('button_disable');
+    buttonLastPage.disabled = false;
   }
 
   if (options.activePage === 1) {
-    buttonFirstPage?.classList.add('disabled');
+    buttonFirstPage.classList.add('button_disable');
+    buttonFirstPage.disabled = true;
+
   } else {
-    buttonFirstPage?.classList.remove('disabled');
+    buttonFirstPage?.classList.remove('button_disable');
+    buttonFirstPage.disabled = false;
+
   }
 }
 
@@ -90,35 +108,34 @@ function renderPagination(options: PaginationOptions): void {
  * Render anime list and pagination to UI.
  * @param options Options of pagination.
  */
-export async function renderListAnimeWithActivePage(options: PaginationOptions): Promise<void> {
+export async function renderListOnActivePage(options: AnimeListQueryOptions): Promise<void> {
   try {
     const animeList = await renderAnimeList(options);
-    const optionUpdated = new PaginationOptions({
+    if (animeList == null) {
+      throw new Error('Anime list is null');
+    }
+    const optionUpdated = new AnimeListQueryOptions({
       ...options,
-      totalPages: Math.ceil(animeList.count / options.limit - 1),
+      totalPages: Math.ceil(animeList.count / DEFAULT_LIMIT),
     });
     renderPagination(optionUpdated);
-    const itemsPageList = document.querySelectorAll('.pagination li:not(.button__move)');
+    const itemsPageList = document.querySelectorAll('.pagination .pagination__button');
     itemsPageList.forEach(item => {
-      item.addEventListener('click', () => {
-        const strPage = item.childNodes[0].childNodes[0].nodeValue;
-        if (strPage === null || strPage === undefined) {
-          return;
-        }
-        const numPage = Number.parseInt(strPage, 10);
-        const optionUpdatedTrigger = new PaginationOptions({
-          ...options,
-          offset: DEFAULT_LIMIT * numPage,
-          activePage: numPage,
-        });
-        renderListAnimeWithActivePage(optionUpdatedTrigger);
-      });
+
+      /** Handle click event in pagination items. */
+      function handlePaginationItemClicked(): void {
+          const strPage = item.childNodes[0].nodeValue;
+          if (strPage == null) {
+            return;
+          }
+          const numPage = Number.parseInt(strPage, 10);
+          SearchParamsService.setSearchParamToUrl(KEY_ACTIVE_PAGE, numPage.toString());
+          renderListOnActivePage(getInitialQueryParams());
+          item.removeEventListener('click', handlePaginationItemClicked);
+      }
+      item.addEventListener('click', handlePaginationItemClicked);
     });
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      throw new Error(`Unable to render Anime list ${error.message}`);
-    } else {
-      throw new Error('Unexpected error!');
-    }
+    throwError(error, 'Failed to load pagination');
   }
 }

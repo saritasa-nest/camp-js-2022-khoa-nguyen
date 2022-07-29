@@ -1,4 +1,4 @@
-import { Type } from '@js-camp/core/enum';
+import { TypeDto } from '@js-camp/core/dtos/anime.dto';
 
 /** Options of type interface. */
 interface FilterType {
@@ -7,36 +7,36 @@ interface FilterType {
   readonly title: string;
 
   /** Value of options. */
-  readonly value: Type;
+  readonly value: TypeDto;
 }
 
-export const FILTER_TYPE_OPTIONS: FilterType[] = [
+export const FILTER_TYPE_OPTIONS: readonly FilterType[] = [
   {
     title: 'Default',
-    value: Type.Default,
+    value: TypeDto.Default,
   },
   {
     title: 'Movie',
-    value: Type.Movie,
+    value: TypeDto.Movie,
   },
   {
     title: 'Music',
-    value: Type.Music,
+    value: TypeDto.Music,
   },
   {
     title: 'Ona',
-    value: Type.Ona,
+    value: TypeDto.Ona,
   },
   {
     title: 'Ova',
-    value: Type.Ova,
+    value: TypeDto.Ova,
   },
   {
     title: 'Special',
-    value: Type.Special,
+    value: TypeDto.Special,
   },
   {
     title: 'TV',
-    value: Type.Tv,
+    value: TypeDto.Tv,
   },
 ];

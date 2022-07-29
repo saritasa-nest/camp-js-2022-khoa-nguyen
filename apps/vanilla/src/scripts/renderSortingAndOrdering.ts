@@ -1,25 +1,19 @@
-import { OrderOption } from '@js-camp/core/enum';
-import { PaginationOptions } from '@js-camp/core/models/paginationOptions';
-import { Sorting } from '@js-camp/core/models/sorting';
-import { setDefaultSelected } from '@js-camp/core/utils';
 
-import { DEFAULT_ACTIVE_PAGE, DEFAULT_LIMIT, SORT_OPTIONS } from '../constants';
-import { KEY_ORDER, KEY_SORTING } from '../constants/key';
-import { LocalStorageService } from '../service/localStorage';
+import { KEY_ORDER, KEY_SORTING, SORT_OPTIONS } from '../constants';
+import { OrderOption } from '../enum';
+import { SearchParamsService } from '../services/searchParams';
+import { setDefaultSelected } from '../utils';
 
-import { renderListAnimeWithActivePage } from './renderPagination';
+import { getInitialQueryParams } from './initAnimeTable';
 
-const selectSort = document.querySelector<HTMLSelectElement>('.filter__item_select-sort');
-const selectOrdering = document.querySelector<HTMLSelectElement>('.filter__item_select-order');
+import { renderListOnActivePage } from './renderPagination';
 
-/**
- * Init and render sorting and ordering list, hence render corresponding list anime.
- * @param options Options of pagination.
- */
-export function renderSortingAndOrdering(options: PaginationOptions): void {
-  if (selectSort === null || selectSort === undefined) {
-    return;
-  }
+const selectSort = document.querySelector<HTMLSelectElement>('.filter__select_sort');
+const selectOrdering = document.querySelector<HTMLSelectElement>('.filter__select_order');
+
+/** Init and render sorting and ordering list, hence render corresponding list anime. */
+export function renderSortingAndOrdering(): void {
+  const searchParam = SearchParamsService.getSearchParams();
   const sortOptionHTML = SORT_OPTIONS.map(item => (
     `<option value="${item.title}">${item.title}</option>`
   ))
@@ -29,43 +23,31 @@ export function renderSortingAndOrdering(options: PaginationOptions): void {
     `<option value ="${item}">${item}</option>`
   ))
     .join('');
+  if (selectSort == null) {
+    return;
+  }
   selectSort.innerHTML = sortOptionHTML;
-  setDefaultSelected(selectSort, LocalStorageService.getValue<Sorting>(KEY_SORTING)?.title ?? SORT_OPTIONS[0].title);
+
+  setDefaultSelected(selectSort, searchParam.sortBy != null ?
+    SORT_OPTIONS.filter(item => item.value === searchParam.sortBy)[0].title :
+    SORT_OPTIONS[0].title);
+
   selectSort.addEventListener('change', () => {
     const { value } = selectSort;
-    LocalStorageService.setValue(KEY_SORTING, SORT_OPTIONS.filter(item => item.title === value)[0]);
-    const selectSortingValue = LocalStorageService.getValue<Sorting>(KEY_SORTING) ?? SORT_OPTIONS[0];
-    const optionsUpdated = new PaginationOptions({
-      ...options,
-      offset: DEFAULT_LIMIT,
-      activePage: 1,
-      sorting: new Sorting({
-        ...options.sorting,
-        ...selectSortingValue,
-      }),
-    });
-      renderListAnimeWithActivePage(optionsUpdated);
+    SearchParamsService.setSearchParamToUrl(KEY_SORTING, SORT_OPTIONS.filter(item => item.title === value)[0].value);
+    renderListOnActivePage(getInitialQueryParams());
     });
 
-  if (selectOrdering === null || selectOrdering === undefined) {
+  if (selectOrdering == null) {
     return;
   }
   selectOrdering.innerHTML = orderOptionHTML;
-  setDefaultSelected(selectOrdering, LocalStorageService.getValue<OrderOption>(KEY_ORDER) ?? OrderOption.Ascending);
+
+  setDefaultSelected(selectOrdering, searchParam.ordering ?? OrderOption.Ascending);
+
   selectOrdering.addEventListener('change', () => {
-
-    LocalStorageService.setValue(KEY_ORDER, selectOrdering.value);
-    const selectOrderingValue = LocalStorageService.getValue<OrderOption>(KEY_ORDER) ?? OrderOption.Ascending;
-
-    const optionsUpdated = new PaginationOptions({
-      ...options,
-      offset: DEFAULT_LIMIT,
-      activePage: DEFAULT_ACTIVE_PAGE,
-      sorting: new Sorting({
-        ...options.sorting,
-        isAscending: selectOrderingValue === OrderOption.Ascending,
-      }),
-    });
-    renderListAnimeWithActivePage(optionsUpdated);
-    });
+    SearchParamsService.setSearchParamToUrl(KEY_ORDER,
+      selectOrdering.value === OrderOption.Ascending ? OrderOption.Ascending : OrderOption.Descending);
+    renderListOnActivePage(getInitialQueryParams());
+  });
 }
