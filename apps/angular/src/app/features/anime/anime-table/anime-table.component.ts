@@ -35,13 +35,13 @@ export class AnimeTableComponent {
   /** Filter by type options. */
   public readonly filterTypeOptions = FILTER_TYPE_OPTIONS;
 
-  /** Sorting options. */
+  /** Ordering options. */
   public readonly orderingOptions = ORDERING_OPTIONS;
 
-  /** Sorting options. */
+  /** Current page in pagination. */
   public readonly activePage$ = new BehaviorSubject<number>(0);
 
-  /** Sorting options. */
+  /** Total items of anime table. */
   public readonly totalItems$ = new BehaviorSubject<number>(0);
 
   public constructor(
@@ -50,7 +50,6 @@ export class AnimeTableComponent {
     private activateRoute: ActivatedRoute,
   ) {
     this.result$ = this.activateRoute.queryParams.pipe(
-
       tap((params: QueryUrl) => {
         if (params.sortBy != null && params.ordering != null) {
           this.sortBy$.next(params.sortBy);
@@ -69,7 +68,7 @@ export class AnimeTableComponent {
   }
 
   /**
-   *  Track anime list.
+   * Track anime list.
    * @param item Track by per item.
    * @param _index Item index.
    */

@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { ActivatedRoute } from '@angular/router';
 
 /** Pagination options. */
 @Component({
@@ -21,8 +20,7 @@ export class PaginationComponent {
   /** Total items of pagination. */
   @Input() public totalItems: number | null = 0;
 
-  public constructor(private activeRoute: ActivatedRoute) {
-
+  public constructor() {
   }
 
   /** Active page of pagination. */

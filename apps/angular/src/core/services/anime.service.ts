@@ -16,22 +16,22 @@ import { ANIME_LIST_API, DEFAULT_ANIME_LIST_QUERY, DEFAULT_LIMIT, OrderOption, S
 
 import { ApiService } from './api.service';
 
-/** Anime services. */
+/** Anime query URL. */
 export interface QueryUrl {
 
-  /** Anime services. */
+  /** Current page of pagination. */
   page?: number;
 
-  /** Anime services. */
+  /** Filter by type in anime table. */
   type?: TypeDto;
 
-  /** Anime services. */
+  /** Ordering options. */
   ordering?: OrderOption;
 
-  /** Anime services. */
+  /** Search value. */
   search?: string;
 
-  /** Sort services. */
+  /** Sort by option. */
   sortBy?: SortValue;
 
 }
@@ -73,8 +73,8 @@ export class AnimeService {
   }
 
   /**
-   *  URL to params .
-   *  @param params Query param on URl.
+   * URL to params .
+   * @param params Query param on URl.
    */
   public urlParamToAnimeQueryOptions(params: QueryUrl): AnimeListQueryOptions {
     const activePage = params.page ?? 1;
