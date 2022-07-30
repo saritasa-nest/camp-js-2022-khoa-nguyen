@@ -45,12 +45,36 @@ export class AnimeTableComponent implements OnDestroy {
   /** Total items of anime table. */
   public readonly totalItems$ = new BehaviorSubject<number>(0);
 
+  /** Type of form control. */
+  public readonly types$ = new BehaviorSubject<TypeDto[]>([TypeDto.Default]);
+
+  /** Input of form control. */
+  public readonly search$ = new BehaviorSubject<string>(DEFAULT_SEARCH);
+
+  /**  Sort value of form control. */
+  public readonly sortBy$ = new BehaviorSubject<SortValue>(SortValue.TitleEnglish);
+
+  /**  Ordering value of form control. */
+  public readonly ordering$ = new BehaviorSubject<OrderOption>(OrderOption.Ascending);
+
   public constructor(
     private readonly animeService: AnimeService,
     private readonly activateRoute: ActivatedRoute,
   ) {
     this.result$ = this.activateRoute.queryParams.pipe(
       tap((params: QueryUrl) => {
+        if (params.sortBy == null) {
+          this.sortBy$.next(SortValue.TitleEnglish);
+        }
+        if (params.type == null) {
+          this.types$.next([TypeDto.Default]);
+        }
+        if (params.ordering == null) {
+          this.ordering$.next(OrderOption.Ascending);
+        }
+        if (params.search == null) {
+          this.search$.next(DEFAULT_SEARCH);
+        }
         if (params.sortBy != null) {
           this.sortBy$.next(params.sortBy);
         }
@@ -84,18 +108,6 @@ export class AnimeTableComponent implements OnDestroy {
   public trackByAnime(index: number, item: Anime): Anime['id'] {
     return item.id;
   }
-
-  /** Type of form control. */
-  public types$ = new BehaviorSubject<TypeDto[]>([TypeDto.Default]);
-
-  /** Input of form control. */
-  public search$ = new BehaviorSubject<string>(DEFAULT_SEARCH);
-
-  /**  Sort value of form control. */
-  public sortBy$ = new BehaviorSubject<SortValue>(SortValue.TitleEnglish);
-
-  /**  Ordering value of form control. */
-  public ordering$ = new BehaviorSubject<OrderOption>(OrderOption.Ascending);
 
   /**
    * Handle change active page of pagination.
