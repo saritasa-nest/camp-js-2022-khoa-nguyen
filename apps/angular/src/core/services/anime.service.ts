@@ -12,7 +12,7 @@ import { Pagination } from '@js-camp/core/models/pagination';
 import { Sorting, SortTitle, SortValue } from '@js-camp/core/models/sorting';
 import { map, Observable } from 'rxjs';
 
-import { ANIME_LIST_API, DEFAULT_ANIME_LIST_QUERY, DEFAULT_LIMIT, OrderOption, SORT_OPTIONS } from '../../constants';
+import { ANIME_LIST_API, DEFAULT_ANIME_LIST_QUERY, DEFAULT_LIMIT, DEFAULT_SEARCH, OrderOption, SORT_OPTIONS } from '../../constants';
 
 import { ApiService } from './api.service';
 
@@ -65,10 +65,22 @@ export class AnimeService {
    * @param params Query params.
    */
   public setUrl(params: QueryUrl): void {
+    const { queryParams } = this.activateRoute.snapshot;
+    let trueParams = { ...queryParams, ...params };
+    if (params.search === DEFAULT_SEARCH) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { search, ...rest } = trueParams;
+      trueParams = rest;
+    }
+    if (params.type === TypeDto.Default) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { type, ...rest } = trueParams;
+      trueParams = rest;
+    }
     this.router.navigate([], {
       relativeTo: this.activateRoute,
-      queryParams: params,
-      queryParamsHandling: 'merge',
+      queryParams: { ...trueParams },
+      queryParamsHandling: '',
     });
   }
 
@@ -78,10 +90,6 @@ export class AnimeService {
    */
   public urlParamToAnimeQueryOptions(params: QueryUrl): AnimeListQueryOptions {
     const activePage = params.page ?? 1;
-
-    // function transformToModelArray(paramsType: TypeDto[]) {
-
-    // }
     return new AnimeListQueryOptions({
       ...DEFAULT_ANIME_LIST_QUERY,
       activePage,
@@ -95,15 +103,4 @@ export class AnimeService {
       search: params.search ? params.search : '',
     });
   }
-
-  // private queryOptionsToUrlParam(options: AnimeListQueryOptions): QueryUrl {
-  //   return {
-  //     page: options.activePage,
-
-  //     type: options.type ? AnimeListQueryOptionsMapper.typeModelToDto[options.type] : undefined,
-  //     ordering: options.sorting.isAscending ? OrderOption.Ascending : OrderOption.Descending,
-  //     search: options.search,
-  //     sortBy: options.sorting.value,
-  //   };
-  // }
 }

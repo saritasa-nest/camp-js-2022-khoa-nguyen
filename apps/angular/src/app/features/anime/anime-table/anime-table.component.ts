@@ -1,12 +1,11 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Anime } from '@js-camp/core/models/anime';
 import { Pagination } from '@js-camp/core/models/pagination';
 
-import { BehaviorSubject, map, Observable, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, debounceTime, map, Observable, switchMap, tap } from 'rxjs';
 
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { SortValue } from '@js-camp/core/models/sorting';
 
@@ -16,7 +15,7 @@ import { TypeDto } from '@js-camp/core/dtos/anime.dto';
 
 import { AnimeService, QueryUrl } from '../../../../core/services';
 
-import { FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS } from '../../../../constants';
+import { DEFAULT_SEARCH, FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS } from '../../../../constants';
 
 /** Anime table list. */
 @Component({
@@ -26,7 +25,7 @@ import { FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS } from
   changeDetection: ChangeDetectionStrategy.OnPush,
 
 })
-export class AnimeTableComponent {
+export class AnimeTableComponent implements OnDestroy {
 
   /** Pagination result. */
   public readonly result$: Observable<Pagination<Anime>>;
@@ -48,8 +47,7 @@ export class AnimeTableComponent {
 
   public constructor(
     private readonly animeService: AnimeService,
-    private router: Router,
-    private activateRoute: ActivatedRoute,
+    private readonly activateRoute: ActivatedRoute,
   ) {
     this.result$ = this.activateRoute.queryParams.pipe(
       tap((params: QueryUrl) => {
@@ -62,6 +60,9 @@ export class AnimeTableComponent {
         }
         if (params.ordering != null) {
           this.ordering$.next(params.ordering);
+        }
+        if (params.search != null) {
+          this.search$.next(params.search);
         }
       }),
       map(paramsURL => this.animeService.urlParamToAnimeQueryOptions(paramsURL)),
@@ -78,9 +79,9 @@ export class AnimeTableComponent {
   /**
    * Track anime list.
    * @param item Track by per item.
-   * @param _index Item index.
+   * @param index Item index.
    */
-  public trackByAnime(_index: number, item: Anime): Anime['id'] {
+  public trackByAnime(index: number, item: Anime): Anime['id'] {
     return item.id;
   }
 
@@ -88,7 +89,7 @@ export class AnimeTableComponent {
   public types$ = new BehaviorSubject<TypeDto[]>([TypeDto.Default]);
 
   /** Input of form control. */
-  public search = new FormControl('');
+  public search$ = new BehaviorSubject<string>(DEFAULT_SEARCH);
 
   /**  Sort value of form control. */
   public sortBy$ = new BehaviorSubject<SortValue>(SortValue.TitleEnglish);
@@ -127,5 +128,23 @@ export class AnimeTableComponent {
    */
   public handleOrderingChange(event: MatSelectChange): void {
     this.animeService.setUrl({ ordering: event.value });
+  }
+
+  /**
+   * Handle search title anime of anime list.
+   * @param event Current search value of anime list.
+   */
+  public handleInputSearch(event: Event): void {
+    this.search$
+      .pipe(
+        debounceTime(500),
+        map(() => (event.target as HTMLInputElement).value),
+      )
+      .subscribe(value => this.animeService.setUrl({ search: value }));
+  }
+
+  /** OnDestroy to unsubscribe observable. */
+  public ngOnDestroy(): void {
+    this.search$.unsubscribe();
   }
 }

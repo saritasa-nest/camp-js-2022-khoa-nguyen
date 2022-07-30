@@ -31,7 +31,7 @@
 
   <mat-form-field class="search">
     <mat-label>Search</mat-label>
-    <input type="search" matInput [formControl]="search"
+    <input type="search" matInput [value]="search$ | async" (input)="handleInputSearch($event)"
            placeholder="Search title anime ... ">
   </mat-form-field>
 
