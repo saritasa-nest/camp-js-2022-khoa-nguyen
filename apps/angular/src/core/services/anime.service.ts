@@ -102,15 +102,15 @@ export class AnimeService {
       ...DEFAULT_ANIME_LIST_QUERY,
       activePage,
       offset: (activePage - 1) * DEFAULT_LIMIT,
-      multipleType: params.type != null ? params.type : TypeDto.Default,
+      multipleType: params.type ?? TypeDto.Default,
       sorting: new Sorting({
         title: params.sortBy != null ?
           SORT_OPTIONS.filter(item => item.value === params.sortBy)[0].title :
           SortTitle.TitleEnglish,
-        value: params.sortBy != null ? params.sortBy : SortValue.TitleEnglish,
+        value: params.sortBy ?? SortValue.TitleEnglish,
         isAscending: params.ordering != null ? params.ordering === OrderOption.Ascending : true,
       }),
-      search: params.search ? params.search : DEFAULT_SEARCH,
+      search: params.search ?? DEFAULT_SEARCH,
     });
   }
 }

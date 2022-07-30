@@ -3,7 +3,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { Anime } from '@js-camp/core/models/anime';
 import { Pagination } from '@js-camp/core/models/pagination';
 
-import { BehaviorSubject, debounceTime, map, Observable, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, debounceTime, distinctUntilChanged, map, Observable, switchMap, tap } from 'rxjs';
 
 import { ActivatedRoute } from '@angular/router';
 
@@ -63,7 +63,6 @@ export class AnimeTableComponent implements OnDestroy {
   ) {
     this.result$ = this.activateRoute.queryParams.pipe(
       tap((params: QueryUrl) => {
-
         this.setSubjectData<SortValue>(this.sortBy$, params.sortBy, SortValue.TitleEnglish);
         this.setSubjectData<string>(this.search$, params.search, DEFAULT_SEARCH);
         this.setSubjectData<OrderOption>(this.ordering$, params.ordering, OrderOption.Ascending);
@@ -74,11 +73,9 @@ export class AnimeTableComponent implements OnDestroy {
               .split(',')
               .map(item => item as TypeDto),
         );
+        this.activePage$.next(params.page ?? 1);
       }),
       map(paramsURL => this.animeService.urlParamToAnimeQueryOptions(paramsURL)),
-      tap(paramModel => {
-        this.activePage$.next(paramModel.activePage);
-      }),
       switchMap(paramModel => this.animeService.getAnimeList(paramModel)),
       tap(pagination => {
         this.totalItems$.next(pagination.count);
@@ -136,9 +133,12 @@ export class AnimeTableComponent implements OnDestroy {
     this.search$
       .pipe(
         debounceTime(500),
+        distinctUntilChanged(),
         map(() => (event.target as HTMLInputElement).value),
       )
-      .subscribe(value => this.animeService.setUrl({ search: value }));
+      .subscribe(value => {
+        this.animeService.setUrl({ search: value, page: 1 });
+      });
   }
 
   /** OnDestroy to unsubscribe observable. */
