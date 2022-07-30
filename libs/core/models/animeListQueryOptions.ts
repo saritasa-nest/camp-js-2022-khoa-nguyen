@@ -27,6 +27,9 @@ export class AnimeListQueryOptions extends Immerable {
   /** Filter by type. */
   public readonly type?: TypeModel;
 
+  /** Filter by multiple type. */
+  public readonly multipleType?: string;
+
   public constructor(data: InitArgsPagination) {
     super();
     this.offset = data.offset;
@@ -36,6 +39,7 @@ export class AnimeListQueryOptions extends Immerable {
     this.activePage = data.activePage;
     this.type = data.type;
     this.search = data.search;
+    this.multipleType = data.multipleType;
   }
 }
 

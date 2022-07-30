@@ -6,7 +6,7 @@ import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
 import { AnimeListQueryOptionsMapper } from '@js-camp/core/mappers/animeListQueryOptions.mapper';
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
-import { Anime, TypeModel } from '@js-camp/core/models/anime';
+import { Anime } from '@js-camp/core/models/anime';
 import { AnimeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
 import { Pagination } from '@js-camp/core/models/pagination';
 import { Sorting, SortTitle, SortValue } from '@js-camp/core/models/sorting';
@@ -20,19 +20,19 @@ import { ApiService } from './api.service';
 export interface QueryUrl {
 
   /** Current page of pagination. */
-  page?: number;
+  readonly page?: number;
 
   /** Filter by type in anime table. */
-  type?: TypeDto;
+  readonly type?: string;
 
   /** Ordering options. */
-  ordering?: OrderOption;
+  readonly ordering?: OrderOption;
 
   /** Search value. */
-  search?: string;
+  readonly search?: string;
 
   /** Sort by option. */
-  sortBy?: SortValue;
+  readonly sortBy?: SortValue;
 
 }
 
@@ -65,7 +65,7 @@ export class AnimeService {
    * @param params Query params.
    */
   public setUrl(params: QueryUrl): void {
-    this.router.navigate(['/'], {
+    this.router.navigate([], {
       relativeTo: this.activateRoute,
       queryParams: params,
       queryParamsHandling: 'merge',
@@ -78,11 +78,15 @@ export class AnimeService {
    */
   public urlParamToAnimeQueryOptions(params: QueryUrl): AnimeListQueryOptions {
     const activePage = params.page ?? 1;
+
+    // function transformToModelArray(paramsType: TypeDto[]) {
+
+    // }
     return new AnimeListQueryOptions({
       ...DEFAULT_ANIME_LIST_QUERY,
       activePage,
       offset: (activePage - 1) * DEFAULT_LIMIT,
-      type: params.type != null ? AnimeMapper.typeDtoToModel[params.type] : TypeModel.Default,
+      multipleType: params.type != null ? params.type : TypeDto.Default,
       sorting: new Sorting({
         title: params.sortBy != null ? SORT_OPTIONS.filter(item => item.value === params.sortBy)[0].title : SortTitle.TitleEnglish,
         value: params.sortBy != null ? params.sortBy : SortValue.TitleEnglish,
@@ -92,13 +96,14 @@ export class AnimeService {
     });
   }
 
-  private queryOptionsToUrlParam(options: AnimeListQueryOptions): QueryUrl {
-    return {
-      page: options.activePage,
-      type: options.type ? AnimeListQueryOptionsMapper.typeModelToDto[options.type] : undefined,
-      ordering: options.sorting.isAscending ? OrderOption.Ascending : OrderOption.Descending,
-      search: options.search,
-      sortBy: options.sorting.value,
-    };
-  }
+  // private queryOptionsToUrlParam(options: AnimeListQueryOptions): QueryUrl {
+  //   return {
+  //     page: options.activePage,
+
+  //     type: options.type ? AnimeListQueryOptionsMapper.typeModelToDto[options.type] : undefined,
+  //     ordering: options.sorting.isAscending ? OrderOption.Ascending : OrderOption.Descending,
+  //     search: options.search,
+  //     sortBy: options.sorting.value,
+  //   };
+  // }
 }

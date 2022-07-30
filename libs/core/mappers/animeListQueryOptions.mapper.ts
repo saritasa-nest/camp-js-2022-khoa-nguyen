@@ -28,6 +28,8 @@ export namespace AnimeListQueryOptionsMapper {
       search: options.search == null ? '' : options.search,
       ordering: options.sorting.isAscending ? options.sorting.value : `-${options.sorting.value}`,
       type,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      type__in: options.multipleType,
     };
   }
 }

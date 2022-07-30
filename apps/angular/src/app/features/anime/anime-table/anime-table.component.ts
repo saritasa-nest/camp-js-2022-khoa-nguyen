@@ -12,6 +12,8 @@ import { SortValue } from '@js-camp/core/models/sorting';
 
 import { MatSelectChange } from '@angular/material/select';
 
+import { TypeDto } from '@js-camp/core/dtos/anime.dto';
+
 import { AnimeService, QueryUrl } from '../../../../core/services';
 
 import { FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS } from '../../../../constants';
@@ -51,8 +53,14 @@ export class AnimeTableComponent {
   ) {
     this.result$ = this.activateRoute.queryParams.pipe(
       tap((params: QueryUrl) => {
-        if (params.sortBy != null && params.ordering != null) {
+        if (params.sortBy != null) {
           this.sortBy$.next(params.sortBy);
+        }
+        if (params.type != null) {
+          const paramsType = params.type.split(',').map(item => item as TypeDto);
+          this.types$.next(paramsType);
+        }
+        if (params.ordering != null) {
           this.ordering$.next(params.ordering);
         }
       }),
@@ -77,7 +85,7 @@ export class AnimeTableComponent {
   }
 
   /** Type of form control. */
-  public types = new FormControl('');
+  public types$ = new BehaviorSubject<TypeDto[]>([TypeDto.Default]);
 
   /** Input of form control. */
   public search = new FormControl('');
@@ -94,6 +102,15 @@ export class AnimeTableComponent {
    */
   public handlePageChange(event: PageEvent): void {
     this.animeService.setUrl({ page: event.pageIndex + 1 });
+  }
+
+  /**
+   * Handle change active page of pagination.
+   * @param event OnChange event of pagination.
+   */
+  public handleTypeChange(event: MatSelectChange): void {
+    const value = (event.value as TypeDto[]).join(',');
+    this.animeService.setUrl({ type: value, page: 1 });
   }
 
   /**

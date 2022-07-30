@@ -17,4 +17,7 @@ export interface AnimeListQueryOptionsDto {
 
   /** Search items by name. */
   readonly search?: string;
+
+  /** Search items by name. */
+  readonly type__in?: string;
 }
