@@ -64,18 +64,16 @@ export class AnimeTableComponent implements OnDestroy {
     this.result$ = this.activateRoute.queryParams.pipe(
       tap((params: QueryUrl) => {
 
-        this.setSubjectData<SortValue>(params.sortBy, this.sortBy$, SortValue.TitleEnglish);
-        this.setSubjectData<string>(params.search, this.search$, DEFAULT_SEARCH);
-        this.setSubjectData<OrderOption>(params.ordering, this.ordering$, OrderOption.Ascending);
-
-        if (params.type == null) {
-          this.types$.next([TypeDto.Default]);
-        } else {
-          const paramsType = params.type
-            .split(',')
-            .map(item => item as TypeDto);
-          this.types$.next(paramsType);
-        }
+        this.setSubjectData<SortValue>(this.sortBy$, params.sortBy, SortValue.TitleEnglish);
+        this.setSubjectData<string>(this.search$, params.search, DEFAULT_SEARCH);
+        this.setSubjectData<OrderOption>(this.ordering$, params.ordering, OrderOption.Ascending);
+        this.types$.next(
+          params.type == null ?
+            [TypeDto.Default] :
+            params.type
+              .split(',')
+              .map(item => item as TypeDto),
+        );
       }),
       map(paramsURL => this.animeService.urlParamToAnimeQueryOptions(paramsURL)),
       tap(paramModel => {
@@ -150,13 +148,13 @@ export class AnimeTableComponent implements OnDestroy {
 
   /**
    * Set data to behavior subject.
-   * @param value Value which need to be set.
    * @param subject$ Subject behavior.
+   * @param value Value which need to be set.
    * @param defaultValue Value which need to be set when param is null.
    */
   public setSubjectData<T>(
-    value: T | undefined,
     subject$: BehaviorSubject<T>,
+    value: T | undefined,
     defaultValue: T,
   ): void {
     if (value == null) {
