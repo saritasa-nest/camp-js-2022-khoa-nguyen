@@ -63,30 +63,18 @@ export class AnimeTableComponent implements OnDestroy {
   ) {
     this.result$ = this.activateRoute.queryParams.pipe(
       tap((params: QueryUrl) => {
-        if (params.sortBy == null) {
-          this.sortBy$.next(SortValue.TitleEnglish);
-        }
+
+        this.setSubjectData<SortValue>(params.sortBy, this.sortBy$, SortValue.TitleEnglish);
+        this.setSubjectData<string>(params.search, this.search$, DEFAULT_SEARCH);
+        this.setSubjectData<OrderOption>(params.ordering, this.ordering$, OrderOption.Ascending);
+
         if (params.type == null) {
           this.types$.next([TypeDto.Default]);
-        }
-        if (params.ordering == null) {
-          this.ordering$.next(OrderOption.Ascending);
-        }
-        if (params.search == null) {
-          this.search$.next(DEFAULT_SEARCH);
-        }
-        if (params.sortBy != null) {
-          this.sortBy$.next(params.sortBy);
-        }
-        if (params.type != null) {
-          const paramsType = params.type.split(',').map(item => item as TypeDto);
+        } else {
+          const paramsType = params.type
+            .split(',')
+            .map(item => item as TypeDto);
           this.types$.next(paramsType);
-        }
-        if (params.ordering != null) {
-          this.ordering$.next(params.ordering);
-        }
-        if (params.search != null) {
-          this.search$.next(params.search);
         }
       }),
       map(paramsURL => this.animeService.urlParamToAnimeQueryOptions(paramsURL)),
@@ -158,5 +146,23 @@ export class AnimeTableComponent implements OnDestroy {
   /** OnDestroy to unsubscribe observable. */
   public ngOnDestroy(): void {
     this.search$.unsubscribe();
+  }
+
+  /**
+   * Set data to behavior subject.
+   * @param value Value which need to be set.
+   * @param subject$ Subject behavior.
+   * @param defaultValue Value which need to be set when param is null.
+   */
+  public setSubjectData<T>(
+    value: T | undefined,
+    subject$: BehaviorSubject<T>,
+    defaultValue: T,
+  ): void {
+    if (value == null) {
+      subject$.next(defaultValue);
+      return;
+    }
+    subject$.next(value);
   }
 }
