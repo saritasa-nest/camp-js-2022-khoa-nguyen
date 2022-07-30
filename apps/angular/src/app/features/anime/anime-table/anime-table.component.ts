@@ -51,10 +51,10 @@ export class AnimeTableComponent implements OnDestroy {
   /** Input of form control. */
   public readonly search$ = new BehaviorSubject<string>(DEFAULT_SEARCH);
 
-  /**  Sort value of form control. */
+  /** Sort value of form control. */
   public readonly sortBy$ = new BehaviorSubject<SortValue>(SortValue.TitleEnglish);
 
-  /**  Ordering value of form control. */
+  /** Ordering value of form control. */
   public readonly ordering$ = new BehaviorSubject<OrderOption>(OrderOption.Ascending);
 
   public constructor(
