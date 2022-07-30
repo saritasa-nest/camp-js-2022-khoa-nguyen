@@ -69,7 +69,7 @@ export class AnimeService {
     let trueParams = { ...queryParams, ...params };
     if (params.search === DEFAULT_SEARCH) {
 
-      // I disable eslint in this line because I just want to get the search key
+      // I disable eslint on this line because I just want to get the search key
       // out of the object and not using it below
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -78,7 +78,7 @@ export class AnimeService {
     }
     if (params.type === TypeDto.Default) {
 
-      // I disable eslint in this line because I just want to get the search key
+      // I disable eslint on this line because I just want to get the search key
       // out of the object and not using it below
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
