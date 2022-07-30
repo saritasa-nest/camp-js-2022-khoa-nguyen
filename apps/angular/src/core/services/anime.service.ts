@@ -68,18 +68,26 @@ export class AnimeService {
     const { queryParams } = this.activateRoute.snapshot;
     let trueParams = { ...queryParams, ...params };
     if (params.search === DEFAULT_SEARCH) {
+
+      // I disable eslint in this line because I just want to get the search key
+      // out of the object and not using it below
+
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { search, ...rest } = trueParams;
       trueParams = rest;
     }
     if (params.type === TypeDto.Default) {
+
+      // I disable eslint in this line because I just want to get the search key
+      // out of the object and not using it below
+
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { type, ...rest } = trueParams;
       trueParams = rest;
     }
-    this.router.navigate([], {
+    this.router.navigate(['/'], {
       relativeTo: this.activateRoute,
-      queryParams: { ...trueParams },
+      queryParams: trueParams,
       queryParamsHandling: '',
     });
   }
@@ -96,11 +104,13 @@ export class AnimeService {
       offset: (activePage - 1) * DEFAULT_LIMIT,
       multipleType: params.type != null ? params.type : TypeDto.Default,
       sorting: new Sorting({
-        title: params.sortBy != null ? SORT_OPTIONS.filter(item => item.value === params.sortBy)[0].title : SortTitle.TitleEnglish,
+        title: params.sortBy != null ?
+          SORT_OPTIONS.filter(item => item.value === params.sortBy)[0].title :
+          SortTitle.TitleEnglish,
         value: params.sortBy != null ? params.sortBy : SortValue.TitleEnglish,
         isAscending: params.ordering != null ? params.ordering === OrderOption.Ascending : true,
       }),
-      search: params.search ? params.search : '',
+      search: params.search ? params.search : DEFAULT_SEARCH,
     });
   }
 }
