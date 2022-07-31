@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { Anime, Pagination, SortValue } from '@js-camp/core/models';
-import { BehaviorSubject, debounceTime, distinctUntilChanged, map, Observable, switchMap, tap } from 'rxjs';
+import { MatSelectChange } from '@angular/material/select';
 import { ActivatedRoute } from '@angular/router';
 import { TypeDto } from '@js-camp/core/dtos';
-import { MatSelectChange } from '@angular/material/select';
+import { Anime, Pagination, SortValue } from '@js-camp/core/models';
+import { BehaviorSubject, debounceTime, distinctUntilChanged, map, Observable, switchMap, tap } from 'rxjs';
 
-import { AnimeService } from '../../../../core/services';
 import { DEFAULT_SEARCH, FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS } from '../../../../constants';
+import { AnimeService } from '../../../../core/services';
 
 /** Anime table list. */
 @Component({
@@ -53,16 +53,18 @@ export class AnimeTableComponent implements OnDestroy, OnInit {
     private readonly animeService: AnimeService,
     private readonly activateRoute: ActivatedRoute,
   ) {
+
     this.result$ = this.activateRoute.queryParams.pipe(
       map(paramsURL => this.animeService.urlParamToAnimeQueryOptions(paramsURL)),
       tap(paramModel => {
         this.sortBy$.next(paramModel.sorting.value);
-        this.search$.next(paramModel.search);
         this.ordering$.next(
           paramModel.sorting.isAscending ?
           OrderOption.Ascending :
           OrderOption.Descending,
         );
+
+        this.search$.next(paramModel.search);
         this.types$.next(
           paramModel.multipleType == null ?
             [TypeDto.Default] :
@@ -128,18 +130,20 @@ export class AnimeTableComponent implements OnDestroy, OnInit {
   public handleInputSearch(event: Event): void {
     const { value } = event.target as HTMLInputElement;
     this.search$.next(value);
+    const timeOutId = setTimeout(() => {
+      this.animeService.setUrl({ page: 1 });
+      clearTimeout(timeOutId);
+    }, 1000);
   }
 
-  /** OnInit to subscribe observable. */
+  /** OnOnInit to subscribe observable. */
   public ngOnInit(): void {
     this.search$
       .pipe(
         debounceTime(500),
         distinctUntilChanged(),
       )
-      .subscribe(value => {
-        this.animeService.setUrl({ search: value, page: 1 });
-    });
+      .subscribe(value => this.animeService.setUrl({ search: value }));
   }
 
   /** OnDestroy to unsubscribe observable. */
