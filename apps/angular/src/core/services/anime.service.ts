@@ -128,8 +128,8 @@ export class AnimeService {
   }
 
   /**
-   * URL to params .
-   * @param params Query param on URl.
+   * Transfer anime list query option to setting of anime list.
+   * @param params Anime list query options model.
    */
   public paramModelToSettingOfAnimeList(params: AnimeListQueryOptions): SettingOfAnimeList {
     return {
