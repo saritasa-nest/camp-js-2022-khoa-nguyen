@@ -128,4 +128,5 @@ export const DEFAULT_ANIME_LIST_QUERY: AnimeListQueryOptions = new AnimeListQuer
     value: SortValue.TitleEnglish,
     isAscending: true,
   }),
+  search: DEFAULT_SEARCH,
 });

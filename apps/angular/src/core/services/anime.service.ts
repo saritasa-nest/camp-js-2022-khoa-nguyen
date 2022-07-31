@@ -1,15 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AnimeDto, TypeDto } from '@js-camp/core/dtos/anime.dto';
-import { AnimeListQueryOptionsDto } from '@js-camp/core/dtos/animeListQueryOptions.dto';
-import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
-import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
-import { AnimeListQueryOptionsMapper } from '@js-camp/core/mappers/animeListQueryOptions.mapper';
-import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
-import { Anime } from '@js-camp/core/models/anime';
-import { AnimeListQueryOptions } from '@js-camp/core/models/animeListQueryOptions';
-import { Pagination } from '@js-camp/core/models/pagination';
-import { Sorting, SortTitle, SortValue } from '@js-camp/core/models/sorting';
+import { AnimeDto, TypeDto, AnimeListQueryOptionsDto, PaginationDto } from '@js-camp/core/dtos';
+import { AnimeMapper, PaginationMapper, AnimeListQueryOptionsMapper } from '@js-camp/core/mappers';
+import { Anime, AnimeListQueryOptions, Pagination, Sorting, SortTitle, SortValue } from '@js-camp/core/models';
 import { map, Observable } from 'rxjs';
 
 import { ANIME_LIST_API, DEFAULT_ANIME_LIST_QUERY, DEFAULT_LIMIT, DEFAULT_SEARCH, OrderOption, SORT_OPTIONS } from '../../constants';

@@ -15,7 +15,7 @@ export class ApiService {
   public constructor(private readonly httpClient: HttpClient) { }
 
   /**
-   *  Api service constructors.
+   * Api service constructors.
    * @param url Url of api call.
    * @param params Query params.
    */

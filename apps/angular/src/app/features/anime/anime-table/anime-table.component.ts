@@ -1,20 +1,12 @@
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { Anime } from '@js-camp/core/models/anime';
-import { Pagination } from '@js-camp/core/models/pagination';
-
+import { Anime, Pagination, SortValue } from '@js-camp/core/models';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, map, Observable, switchMap, tap } from 'rxjs';
-
 import { ActivatedRoute } from '@angular/router';
-
-import { SortValue } from '@js-camp/core/models/sorting';
-
+import { TypeDto } from '@js-camp/core/dtos';
 import { MatSelectChange } from '@angular/material/select';
 
-import { TypeDto } from '@js-camp/core/dtos/anime.dto';
-
-import { AnimeService, QueryUrl } from '../../../../core/services';
-
+import { AnimeService } from '../../../../core/services';
 import { DEFAULT_SEARCH, FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS } from '../../../../constants';
 
 /** Anime table list. */
@@ -25,7 +17,7 @@ import { DEFAULT_SEARCH, FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SOR
   changeDetection: ChangeDetectionStrategy.OnPush,
 
 })
-export class AnimeTableComponent implements OnDestroy {
+export class AnimeTableComponent implements OnDestroy, OnInit {
 
   /** Pagination result. */
   public readonly result$: Observable<Pagination<Anime>>;
@@ -62,20 +54,24 @@ export class AnimeTableComponent implements OnDestroy {
     private readonly activateRoute: ActivatedRoute,
   ) {
     this.result$ = this.activateRoute.queryParams.pipe(
-      tap((params: QueryUrl) => {
-        this.setSubjectData<SortValue>(this.sortBy$, params.sortBy, SortValue.TitleEnglish);
-        this.setSubjectData<string>(this.search$, params.search, DEFAULT_SEARCH);
-        this.setSubjectData<OrderOption>(this.ordering$, params.ordering, OrderOption.Ascending);
+      map(paramsURL => this.animeService.urlParamToAnimeQueryOptions(paramsURL)),
+      tap(paramModel => {
+        this.sortBy$.next(paramModel.sorting.value);
+        this.search$.next(paramModel.search);
+        this.ordering$.next(
+          paramModel.sorting.isAscending ?
+          OrderOption.Ascending :
+          OrderOption.Descending,
+        );
         this.types$.next(
-          params.type == null ?
+          paramModel.multipleType == null ?
             [TypeDto.Default] :
-            params.type
+            paramModel.multipleType
               .split(',')
               .map(item => item as TypeDto),
         );
-        this.activePage$.next(params.page ?? 1);
+        this.activePage$.next(paramModel.activePage);
       }),
-      map(paramsURL => this.animeService.urlParamToAnimeQueryOptions(paramsURL)),
       switchMap(paramModel => this.animeService.getAnimeList(paramModel)),
       tap(pagination => {
         this.totalItems$.next(pagination.count);
@@ -130,37 +126,24 @@ export class AnimeTableComponent implements OnDestroy {
    * @param event Current search value of anime list.
    */
   public handleInputSearch(event: Event): void {
+    const { value } = event.target as HTMLInputElement;
+    this.search$.next(value);
+  }
+
+  /** OnInit to subscribe observable. */
+  public ngOnInit(): void {
     this.search$
       .pipe(
         debounceTime(500),
         distinctUntilChanged(),
-        map(() => (event.target as HTMLInputElement).value),
       )
       .subscribe(value => {
         this.animeService.setUrl({ search: value, page: 1 });
-      });
+    });
   }
 
   /** OnDestroy to unsubscribe observable. */
   public ngOnDestroy(): void {
     this.search$.unsubscribe();
-  }
-
-  /**
-   * Set data to behavior subject.
-   * @param subject$ Subject behavior.
-   * @param value Value which need to be set.
-   * @param defaultValue Value which need to be set when param is null.
-   */
-  public setSubjectData<T>(
-    subject$: BehaviorSubject<T>,
-    value: T | undefined,
-    defaultValue: T,
-  ): void {
-    if (value == null) {
-      subject$.next(defaultValue);
-      return;
-    }
-    subject$.next(value);
   }
 }

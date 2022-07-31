@@ -19,7 +19,7 @@ export class AnimeListQueryOptions extends Immerable {
   public readonly totalPages: number;
 
   /** Search items by name. */
-  public readonly search?: string;
+  public readonly search: string;
 
   /** Active page. */
   public readonly activePage: number;
