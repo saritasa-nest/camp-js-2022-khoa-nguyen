@@ -3,11 +3,11 @@ import { PageEvent } from '@angular/material/paginator';
 import { MatSelectChange } from '@angular/material/select';
 import { ActivatedRoute } from '@angular/router';
 import { TypeDto } from '@js-camp/core/dtos';
-import { Anime, Pagination, SortValue } from '@js-camp/core/models';
+import { Anime, Pagination } from '@js-camp/core/models';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, map, Observable, switchMap, tap } from 'rxjs';
 
-import { DEFAULT_SEARCH, FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS } from '../../../../constants';
-import { AnimeService } from '../../../../core/services';
+import { DEFAULT_ANIME_LIST_QUERY, DEFAULT_SEARCH, FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, SORT_OPTIONS } from '../../../../constants';
+import { AnimeService, SettingOfAnimeList } from '../../../../core/services';
 
 /** Anime table list. */
 @Component({
@@ -31,23 +31,16 @@ export class AnimeTableComponent implements OnDestroy, OnInit {
   /** Ordering options. */
   public readonly orderingOptions = ORDERING_OPTIONS;
 
-  /** Current page in pagination. */
-  public readonly activePage$ = new BehaviorSubject<number>(0);
-
   /** Total items of anime table. */
   public readonly totalItems$ = new BehaviorSubject<number>(0);
 
-  /** Type of form control. */
-  public readonly types$ = new BehaviorSubject<TypeDto[]>([TypeDto.Default]);
+  /** Anime list query params. */
+  public readonly settingOfAnimeList$ = new BehaviorSubject<SettingOfAnimeList>(
+    this.animeService.paramModelToSettingOfAnimeList(DEFAULT_ANIME_LIST_QUERY),
+  );
 
   /** Input of form control. */
   public readonly search$ = new BehaviorSubject<string>(DEFAULT_SEARCH);
-
-  /** Sort value of form control. */
-  public readonly sortBy$ = new BehaviorSubject<SortValue>(SortValue.TitleEnglish);
-
-  /** Ordering value of form control. */
-  public readonly ordering$ = new BehaviorSubject<OrderOption>(OrderOption.Ascending);
 
   public constructor(
     private readonly animeService: AnimeService,
@@ -57,22 +50,9 @@ export class AnimeTableComponent implements OnDestroy, OnInit {
     this.result$ = this.activateRoute.queryParams.pipe(
       map(paramsURL => this.animeService.urlParamToAnimeQueryOptions(paramsURL)),
       tap(paramModel => {
-        this.sortBy$.next(paramModel.sorting.value);
-        this.ordering$.next(
-          paramModel.sorting.isAscending ?
-          OrderOption.Ascending :
-          OrderOption.Descending,
-        );
-
+        const settingOfAnimeList = animeService.paramModelToSettingOfAnimeList(paramModel);
+        this.settingOfAnimeList$.next(settingOfAnimeList);
         this.search$.next(paramModel.search);
-        this.types$.next(
-          paramModel.multipleType == null ?
-            [TypeDto.Default] :
-            paramModel.multipleType
-              .split(',')
-              .map(item => item as TypeDto),
-        );
-        this.activePage$.next(paramModel.activePage);
       }),
       switchMap(paramModel => this.animeService.getAnimeList(paramModel)),
       tap(pagination => {

@@ -24,7 +24,7 @@ export class PaginationComponent {
   }
 
   /** Active page of pagination. */
-  @Input() public activePage: number | null = 0;
+  @Input() public activePage: number | undefined = 0;
 
   /**
    * Handle pagination change and emit the status.

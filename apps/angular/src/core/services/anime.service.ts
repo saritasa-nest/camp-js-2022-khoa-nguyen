@@ -29,6 +29,26 @@ export interface QueryUrl {
 
 }
 
+/** Anime query URL. */
+export interface SettingOfAnimeList {
+
+  /** Current page of pagination. */
+  readonly page?: number;
+
+  /** Filter by type in anime table. */
+  readonly type?: TypeDto[];
+
+  /** Ordering options. */
+  readonly ordering?: OrderOption;
+
+  /** Search value. */
+  readonly search?: string;
+
+  /** Sort by option. */
+  readonly sortBy?: SortValue;
+
+}
+
 /** Anime services. */
 @Injectable({
   providedIn: 'root',
@@ -105,5 +125,25 @@ export class AnimeService {
       }),
       search: params.search ?? DEFAULT_SEARCH,
     });
+  }
+
+  /**
+   * URL to params .
+   * @param params Query param on URl.
+   */
+  public paramModelToSettingOfAnimeList(params: AnimeListQueryOptions): SettingOfAnimeList {
+    return {
+      page: params.activePage,
+      sortBy: params.sorting.value,
+      ordering: params.sorting.isAscending ?
+        OrderOption.Ascending :
+        OrderOption.Descending,
+      search: params.search,
+      type: params.multipleType == null ?
+        [TypeDto.Default] :
+        params.multipleType
+          .split(',')
+          .map(item => item as TypeDto),
+    };
   }
 }
