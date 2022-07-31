@@ -129,7 +129,7 @@ export class AnimeTableComponent implements OnDestroy, OnInit {
    */
   public handleInputSearch(event: Event): void {
     const { value } = event.target as HTMLInputElement;
-    this.search$.next(value);
+    this.search$.next(value.trim());
     this.search$
       .pipe(
         distinctUntilChanged(),
