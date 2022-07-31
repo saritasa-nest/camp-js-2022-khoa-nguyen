@@ -130,10 +130,12 @@ export class AnimeTableComponent implements OnDestroy, OnInit {
   public handleInputSearch(event: Event): void {
     const { value } = event.target as HTMLInputElement;
     this.search$.next(value);
-    const timeOutId = setTimeout(() => {
-      this.animeService.setUrl({ page: 1 });
-      clearTimeout(timeOutId);
-    }, 1000);
+    this.search$
+      .pipe(
+        distinctUntilChanged(),
+        debounceTime(800),
+      )
+      .subscribe(() => this.animeService.setUrl({ page: 1 }));
   }
 
   /** OnOnInit to subscribe observable. */
