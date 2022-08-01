@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSelectChange } from '@angular/material/select';
 import { Sort } from '@angular/material/sort';
@@ -7,7 +8,7 @@ import { TypeDto } from '@js-camp/core/dtos';
 import { Anime, Pagination, SortValue } from '@js-camp/core/models';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, map, Observable, switchMap, tap } from 'rxjs';
 
-import { DEFAULT_ANIME_LIST_QUERY, DEFAULT_SEARCH, FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS } from '../../../../constants';
+import { DEFAULT_SEARCH, FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS } from '../../../../constants';
 import { AnimeService, QueryUrl, SettingOfAnimeList } from '../../../../core/services';
 
 /** Anime table list. */
@@ -40,30 +41,34 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
 
   /** Anime list query params. */
   public readonly settingOfAnimeList$ = new BehaviorSubject<SettingOfAnimeList>(
-    this.animeService.paramModelToSettingOfAnimeList(DEFAULT_ANIME_LIST_QUERY),
+    this.animeService.paramModelToSettingOfAnimeList(
+      this.animeService.urlParamToAnimeQueryOptions(this.activateRoute.snapshot.queryParams),
+    ),
   );
 
   /** Search. */
-  public readonly search$ = new BehaviorSubject<string>('');
+  // public readonly search$ = new BehaviorSubject<string>('');
+  public readonly search = new FormControl<string>('');
 
   public constructor(
     private readonly animeService: AnimeService,
     private readonly activateRoute: ActivatedRoute,
     private readonly router: Router,
   ) {
-
     this.result$ = this.activateRoute.queryParams.pipe(
 
       map(paramsURL => this.animeService.urlParamToAnimeQueryOptions(paramsURL)),
       tap(paramModel => {
+        this.search.setValue(this.animeService.urlParamToAnimeQueryOptions(this.activateRoute.snapshot.queryParams).search);
         const settingOfAnimeList = animeService.paramModelToSettingOfAnimeList(paramModel);
         this.settingOfAnimeList$.next(settingOfAnimeList);
-        this.search$.next(paramModel.search);
+
+        // this.search$.next(paramModel.search);
         }),
       switchMap(paramModel => this.animeService.getAnimeList(paramModel)),
       tap(pagination => {
         this.totalItems$.next(pagination.count);
-}),
+      }),
     );
   }
 
@@ -153,20 +158,20 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
     this.setUrl({ ordering: event.value });
   }
 
-  /**
-   * Handle search title anime of anime list.
-   * @param event Current search value of anime list.
-   */
-  public handleInputSearch(event: Event): void {
-    const { value } = event.target as HTMLInputElement;
-    this.search$.next(value.trim());
-    this.search$
-      .pipe(
-        distinctUntilChanged(),
-        debounceTime(800),
-      )
-      .subscribe(() => this.setUrl({ page: 1 }));
-  }
+  // /**
+  //  * Handle search title anime of anime list.
+  //  * @param event Current search value of anime list.
+  //  */
+  // public handleInputSearch(event: Event): void {
+  //   const { value } = event.target as HTMLInputElement;
+  //   this.search$.next(value.trim());
+  //   this.search$
+  //     .pipe(
+  //       distinctUntilChanged(),
+  //       debounceTime(800),
+  //     )
+  //     .subscribe(() => this.setUrl({ page: 1 }));
+  // }
 
   /**
    * Handle sort data in table of anime list.
@@ -190,17 +195,17 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
 
   /** OnInit. */
   public ngOnInit(): void {
-    this.search$
+    this.search.valueChanges
       .pipe(
         debounceTime(500),
         distinctUntilChanged(),
       )
-      .subscribe(value => this.setUrl({ search: value }));
+      .subscribe(value => this.setUrl({ search: value, page: 1 }));
   }
 
   /** OnDestroy. */
   public ngOnDestroy(): void {
-    this.search$.unsubscribe();
+    this.search.valueChanges.subscribe().unsubscribe();
   }
 
 }
