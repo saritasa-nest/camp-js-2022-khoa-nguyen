@@ -10,6 +10,8 @@ import { MatTableModule } from '@angular/material/table';
 
 import { MatSortModule } from '@angular/material/sort';
 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { AnimeTableComponent } from './anime-table/anime-table.component';
 import { PaginationComponent } from './pagination/pagination.component';
 
@@ -26,6 +28,8 @@ import { PaginationComponent } from './pagination/pagination.component';
     MatInputModule,
     MatSortModule,
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   exports: [AnimeTableComponent, PaginationComponent],
 })

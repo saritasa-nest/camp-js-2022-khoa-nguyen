@@ -1,6 +1,7 @@
 .table {
   box-shadow: var(--primary-box-shadow-color);
   margin-bottom: 20px;
+  width: 100%;
 }
 
 .table__cell_thumb {

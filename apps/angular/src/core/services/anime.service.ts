@@ -21,7 +21,7 @@ export interface QueryUrl {
   readonly ordering?: OrderOption;
 
   /** Search value. */
-  readonly search?: string;
+  readonly search?: string | null;
 
   /** Sort by option. */
   readonly sortBy?: SortValue;
