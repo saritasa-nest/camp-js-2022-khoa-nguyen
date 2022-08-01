@@ -1,14 +1,14 @@
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSelectChange } from '@angular/material/select';
 import { Sort } from '@angular/material/sort';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TypeDto } from '@js-camp/core/dtos';
 import { Anime, Pagination, SortValue } from '@js-camp/core/models';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, map, Observable, switchMap, tap } from 'rxjs';
 
 import { DEFAULT_ANIME_LIST_QUERY, DEFAULT_SEARCH, FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS } from '../../../../constants';
-import { AnimeService, SettingOfAnimeList } from '../../../../core/services';
+import { AnimeService, QueryUrl, SettingOfAnimeList } from '../../../../core/services';
 
 /** Anime table list. */
 @Component({
@@ -18,7 +18,7 @@ import { AnimeService, SettingOfAnimeList } from '../../../../core/services';
   changeDetection: ChangeDetectionStrategy.OnPush,
 
 })
-export class AnimeTableComponent implements OnDestroy {
+export class AnimeTableComponent implements OnDestroy, OnInit {
 
   /** Column of table. */
   public displayedColumns: string[] = ['image', 'titleEnglish', 'titleJapan', 'airedStartDate', 'type', 'status'];
@@ -49,14 +49,8 @@ export class AnimeTableComponent implements OnDestroy {
   public constructor(
     private readonly animeService: AnimeService,
     private readonly activateRoute: ActivatedRoute,
+    private readonly router: Router,
   ) {
-
-    this.search$
-      .pipe(
-        debounceTime(500),
-        distinctUntilChanged(),
-      )
-      .subscribe(value => this.animeService.setUrl({ search: value }));
 
     this.result$ = this.activateRoute.queryParams.pipe(
       map(paramsURL => this.animeService.urlParamToAnimeQueryOptions(paramsURL)),
@@ -73,6 +67,50 @@ export class AnimeTableComponent implements OnDestroy {
   }
 
   /**
+   * Sets new query params in url.
+   * @param params Query params.
+   */
+  private setUrl(params: QueryUrl): void {
+    const { queryParams } = this.activateRoute.snapshot;
+    let trueParams = { ...queryParams, ...params };
+    if (params.search === DEFAULT_SEARCH) {
+
+      // I disable eslint on this line because I just want to get the search key
+      // out of the object and not using it below
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { search, ...rest } = trueParams;
+      trueParams = rest;
+    }
+    if (params.type === TypeDto.Default) {
+
+      // I disable eslint on this line because I just want to get the search key
+      // out of the object and not using it below
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { type, ...rest } = trueParams;
+      trueParams = rest;
+    }
+    this.router.navigate(['/'], {
+      relativeTo: this.activateRoute,
+      queryParams: trueParams,
+      queryParamsHandling: '',
+    });
+  }
+
+  /**
+   * Handle set sort built in options to url.
+   * @param sortBy Sort value to url.
+   * @param sort Current sort value.
+   */
+  private setUrlSortBuildIn(sortBy: SortValue, sort: Sort): void {
+    this.setUrl({
+      sortBy,
+      ordering: sort.direction === 'asc' ? OrderOption.Ascending : OrderOption.Descending,
+    });
+  }
+
+  /**
    * Track anime list.
    * @param item Track by per item.
    * @param index Item index.
@@ -86,7 +124,7 @@ export class AnimeTableComponent implements OnDestroy {
    * @param event OnChange event of pagination.
    */
   public handlePageChange(event: PageEvent): void {
-    this.animeService.setUrl({ page: event.pageIndex + 1, limit: event.pageSize });
+    this.setUrl({ page: event.pageIndex + 1, limit: event.pageSize });
   }
 
   /**
@@ -95,7 +133,7 @@ export class AnimeTableComponent implements OnDestroy {
    */
   public handleTypeChange(event: MatSelectChange): void {
     const value = (event.value as TypeDto[]).join(',');
-    this.animeService.setUrl({ type: value, page: 1 });
+    this.setUrl({ type: value, page: 1 });
   }
 
   /**
@@ -103,7 +141,7 @@ export class AnimeTableComponent implements OnDestroy {
    * @param event Current sortby value of anime list.
    */
   public handleSortByChange(event: MatSelectChange): void {
-    this.animeService.setUrl({ sortBy: event.value });
+    this.setUrl({ sortBy: event.value });
   }
 
   /**
@@ -111,7 +149,7 @@ export class AnimeTableComponent implements OnDestroy {
    * @param event Current ordering value of anime list.
    */
   public handleOrderingChange(event: MatSelectChange): void {
-    this.animeService.setUrl({ ordering: event.value });
+    this.setUrl({ ordering: event.value });
   }
 
   /**
@@ -126,7 +164,7 @@ export class AnimeTableComponent implements OnDestroy {
         distinctUntilChanged(),
         debounceTime(800),
       )
-      .subscribe(() => this.animeService.setUrl({ page: 1 }));
+      .subscribe(() => this.setUrl({ page: 1 }));
   }
 
   /**
@@ -149,20 +187,19 @@ export class AnimeTableComponent implements OnDestroy {
     }
   }
 
-  /**
-   * Handle set sort built in options to url.
-   * @param sortBy Sort value to url.
-   * @param sort Current sort value.
-   */
-  private setUrlSortBuildIn(sortBy: SortValue, sort: Sort): void {
-    this.animeService.setUrl({
-      sortBy,
-      ordering: sort.direction === 'asc' ? OrderOption.Ascending : OrderOption.Descending,
-    });
+  /** OnInit. */
+  public ngOnInit(): void {
+    this.search$
+      .pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+      )
+      .subscribe(value => this.setUrl({ search: value }));
   }
 
-  /** OnDestroy to unsubscribe observable. */
+  /** OnDestroy. */
   public ngOnDestroy(): void {
     this.search$.unsubscribe();
   }
+
 }

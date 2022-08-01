@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AnimeDto, TypeDto, AnimeListQueryOptionsDto, PaginationDto } from '@js-camp/core/dtos';
-import { AnimeMapper, PaginationMapper, AnimeListQueryOptionsMapper } from '@js-camp/core/mappers';
+import { AnimeDto, AnimeListQueryOptionsDto, PaginationDto, TypeDto } from '@js-camp/core/dtos';
+import { AnimeListQueryOptionsMapper, AnimeMapper, PaginationMapper } from '@js-camp/core/mappers';
 import { Anime, AnimeListQueryOptions, Pagination, Sorting, SortTitle, SortValue } from '@js-camp/core/models';
 import { map, Observable } from 'rxjs';
 
@@ -65,8 +64,6 @@ export class AnimeService {
 
   public constructor(
     private readonly apiService: ApiService,
-    private readonly activateRoute: ActivatedRoute,
-    private readonly router: Router,
   ) { }
 
   /**
@@ -77,38 +74,6 @@ export class AnimeService {
     const paramDto = AnimeListQueryOptionsMapper.toDto(paramsModel);
     return this.apiService.getData<PaginationDto<AnimeDto>, AnimeListQueryOptionsDto>(ANIME_LIST_API, paramDto)
       .pipe(map(data => PaginationMapper.fromDto<AnimeDto, Anime>(data, AnimeMapper.fromDto)));
-  }
-
-  /**
-   * Sets new query params in url.
-   * @param params Query params.
-   */
-  public setUrl(params: QueryUrl): void {
-    const { queryParams } = this.activateRoute.snapshot;
-    let trueParams = { ...queryParams, ...params };
-    if (params.search === DEFAULT_SEARCH) {
-
-      // I disable eslint on this line because I just want to get the search key
-      // out of the object and not using it below
-
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { search, ...rest } = trueParams;
-      trueParams = rest;
-    }
-    if (params.type === TypeDto.Default) {
-
-      // I disable eslint on this line because I just want to get the search key
-      // out of the object and not using it below
-
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { type, ...rest } = trueParams;
-      trueParams = rest;
-    }
-    this.router.navigate(['/'], {
-      relativeTo: this.activateRoute,
-      queryParams: trueParams,
-      queryParamsHandling: '',
-    });
   }
 
   /**
