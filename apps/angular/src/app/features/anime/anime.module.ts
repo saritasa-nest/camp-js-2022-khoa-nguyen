@@ -8,6 +8,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTableModule } from '@angular/material/table';
 
+import { MatSortModule } from '@angular/material/sort';
+
 import { AnimeTableComponent } from './anime-table/anime-table.component';
 import { PaginationComponent } from './pagination/pagination.component';
 
@@ -22,6 +24,7 @@ import { PaginationComponent } from './pagination/pagination.component';
     MatSelectModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSortModule,
     CommonModule,
   ],
   exports: [AnimeTableComponent, PaginationComponent],

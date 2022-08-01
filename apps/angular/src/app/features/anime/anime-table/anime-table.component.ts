@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSelectChange } from '@angular/material/select';
+import { Sort } from '@angular/material/sort';
 import { ActivatedRoute } from '@angular/router';
 import { TypeDto } from '@js-camp/core/dtos';
-import { Anime, Pagination } from '@js-camp/core/models';
+import { Anime, Pagination, SortValue } from '@js-camp/core/models';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, map, Observable, switchMap, tap } from 'rxjs';
 
-import { DEFAULT_ANIME_LIST_QUERY, DEFAULT_SEARCH, FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, SORT_OPTIONS } from '../../../../constants';
+import { DEFAULT_ANIME_LIST_QUERY, DEFAULT_SEARCH, FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS } from '../../../../constants';
 import { AnimeService, SettingOfAnimeList } from '../../../../core/services';
 
 /** Anime table list. */
@@ -119,6 +120,38 @@ export class AnimeTableComponent implements OnDestroy, OnInit {
         debounceTime(800),
       )
       .subscribe(() => this.animeService.setUrl({ page: 1 }));
+  }
+
+  /**
+   * Handle sort data in table of anime list.
+   * @param sort Current active Sort value.
+   */
+  public handleSortDataBuiltIn(sort: Sort): void {
+    switch (sort.active) {
+      case 'sortTitleEnglish':
+        this.animeService.setUrl({
+          sortBy: SortValue.TitleEnglish,
+          ordering: sort.direction === 'asc' ? OrderOption.Ascending : OrderOption.Descending,
+        });
+        break;
+      case 'sortAiredStartDate':
+        this.animeService.setUrl({
+          sortBy: SortValue.AiredStartDate,
+          ordering: sort.direction === 'asc' ? OrderOption.Ascending : OrderOption.Descending,
+        });
+        break;
+      case 'sortStatus':
+        this.animeService.setUrl({
+          sortBy: SortValue.Status,
+          ordering: sort.direction === 'asc' ? OrderOption.Ascending : OrderOption.Descending,
+        });
+        break;
+      default:
+        this.animeService.setUrl({
+          sortBy: SortValue.TitleEnglish,
+          ordering: sort.direction === 'asc' ? OrderOption.Ascending : OrderOption.Descending,
+        });
+    }
   }
 
   /** OnOnInit to subscribe observable. */

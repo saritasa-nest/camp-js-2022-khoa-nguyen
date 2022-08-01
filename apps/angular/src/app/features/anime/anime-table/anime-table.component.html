@@ -39,7 +39,7 @@
 
   <ng-container *ngIf="(result$ | async) as animeList; else Loading">
     <camp-pagination [limit]="(settingOfAnimeList$ | async)?.limit" [activePage]="(settingOfAnimeList$ | async)?.page" [totalItems]="totalItems$| async" (pageChange)="handlePageChange($event)"></camp-pagination>
-    <table mat-table [dataSource]="animeList.results" class="table">
+    <table matSort mat-table [dataSource]="animeList.results" (matSortChange)="handleSortDataBuiltIn($event)" class="table">
 
       <ng-container matColumnDef="image">
         <th class="table__cell table__cell_title" mat-header-cell *matHeaderCellDef> Image </th>
@@ -49,7 +49,7 @@
       </ng-container>
 
       <ng-container matColumnDef="titleEnglish">
-        <th class="table__cell table__cell_title" mat-header-cell *matHeaderCellDef> English title</th>
+        <th mat-sort-header="sortTitleEnglish" class="table__cell table__cell_title" mat-header-cell *matHeaderCellDef> English title</th>
         <td class="table__cell" mat-cell *matCellDef="let element"> {{element.titleEnglish}} </td>
       </ng-container>
 
@@ -59,7 +59,7 @@
       </ng-container>
 
       <ng-container matColumnDef="airedStartDate">
-        <th class="table__cell table__cell_title" mat-header-cell *matHeaderCellDef> Aired start </th>
+        <th mat-sort-header="sortAiredStartDate" class="table__cell table__cell_title" mat-header-cell *matHeaderCellDef> Aired start </th>
         <td class="table__cell" mat-cell *matCellDef="let element"> {{element.aired.start ? element.aired.start.toLocaleDateString() : ''}} </td>
       </ng-container>
 
@@ -69,7 +69,7 @@
       </ng-container>
 
       <ng-container matColumnDef="status">
-        <th class="table__cell table__cell_title" mat-header-cell *matHeaderCellDef> Type </th>
+        <th mat-sort-header="sortStatus" class="table__cell table__cell_title" mat-header-cell *matHeaderCellDef> Status </th>
         <td class="table__cell" mat-cell *matCellDef="let element"> {{element.status}} </td>
       </ng-container>
 
