@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSelectChange } from '@angular/material/select';
@@ -8,7 +8,7 @@ import { TypeDto } from '@js-camp/core/dtos';
 import { Anime, Pagination, SortValue } from '@js-camp/core/models';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, map, Observable, switchMap, tap } from 'rxjs';
 
-import { DEFAULT_SEARCH, FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS } from '../../../../constants';
+import { DEFAULT_ANIME_LIST_QUERY, DEFAULT_SEARCH, FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS } from '../../../../constants';
 import { AnimeService, QueryUrl, SettingOfAnimeList } from '../../../../core/services';
 
 /** Anime table list. */
@@ -19,7 +19,7 @@ import { AnimeService, QueryUrl, SettingOfAnimeList } from '../../../../core/ser
   changeDetection: ChangeDetectionStrategy.OnPush,
 
 })
-export class AnimeTableComponent implements OnInit, OnDestroy {
+export class AnimeTableComponent implements OnInit {
 
   /** Column of table. */
   public displayedColumns: string[] = ['image', 'titleEnglish', 'titleJapan', 'airedStartDate', 'type', 'status'];
@@ -41,9 +41,7 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
 
   /** Anime list query params. */
   public readonly settingOfAnimeList$ = new BehaviorSubject<SettingOfAnimeList>(
-    this.animeService.paramModelToSettingOfAnimeList(
-      this.animeService.urlParamToAnimeQueryOptions(this.activateRoute.snapshot.queryParams),
-    ),
+    this.animeService.paramModelToSettingOfAnimeList(DEFAULT_ANIME_LIST_QUERY),
   );
 
   /** Search. */
@@ -59,11 +57,9 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
 
       map(paramsURL => this.animeService.urlParamToAnimeQueryOptions(paramsURL)),
       tap(paramModel => {
-        this.search.setValue(this.animeService.urlParamToAnimeQueryOptions(this.activateRoute.snapshot.queryParams).search);
         const settingOfAnimeList = animeService.paramModelToSettingOfAnimeList(paramModel);
+        this.search.setValue(this.animeService.urlParamToAnimeQueryOptions(this.activateRoute.snapshot.queryParams).search);
         this.settingOfAnimeList$.next(settingOfAnimeList);
-
-        // this.search$.next(paramModel.search);
         }),
       switchMap(paramModel => this.animeService.getAnimeList(paramModel)),
       tap(pagination => {
@@ -158,21 +154,6 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
     this.setUrl({ ordering: event.value });
   }
 
-  // /**
-  //  * Handle search title anime of anime list.
-  //  * @param event Current search value of anime list.
-  //  */
-  // public handleInputSearch(event: Event): void {
-  //   const { value } = event.target as HTMLInputElement;
-  //   this.search$.next(value.trim());
-  //   this.search$
-  //     .pipe(
-  //       distinctUntilChanged(),
-  //       debounceTime(800),
-  //     )
-  //     .subscribe(() => this.setUrl({ page: 1 }));
-  // }
-
   /**
    * Handle sort data in table of anime list.
    * @param sort Current active Sort value.
@@ -201,11 +182,6 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
         distinctUntilChanged(),
       )
       .subscribe(value => this.setUrl({ search: value, page: 1 }));
-  }
-
-  /** OnDestroy. */
-  public ngOnDestroy(): void {
-    this.search.valueChanges.subscribe().unsubscribe();
   }
 
 }
