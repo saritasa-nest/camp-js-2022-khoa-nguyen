@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSelectChange } from '@angular/material/select';
 import { Sort } from '@angular/material/sort';
@@ -18,7 +18,7 @@ import { AnimeService, SettingOfAnimeList } from '../../../../core/services';
   changeDetection: ChangeDetectionStrategy.OnPush,
 
 })
-export class AnimeTableComponent implements OnDestroy, OnInit {
+export class AnimeTableComponent implements OnDestroy {
 
   /** Column of table. */
   public displayedColumns: string[] = ['image', 'titleEnglish', 'titleJapan', 'airedStartDate', 'type', 'status'];
@@ -50,6 +50,13 @@ export class AnimeTableComponent implements OnDestroy, OnInit {
     private readonly animeService: AnimeService,
     private readonly activateRoute: ActivatedRoute,
   ) {
+
+    this.search$
+      .pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+      )
+      .subscribe(value => this.animeService.setUrl({ search: value }));
 
     this.result$ = this.activateRoute.queryParams.pipe(
       map(paramsURL => this.animeService.urlParamToAnimeQueryOptions(paramsURL)),
@@ -129,39 +136,29 @@ export class AnimeTableComponent implements OnDestroy, OnInit {
   public handleSortDataBuiltIn(sort: Sort): void {
     switch (sort.active) {
       case 'sortTitleEnglish':
-        this.animeService.setUrl({
-          sortBy: SortValue.TitleEnglish,
-          ordering: sort.direction === 'asc' ? OrderOption.Ascending : OrderOption.Descending,
-        });
+        this.setUrlSortBuildIn(SortValue.TitleEnglish, sort);
         break;
       case 'sortAiredStartDate':
-        this.animeService.setUrl({
-          sortBy: SortValue.AiredStartDate,
-          ordering: sort.direction === 'asc' ? OrderOption.Ascending : OrderOption.Descending,
-        });
+        this.setUrlSortBuildIn(SortValue.AiredStartDate, sort);
         break;
       case 'sortStatus':
-        this.animeService.setUrl({
-          sortBy: SortValue.Status,
-          ordering: sort.direction === 'asc' ? OrderOption.Ascending : OrderOption.Descending,
-        });
+        this.setUrlSortBuildIn(SortValue.Status, sort);
         break;
       default:
-        this.animeService.setUrl({
-          sortBy: SortValue.TitleEnglish,
-          ordering: sort.direction === 'asc' ? OrderOption.Ascending : OrderOption.Descending,
-        });
+        this.setUrlSortBuildIn(SortValue.TitleEnglish, sort);
     }
   }
 
-  /** OnOnInit to subscribe observable. */
-  public ngOnInit(): void {
-    this.search$
-      .pipe(
-        debounceTime(500),
-        distinctUntilChanged(),
-      )
-      .subscribe(value => this.animeService.setUrl({ search: value }));
+  /**
+   * Handle set sort built in options to url.
+   * @param sortBy Sort value to url.
+   * @param sort Current sort value.
+   */
+  private setUrlSortBuildIn(sortBy: SortValue, sort: Sort): void {
+    this.animeService.setUrl({
+      sortBy,
+      ordering: sort.direction === 'asc' ? OrderOption.Ascending : OrderOption.Descending,
+    });
   }
 
   /** OnDestroy to unsubscribe observable. */
