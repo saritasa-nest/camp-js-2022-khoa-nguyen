@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSelectChange } from '@angular/material/select';
 import { Sort } from '@angular/material/sort';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TypeDto } from '@js-camp/core/dtos';
 import { Anime, Pagination, SortValue } from '@js-camp/core/models';
-import { BehaviorSubject, combineLatestWith, debounceTime, distinctUntilChanged, map, Observable, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, debounceTime, distinctUntilChanged, map, Observable, switchMap, tap } from 'rxjs';
 
 import { DEFAULT_ANIME_LIST_QUERY, DEFAULT_SEARCH, FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS } from '../../../../constants';
 import { AnimeService, QueryUrl, SettingOfAnimeList } from '../../../../core/services';
@@ -18,7 +18,7 @@ import { AnimeService, QueryUrl, SettingOfAnimeList } from '../../../../core/ser
   changeDetection: ChangeDetectionStrategy.OnPush,
 
 })
-export class AnimeTableComponent {
+export class AnimeTableComponent implements OnInit, OnDestroy {
 
   /** Column of table. */
   public displayedColumns: string[] = ['image', 'titleEnglish', 'titleJapan', 'airedStartDate', 'type', 'status'];
@@ -43,8 +43,8 @@ export class AnimeTableComponent {
     this.animeService.paramModelToSettingOfAnimeList(DEFAULT_ANIME_LIST_QUERY),
   );
 
-  /** Input of form control. */
-  public readonly search$ = new BehaviorSubject<string>(DEFAULT_SEARCH);
+  /** Search. */
+  public readonly search$ = new BehaviorSubject<string>('');
 
   public constructor(
     private readonly animeService: AnimeService,
@@ -52,24 +52,18 @@ export class AnimeTableComponent {
     private readonly router: Router,
   ) {
 
-    const searchValue$ = this.search$.pipe(
-      debounceTime(500),
-      distinctUntilChanged(),
-      tap(value => this.setUrl({ search: value })),
-    );
-
     this.result$ = this.activateRoute.queryParams.pipe(
-      combineLatestWith(searchValue$),
-      map(([paramsURL, search]) => this.animeService.urlParamToAnimeQueryOptions({ ...paramsURL, search })),
+
+      map(paramsURL => this.animeService.urlParamToAnimeQueryOptions(paramsURL)),
       tap(paramModel => {
         const settingOfAnimeList = animeService.paramModelToSettingOfAnimeList(paramModel);
         this.settingOfAnimeList$.next(settingOfAnimeList);
         this.search$.next(paramModel.search);
-      }),
+        }),
       switchMap(paramModel => this.animeService.getAnimeList(paramModel)),
       tap(pagination => {
         this.totalItems$.next(pagination.count);
-      }),
+}),
     );
   }
 
@@ -166,7 +160,12 @@ export class AnimeTableComponent {
   public handleInputSearch(event: Event): void {
     const { value } = event.target as HTMLInputElement;
     this.search$.next(value.trim());
-    this.setUrl({ page: 1 });
+    this.search$
+      .pipe(
+        distinctUntilChanged(),
+        debounceTime(800),
+      )
+      .subscribe(() => this.setUrl({ page: 1 }));
   }
 
   /**
@@ -187,6 +186,21 @@ export class AnimeTableComponent {
       default:
         this.setUrlSortBuildIn(SortValue.TitleEnglish, sort);
     }
+  }
+
+  /** OnInit. */
+  public ngOnInit(): void {
+    this.search$
+      .pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+      )
+      .subscribe(value => this.setUrl({ search: value }));
+  }
+
+  /** OnDestroy. */
+  public ngOnDestroy(): void {
+    this.search$.unsubscribe();
   }
 
 }
