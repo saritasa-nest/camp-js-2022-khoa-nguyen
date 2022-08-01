@@ -6,6 +6,7 @@
   padding-left: 0;
   width: 20%;
   border-left: 1px solid var(--primary-color);
+  border-right: 1px solid var(--primary-light-color);
 }
 
 .table__cell_title {
