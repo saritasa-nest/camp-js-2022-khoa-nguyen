@@ -1,5 +1,4 @@
 <ng-container *ngIf="(result$ | async) as animeList; else Loading">
-  <camp-pagination [activePage]="(settingOfAnimeList$ | async)?.page" [totalItems]="totalItems$| async" (pageChange)="handlePageChange($event)"></camp-pagination>
   <div class="filter">
     <mat-form-field appearance="fill" class="filter__item">
       <mat-label>Choose an sorting option</mat-label>
@@ -11,9 +10,9 @@
     <mat-form-field appearance="fill" class="filter__item">
       <mat-label>Choose ordering</mat-label>
       <mat-select
-          [value]="(settingOfAnimeList$ | async)?.ordering"
-          (selectionChange)="handleOrderingChange($event)">
-        <mat-option *ngFor="let item of orderingOptions" [value]="item.value">{{item.title}}</mat-option>
+      [value]="(settingOfAnimeList$ | async)?.ordering"
+      (selectionChange)="handleOrderingChange($event)">
+      <mat-option *ngFor="let item of orderingOptions" [value]="item.value">{{item.title}}</mat-option>
       </mat-select>
     </mat-form-field>
 
@@ -36,12 +35,50 @@
   <mat-form-field class="search">
     <mat-label>Search</mat-label>
     <input type="search" matInput [value]="search$ | async" (keyup)="handleInputSearch($event)"
-           placeholder="Search title anime ... ">
+    placeholder="Search title anime ... ">
   </mat-form-field>
 
+  <camp-pagination [activePage]="(settingOfAnimeList$ | async)?.page" [totalItems]="totalItems$| async" (pageChange)="handlePageChange($event)"></camp-pagination>
+  <table mat-table [dataSource]="animeList.results" class="table">
+
+    <ng-container matColumnDef="image">
+      <th class="table__cell table__cell_title" mat-header-cell *matHeaderCellDef> Image </th>
+      <td [ngStyle]="{paddingLeft: 0}" class="table__cell_thumb" mat-cell *matCellDef="let element">
+        <img class="table__img" [src]="element.image"/>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="titleEnglish">
+      <th class="table__cell table__cell_title" mat-header-cell *matHeaderCellDef> English title</th>
+      <td class="table__cell" mat-cell *matCellDef="let element"> {{element.titleEnglish}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="titleJapan">
+      <th class="table__cell table__cell_title" mat-header-cell *matHeaderCellDef>Japanese title</th>
+      <td class="table__cell" mat-cell *matCellDef="let element"> {{element.titleJapan}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="airedStartDate">
+      <th class="table__cell table__cell_title" mat-header-cell *matHeaderCellDef> Aired start </th>
+      <td class="table__cell" mat-cell *matCellDef="let element"> {{element.aired.start ? element.aired.start.toLocaleDateString() : ''}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+      <th class="table__cell table__cell_title" mat-header-cell *matHeaderCellDef> Type </th>
+      <td class="table__cell" mat-cell *matCellDef="let element"> {{element.type}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th class="table__cell table__cell_title" mat-header-cell *matHeaderCellDef> Type </th>
+      <td class="table__cell" mat-cell *matCellDef="let element"> {{element.status}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+<!--
   <table class="table">
-
-
     <caption class="table__caption">Anime table</caption>
     <tr class="table__row table__row_caption">
       <th scope="row" class="table__cell">Thumbnail</th>
@@ -61,7 +98,7 @@
       <th scope="row" class="table__cell">{{item.type}}</th>
       <th scope="row" class="table__cell">{{item.status}}</th>
     </tr>
-  </table>
+  </table> -->
 </ng-container>
 
 <ng-template #Loading>

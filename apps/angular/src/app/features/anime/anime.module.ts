@@ -6,6 +6,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
+import { MatTableModule } from '@angular/material/table';
 
 import { AnimeTableComponent } from './anime-table/anime-table.component';
 import { PaginationComponent } from './pagination/pagination.component';
@@ -17,6 +18,7 @@ import { PaginationComponent } from './pagination/pagination.component';
     MatSliderModule,
     MatProgressSpinnerModule,
     MatPaginatorModule,
+    MatTableModule,
     MatSelectModule,
     MatFormFieldModule,
     MatInputModule,

@@ -19,6 +19,9 @@ import { AnimeService, SettingOfAnimeList } from '../../../../core/services';
 })
 export class AnimeTableComponent implements OnDestroy, OnInit {
 
+  /** Column of table. */
+  public displayedColumns: string[] = ['image', 'titleEnglish', 'titleJapan', 'airedStartDate', 'type', 'status'];
+
   /** Pagination result. */
   public readonly result$: Observable<Pagination<Anime>>;
 
