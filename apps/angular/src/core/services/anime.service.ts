@@ -27,6 +27,9 @@ export interface QueryUrl {
   /** Sort by option. */
   readonly sortBy?: SortValue;
 
+  /** Items per page. */
+  readonly limit?: number;
+
 }
 
 /** Anime query URL. */
@@ -46,6 +49,9 @@ export interface SettingOfAnimeList {
 
   /** Sort by option. */
   readonly sortBy?: SortValue;
+
+  /** Items per page. */
+  readonly limit?: number;
 
 }
 
@@ -111,10 +117,12 @@ export class AnimeService {
    */
   public urlParamToAnimeQueryOptions(params: QueryUrl): AnimeListQueryOptions {
     const activePage = params.page ?? 1;
+    const limit = params.limit ?? DEFAULT_LIMIT;
     return new AnimeListQueryOptions({
       ...DEFAULT_ANIME_LIST_QUERY,
+      limit,
       activePage,
-      offset: (activePage - 1) * DEFAULT_LIMIT,
+      offset: (activePage - 1) * limit,
       multipleType: params.type ?? TypeDto.Default,
       sorting: new Sorting({
         title: params.sortBy != null ?
@@ -133,6 +141,7 @@ export class AnimeService {
    */
   public paramModelToSettingOfAnimeList(params: AnimeListQueryOptions): SettingOfAnimeList {
     return {
+      limit: params.limit,
       page: params.activePage,
       sortBy: params.sorting.value,
       ordering: params.sorting.isAscending ?

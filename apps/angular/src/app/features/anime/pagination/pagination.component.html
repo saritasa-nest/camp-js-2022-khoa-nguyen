@@ -2,6 +2,7 @@
   <mat-paginator
   [showFirstLastButtons]="true"
   (page)="onPaginationChange($event)"
-  [length]="totalItems" [pageSize]="25" [pageIndex]="(activePage === null|| activePage === undefined) ? 0: activePage -1"></mat-paginator>
+  [length]="totalItems" [pageSize]="limit" [pageSizeOptions]="limitOptions" [pageIndex]="(activePage === null|| activePage === undefined) ? 0: activePage -1">
+</mat-paginator>
 </div>
 

@@ -20,6 +20,12 @@ export class PaginationComponent {
   /** Total items of pagination. */
   @Input() public totalItems: number | null = 0;
 
+  /** Limit of pagination. */
+  @Input() public limit: number | undefined = 25;
+
+  /** Limit options of pagination. */
+  @Input() public limitOptions: number[] = [5, 10, 15, 20, 25];
+
   public constructor() {
   }
 

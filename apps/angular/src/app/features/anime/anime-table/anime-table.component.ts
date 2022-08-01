@@ -78,7 +78,7 @@ export class AnimeTableComponent implements OnDestroy, OnInit {
    * @param event OnChange event of pagination.
    */
   public handlePageChange(event: PageEvent): void {
-    this.animeService.setUrl({ page: event.pageIndex + 1 });
+    this.animeService.setUrl({ page: event.pageIndex + 1, limit: event.pageSize });
   }
 
   /**
