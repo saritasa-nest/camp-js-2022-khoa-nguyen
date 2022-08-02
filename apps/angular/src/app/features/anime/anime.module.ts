@@ -14,11 +14,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AnimeTableComponent } from './anime-table/anime-table.component';
 import { PaginationComponent } from './pagination/pagination.component';
+import { AnimeRoutingModule } from './anime-routing.module';
+import { AnimeComponent } from './anime.component';
 
 /** Anime module. */
 @NgModule({
-  declarations: [AnimeTableComponent, PaginationComponent],
+  declarations: [AnimeTableComponent, PaginationComponent, AnimeComponent],
   imports: [
+    AnimeRoutingModule,
     MatSliderModule,
     MatProgressSpinnerModule,
     MatPaginatorModule,

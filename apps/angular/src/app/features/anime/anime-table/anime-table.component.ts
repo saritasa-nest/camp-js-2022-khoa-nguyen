@@ -48,19 +48,26 @@ export class AnimeTableComponent implements OnInit {
   );
 
   /** Search. */
-  public readonly search = new FormControl<string>('');
+  public readonly search = new FormControl<string>(this.getSearchValue());
+
+  /** Get search initial value. */
+  public getSearchValue(): string {
+    const searchValue = this.animeService.urlParamToAnimeQueryOptions(this.activateRoute.snapshot.queryParams).search;
+    return searchValue;
+  }
 
   public constructor(
     private readonly animeService: AnimeService,
     private readonly activateRoute: ActivatedRoute,
     private readonly router: Router,
   ) {
+    this.getSearchValue();
+
     this.result$ = this.activateRoute.queryParams.pipe(
-      tap(() => this.isLoading$.next(true)),
       map(paramsURL => this.animeService.urlParamToAnimeQueryOptions(paramsURL)),
       tap(paramModel => {
         const settingOfAnimeList = animeService.paramModelToSettingOfAnimeList(paramModel);
-        this.search.setValue(this.animeService.urlParamToAnimeQueryOptions(this.activateRoute.snapshot.queryParams).search);
+
         this.settingOfAnimeList$.next(settingOfAnimeList);
         }),
       switchMap(paramModel => this.animeService.getAnimeList(paramModel)),
@@ -96,7 +103,8 @@ export class AnimeTableComponent implements OnInit {
       const { type, ...rest } = trueParams;
       trueParams = rest;
     }
-    this.router.navigate(['/'], {
+
+    this.router.navigate([], {
       relativeTo: this.activateRoute,
       queryParams: trueParams,
       queryParamsHandling: '',
