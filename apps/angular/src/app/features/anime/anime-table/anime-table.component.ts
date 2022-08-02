@@ -56,13 +56,17 @@ export class AnimeTableComponent implements OnInit {
     return searchValue;
   }
 
+  // public getParamUrl(): string {
+  //   console.log(this.activateRoute.snapshot.queryParams);
+  //   return this.activateRoute.snapshot.queryParams;
+  // }
+
   public constructor(
     private readonly animeService: AnimeService,
     private readonly activateRoute: ActivatedRoute,
     private readonly router: Router,
   ) {
-    this.getSearchValue();
-
+    // this.getParamUrl();
     this.result$ = this.activateRoute.queryParams.pipe(
       map(paramsURL => this.animeService.urlParamToAnimeQueryOptions(paramsURL)),
       tap(paramModel => {

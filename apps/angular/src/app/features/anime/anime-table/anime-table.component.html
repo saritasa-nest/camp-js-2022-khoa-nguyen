@@ -25,7 +25,7 @@
               (+{{(multipleType.length || 0) - 1}} {{multipleType.length === 2 ? 'other' : 'others'}})
             </span>
           </mat-select-trigger>
-          <mat-option *ngFor="let topping of filterTypeOptions;" [value]="topping.value">{{topping.title}}</mat-option>
+          <mat-option *ngFor="let type of filterTypeOptions;" [value]="type.value">{{type.title}}</mat-option>
         </mat-select>
       </mat-form-field>
     </ng-container>

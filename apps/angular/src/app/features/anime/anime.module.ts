@@ -34,6 +34,5 @@ import { AnimeComponent } from './anime.component';
     FormsModule,
     ReactiveFormsModule,
   ],
-  exports: [AnimeTableComponent, PaginationComponent],
 })
 export class AnimeModule {}
