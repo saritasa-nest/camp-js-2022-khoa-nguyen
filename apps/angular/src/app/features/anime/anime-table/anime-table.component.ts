@@ -6,9 +6,9 @@ import { Sort } from '@angular/material/sort';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TypeDto } from '@js-camp/core/dtos';
 import { Anime, Pagination, SortValue } from '@js-camp/core/models';
-import { BehaviorSubject, debounceTime, distinctUntilChanged, map, Observable, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, combineLatestWith, debounceTime, distinctUntilChanged, map, Observable, skip, startWith, switchMap, tap } from 'rxjs';
 
-import { DEFAULT_ANIME_LIST_QUERY, DEFAULT_SEARCH, FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS } from '../../../../constants';
+import { DEFAULT_ACTIVE_PAGE, DEFAULT_SEARCH, FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS } from '../../../../constants';
 import { AnimeService, QueryUrl, SettingOfAnimeList } from '../../../../core/services';
 
 /** Anime table list. */
@@ -44,11 +44,14 @@ export class AnimeTableComponent implements OnInit {
 
   /** Anime list query params. */
   public readonly settingOfAnimeList$ = new BehaviorSubject<SettingOfAnimeList>(
-    this.animeService.paramModelToSettingOfAnimeList(DEFAULT_ANIME_LIST_QUERY),
+    this.animeService.urlParamsToSettingOfAnimeList(this.activateRoute.snapshot.queryParams),
   );
 
   /** Search. */
   public readonly search = new FormControl<string>(this.getSearchValue());
+
+  /** Search. */
+  public readonly query$: Observable<[SettingOfAnimeList, string]>;
 
   /** Get search initial value. */
   public getSearchValue(): string {
@@ -56,30 +59,47 @@ export class AnimeTableComponent implements OnInit {
     return searchValue;
   }
 
-  // public getParamUrl(): string {
-  //   console.log(this.activateRoute.snapshot.queryParams);
-  //   return this.activateRoute.snapshot.queryParams;
-  // }
+  /**
+   * Set value to setting anime list.
+   * @param settings Settings of anime list.
+   */
+  public setValueToSettingAnimeListObservable(settings: SettingOfAnimeList): void {
+    const currentParams = this.activateRoute.snapshot.queryParams;
+    const currentSettings = this.animeService.urlParamsToSettingOfAnimeList(currentParams);
+    this.settingOfAnimeList$.next({ ...currentSettings, ...settings });
+  }
 
   public constructor(
     private readonly animeService: AnimeService,
     private readonly activateRoute: ActivatedRoute,
     private readonly router: Router,
   ) {
-    // this.getParamUrl();
-    this.result$ = this.activateRoute.queryParams.pipe(
-      map(paramsURL => this.animeService.urlParamToAnimeQueryOptions(paramsURL)),
-      tap(paramModel => {
-        const settingOfAnimeList = animeService.paramModelToSettingOfAnimeList(paramModel);
 
-        this.settingOfAnimeList$.next(settingOfAnimeList);
-        }),
-      switchMap(paramModel => this.animeService.getAnimeList(paramModel)),
-      tap(pagination => {
+    this.query$ = this.settingOfAnimeList$.pipe(
+      combineLatestWith(
+        this.search.valueChanges.pipe(
+          startWith(this.search.value),
+          distinctUntilChanged(),
+          debounceTime(500),
+          map(value => value ? value.trim() : DEFAULT_SEARCH),
+        ),
+      ),
+    );
+
+    this.result$ = this.query$.pipe(
+      map(([settings]) => ({ ...settings })),
+      tap(settings => {
+        this.isLoading$.next(true);
+        this.setUrl(this.animeService.settingsOfAnimeListToUrlParams(settings));
+      }),
+      map(settings => this.animeService.settingsOfAnimeListToAnimeListQueryModel(settings)),
+      switchMap(animeListModel => this.animeService.getAnimeList(animeListModel).pipe(tap(() => this.isLoading$.next(true)))),
+      tap(animeList => {
         this.isLoading$.next(false);
-        this.totalItems$.next(pagination.count);
+        this.totalItems$.next(animeList.count);
       }),
     );
+
   }
 
   /**
@@ -121,7 +141,7 @@ export class AnimeTableComponent implements OnInit {
    * @param sort Current sort value.
    */
   private setUrlSortBuildIn(sortBy: SortValue, sort: Sort): void {
-    this.setUrl({
+    this.setValueToSettingAnimeListObservable({
       sortBy,
       ordering: sort.direction === 'asc' ? OrderOption.Ascending : OrderOption.Descending,
     });
@@ -141,7 +161,7 @@ export class AnimeTableComponent implements OnInit {
    * @param event OnChange event of pagination.
    */
   public handlePageChange(event: PageEvent): void {
-    this.setUrl({ page: event.pageIndex + 1, limit: event.pageSize });
+    this.setValueToSettingAnimeListObservable({ page: event.pageIndex + 1, limit: event.pageSize });
   }
 
   /**
@@ -149,8 +169,8 @@ export class AnimeTableComponent implements OnInit {
    * @param event OnChange event of pagination.
    */
   public handleTypeChange(event: MatSelectChange): void {
-    const value = (event.value as TypeDto[]).join(',');
-    this.setUrl({ type: value, page: 1 });
+    this.setValueToSettingAnimeListObservable({ type: event.value, page: DEFAULT_ACTIVE_PAGE });
+
   }
 
   /**
@@ -158,7 +178,7 @@ export class AnimeTableComponent implements OnInit {
    * @param event Current sortby value of anime list.
    */
   public handleSortByChange(event: MatSelectChange): void {
-    this.setUrl({ sortBy: event.value });
+    this.setValueToSettingAnimeListObservable({ sortBy: event.value });
   }
 
   /**
@@ -166,7 +186,7 @@ export class AnimeTableComponent implements OnInit {
    * @param event Current ordering value of anime list.
    */
   public handleOrderingChange(event: MatSelectChange): void {
-    this.setUrl({ ordering: event.value });
+    this.setValueToSettingAnimeListObservable({ ordering: event.value });
   }
 
   /**
@@ -191,12 +211,12 @@ export class AnimeTableComponent implements OnInit {
 
   /** OnInit. */
   public ngOnInit(): void {
-    this.search.valueChanges
-      .pipe(
-        debounceTime(500),
-        distinctUntilChanged(),
-      )
-      .subscribe(value => this.setUrl({ search: value, page: 1 }));
+    this.query$.pipe(
+      map(([, searchValue]) => searchValue),
+      skip(1),
+      distinctUntilChanged(),
+    ).subscribe(searchValue =>
+      this.setValueToSettingAnimeListObservable({ search: searchValue, page: DEFAULT_ACTIVE_PAGE }));
   }
 
 }

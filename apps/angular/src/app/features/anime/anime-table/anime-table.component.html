@@ -36,7 +36,6 @@
     <input type="search" matInput [formControl] = "search"
     placeholder="Search title anime ... ">
   </mat-form-field>
-
   <ng-container *ngIf="(result$ | async) as animeList; else Loading">
     <camp-pagination [limit]="(settingOfAnimeList$ | async)?.limit" [activePage]="(settingOfAnimeList$ | async)?.page" [totalItems]="totalItems$| async" (pageChange)="handlePageChange($event)"></camp-pagination>
     <table matSort mat-table *ngIf="(isLoading$|async) ===false, else Loading" [dataSource]="animeList.results" (matSortChange)="handleSortDataBuiltIn($event)" class="table">
