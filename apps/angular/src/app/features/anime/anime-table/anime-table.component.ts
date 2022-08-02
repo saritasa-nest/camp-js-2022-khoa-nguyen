@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSelectChange } from '@angular/material/select';
@@ -6,7 +6,7 @@ import { Sort } from '@angular/material/sort';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TypeDto } from '@js-camp/core/dtos';
 import { Anime, Pagination, SortValue } from '@js-camp/core/models';
-import { BehaviorSubject, combineLatestWith, debounceTime, distinctUntilChanged, map, Observable, skip, startWith, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, combineLatestWith, debounceTime, distinctUntilChanged, ignoreElements, map, merge, Observable, skip, startWith, Subject, switchMap, takeUntil, tap } from 'rxjs';
 
 import { DEFAULT_ACTIVE_PAGE, DEFAULT_SEARCH, FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS } from '../../../../constants';
 import { AnimeService, QueryUrl, SettingOfAnimeList } from '../../../../core/services';
@@ -19,7 +19,7 @@ import { AnimeService, QueryUrl, SettingOfAnimeList } from '../../../../core/ser
   changeDetection: ChangeDetectionStrategy.OnPush,
 
 })
-export class AnimeTableComponent implements OnInit {
+export class AnimeTableComponent implements OnInit, OnDestroy {
 
   /** Column of table. */
   public displayedColumns: string[] = ['image', 'titleEnglish', 'titleJapan', 'airedStartDate', 'type', 'status'];
@@ -52,6 +52,12 @@ export class AnimeTableComponent implements OnInit {
 
   /** Combined query observable. */
   public readonly queryCombine$: Observable<[SettingOfAnimeList, string]>;
+
+  /** Setting anime list updated when emit queryCombine. */
+  public readonly settingAnimeListUpdate$: Observable<SettingOfAnimeList>;
+
+  /** Subject that is used for unsubscribing from streams. */
+  private readonly subscriptionManager$ = new Subject<void>();
 
   /** Get search initial value. */
   public getSearchValue(): string {
@@ -86,20 +92,23 @@ export class AnimeTableComponent implements OnInit {
       ),
     );
 
-    this.result$ = this.queryCombine$.pipe(
-      map(([settings]) => ({ ...settings })),
-      tap(settings => {
-        this.isLoading$.next(true);
-        this.setUrl(this.animeService.settingsOfAnimeListToUrlParams(settings));
-      }),
+    this.settingAnimeListUpdate$ = this.queryCombine$.pipe(
+      map(([settings]) => settings),
+    );
+
+    this.result$ = this.settingAnimeListUpdate$.pipe(
       map(settings => this.animeService.settingsOfAnimeListToAnimeListQueryModel(settings)),
-      switchMap(animeListModel => this.animeService.getAnimeList(animeListModel).pipe(tap(() => this.isLoading$.next(true)))),
+      switchMap(animeListModel => this.animeService.getAnimeList(animeListModel)),
       tap(animeList => {
         this.isLoading$.next(false);
         this.totalItems$.next(animeList.count);
       }),
     );
 
+    // this.result$.pipe(tap(animeList => {
+    //   // this.isLoading$.next(false);
+    //   this.totalItems$.next(animeList.count);
+    // })).subscribe();
   }
 
   /**
@@ -211,13 +220,31 @@ export class AnimeTableComponent implements OnInit {
 
   /** OnInit. */
   public ngOnInit(): void {
-    this.queryCombine$.pipe(
+
+    const queryCombineSideEffect$ = this.queryCombine$.pipe(
       map(([, searchValue]) => searchValue),
       distinctUntilChanged(),
       skip(1),
-    ).subscribe(searchValue => {
-      this.setValueToSettingAnimeListObservable({ search: searchValue, page: DEFAULT_ACTIVE_PAGE });
-    });
+      tap(searchValue => {
+          this.setValueToSettingAnimeListObservable({ search: searchValue, page: DEFAULT_ACTIVE_PAGE });
+        }),
+    );
+
+    const setUrlSideEffect$ = this.settingAnimeListUpdate$.pipe(
+      tap(settings => {
+        this.isLoading$.next(true);
+        this.setUrl(this.animeService.settingsOfAnimeListToUrlParams(settings));
+      }),
+    );
+
+    merge(setUrlSideEffect$, queryCombineSideEffect$)
+      .pipe(ignoreElements(), takeUntil(this.subscriptionManager$))
+      .subscribe();
   }
 
+  /** OnDestroy. */
+  public ngOnDestroy(): void {
+    this.subscriptionManager$.next();
+    this.subscriptionManager$.complete();
+  }
 }
