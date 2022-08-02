@@ -39,6 +39,9 @@ export class AnimeTableComponent implements OnInit {
   /** Total items of anime table. */
   public readonly totalItems$ = new BehaviorSubject<number>(0);
 
+  /** Loading status. */
+  public readonly isLoading$ = new BehaviorSubject<boolean>(false);
+
   /** Anime list query params. */
   public readonly settingOfAnimeList$ = new BehaviorSubject<SettingOfAnimeList>(
     this.animeService.paramModelToSettingOfAnimeList(DEFAULT_ANIME_LIST_QUERY),
@@ -54,7 +57,7 @@ export class AnimeTableComponent implements OnInit {
     private readonly router: Router,
   ) {
     this.result$ = this.activateRoute.queryParams.pipe(
-
+      tap(() => this.isLoading$.next(true)),
       map(paramsURL => this.animeService.urlParamToAnimeQueryOptions(paramsURL)),
       tap(paramModel => {
         const settingOfAnimeList = animeService.paramModelToSettingOfAnimeList(paramModel);
@@ -63,6 +66,7 @@ export class AnimeTableComponent implements OnInit {
         }),
       switchMap(paramModel => this.animeService.getAnimeList(paramModel)),
       tap(pagination => {
+        this.isLoading$.next(false);
         this.totalItems$.next(pagination.count);
       }),
     );

@@ -39,7 +39,7 @@
 
   <ng-container *ngIf="(result$ | async) as animeList; else Loading">
     <camp-pagination [limit]="(settingOfAnimeList$ | async)?.limit" [activePage]="(settingOfAnimeList$ | async)?.page" [totalItems]="totalItems$| async" (pageChange)="handlePageChange($event)"></camp-pagination>
-    <table matSort mat-table [dataSource]="animeList.results" (matSortChange)="handleSortDataBuiltIn($event)" class="table">
+    <table matSort mat-table *ngIf="(isLoading$|async) ===false, else Loading" [dataSource]="animeList.results" (matSortChange)="handleSortDataBuiltIn($event)" class="table">
 
       <ng-container matColumnDef="image">
         <th class="table__cell table__cell_title" mat-header-cell *matHeaderCellDef> Image </th>
