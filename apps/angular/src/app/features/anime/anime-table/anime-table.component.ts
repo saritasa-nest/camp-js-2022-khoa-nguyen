@@ -6,7 +6,7 @@ import { Sort } from '@angular/material/sort';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TypeDto } from '@js-camp/core/dtos';
 import { Anime, Pagination, SortValue } from '@js-camp/core/models';
-import { BehaviorSubject, combineLatestWith, debounceTime, distinctUntilChanged, ignoreElements, map, merge, Observable, skip, startWith, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, combineLatestWith, debounceTime, distinctUntilChanged, ignoreElements, map, merge, Observable, shareReplay, skip, startWith, Subject, switchMap, takeUntil, tap } from 'rxjs';
 
 import { DEFAULT_ACTIVE_PAGE, DEFAULT_SEARCH, FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS } from '../../../../constants';
 import { AnimeService, QueryUrl, SettingOfAnimeList } from '../../../../core/services';
@@ -99,11 +99,9 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
     this.paginationResult$ = this.settingAnimeListUpdate$.pipe(
       map(settings => this.animeService.settingsOfAnimeListToAnimeListQueryModel(settings)),
       switchMap(animeListQueryModel => this.animeService.getAnimeList(animeListQueryModel)),
-      tap(animeList => {
-        this.isLoading$.next(false);
-        this.totalItems$.next(animeList.count);
-      }),
+      shareReplay({ refCount: true, bufferSize: 1 }),
     );
+
   }
 
   /**
@@ -232,7 +230,14 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
       }),
     );
 
-    merge(setUrlSideEffect$, queryCombineSideEffect$)
+    const paginationResultSideEffect$ = this.paginationResult$.pipe(
+      tap(animeList => {
+        this.isLoading$.next(false);
+        this.totalItems$.next(animeList.count);
+      }),
+    );
+
+    merge(setUrlSideEffect$, queryCombineSideEffect$, paginationResultSideEffect$)
       .pipe(ignoreElements(), takeUntil(this.subscriptionManager$))
       .subscribe();
   }
