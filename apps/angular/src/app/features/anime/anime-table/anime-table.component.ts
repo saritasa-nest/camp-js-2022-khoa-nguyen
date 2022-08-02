@@ -25,7 +25,7 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
   public displayedColumns: string[] = ['image', 'titleEnglish', 'titleJapan', 'airedStartDate', 'type', 'status'];
 
   /** Pagination result. */
-  public readonly result$: Observable<Pagination<Anime>>;
+  public readonly paginationResult$: Observable<Pagination<Anime>>;
 
   /** Sorting options. */
   public readonly sortingOptions = SORT_OPTIONS;
@@ -96,7 +96,7 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
       map(([settings]) => settings),
     );
 
-    this.result$ = this.settingAnimeListUpdate$.pipe(
+    this.paginationResult$ = this.settingAnimeListUpdate$.pipe(
       map(settings => this.animeService.settingsOfAnimeListToAnimeListQueryModel(settings)),
       switchMap(animeListModel => this.animeService.getAnimeList(animeListModel)),
       tap(animeList => {
@@ -104,11 +104,6 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
         this.totalItems$.next(animeList.count);
       }),
     );
-
-    // this.result$.pipe(tap(animeList => {
-    //   // this.isLoading$.next(false);
-    //   this.totalItems$.next(animeList.count);
-    // })).subscribe();
   }
 
   /**
