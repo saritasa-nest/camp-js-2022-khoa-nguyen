@@ -50,8 +50,8 @@ export class AnimeTableComponent implements OnInit {
   /** Search. */
   public readonly search = new FormControl<string>(this.getSearchValue());
 
-  /** Search. */
-  public readonly query$: Observable<[SettingOfAnimeList, string]>;
+  /** Combined query observable. */
+  public readonly queryCombine$: Observable<[SettingOfAnimeList, string]>;
 
   /** Get search initial value. */
   public getSearchValue(): string {
@@ -75,18 +75,18 @@ export class AnimeTableComponent implements OnInit {
     private readonly router: Router,
   ) {
 
-    this.query$ = this.settingOfAnimeList$.pipe(
+    this.queryCombine$ = this.settingOfAnimeList$.pipe(
       combineLatestWith(
         this.search.valueChanges.pipe(
           startWith(this.search.value),
           distinctUntilChanged(),
-          debounceTime(500),
           map(value => value ? value.trim() : DEFAULT_SEARCH),
+          debounceTime(500),
         ),
       ),
     );
 
-    this.result$ = this.query$.pipe(
+    this.result$ = this.queryCombine$.pipe(
       map(([settings]) => ({ ...settings })),
       tap(settings => {
         this.isLoading$.next(true);
@@ -211,12 +211,13 @@ export class AnimeTableComponent implements OnInit {
 
   /** OnInit. */
   public ngOnInit(): void {
-    this.query$.pipe(
+    this.queryCombine$.pipe(
       map(([, searchValue]) => searchValue),
-      skip(1),
       distinctUntilChanged(),
-    ).subscribe(searchValue =>
-      this.setValueToSettingAnimeListObservable({ search: searchValue, page: DEFAULT_ACTIVE_PAGE }));
+      skip(1),
+    ).subscribe(searchValue => {
+      this.setValueToSettingAnimeListObservable({ search: searchValue, page: DEFAULT_ACTIVE_PAGE });
+    });
   }
 
 }
