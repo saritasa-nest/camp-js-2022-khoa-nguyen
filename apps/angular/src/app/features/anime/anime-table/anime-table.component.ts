@@ -48,7 +48,6 @@ export class AnimeTableComponent implements OnInit {
   );
 
   /** Search. */
-  // public readonly search$ = new BehaviorSubject<string>('');
   public readonly search = new FormControl<string>('');
 
   public constructor(
