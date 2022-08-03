@@ -9,7 +9,7 @@ export interface AnimeDto {
   readonly id: number;
 
   /** Date created. */
-  readonly created: number;
+  readonly created: string;
 
   /** Date modified. */
   readonly modified: string;
