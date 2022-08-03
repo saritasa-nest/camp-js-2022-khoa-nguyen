@@ -1,26 +1,7 @@
 :root {
-  --primary-color: #1363df;
-  --primary-light-color: #47b5ff;
-  --primary-light-color-2: #dff6ff;
-
-  /* Text color */
-  --primary-font-color: #06283d;
-  --primary-font-color-2: #1363df;
-
-  /* Disable color */
-  --primary-disable-color: #c2cddd;
-
-  /* Box shadow color */
-  --primary-box-shadow-color: 0 4px 8px 0 rgba(0 0 0 / 20%), 0 6px 20px 0 rgba(0 0 0 / 19%);
-
-  /* Custom grid columns */
-  --grid-template-cols-5: repeat(5, minmax(0, 1fr));
-
-  /* Font size */
-  --primary-font-size-normal: 25px;
-  --primary-font-size-title: 40px;
-
-  /* Font weight */
-  --primary-font-weight-heading: 500;
-  --primary-font-weight-title: 600;
+  /* Using html color names here only for showcase,
+   * you shouldn't be using color names in real projects. */
+  --heading-color-1: gold;
+  --heading-color-2: darksalmon;
+  --heading-color-3: powderblue;
 }
