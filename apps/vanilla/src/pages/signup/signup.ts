@@ -3,11 +3,11 @@ import { Token } from '@js-camp/core/models/token';
 import { User } from '@js-camp/core/models/user';
 import { navigate, queryErrorSpan } from '@js-camp/core/utils';
 
-import { PROFILE_URL, TOKEN_KEY } from '../../constant';
+import { PROFILE_URL, KEY_TOKEN } from '../../constants';
 
 import { validateConfirmPassword } from '../../scripts/validate';
-import { registerNewUser } from '../../services/api/register';
-import { LocalStorageService } from '../../services/localStore';
+import { registerNewUser } from '../../service/api/register';
+import { LocalStorageService } from '../../service/localStore';
 
 /** Validate register info. */
 function validateRegisterInfo(): void {
@@ -54,7 +54,7 @@ function validateRegisterInfo(): void {
       queryErrorSpan(inputPassword, error.password);
       return;
     }
-    LocalStorageService.setValue<Token>(TOKEN_KEY, result);
+    LocalStorageService.setValue<Token>(KEY_TOKEN, result);
     navigate(PROFILE_URL);
   });
 }

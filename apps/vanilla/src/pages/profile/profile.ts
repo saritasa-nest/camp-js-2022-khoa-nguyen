@@ -3,8 +3,8 @@ import { Token } from '@js-camp/core/models/token';
 import { navigate } from '@js-camp/core/utils';
 
 import { HOME_URL, TOKEN_KEY } from '../../constant';
-import { getProfile } from '../../services/api/getProfile';
-import { LocalStorageService } from '../../services/localStore';
+import { getProfile } from '../../service/api/getProfile';
+import { LocalStorageService } from '../../service/localStore';
 
 const token = LocalStorageService.getValue<Token>(TOKEN_KEY);
 

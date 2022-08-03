@@ -5,9 +5,9 @@ import { HttpError } from '@js-camp/core/models/httpError';
 import { Profile } from '@js-camp/core/models/profile';
 import { AxiosError } from 'axios';
 
-import { appAxios } from '../../axios';
+import { appAxios } from '../../configs';
 
-import { PROFILE_API } from '../../constant';
+import { PROFILE_API } from '../../constants';
 
 /**
  * Get user information.

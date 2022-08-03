@@ -6,7 +6,7 @@ import { HttpError } from '@js-camp/core/models/httpError';
 import { Token } from '@js-camp/core/models/token';
 import { ErrorUser, User } from '@js-camp/core/models/user';
 
-import { appAxios } from '../../axios';
+import { appAxios } from '../../configs';
 import { getError } from '../../scripts/getError';
 
 const REGISTER_URL = 'auth/register/';

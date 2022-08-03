@@ -6,7 +6,7 @@ import { HttpError } from '@js-camp/core/models/httpError';
 import { ErrorLogin, Login } from '@js-camp/core/models/login';
 import { Token } from '@js-camp/core/models/token';
 
-import { appAxios } from '../../axios';
+import { appAxios } from '../../configs';
 import { getError } from '../../scripts/getError';
 
 const LOGIN_URL = 'auth/login/';

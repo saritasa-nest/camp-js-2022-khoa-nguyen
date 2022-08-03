@@ -3,11 +3,11 @@ import { Login } from '@js-camp/core/models/login';
 import { Token } from '@js-camp/core/models/token';
 import { navigate } from '@js-camp/core/utils';
 
-import { PROFILE_URL, TOKEN_KEY } from '../constant';
+import { PROFILE_URL, KEY_TOKEN } from '../constants';
 
-import { login } from '../services/api/login';
-import { refreshToken, verifyToken } from '../services/api/verifyToken';
-import { LocalStorageService } from '../services/localStore';
+import { login } from '../service/api/login';
+import { refreshToken, verifyToken } from '../service/api/verifyToken';
+import { LocalStorageService } from '../service/localStore';
 
 const form = document.querySelector<HTMLFormElement>('.form');
 
@@ -35,7 +35,7 @@ function validateLogin(): void {
           errorElement.innerHTML = result.detail;
           return;
         }
-        LocalStorageService.setValue<Token>(TOKEN_KEY, result);
+        LocalStorageService.setValue<Token>(KEY_TOKEN, result);
         navigate(PROFILE_URL);
     });
   }
@@ -44,7 +44,7 @@ function validateLogin(): void {
 
 /** Check valid token. */
 async function checkValidToken(): Promise<void> {
-  const token = LocalStorageService.getValue<Token>(TOKEN_KEY);
+  const token = LocalStorageService.getValue<Token>(KEY_TOKEN);
   if (token === null) {
     return;
   }
@@ -65,7 +65,7 @@ async function setRefreshedTokenToLocalStore(token: Token): Promise<void> {
   if (response instanceof HttpError) {
     return;
   }
-  LocalStorageService.setValue<Token>(TOKEN_KEY, response);
+  LocalStorageService.setValue<Token>(KEY_TOKEN, response);
   navigate(PROFILE_URL);
 }
 

@@ -3,7 +3,7 @@ import { ErrorTokenMapper, TokenMapper } from '@js-camp/core/mappers/token.mappe
 import { HttpError } from '@js-camp/core/models/httpError';
 import { ErrorToken, Token } from '@js-camp/core/models/token';
 
-import { appAxios } from '../../axios';
+import { appAxios } from '../../configs';
 import { getError } from '../../scripts/getError';
 
 const VERIFY_TOKEN_URL = '/auth/token/verify/';

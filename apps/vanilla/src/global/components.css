@@ -26,7 +26,7 @@ h2 {
 }
 
 .default-layout {
-  --default-layout-width: 900px;
+  --default-layout-width: 1200px;
 
   margin: auto;
   max-width: var(--default-layout-width);
