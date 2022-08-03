@@ -54,8 +54,7 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
   /** Get search initial value. */
   public getSearchValue(): string {
     const currentParams = this.activateRoute.snapshot.queryParams;
-    const searchValue = this.animeMapper.urlParamToModel(currentParams).search;
-    return searchValue;
+    return this.animeMapper.urlParamToModel(currentParams).search;
   }
 
   /** Search. */
@@ -154,9 +153,9 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
   /**
    * Track anime list.
    * @param item Track by per item.
-   * @param index Item index.
+   * @param _index Item index.
    */
-  public trackByAnime(index: number, item: Anime): Anime['id'] {
+  public trackByAnime(_index: number, item: Anime): Anime['id'] {
     return item.id;
   }
 

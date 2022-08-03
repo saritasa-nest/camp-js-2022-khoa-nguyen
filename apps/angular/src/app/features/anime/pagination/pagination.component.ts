@@ -18,15 +18,18 @@ export class PaginationComponent {
   @Output() public pageChange = new EventEmitter<PageEvent>();
 
   /** Total items of pagination. */
-  @Input() public totalItems: number | null = 0;
+  @Input() public totalItems: number | null;
 
   /** Limit of pagination. */
-  @Input() public limit: number | undefined = 25;
+  @Input() public limit: number | undefined;
 
   /** Limit options of pagination. */
-  @Input() public limitOptions: number[] = [15, 20, 25];
+  @Input() public limitOptions: number[];
 
   public constructor() {
+    this.totalItems = 0;
+    this.limit = 25;
+    this.limitOptions = [15, 20, 25];
   }
 
   /** Active page of pagination. */
