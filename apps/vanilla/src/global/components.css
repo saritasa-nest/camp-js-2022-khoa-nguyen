@@ -21,7 +21,7 @@ a:hover,
 }
 
 .default-layout {
-  --default-layout-width: 1200px;
+  --default-layout-width: 600px;
 
   margin: 80px auto 0;
   max-width: var(--default-layout-width);
