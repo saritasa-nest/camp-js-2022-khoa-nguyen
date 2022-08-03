@@ -24,6 +24,9 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
   /** Column of table. */
   public displayedColumns: string[] = ['image', 'titleEnglish', 'titleJapan', 'airedStartDate', 'type', 'status'];
 
+  /** Anime mapper. */
+  public readonly animeMapper = this.animeService.mapper();
+
   /** Sorting options. */
   public readonly sortingOptions = SORT_OPTIONS;
 
@@ -48,22 +51,23 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
   /** Loading status. */
   public readonly isLoading$ = new BehaviorSubject<boolean>(false);
 
+  /** Get search initial value. */
+  public getSearchValue(): string {
+    const currentParams = this.activateRoute.snapshot.queryParams;
+    const searchValue = this.animeMapper.urlParamToModel(currentParams).search;
+    return searchValue;
+  }
+
   /** Search. */
   public readonly search = new FormControl<string>(this.getSearchValue());
 
   /** Anime list query params. */
   public readonly settingOfAnimeList$ = new BehaviorSubject<SettingOfAnimeList>(
-    this.animeService.urlParamsToSettingOfAnimeList(this.activateRoute.snapshot.queryParams),
+    this.animeMapper.urlToSetting(this.activateRoute.snapshot.queryParams),
   );
 
   /** Subject that is used for unsubscribing from streams. */
   private readonly subscriptionManager$ = new Subject<void>();
-
-  /** Get search initial value. */
-  public getSearchValue(): string {
-    const searchValue = this.animeService.urlParamToAnimeQueryOptions(this.activateRoute.snapshot.queryParams).search;
-    return searchValue;
-  }
 
   /**
    * Set value to setting anime list.
@@ -71,7 +75,7 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
    */
   public setValueToSettingAnimeListObservable(settings: SettingOfAnimeList): void {
     const currentParams = this.activateRoute.snapshot.queryParams;
-    const currentSettings = this.animeService.urlParamsToSettingOfAnimeList(currentParams);
+    const currentSettings = this.animeMapper.urlToSetting(currentParams);
     this.settingOfAnimeList$.next({ ...currentSettings, ...settings });
   }
 
@@ -80,7 +84,6 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
     private readonly activateRoute: ActivatedRoute,
     private readonly router: Router,
   ) {
-
     this.queryCombine$ = this.settingOfAnimeList$.pipe(
       combineLatestWith(
         this.search.valueChanges.pipe(
@@ -97,7 +100,7 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
     );
 
     this.paginationResult$ = this.settingAnimeListUpdate$.pipe(
-      map(settings => this.animeService.settingsOfAnimeListToAnimeListQueryModel(settings)),
+      map(settings => this.animeMapper.settingToModel(settings)),
       switchMap(animeListQueryModel => this.animeService.getAnimeList(animeListQueryModel)),
       shareReplay({ refCount: true, bufferSize: 1 }),
     );
@@ -226,7 +229,7 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
     const setUrlSideEffect$ = this.settingAnimeListUpdate$.pipe(
       tap(settings => {
         this.isLoading$.next(true);
-        this.setUrl(this.animeService.settingsOfAnimeListToUrlParams(settings));
+        this.setUrl(this.animeMapper.settingToUrl(settings));
       }),
     );
 
