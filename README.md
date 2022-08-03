@@ -45,7 +45,6 @@ npm run [project]:stylelint
 Workspace consists of applications and libraries. A lib contains the actual logic that can be shared across the workspace. An application is an unit that link, bundle and compile functionality implemented in libraries for being deployed.
 
 ### Applications
-
 - [Vanilla](apps/vanilla/README.md)
 - [React](apps/react/README.md)
 - [Angular](apps/angular/README.md)
