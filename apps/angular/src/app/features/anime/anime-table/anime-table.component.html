@@ -34,7 +34,7 @@
   <mat-form-field class="search">
     <mat-label>Search</mat-label>
     <input type="search" matInput [formControl] = "search"
-    placeholder="Search title anime ... ">
+    placeholder="Search title anime .... ">
   </mat-form-field>
   <ng-container *ngIf="(paginationResult$ | async) as animeList; else Loading">
     <camp-pagination [limit]="(settingOfAnimeList$ | async)?.limit" [activePage]="(settingOfAnimeList$ | async)?.page" [totalItems]="totalItems$| async" (pageChange)="handlePageChange($event)"></camp-pagination>
