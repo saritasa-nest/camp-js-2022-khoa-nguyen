@@ -1,38 +1,43 @@
-<form class="register">
+<form [formGroup]="registerForm" (ngSubmit)="onSubmitRegister()" class="register">
   <div class="register__wrapper">
     <h1 class="register__title register__title_welcome">Welcome to Saritasa Anime</h1>
     <h1 class="register__title register__title_action">Sign up to your account</h1>
     <div class="register__content">
       <mat-form-field class="register__content_email">
         <mat-label>Email</mat-label>
-        <input type="email" matInput
+        <input required formControlName="email" type="email" matInput
         placeholder="Enter your email ... ">
       </mat-form-field>
 
       <mat-form-field class="register__content_firstname">
         <mat-label>First name</mat-label>
-        <input type="text" matInput
+        <input required formControlName="firstName" type="text" matInput
         placeholder="Enter your first name ... ">
       </mat-form-field>
 
       <mat-form-field class="register__content_firstname">
         <mat-label>Last name</mat-label>
-        <input type="text" matInput
+        <input required formControlName="lastName" type="text" matInput
         placeholder="Enter your last name ... ">
       </mat-form-field>
 
-      <mat-form-field class="register__content_firstname">
-        <mat-label>Password</mat-label>
-        <input type="password" matInput
-        placeholder="Enter your password ... ">
-      </mat-form-field>
+      <div formGroupName="passwordGroup">
+        <mat-form-field class="register__content_firstname">
+          <mat-label>Password</mat-label>
+          <input required formControlName="password" type="password" matInput
+          placeholder="Enter your password ... ">
+        </mat-form-field>
 
-      <mat-form-field class="register__content_firstname">
-        <mat-label>Confirm your password</mat-label>
-        <input type="password" matInput
-        placeholder="Re-input your password ... ">
-      </mat-form-field>
+        <mat-form-field class="register__content_firstname">
+          <mat-label>Confirm your password</mat-label>
+          <input required formControlName="confirmPassword" type="password" matInput
+          placeholder="Re-input your password ... ">
+        </mat-form-field>
 
+      </div>
+
+
+      <p class="register__text">Already have an account? Please <a [routerLink]="['/auth/login']" class="register__text_login">login here.</a> </p>
       <button type="submit" mat-raised-button class="register__button" >Sign up</button>
     </div>
   </div>

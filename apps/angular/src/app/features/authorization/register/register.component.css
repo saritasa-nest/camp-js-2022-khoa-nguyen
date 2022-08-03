@@ -8,7 +8,7 @@
 .register__wrapper {
   box-shadow: var(--primary-box-shadow-color);
   margin-bottom: 20px;
-  padding: 40px 20px;
+  padding: 30px 20px;
   max-width: 1000px;
   min-width: 400px;
   width: 80%;
@@ -35,7 +35,6 @@
 }
 
 .register__button {
-  margin-top: 20px;
   background-color: var(--primary-color);
   color: var(--primary-light-color-2);
   font-weight: var(--primary-font-weight-title);
@@ -45,4 +44,20 @@
 
 .register__button:hover {
   background-color: var(--primary-dark-color);
+}
+
+.register__text {
+  color: var(--primary-font-color);
+  font-size: var(--primary-font-size-normal);
+}
+
+.register__text_login {
+  color: var(--primary-font-color-2);
+  font-weight: var(--primary-font-weight-title);
+  text-decoration: underline;
+}
+
+.register__text_login:hover {
+  color: var(--primary-dark-color);
+  transition: 0.3s ease;
 }
