@@ -24,7 +24,7 @@ export class PaginationComponent {
   @Input() public limit: number | undefined = 25;
 
   /** Limit options of pagination. */
-  @Input() public limitOptions: number[] = [5, 10, 15, 20, 25];
+  @Input() public limitOptions: number[] = [15, 20, 25];
 
   public constructor() {
   }

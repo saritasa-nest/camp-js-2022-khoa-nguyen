@@ -104,7 +104,6 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
       switchMap(animeListQueryModel => this.animeService.getAnimeList(animeListQueryModel)),
       shareReplay({ refCount: true, bufferSize: 1 }),
     );
-
   }
 
   /**
