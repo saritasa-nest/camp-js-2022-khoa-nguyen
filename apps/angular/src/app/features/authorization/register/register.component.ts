@@ -1,7 +1,9 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Token, User } from '@js-camp/core/models';
 
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, catchError, of } from 'rxjs';
 
 import { isFieldsDefined } from '../../../../core/guards/nonNullField.guard';
 
@@ -24,6 +26,8 @@ export class RegisterComponent {
 
   /** Watch if form is submitted or not.  */
   public isSubmitted$ = new BehaviorSubject<boolean>(false);
+
+  // public createMemberResult$: BehaviorSubject<Token>;
 
   /** Register form init. */
   public registerForm = this.formBuilder.group({
@@ -99,15 +103,17 @@ export class RegisterComponent {
   /** Handle form submit. */
   public onSubmitRegister(): void {
     this.isSubmitted$.next(true);
-    const userInfo = this.registerForm.getRawValue();
-    const { password, confirmPassword } = userInfo;
-    const passwordGroup = { password, confirmPassword };
-    if (!isFieldsDefined(passwordGroup)) {
+    const formData = this.registerForm.getRawValue();
+    if (!isFieldsDefined(formData)) {
       return;
     }
-    const isValidConfirmPassword = this.isValidConfirmPassword(passwordGroup.password, passwordGroup.confirmPassword);
-    if (!isValidConfirmPassword) {
-
+    const { email, password, firstName, lastName } = formData;
+    const userInfo: User = new User({
+      email, password, firstName, lastName,
+    });
+    this.isValidConfirmPassword(password, formData.confirmPassword);
+    if (this.registerForm.valid) {
+      this.authService.createUser(userInfo).subscribe();
     }
   }
 }
