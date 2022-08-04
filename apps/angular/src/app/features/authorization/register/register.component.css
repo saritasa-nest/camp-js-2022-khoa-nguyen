@@ -61,3 +61,7 @@
   color: var(--primary-dark-color);
   transition: 0.3s ease;
 }
+
+.register__input {
+  margin-top: 30px;
+}

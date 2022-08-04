@@ -76,3 +76,8 @@ h2 {
   color: var(--primary-light-color-2);
   background-color: var(--primary-color);
 }
+
+.form__span_error {
+  color: var(--primary-font-error-color);
+  margin-bottom: 7px;
+}
