@@ -1,0 +1,34 @@
+.navigation {
+  position: fixed;
+  background-color: var(--primary-color);
+  left: 0;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  padding: 10px;
+}
+
+.navigation__wrapper {
+  margin: auto;
+  justify-content: space-between;
+  display: flex;
+  max-width: 1200px;
+  min-width: 800px;
+}
+
+.navigation__left,
+.navigation__right {
+  display: flex;
+  gap: 10px;
+  font-size: var(--primary-font-size-normal);
+}
+
+.navigation__link {
+  color: var(--primary-font-light-color);
+  cursor: pointer;
+}
+
+.navigation__link:hover {
+  color: var(--primary-font-color);
+  transition: 0.3s ease;
+}

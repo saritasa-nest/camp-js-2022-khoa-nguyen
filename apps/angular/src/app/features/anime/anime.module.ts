@@ -12,6 +12,8 @@ import { MatSortModule } from '@angular/material/sort';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { SharedModule } from '../../../shared/shared.module';
+
 import { AnimeTableComponent } from './anime-table/anime-table.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { AnimeRoutingModule } from './anime-routing.module';
@@ -21,6 +23,7 @@ import { AnimeComponent } from './anime.component';
 @NgModule({
   declarations: [AnimeTableComponent, PaginationComponent, AnimeComponent],
   imports: [
+    SharedModule,
     AnimeRoutingModule,
     MatSliderModule,
     MatProgressSpinnerModule,
