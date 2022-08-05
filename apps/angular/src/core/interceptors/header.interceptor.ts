@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 
 import { Token } from '@js-camp/core/models';
 
-import { key } from '../../constants';
+import { API_KEY, key } from '../../constants';
 import { LocalStoreService } from '../services';
 
 /** Interceptor header handler. */
@@ -23,7 +23,9 @@ export class HeaderInterceptor implements HttpInterceptor {
   public intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const token = this.localStoreService.getValue<Token>(key.token);
     if (token) {
-      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      const headers = new HttpHeaders()
+        .set('Authorization', `Bearer ${token}`)
+        .set('Api-Key', API_KEY);
       const authRequest = request.clone({ headers });
       return next.handle(authRequest);
     }
