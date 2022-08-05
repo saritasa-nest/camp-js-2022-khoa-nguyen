@@ -8,7 +8,7 @@ import { TypeDto } from '@js-camp/core/dtos';
 import { Anime, Pagination, SortValue } from '@js-camp/core/models';
 import { BehaviorSubject, combineLatestWith, debounceTime, distinctUntilChanged, ignoreElements, map, merge, Observable, shareReplay, skip, startWith, Subject, switchMap, takeUntil, tap } from 'rxjs';
 
-import { DEFAULT_ACTIVE_PAGE, DEFAULT_SEARCH, FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS } from '../../../../constants';
+import { DEFAULT_ACTIVE_PAGE, DEFAULT_SEARCH, FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS, url } from '../../../../constants';
 import { AnimeService, QueryUrl, SettingOfAnimeList } from '../../../../core/services';
 
 /** Anime table list. */
@@ -22,7 +22,7 @@ import { AnimeService, QueryUrl, SettingOfAnimeList } from '../../../../core/ser
 export class AnimeTableComponent implements OnInit, OnDestroy {
 
   /** Column of table. */
-  public displayedColumns: string[] = ['image', 'titleEnglish', 'titleJapan', 'airedStartDate', 'type', 'status'];
+  public displayedColumns: readonly string[] = ['image', 'titleEnglish', 'titleJapan', 'airedStartDate', 'type', 'status'] as const;
 
   /** Anime mapper. */
   public readonly animeMapper = this.animeService.mapper();
@@ -131,7 +131,7 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
       trueParams = rest;
     }
 
-    this.router.navigate([], {
+    this.router.navigate([url.home], {
       relativeTo: this.activateRoute,
       queryParams: trueParams,
       queryParamsHandling: '',
