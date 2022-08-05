@@ -17,6 +17,7 @@ export class ApiService {
   /** Add header to api call. */
   public get httpHeader(): HttpHeaders {
     return new HttpHeaders({
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       'Api-Key': API_KEY,
     });
   }

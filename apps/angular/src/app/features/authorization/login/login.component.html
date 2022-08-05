@@ -1,4 +1,4 @@
-<form  [formGroup]="loginForm" (ngSubmit)="onSubmitLogin()" form class="login">
+<form [formGroup]="loginForm" (ngSubmit)="onSubmitLogin()" form class="login">
   <div class="login__wrapper">
     <h1 class="login__title login__title_welcome">Welcome to Saritasa Anime</h1>
     <h1 class="login__title login__title_action">Login to your account</h1>
@@ -9,24 +9,41 @@
           type="email"
           matInput
           formControlName="email"
-          placeholder="Enter your email ... ">
-          <mat-error *ngIf="errorControl['email'].required?.check">{{errorControl['email'].required?.message}}</mat-error>
-          <mat-error *ngIf="errorControl['email'].isEmail?.check">{{errorControl['email'].isEmail?.message}}</mat-error>
+          placeholder="Enter your email ... "
+        />
+        <mat-error *ngIf="errorControl['email'].required?.check">{{
+          errorControl["email"].required?.message
+        }}</mat-error>
+        <mat-error *ngIf="errorControl['email'].isEmail?.check">{{
+          errorControl["email"].isEmail?.message
+        }}</mat-error>
       </mat-form-field>
 
       <mat-form-field class="login__content_password">
         <mat-label>Password</mat-label>
         <input
-        formControlName="password"
-        type="password"
-        matInput
-        placeholder="Enter your password ... ">
-        <mat-error *ngIf="errorControl['password'].required?.check">{{errorControl['password'].required?.message}}</mat-error>
+          formControlName="password"
+          type="password"
+          matInput
+          placeholder="Enter your password ... "
+        />
+        <mat-error *ngIf="errorControl['password'].required?.check">{{
+          errorControl["password"].required?.message
+        }}</mat-error>
       </mat-form-field>
-      <span *ngIf="errorLogin$ | async" class="form__span_error">{{errorLogin$ | async}}</span>
-      <p class="login__text">Don't have an account? Feel free to <a [routerLink]="['/auth/register']" class="login__text_register">register here.</a> </p>
+      <span *ngIf="errorLogin$ | async" class="form__span_error">{{
+        errorLogin$ | async
+      }}</span>
+      <p class="login__text">
+        Don't have an account? Feel free to
+        <a [routerLink]="['/auth/register']" class="login__text_register"
+          >register here.</a
+        >
+      </p>
 
-      <button type="submit" mat-raised-button class="login__button" >Login</button>
+      <button type="submit" mat-raised-button class="login__button">
+        Login
+      </button>
     </div>
   </div>
 </form>

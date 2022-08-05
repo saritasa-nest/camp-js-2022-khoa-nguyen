@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { ErrorLoginDto, ErrorUserDto, HttpErrorDto, LoginDto, TokenDto, UserDto } from '@js-camp/core/dtos';
 import { ErrorLoginMapper, ErrorUserMapper, HttpErrorMapper, LoginMapper, TokenMapper, UserMapper } from '@js-camp/core/mappers';
 import { ErrorLogin, ErrorUser, HttpError, Login, Token, User } from '@js-camp/core/models';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of, throwError } from 'rxjs';
 
 import { ApiService } from '.';
 
@@ -50,25 +50,31 @@ export class AuthService {
     const userDto = UserMapper.toDto(userInfo);
     return this.apiService.postData<TokenDto, UserDto>('auth/register/', userDto).pipe(
       map(value => TokenMapper.fromDto(value)),
-      catchError((value: unknown) => {
-        const httpError = ((value as HttpErrorResponse).error) as HttpErrorDto<ErrorUserDto>;
-        return of(HttpErrorMapper.fromDto<ErrorUserDto, ErrorUser>(httpError, ErrorUserMapper.fromDto));
+      catchError((error: unknown) => {
+        if (error instanceof HttpErrorResponse) {
+          const httpError = ((error as HttpErrorResponse).error) as HttpErrorDto<ErrorUserDto>;
+          return of(HttpErrorMapper.fromDto<ErrorUserDto, ErrorUser>(httpError, ErrorUserMapper.fromDto));
+        }
+        return throwError(() => error);
       }),
     );
   }
 
   /**
-   * Create user.
+   * Log user in.
    * @param loginInfo Login information.
    */
   public login(loginInfo: Login): Observable<Token | HttpError<ErrorLogin>> {
     const loginDto = LoginMapper.toDto(loginInfo);
     return this.apiService.postData<TokenDto, LoginDto>('auth/login/', loginDto).pipe(
       map(value => TokenMapper.fromDto(value)),
-      catchError((value: unknown) => {
-          const httpError = ((value as HttpErrorResponse).error) as HttpErrorDto<ErrorLoginDto>;
+      catchError((error: unknown) => {
+        if (error instanceof HttpErrorResponse) {
+          const httpError = error.error as HttpErrorDto<ErrorLoginDto>;
           return of(HttpErrorMapper.fromDto<ErrorLoginDto, ErrorLogin>(httpError, ErrorLoginMapper.fromDto));
-        }),
+        }
+        return throwError(() => error);
+      }),
     );
   }
 

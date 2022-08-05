@@ -1,53 +1,107 @@
-<form [formGroup]="registerForm" (ngSubmit)="onSubmitRegister()" class="register">
+<form
+  [formGroup]="registerForm"
+  (ngSubmit)="onSubmitRegister()"
+  class="register"
+>
   <div class="register__wrapper">
-    <h1 class="register__title register__title_welcome">Welcome to Saritasa Anime</h1>
-    <h1 class="register__title register__title_action">Sign up to your account</h1>
+    <h1 class="register__title register__title_welcome">
+      Welcome to Saritasa Anime
+    </h1>
+    <h1 class="register__title register__title_action">
+      Sign up to your account
+    </h1>
     <div class="register__content">
       <mat-form-field class="register__input">
         <mat-label>Email</mat-label>
-        <input formControlName="email" type="email" matInput
-        placeholder="Enter your email ... ">
-        <mat-error *ngIf="errorControl['email'].required?.check">{{errorControl['email'].required?.message}}</mat-error>
-        <mat-error *ngIf="errorControl['email'].isEmail?.check">{{errorControl['email'].isEmail?.message}}</mat-error>
-        <mat-error *ngIf="errorControl['email'].httpError?.check">{{errorControl['email'].httpError?.message$ | async}}</mat-error>
+        <input
+          formControlName="email"
+          type="email"
+          matInput
+          placeholder="Enter your email ... "
+        />
+        <mat-error *ngIf="errorControl['email'].required?.check">{{
+          errorControl["email"].required?.message
+        }}</mat-error>
+        <mat-error *ngIf="errorControl['email'].isEmail?.check">{{
+          errorControl["email"].isEmail?.message
+        }}</mat-error>
+        <mat-error *ngIf="errorControl['email'].httpError?.check">{{
+          errorControl["email"].httpError?.message$ | async
+        }}</mat-error>
       </mat-form-field>
 
       <mat-form-field class="register__input">
         <mat-label>First name</mat-label>
-        <input formControlName="firstName" type="text" matInput
-        placeholder="Enter your first name ... ">
-        <mat-error *ngIf="errorControl['firstName'].required?.check">{{errorControl["firstName"].required?.message}}</mat-error>
-        <mat-error *ngIf="errorControl['firstName'].httpError?.check">{{errorControl['firstName'].httpError?.message$ | async}}</mat-error>
+        <input
+          formControlName="firstName"
+          type="text"
+          matInput
+          placeholder="Enter your first name ... "
+        />
+        <mat-error *ngIf="errorControl['firstName'].required?.check">{{
+          errorControl["firstName"].required?.message
+        }}</mat-error>
+        <mat-error *ngIf="errorControl['firstName'].httpError?.check">{{
+          errorControl["firstName"].httpError?.message$ | async
+        }}</mat-error>
       </mat-form-field>
-
 
       <mat-form-field class="register__input">
         <mat-label>Last name</mat-label>
-        <input formControlName="lastName" type="text" matInput
-        placeholder="Enter your last name ... ">
-        <mat-error *ngIf="errorControl['lastName'].required?.check">{{errorControl['lastName'].required?.message}}</mat-error>
-        <mat-error *ngIf="errorControl['lastName'].httpError?.check">{{errorControl['lastName'].httpError?.message$ | async}}</mat-error>
-
+        <input
+          formControlName="lastName"
+          type="text"
+          matInput
+          placeholder="Enter your last name ... "
+        />
+        <mat-error *ngIf="errorControl['lastName'].required?.check">{{
+          errorControl["lastName"].required?.message
+        }}</mat-error>
+        <mat-error *ngIf="errorControl['lastName'].httpError?.check">{{
+          errorControl["lastName"].httpError?.message$ | async
+        }}</mat-error>
       </mat-form-field>
 
       <mat-form-field class="register__input">
         <mat-label>Password</mat-label>
-        <input formControlName="password" type="password" matInput
-        placeholder="Enter your password ... ">
-        <mat-error *ngIf="errorControl['password'].required?.check">{{errorControl['password'].required?.message}}</mat-error>
-        <mat-error *ngIf="errorControl['password'].httpError?.check">{{errorControl['password'].httpError?.message$ | async}}</mat-error>
-
+        <input
+          formControlName="password"
+          type="password"
+          matInput
+          placeholder="Enter your password ... "
+        />
+        <mat-error *ngIf="errorControl['password'].required?.check">{{
+          errorControl["password"].required?.message
+        }}</mat-error>
+        <mat-error *ngIf="errorControl['password'].httpError?.check">{{
+          errorControl["password"].httpError?.message$ | async
+        }}</mat-error>
       </mat-form-field>
       <mat-form-field class="register__input">
         <mat-label>Confirm your password</mat-label>
-        <input formControlName="confirmPassword" type="password" matInput
-        placeholder="Re-input your password ... ">
-        <mat-error *ngIf="errorControl['confirmPassword'].required?.check">{{errorControl['confirmPassword'].required?.message}}</mat-error>
-        <mat-error *ngIf="errorControl['confirmPassword'].notMatch?.check">{{errorControl['confirmPassword'].notMatch?.message}}</mat-error>
+        <input
+          formControlName="confirmPassword"
+          type="password"
+          matInput
+          placeholder="Re-input your password ... "
+        />
+        <mat-error *ngIf="errorControl['confirmPassword'].required?.check">{{
+          errorControl["confirmPassword"].required?.message
+        }}</mat-error>
+        <mat-error *ngIf="errorControl['confirmPassword'].notMatch?.check">{{
+          errorControl["confirmPassword"].notMatch?.message
+        }}</mat-error>
       </mat-form-field>
 
-      <p class="register__text">Already have an account? Please <a [routerLink]="['/auth/login']" class="register__text_login">login here.</a> </p>
-      <button type="submit" mat-raised-button class="register__button" >Sign up</button>
+      <p class="register__text">
+        Already have an account? Please
+        <a [routerLink]="['/auth/login']" class="register__text_login"
+          >login here.</a
+        >
+      </p>
+      <button type="submit" mat-raised-button class="register__button">
+        Sign up
+      </button>
     </div>
   </div>
 </form>

@@ -1,8 +1,13 @@
 <div class="pagination">
   <mat-paginator
-  [showFirstLastButtons]="true"
-  (page)="onPaginationChange($event)"
-  [length]="totalItems" [pageSize]="limit" [pageSizeOptions]="limitOptions" [pageIndex]="(activePage === null|| activePage === undefined) ? 0: activePage -1">
-</mat-paginator>
+    [showFirstLastButtons]="true"
+    (page)="onPaginationChange($event)"
+    [length]="totalItems"
+    [pageSize]="limit"
+    [pageSizeOptions]="limitOptions"
+    [pageIndex]="
+      activePage === null || activePage === undefined ? 0 : activePage - 1
+    "
+  >
+  </mat-paginator>
 </div>
-
