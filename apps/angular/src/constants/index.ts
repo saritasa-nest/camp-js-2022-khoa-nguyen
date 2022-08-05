@@ -130,3 +130,5 @@ export const DEFAULT_ANIME_LIST_QUERY: AnimeListQueryOptions = new AnimeListQuer
   }),
   search: DEFAULT_SEARCH,
 });
+
+export const KEY_TOKEN = 'token';
