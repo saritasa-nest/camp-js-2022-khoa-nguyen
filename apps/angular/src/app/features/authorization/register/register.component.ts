@@ -21,9 +21,6 @@ import { AuthService, ErrorValidation, LocalStoreService } from '../../../../cor
 
 export class RegisterComponent implements OnInit {
 
-  /** Watch if form is submitted or not.  */
-  public isSubmitted$ = new BehaviorSubject<boolean>(false);
-
   /** Register form init. */
   public registerForm = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
@@ -201,7 +198,6 @@ export class RegisterComponent implements OnInit {
   /** Handle form submit. */
   public onSubmitRegister(): void {
     this.registerForm.markAllAsTouched();
-    this.isSubmitted$.next(true);
     const formData = this.registerForm.getRawValue();
     if (!isFieldsDefined(formData)) {
       return;

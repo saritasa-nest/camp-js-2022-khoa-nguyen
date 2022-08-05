@@ -1,8 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ErrorUserDto, HttpErrorDto, TokenDto, UserDto } from '@js-camp/core/dtos';
-import { ErrorUserMapper, HttpErrorMapper, TokenMapper, UserMapper } from '@js-camp/core/mappers';
-import { ErrorUser, HttpError, Token, User } from '@js-camp/core/models';
+import { ErrorLoginDto, ErrorUserDto, HttpErrorDto, LoginDto, TokenDto, UserDto } from '@js-camp/core/dtos';
+import { ErrorLoginMapper, ErrorUserMapper, HttpErrorMapper, LoginMapper, TokenMapper, UserMapper } from '@js-camp/core/mappers';
+import { ErrorLogin, ErrorUser, HttpError, Login, Token, User } from '@js-camp/core/models';
 import { catchError, map, Observable, of } from 'rxjs';
 
 import { ApiService } from '.';
@@ -54,6 +54,21 @@ export class AuthService {
         const httpError = ((value as HttpErrorResponse).error) as HttpErrorDto<ErrorUserDto>;
         return of(HttpErrorMapper.fromDto<ErrorUserDto, ErrorUser>(httpError, ErrorUserMapper.fromDto));
       }),
+    );
+  }
+
+  /**
+   * Create user.
+   * @param loginInfo Login information.
+   */
+  public login(loginInfo: Login): Observable<Token | HttpError<ErrorLogin>> {
+    const loginDto = LoginMapper.toDto(loginInfo);
+    return this.apiService.postData<TokenDto, LoginDto>('auth/login/', loginDto).pipe(
+      map(value => TokenMapper.fromDto(value)),
+      catchError((value: unknown) => {
+          const httpError = ((value as HttpErrorResponse).error) as HttpErrorDto<ErrorLoginDto>;
+          return of(HttpErrorMapper.fromDto<ErrorLoginDto, ErrorLogin>(httpError, ErrorLoginMapper.fromDto));
+        }),
     );
   }
 
