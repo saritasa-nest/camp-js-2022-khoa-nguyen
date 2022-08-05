@@ -204,8 +204,6 @@ export class RegisterComponent implements OnInit {
     const userInfo: User = new User({
       email, password, firstName, lastName,
     });
-
-    // this.isValidConfirmPassword(password, formData.confirmPassword);
     if (this.registerForm.valid) {
       this.registerInfo$.next(userInfo);
     }
