@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ErrorUser, HttpError, Token, User } from '@js-camp/core/models';
 
 import { BehaviorSubject, ignoreElements, map, merge, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
 
-import { KEY_TOKEN } from '../../../../constants';
+import { key, url } from '../../../../constants';
 
 import { isDefined, isFieldsDefined } from '../../../../core/guards/nonNullField.guard';
 
@@ -154,6 +155,7 @@ export class RegisterComponent implements OnInit {
     private authService: AuthService,
     private localStoreService: LocalStoreService,
     private changeDetectorRef: ChangeDetectorRef,
+    private router: Router,
   ) {
     this.token$ = this.registerInfo$.pipe(
       map(userInfo => this.authService.createUser(userInfo)),
@@ -170,15 +172,16 @@ export class RegisterComponent implements OnInit {
             throw new Error('Invalid error.');
           }
           this.errorList$.next(value.data);
-          for (const key in value.data) {
-            if (value.data[key as keyof ErrorUser] == null) {
+          for (const keyValue in value.data) {
+            if (value.data[keyValue as keyof ErrorUser] == null) {
               continue;
             }
-            this.registerForm.get(key)?.setErrors({ httpError: true });
+            this.registerForm.get(keyValue)?.setErrors({ httpError: true });
           }
           this.changeDetectorRef.markForCheck();
         } else {
-          this.localStoreService.setValue(KEY_TOKEN, value.access);
+          this.localStoreService.setValue(key.token, value.access);
+          this.router.navigate([url.home]);
         }
       }),
     );
