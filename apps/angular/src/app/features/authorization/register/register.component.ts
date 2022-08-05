@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ErrorUser, HttpError, Token, User } from '@js-camp/core/models';
 
@@ -9,7 +9,7 @@ import { key, url } from '../../../../constants';
 
 import { isDefined, isFieldsDefined } from '../../../../core/guards/nonNullField.guard';
 
-import { AuthService, ErrorValidation, LocalStoreService } from '../../../../core/services';
+import { AuthService, ErrorValidation, LocalStoreService, CustomValidatorService } from '../../../../core/services';
 
 /** Register form. */
 @Component({
@@ -22,13 +22,7 @@ import { AuthService, ErrorValidation, LocalStoreService } from '../../../../cor
 export class RegisterComponent implements OnInit {
 
   /** Register form init. */
-  public registerForm = this.formBuilder.group({
-    email: ['', [Validators.required, Validators.email]],
-    firstName: ['', Validators.required],
-    lastName: ['', Validators.required],
-    password: ['', Validators.required],
-    confirmPassword: ['', Validators.required],
-  });
+  public registerForm: FormGroup;
 
   /** Get register form controls. */
   public get registerFormControl(): typeof this.registerForm.controls {
@@ -59,16 +53,16 @@ export class RegisterComponent implements OnInit {
     return {
       email: {
         required: {
-          check: this.registerFormControl.email.errors?.['required'],
+          check: this.registerFormControl['email'].errors?.['required'],
           message: 'Email is required.',
         },
         isEmail: {
-          check: this.registerFormControl.email.errors?.['email'],
+          check: this.registerFormControl['email'].errors?.['email'],
           message: 'This field has to be email.',
         },
 
         httpError: {
-          check: this.registerFormControl.email.errors?.['httpError'],
+          check: this.registerFormControl['email'].errors?.['httpError'],
           message$: this.errorList$.pipe(
             map(error => {
               if (!isDefined(error.email)) {
@@ -82,11 +76,11 @@ export class RegisterComponent implements OnInit {
 
       firstName: {
         required: {
-          check: this.registerFormControl.firstName.errors?.['required'],
+          check: this.registerFormControl['firstName'].errors?.['required'],
           message: 'First name is required.',
         },
         httpError: {
-          check: this.registerFormControl.firstName.errors?.['httpError'],
+          check: this.registerFormControl['firstName'].errors?.['httpError'],
           message$: this.errorList$.pipe(
             map(error => {
               if (!isDefined(error.firstName)) {
@@ -100,11 +94,11 @@ export class RegisterComponent implements OnInit {
 
       lastName: {
         required: {
-          check: this.registerFormControl.lastName.errors?.['required'],
+          check: this.registerFormControl['lastName'].errors?.['required'],
           message: 'Last name is required.',
         },
         httpError: {
-          check: this.registerFormControl.lastName.errors?.['httpError'],
+          check: this.registerFormControl['lastName'].errors?.['httpError'],
           message$: this.errorList$.pipe(
             map(error => {
               if (!isDefined(error.lastName)) {
@@ -118,11 +112,11 @@ export class RegisterComponent implements OnInit {
 
       password: {
         required: {
-          check: this.registerFormControl.password.errors?.['required'],
+          check: this.registerFormControl['password'].errors?.['required'],
           message: 'Password is required.',
         },
         httpError: {
-          check: this.registerFormControl.password.errors?.['httpError'],
+          check: this.registerFormControl['password'].errors?.['httpError'],
           message$: this.errorList$.pipe(
             map(error => {
               if (!isDefined(error.password)) {
@@ -136,11 +130,11 @@ export class RegisterComponent implements OnInit {
 
       confirmPassword: {
         required: {
-          check: this.registerFormControl.confirmPassword.errors?.['required'],
+          check: this.registerFormControl['confirmPassword'].errors?.['required'],
           message: 'Confirm password is required.',
         },
         notMatch: {
-          check: this.registerFormControl.confirmPassword.errors?.['notMatch'],
+          check: this.registerFormControl['confirmPassword'].errors?.['notMatch'],
           message: 'This field is not match with your current password, please input again.',
         },
       },
@@ -151,9 +145,21 @@ export class RegisterComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private localStoreService: LocalStoreService,
+    private customValidatorService: CustomValidatorService,
     private changeDetectorRef: ChangeDetectorRef,
     private router: Router,
   ) {
+    this.registerForm = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      password: ['', Validators.required],
+      confirmPassword: ['', [Validators.required]],
+    },
+    {
+      validator: this.customValidatorService.matchPassword('password', 'confirmPassword'),
+    });
+
     this.token$ = this.registerInfo$.pipe(
       map(userInfo => this.authService.createUser(userInfo)),
       switchMap(value$ => value$),
@@ -187,14 +193,6 @@ export class RegisterComponent implements OnInit {
       .subscribe();
   }
 
-  private isValidConfirmPassword(password: string, passwordConfirm: string): boolean {
-    if (password.localeCompare(passwordConfirm) === 0) {
-      return true;
-    }
-    this.registerFormControl.confirmPassword.setErrors({ notMatch: true });
-    return false;
-  }
-
   /** Handle form submit. */
   public onSubmitRegister(): void {
     this.registerForm.markAllAsTouched();
@@ -206,7 +204,8 @@ export class RegisterComponent implements OnInit {
     const userInfo: User = new User({
       email, password, firstName, lastName,
     });
-    this.isValidConfirmPassword(password, formData.confirmPassword);
+
+    // this.isValidConfirmPassword(password, formData.confirmPassword);
     if (this.registerForm.valid) {
       this.registerInfo$.next(userInfo);
     }
