@@ -4,9 +4,9 @@
       <a routerLink="/" class="navigation__link">Home</a>
     </div>
     <div class="navigation__right">
-      <a [routerLink]="['/auth/login']" class="navigation__link">Log out</a>
-      <a [routerLink]="['/auth/login']" class="navigation__link">Log in</a>
-      <a [routerLink]="['/auth/register']" class="navigation__link">Sign up</a>
+      <a *ngIf="isAuth$| async" [routerLink]="['/auth/login']" class="navigation__link">Log out</a>
+      <a *ngIf="(isAuth$| async) === false" [routerLink]="['/auth/login']" class="navigation__link">Log in</a>
+      <a *ngIf="(isAuth$| async) === false" [routerLink]="['/auth/register']" class="navigation__link">Sign up</a>
     </div>
   </div>
 </div>

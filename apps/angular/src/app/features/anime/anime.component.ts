@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
+import { AuthService } from '../../../core/services';
+
 /** Anime component. */
 @Component({
   selector: 'camp-anime',
@@ -7,4 +9,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrls: ['./anime.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AnimeComponent {}
+export class AnimeComponent {
+  public constructor(authService: AuthService) {
+    authService.handleCheckToken();
+
+    // console.log(authService.isLoggedIn.getValue());
+  }
+}

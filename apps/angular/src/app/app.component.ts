@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
+import { AuthService } from '../core/services';
+
 /** App component. */
 @Component({
   selector: 'camp-root',
@@ -7,4 +9,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrls: ['./app.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent {}
+export class AppComponent {
+  public constructor(private readonly authService: AuthService) {
+    this.authService.handleCheckToken();
+  }
+}

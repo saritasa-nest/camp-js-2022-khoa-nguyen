@@ -3,9 +3,11 @@ import { Injectable } from '@angular/core';
 import { ErrorLoginDto, ErrorUserDto, HttpErrorDto, LoginDto, TokenDto, UserDto } from '@js-camp/core/dtos';
 import { ErrorLoginMapper, ErrorUserMapper, HttpErrorMapper, LoginMapper, TokenMapper, UserMapper } from '@js-camp/core/mappers';
 import { ErrorLogin, ErrorUser, HttpError, Login, Token, User } from '@js-camp/core/models';
-import { catchError, map, Observable, of, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, of, throwError } from 'rxjs';
 
-import { ApiService } from '.';
+import { key } from '../../constants';
+
+import { ApiService, LocalStoreService } from '.';
 
 /** Enum of general errors. */
 enum Error {
@@ -40,7 +42,16 @@ export interface ErrorValidation<T = undefined> {
 })
 export class AuthService {
 
-  public constructor(private readonly apiService: ApiService) { }
+  public constructor(
+    private readonly apiService: ApiService,
+    private readonly localStoreService: LocalStoreService,
+  ) { }
+
+  /** Login state. */
+  private _isLoggedIn$ = new BehaviorSubject<boolean>(false);
+
+  /** Login state. */
+  public isLoggedIn$ = this._isLoggedIn$.asObservable();
 
   /**
    * Create user.
@@ -78,4 +89,11 @@ export class AuthService {
     );
   }
 
+  /** Check if user is logged. */
+  public handleCheckToken(): void {
+    const token = this.localStoreService.getValue<Token>(key.token);
+    if (token) {
+      this._isLoggedIn$.next(true);
+    }
+  }
 }

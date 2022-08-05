@@ -9,7 +9,7 @@ import { Anime, Pagination, SortValue } from '@js-camp/core/models';
 import { BehaviorSubject, combineLatestWith, debounceTime, distinctUntilChanged, ignoreElements, map, merge, Observable, shareReplay, skip, startWith, Subject, switchMap, takeUntil, tap } from 'rxjs';
 
 import { DEFAULT_ACTIVE_PAGE, DEFAULT_SEARCH, FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS, url } from '../../../../constants';
-import { AnimeService, QueryUrl, SettingOfAnimeList } from '../../../../core/services';
+import { AnimeService, AuthService, QueryUrl, SettingOfAnimeList } from '../../../../core/services';
 
 /** Anime table list. */
 @Component({
@@ -82,6 +82,7 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
     private readonly animeService: AnimeService,
     private readonly activateRoute: ActivatedRoute,
     private readonly router: Router,
+    private readonly authService: AuthService,
   ) {
     this.queryCombine$ = this.settingOfAnimeList$.pipe(
       combineLatestWith(
