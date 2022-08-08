@@ -12,7 +12,5 @@ import { AuthService } from '../../../core/services';
 export class AnimeComponent {
   public constructor(authService: AuthService) {
     authService.handleCheckToken();
-
-    // console.log(authService.isLoggedIn.getValue());
   }
 }

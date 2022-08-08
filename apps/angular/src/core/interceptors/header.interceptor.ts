@@ -1,19 +1,19 @@
 import {
-  HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest,
+  HttpErrorResponse,
+  HttpEvent, HttpHandler, HttpInterceptor, HttpRequest,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-
 import { Token } from '@js-camp/core/models';
+import { catchError, Observable, switchMap, throwError } from 'rxjs';
 
-import { API_KEY, key } from '../../constants';
-import { LocalStoreService } from '../services';
+import { API_KEY } from '../../constants';
+import { TokenService } from '../services/token.service';
 
 /** Interceptor header handler. */
 @Injectable()
 export class HeaderInterceptor implements HttpInterceptor {
 
-  public constructor(private localStoreService: LocalStoreService) {}
+  public constructor(private tokenService: TokenService) {}
 
   /**
    * Header interceptors.
@@ -21,14 +21,46 @@ export class HeaderInterceptor implements HttpInterceptor {
    * @param next HTTP Request handler.
    */
   public intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    const token = this.localStoreService.getValue<Token>(key.token);
+    const token = this.tokenService.getToken();
     if (token) {
-      const headers = new HttpHeaders()
-        .set('Authorization', `Bearer ${token}`)
-        .set('Api-Key', API_KEY);
-      const authRequest = request.clone({ headers });
-      return next.handle(authRequest);
+      const authRequest = this.addTokenHeader(request, token);
+      return next.handle(authRequest).pipe(
+        catchError((error: unknown) => {
+          if (error instanceof HttpErrorResponse && error.status === 401) {
+            return this.handle401Error(authRequest, next);
+          }
+          return throwError(() => error);
+        }),
+      );
     }
     return next.handle(request);
+  }
+
+  /**
+   * Handle error.
+   * @param request Http request.
+   * @param next Http handler.
+   */
+  private handle401Error(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+    return this.tokenService.refreshToken().pipe(
+      switchMap(token => next.handle(this.addTokenHeader(request, token))),
+      catchError((error: unknown) => throwError(() => error)),
+    );
+  }
+
+  /**
+   * Add Token to header.
+   * @param request Http request.
+   * @param token Token.
+   */
+  private addTokenHeader(request: HttpRequest<unknown>, token: Token | null): HttpRequest<unknown> {
+    if (token == null) {
+      throw new Error('Invalid token.');
+    }
+    return request.clone({
+      headers: request.headers
+        .set('Authorization', `Bearer ${token.access}`)
+        .set('Api-Key', API_KEY),
+    });
   }
 }
