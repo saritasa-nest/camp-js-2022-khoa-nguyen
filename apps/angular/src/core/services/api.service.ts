@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 
 import { BASE_URL } from '../../constants';
 
@@ -20,12 +20,12 @@ export class ApiService {
    * @param params Query params.
    */
   public getData<Dto, ParamDto>(url: string, params?: ParamDto): Observable<Dto> {
-    try {
-      const finishedUrl = BASE_URL + url;
-      return this.httpClient.get<Dto>(finishedUrl, { params: { ...params } });
-    } catch (error: unknown) {
-      throw new Error((error as Error).message);
-    }
+    const finishedUrl = BASE_URL + url;
+    return this.httpClient
+      .get<Dto>(finishedUrl, { params: { ...params } })
+      .pipe(
+        catchError((error: unknown) => throwError(() => error)),
+      );
   }
 
   /**
