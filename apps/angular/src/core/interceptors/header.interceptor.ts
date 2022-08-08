@@ -4,7 +4,7 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Token } from '@js-camp/core/models';
-import { catchError, Observable, switchMap, throwError } from 'rxjs';
+import { catchError, Observable, switchMap } from 'rxjs';
 
 import { API_KEY } from '../../constants';
 import { AuthService } from '../services';
@@ -16,16 +16,24 @@ export class HeaderInterceptor implements HttpInterceptor {
   public constructor(private authService: AuthService) {}
 
   /**
+   * Set default request.
+   * @param request Http Request.
+   */
+  public getDefaultRequest(request: HttpRequest<unknown>): HttpRequest<unknown> {
+    return request.clone({
+      headers: request.headers
+        .set('Api-Key', API_KEY),
+    });
+  }
+
+  /**
    * Header interceptors.
    * @param request Http Request.
    * @param next HTTP Request handler.
    */
   public intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const token = this.authService.getToken();
-    const defaultRequest = request.clone({
-      headers: request.headers
-        .set('Api-Key', API_KEY),
-    });
+
     if (token !== null && token instanceof Token) {
       const authRequest = this.addTokenHeader(request, token);
       return next.handle(authRequest).pipe(
@@ -33,11 +41,11 @@ export class HeaderInterceptor implements HttpInterceptor {
           if (error instanceof HttpErrorResponse && error.status === 401) {
             return this.handle401Error(token, authRequest, next);
           }
-          return throwError(() => error);
+          return next.handle(this.getDefaultRequest(request));
         }),
       );
     }
-    return next.handle(defaultRequest);
+    return next.handle(this.getDefaultRequest(request));
   }
 
   /**
@@ -60,7 +68,7 @@ export class HeaderInterceptor implements HttpInterceptor {
   private addTokenHeader(request: HttpRequest<unknown>, token: Token): HttpRequest<unknown> {
     return request.clone({
       headers: request.headers
-        .append('Authorization', `Bearer ${token.access}`)
+        .set('Authorization', `Bearer ${token.access}`)
         .set('Api-Key', API_KEY),
     });
   }

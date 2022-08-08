@@ -122,13 +122,16 @@ export class AuthService {
    */
   public refreshToken(currentToken: Token): Observable<Token> {
     return this.apiService
-      .postData<TokenDto, unknown>('auth/token/refresh', { refresh: currentToken.refresh })
+      .postData<TokenDto, unknown>('auth/token/refresh/', { refresh: currentToken.refresh })
       .pipe(
         map(token => TokenMapper.fromDto(token)),
-        tap(token => this.localStoreService.setValue<Token>(key.token, token)),
-        catchError((error: unknown) => {
-          this._isLoggedIn$.next(false);
+        tap(token => {
           this.logout();
+          this.localStoreService.setValue<Token>(key.token, token);
+        }),
+        catchError((error: unknown) => {
+          this.logout();
+          this._isLoggedIn$.next(false);
           return throwError(() => error);
         }),
       );
