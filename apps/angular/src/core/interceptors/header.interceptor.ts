@@ -7,13 +7,13 @@ import { Token } from '@js-camp/core/models';
 import { catchError, Observable, switchMap, throwError } from 'rxjs';
 
 import { API_KEY } from '../../constants';
-import { TokenService } from '../services/token.service';
+import { AuthService } from '../services';
 
 /** Interceptor header handler. */
 @Injectable()
 export class HeaderInterceptor implements HttpInterceptor {
 
-  public constructor(private tokenService: TokenService) {}
+  public constructor(private authService: AuthService) {}
 
   /**
    * Header interceptors.
@@ -21,7 +21,7 @@ export class HeaderInterceptor implements HttpInterceptor {
    * @param next HTTP Request handler.
    */
   public intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    const token = this.tokenService.getToken();
+    const token = this.authService.getToken();
     const defaultRequest = request.clone({
       headers: request.headers
         .set('Api-Key', API_KEY),
@@ -46,9 +46,8 @@ export class HeaderInterceptor implements HttpInterceptor {
    * @param next Http handler.
    */
   private handle401Error(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    return this.tokenService.refreshToken().pipe(
+    return this.authService.refreshToken().pipe(
       switchMap(token => next.handle(this.addTokenHeader(request, token))),
-      catchError((error: unknown) => throwError(() => error)),
     );
   }
 

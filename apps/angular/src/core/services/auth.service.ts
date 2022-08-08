@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { ErrorLoginDto, ErrorUserDto, HttpErrorDto, LoginDto, TokenDto, UserDto } from '@js-camp/core/dtos';
 import { ErrorLoginMapper, ErrorUserMapper, HttpErrorMapper, LoginMapper, TokenMapper, UserMapper } from '@js-camp/core/mappers';
 import { ErrorLogin, ErrorUser, HttpError, Login, Token, User } from '@js-camp/core/models';
-import { BehaviorSubject, catchError, map, Observable, of, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, of, tap, throwError } from 'rxjs';
 
 import { key } from '../../constants';
 
@@ -42,16 +42,16 @@ export interface ErrorValidation<T = undefined> {
 })
 export class AuthService {
 
-  public constructor(
-    private readonly apiService: ApiService,
-    private readonly localStoreService: LocalStoreService,
-  ) { }
-
   /** Login state. */
   private _isLoggedIn$ = new BehaviorSubject<boolean>(false);
 
   /** Login state. */
   public isLoggedIn$ = this._isLoggedIn$.asObservable();
+
+  public constructor(
+    private readonly apiService: ApiService,
+    private readonly localStoreService: LocalStoreService,
+  ) { }
 
   /**
    * Create user.
@@ -61,6 +61,7 @@ export class AuthService {
     const userDto = UserMapper.toDto(userInfo);
     return this.apiService.postData<TokenDto, UserDto>('auth/register/', userDto).pipe(
       map(value => TokenMapper.fromDto(value)),
+      tap(() => this._isLoggedIn$.next(true)),
       catchError((error: unknown) => {
         if (error instanceof HttpErrorResponse) {
           const httpError = ((error as HttpErrorResponse).error) as HttpErrorDto<ErrorUserDto>;
@@ -79,6 +80,7 @@ export class AuthService {
     const loginDto = LoginMapper.toDto(loginInfo);
     return this.apiService.postData<TokenDto, LoginDto>('auth/login/', loginDto).pipe(
       map(value => TokenMapper.fromDto(value)),
+      tap(() => this._isLoggedIn$.next(true)),
       catchError((error: unknown) => {
         if (error instanceof HttpErrorResponse) {
           const httpError = error.error as HttpErrorDto<ErrorLoginDto>;
@@ -99,6 +101,31 @@ export class AuthService {
 
   /** Log out. */
   public logout(): void {
+    this._isLoggedIn$.next(false);
     this.localStoreService.remove(key.token);
+  }
+
+  /** Get current token. */
+  public getToken(): Token | null {
+    return this.localStoreService.getValue<Token>(key.token);
+  }
+
+  /** Refresh token. */
+  public refreshToken(): Observable<Token | null> {
+    const currentToken = this.getToken();
+    if (!currentToken) {
+      return of(null);
+    }
+    return this.apiService
+      .postData<TokenDto, unknown>('/auth/token/refresh', { refresh: currentToken.refresh })
+      .pipe(
+        map(token => TokenMapper.fromDto(token)),
+        tap(token => this.localStoreService.setValue<Token>(key.token, token)),
+        catchError((error: unknown) => {
+          this._isLoggedIn$.next(false);
+          this.logout();
+          return throwError(() => error);
+        }),
+      );
   }
 }
