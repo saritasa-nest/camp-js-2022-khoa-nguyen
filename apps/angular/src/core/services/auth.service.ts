@@ -93,10 +93,12 @@ export class AuthService {
 
   /** Check if user is logged. */
   public handleCheckToken(): void {
-    const token = this.localStoreService.getValue<Token>(key.token);
+    const token = this.getToken();
     if (token instanceof Token) {
       this._isLoggedIn$.next(true);
+      return;
     }
+    this._isLoggedIn$.next(false);
   }
 
   /** Log out. */
@@ -107,7 +109,11 @@ export class AuthService {
 
   /** Get current token. */
   public getToken(): Token | null {
-    return this.localStoreService.getValue<Token>(key.token);
+    const token = this.localStoreService.getValue<Token>(key.token);
+    if (token == null) {
+      return null;
+    }
+    return new Token({ ...token });
   }
 
   /**
@@ -116,7 +122,7 @@ export class AuthService {
    */
   public refreshToken(currentToken: Token): Observable<Token> {
     return this.apiService
-      .postData<TokenDto, unknown>('/auth/token/refresh', { refresh: currentToken.refresh })
+      .postData<TokenDto, unknown>('auth/token/refresh', { refresh: currentToken.refresh })
       .pipe(
         map(token => TokenMapper.fromDto(token)),
         tap(token => this.localStoreService.setValue<Token>(key.token, token)),
