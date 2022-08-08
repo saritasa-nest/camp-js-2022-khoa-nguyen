@@ -96,4 +96,9 @@ export class AuthService {
       this._isLoggedIn$.next(true);
     }
   }
+
+  /** Log out. */
+  public logout(): void {
+    this.localStoreService.remove(key.token);
+  }
 }

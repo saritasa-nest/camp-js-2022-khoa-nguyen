@@ -19,4 +19,9 @@ export class NavigationComponent {
   public constructor(private readonly authService: AuthService) {
     this.isAuth$ = this.authService.isLoggedIn$;
   }
+
+  /** Handle logout.*/
+  public handleLogOut(): void {
+    this.authService.logout();
+  }
 }

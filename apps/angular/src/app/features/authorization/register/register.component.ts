@@ -183,7 +183,7 @@ export class RegisterComponent implements OnInit {
           }
           this.changeDetectorRef.markForCheck();
         } else {
-          this.localStoreService.setValue(key.token, value.access);
+          this.localStoreService.setValue<Token>(key.token, value);
           this.router.navigate([url.home]);
         }
       }),

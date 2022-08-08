@@ -22,6 +22,10 @@ export class HeaderInterceptor implements HttpInterceptor {
    */
   public intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const token = this.tokenService.getToken();
+    const defaultRequest = request.clone({
+      headers: request.headers
+        .set('Api-Key', API_KEY),
+    });
     if (token) {
       const authRequest = this.addTokenHeader(request, token);
       return next.handle(authRequest).pipe(
@@ -33,7 +37,7 @@ export class HeaderInterceptor implements HttpInterceptor {
         }),
       );
     }
-    return next.handle(request);
+    return next.handle(defaultRequest);
   }
 
   /**
@@ -59,7 +63,7 @@ export class HeaderInterceptor implements HttpInterceptor {
     }
     return request.clone({
       headers: request.headers
-        .set('Authorization', `Bearer ${token.access}`)
+        .append('Authorization', `Bearer ${token.access}`)
         .set('Api-Key', API_KEY),
     });
   }

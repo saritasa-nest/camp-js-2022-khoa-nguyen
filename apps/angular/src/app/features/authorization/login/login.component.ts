@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
           this.errorLogin$.next(value.detail);
           this.changeDetectorRef.markForCheck();
         } else {
-          this.localStoreService.setValue(key.token, value.access);
+          this.localStoreService.setValue<Token>(key.token, value);
           this.router.navigate([url.home]);
         }
       }),
