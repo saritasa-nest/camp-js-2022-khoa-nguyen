@@ -13,8 +13,6 @@ import { API_KEY } from '../../constants';
 @Injectable()
 export class ApiInterceptor implements HttpInterceptor {
 
-  public constructor() {}
-
   /**
    * Api key header interceptors.
    * @param request Http Request.

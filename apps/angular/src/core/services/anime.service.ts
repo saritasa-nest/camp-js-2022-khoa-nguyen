@@ -100,12 +100,11 @@ export class AnimeService {
    */
   public getAnimeList(paramsModel: AnimeListQueryOptions): Observable<Pagination<Anime>> {
     const paramDto = AnimeListQueryOptionsMapper.toDto(paramsModel);
-    const result$ = this.apiService
+    return this.apiService
       .getData<PaginationDto<AnimeDto>, AnimeListQueryOptionsDto>(ANIME_LIST_API, paramDto)
       .pipe(
         map(data => PaginationMapper.fromDto<AnimeDto, Anime>(data, AnimeMapper.fromDto)),
       );
-    return result$;
   }
 
   /**
