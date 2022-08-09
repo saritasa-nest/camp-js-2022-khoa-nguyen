@@ -5,8 +5,8 @@ import { MatSelectChange } from '@angular/material/select';
 import { Sort } from '@angular/material/sort';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TypeDto } from '@js-camp/core/dtos';
-import { Anime, Pagination, SortValue } from '@js-camp/core/models';
-import { BehaviorSubject, combineLatestWith, debounceTime, distinctUntilChanged, ignoreElements, map, merge, Observable, shareReplay, skip, startWith, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { Anime, AnimeListQueryOptions, SortValue } from '@js-camp/core/models';
+import { BehaviorSubject, combineLatestWith, debounceTime, distinctUntilChanged, ignoreElements, map, merge, Observable, skip, startWith, Subject, takeUntil, tap } from 'rxjs';
 
 import { DEFAULT_ACTIVE_PAGE, DEFAULT_SEARCH, FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS, url } from '../../../../constants';
 import { AnimeService, AuthService, QueryUrl, SettingOfAnimeList } from '../../../../core/services';
@@ -37,7 +37,7 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
   public readonly orderingOptions = ORDERING_OPTIONS;
 
   /** Pagination result. */
-  public readonly paginationResult$: Observable<Pagination<Anime>>;
+  public readonly animeListQueryOptions$: Observable<AnimeListQueryOptions>;
 
   /** Combined query observable. */
   public readonly queryCombine$: Observable<[SettingOfAnimeList, string]>;
@@ -78,6 +78,9 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
     this.settingOfAnimeList$.next({ ...currentSettings, ...settings });
   }
 
+  /** Anime list pagination result. */
+  public animeListPaginationResult$ = this.animeService.paginationAnimeListResult$;
+
   public constructor(
     private readonly animeService: AnimeService,
     private readonly activateRoute: ActivatedRoute,
@@ -99,10 +102,8 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
       map(([settings]) => settings),
     );
 
-    this.paginationResult$ = this.settingAnimeListUpdate$.pipe(
+    this.animeListQueryOptions$ = this.settingAnimeListUpdate$.pipe(
       map(settings => this.animeMapper.settingToModel(settings)),
-      switchMap(animeListQueryModel => this.animeService.getAnimeList(animeListQueryModel)),
-      shareReplay({ refCount: true, bufferSize: 1 }),
     );
   }
 
@@ -232,14 +233,21 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
       }),
     );
 
-    const paginationResultSideEffect$ = this.paginationResult$.pipe(
+    const paginationResultSideEffect$ = this.animeListQueryOptions$.pipe(
+      tap(animeListOptions => this.animeService.updateAnimeList(animeListOptions)),
+    );
+
+    const effect$ = this.animeListPaginationResult$.pipe(
       tap(animeList => {
+        if (animeList == null) {
+          return;
+        }
         this.isLoading$.next(false);
         this.totalItems$.next(animeList.count);
       }),
     );
 
-    merge(setUrlSideEffect$, queryCombineSideEffect$, paginationResultSideEffect$)
+    merge(setUrlSideEffect$, queryCombineSideEffect$, paginationResultSideEffect$, effect$)
       .pipe(ignoreElements(), takeUntil(this.subscriptionManager$))
       .subscribe();
   }

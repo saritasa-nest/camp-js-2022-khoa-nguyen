@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { key } from '../../constants';
 
-import { ApiService, LocalStoreService } from '.';
+import { ApiService, LocalStoreService, AnimeService } from '.';
 
 /** Enum of general errors. */
 enum Error {
@@ -55,6 +55,7 @@ export class AuthService {
     private readonly localStoreService: LocalStoreService,
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
+    private readonly animeService: AnimeService,
   ) { }
 
   /**
@@ -136,6 +137,9 @@ export class AuthService {
           this.logout();
           this._isLoggedIn$.next(false);
           this.router.navigate(['']);
+          const currentParams = this.activatedRoute.snapshot.queryParams;
+          const currentSettings = this.animeService.mapper().urlParamToModel(currentParams);
+          this.animeService.updateAnimeList(currentSettings);
           return throwError(() => error);
         }),
       );

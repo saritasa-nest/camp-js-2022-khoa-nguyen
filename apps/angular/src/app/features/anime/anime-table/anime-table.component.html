@@ -57,7 +57,7 @@
     placeholder="Search title anime ... "
   />
 </mat-form-field>
-<ng-container *ngIf="paginationResult$ | async as animeList; else Loading">
+<ng-container *ngIf="animeListPaginationResult$ | async as animeList; else Loading">
   <camp-pagination
     [limit]="(settingOfAnimeList$ | async)?.limit"
     [activePage]="(settingOfAnimeList$ | async)?.page"

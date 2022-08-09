@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AnimeDto, AnimeListQueryOptionsDto, PaginationDto, TypeDto } from '@js-camp/core/dtos';
 import { AnimeListQueryOptionsMapper, AnimeMapper, PaginationMapper } from '@js-camp/core/mappers';
 import { Anime, AnimeListQueryOptions, Pagination, Sorting, SortTitle, SortValue } from '@js-camp/core/models';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject, ignoreElements, map, Observable, Subject, takeUntil, tap } from 'rxjs';
 
 import { ANIME_LIST_API, DEFAULT_ANIME_LIST_QUERY, DEFAULT_LIMIT, DEFAULT_SEARCH, OrderOption, SORT_OPTIONS } from '../../constants';
 
@@ -84,14 +84,44 @@ export class AnimeService {
     private readonly apiService: ApiService,
   ) { }
 
+  private _paginationAnimeListResult$ = new BehaviorSubject<Pagination<Anime> | null>(null);
+
+  /** Pagination result. */
+  public paginationAnimeListResult$ = this._paginationAnimeListResult$.asObservable();
+
+  /** Subject that is used for unsubscribing from streams. */
+  private readonly subscriptionManager$ = new Subject<void>();
+
   /**
    * Get list of anime.
    * @param paramsModel Anime list query options.
    */
   public getAnimeList(paramsModel: AnimeListQueryOptions): Observable<Pagination<Anime>> {
     const paramDto = AnimeListQueryOptionsMapper.toDto(paramsModel);
-    return this.apiService.getData<PaginationDto<AnimeDto>, AnimeListQueryOptionsDto>(ANIME_LIST_API, paramDto)
-      .pipe(map(data => PaginationMapper.fromDto<AnimeDto, Anime>(data, AnimeMapper.fromDto)));
+    const result$ = this.apiService
+      .getData<PaginationDto<AnimeDto>, AnimeListQueryOptionsDto>(ANIME_LIST_API, paramDto)
+      .pipe(
+        map(data => PaginationMapper.fromDto<AnimeDto, Anime>(data, AnimeMapper.fromDto)),
+      );
+    return result$;
+  }
+
+  /**
+   * Get list of anime.
+   * @param paramsModel Anime list query options.
+   */
+  public updateAnimeList(paramsModel: AnimeListQueryOptions): void {
+    const paramDto = AnimeListQueryOptionsMapper.toDto(paramsModel);
+    this.apiService
+      .getData<PaginationDto<AnimeDto>, AnimeListQueryOptionsDto>(ANIME_LIST_API, paramDto)
+      .pipe(
+        map(data => PaginationMapper.fromDto<AnimeDto, Anime>(data, AnimeMapper.fromDto)),
+        tap(data =>
+          this._paginationAnimeListResult$.next(data)),
+        ignoreElements(),
+        takeUntil(this.subscriptionManager$),
+      )
+      .subscribe();
   }
 
   /** Mapper data.*/
