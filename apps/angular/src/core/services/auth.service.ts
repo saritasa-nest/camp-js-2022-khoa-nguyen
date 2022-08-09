@@ -5,6 +5,8 @@ import { ErrorLoginMapper, ErrorUserMapper, HttpErrorMapper, LoginMapper, TokenM
 import { ErrorLogin, ErrorUser, HttpError, Login, Token, User } from '@js-camp/core/models';
 import { BehaviorSubject, catchError, map, Observable, of, tap, throwError } from 'rxjs';
 
+import { ActivatedRoute, Router } from '@angular/router';
+
 import { key } from '../../constants';
 
 import { ApiService, LocalStoreService } from '.';
@@ -51,6 +53,8 @@ export class AuthService {
   public constructor(
     private readonly apiService: ApiService,
     private readonly localStoreService: LocalStoreService,
+    private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute,
   ) { }
 
   /**
@@ -126,12 +130,12 @@ export class AuthService {
       .pipe(
         map(token => TokenMapper.fromDto(token)),
         tap(token => {
-          this.logout();
           this.localStoreService.setValue<Token>(key.token, token);
         }),
         catchError((error: unknown) => {
           this.logout();
           this._isLoggedIn$.next(false);
+          this.router.navigate(['']);
           return throwError(() => error);
         }),
       );

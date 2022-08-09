@@ -6,13 +6,35 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { HeaderInterceptor } from '../core/interceptors/header.interceptor';
+import { ApiInterceptor } from '../core/interceptors/api.interceptor';
+
+import { AuthenticationInterceptor } from '../core/interceptors/authentication.interceptor';
+
+import { RefreshTokenInterceptor } from '../core/interceptors/refresh-token.interceptor';
 
 import { SharedModule } from './../shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AnimeModule } from './features/anime/anime.module';
 import { AuthorizationModule } from './features/authorization/authorization.module';
+
+const httpInterceptorProviders = [
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: ApiInterceptor,
+    multi: true,
+  },
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthenticationInterceptor,
+    multi: true,
+  },
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: RefreshTokenInterceptor,
+    multi: true,
+  },
+];
 
 /** App module. */
 @NgModule({
@@ -28,7 +50,7 @@ import { AuthorizationModule } from './features/authorization/authorization.modu
     ReactiveFormsModule,
     BrowserAnimationsModule,
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: HeaderInterceptor, multi: true }],
+  providers: [...httpInterceptorProviders],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
