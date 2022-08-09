@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { AnimeDto, AnimeListQueryOptionsDto, PaginationDto, TypeDto } from '@js-camp/core/dtos';
 import { AnimeListQueryOptionsMapper, AnimeMapper, PaginationMapper } from '@js-camp/core/mappers';
 import { Anime, AnimeListQueryOptions, Pagination, Sorting, SortTitle, SortValue } from '@js-camp/core/models';
@@ -82,6 +83,7 @@ export class AnimeService {
 
   public constructor(
     private readonly apiService: ApiService,
+    private readonly activatedRoute: ActivatedRoute,
   ) { }
 
   private _paginationAnimeListResult$ = new BehaviorSubject<Pagination<Anime> | null>(null);
@@ -122,6 +124,13 @@ export class AnimeService {
         takeUntil(this.subscriptionManager$),
       )
       .subscribe();
+  }
+
+  /** Refresh anime list.*/
+  public refreshAnimeList(): void {
+    const currentParams = this.activatedRoute.snapshot.queryParams;
+    const currentSettings = this.mapper().urlParamToModel(currentParams);
+    this.updateAnimeList(currentSettings);
   }
 
   /** Mapper data.*/

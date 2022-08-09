@@ -5,11 +5,11 @@ import { ErrorLoginMapper, ErrorUserMapper, HttpErrorMapper, LoginMapper, TokenM
 import { ErrorLogin, ErrorUser, HttpError, Login, Token, User } from '@js-camp/core/models';
 import { BehaviorSubject, catchError, map, Observable, of, tap, throwError } from 'rxjs';
 
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { key } from '../../constants';
 
-import { ApiService, LocalStoreService, AnimeService } from '.';
+import { AnimeService, ApiService, LocalStoreService } from '.';
 
 /** Enum of general errors. */
 enum Error {
@@ -54,7 +54,7 @@ export class AuthService {
     private readonly apiService: ApiService,
     private readonly localStoreService: LocalStoreService,
     private readonly router: Router,
-    private readonly activatedRoute: ActivatedRoute,
+
     private readonly animeService: AnimeService,
   ) { }
 
@@ -137,9 +137,7 @@ export class AuthService {
           this.logout();
           this._isLoggedIn$.next(false);
           this.router.navigate(['']);
-          const currentParams = this.activatedRoute.snapshot.queryParams;
-          const currentSettings = this.animeService.mapper().urlParamToModel(currentParams);
-          this.animeService.updateAnimeList(currentSettings);
+          this.animeService.refreshAnimeList();
           return throwError(() => error);
         }),
       );
