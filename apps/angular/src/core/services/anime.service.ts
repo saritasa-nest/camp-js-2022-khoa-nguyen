@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AnimeDto, AnimeListQueryOptionsDto, PaginationDto, TypeDto } from '@js-camp/core/dtos';
-import { AnimeListQueryOptionsMapper, AnimeMapper, PaginationMapper } from '@js-camp/core/mappers';
-import { Anime, AnimeListQueryOptions, Pagination, Sorting, SortTitle, SortValue } from '@js-camp/core/models';
+import { AnimeDetailDto, AnimeDto, AnimeListQueryOptionsDto, PaginationDto, TypeDto } from '@js-camp/core/dtos';
+import { AnimeDetailMapper, AnimeListQueryOptionsMapper, AnimeMapper, PaginationMapper } from '@js-camp/core/mappers';
+import { Anime, AnimeDetail, AnimeListQueryOptions, Pagination, Sorting, SortTitle, SortValue } from '@js-camp/core/models';
 import { BehaviorSubject, ignoreElements, map, Observable, Subject, takeUntil, tap } from 'rxjs';
 
 import { ANIME_LIST_API, DEFAULT_ANIME_LIST_QUERY, DEFAULT_LIMIT, DEFAULT_SEARCH, OrderOption, SORT_OPTIONS } from '../../constants';
@@ -214,5 +214,17 @@ export class AnimeService {
         };
       },
     };
+  }
+
+  /**
+   * Get anime detail information.
+   * @param id Id of selected anime.
+   */
+  public getAnimeDetail(id: number): Observable<AnimeDetail> {
+    return this.apiService
+      .getData<AnimeDetailDto, undefined>(`${ANIME_LIST_API}${id}/`)
+      .pipe(
+        map(animeDetail => AnimeDetailMapper.fromDto(animeDetail)),
+      );
   }
 }

@@ -7,8 +7,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTableModule } from '@angular/material/table';
-
+import { MatCardModule } from '@angular/material/card';
 import { MatSortModule } from '@angular/material/sort';
+import { MatChipsModule } from '@angular/material/chips';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -18,10 +19,16 @@ import { AnimeTableComponent } from './anime-table/anime-table.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { AnimeRoutingModule } from './anime-routing.module';
 import { AnimeComponent } from './anime.component';
+import { DetailComponent } from './detail/detail.component';
 
 /** Anime module. */
 @NgModule({
-  declarations: [AnimeTableComponent, PaginationComponent, AnimeComponent],
+  declarations: [
+    AnimeTableComponent,
+    PaginationComponent,
+    AnimeComponent,
+    DetailComponent,
+  ],
   imports: [
     SharedModule,
     AnimeRoutingModule,
@@ -33,6 +40,8 @@ import { AnimeComponent } from './anime.component';
     MatFormFieldModule,
     MatInputModule,
     MatSortModule,
+    MatChipsModule,
+    MatCardModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

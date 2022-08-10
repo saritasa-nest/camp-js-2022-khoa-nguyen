@@ -1,0 +1,49 @@
+<mat-card *ngIf="animeInfo$ | async as anime" class="detail">
+  <mat-card class="detail__image">
+    <img class="detail__image_thumb" [src]="anime.image" />
+  </mat-card>
+
+  <div class="detail__info">
+      <div class="detail__title">
+        <h1>
+          {{ anime.titleEnglish }}
+        </h1>
+        <h1>
+          {{ anime.titleJapan }}
+        </h1>
+      </div>
+    <h2 class="detail__child">
+      Aired start date: <span class="detail__child_content">{{ anime.aired.start?.toDateString() }}</span>
+    </h2>
+    <h2 class="detail__child">
+      Aired end date: <span class="detail__child_content">{{ anime.aired.end?.toDateString() }}</span>
+    </h2>
+    <h2>{{anime.isAiring ? "Airing": ""}}</h2>
+    <h2 class="detail__child">
+      Type: <span class="detail__child_content">{{ anime.type.toUpperCase() }}</span>
+    </h2>
+    <h2 class="detail__child">
+      Status: <span class="detail__child_content">{{ anime.status }}</span>
+    </h2>
+    <h2 class="detail__child">
+      Type: <span class="detail__child_content">{{ anime.type.toUpperCase() }}</span>
+    </h2>
+    <div class="detail__info_list">
+      <h2 class="detail__child">Studios:</h2>
+      <mat-chip-list>
+        <mat-chip *ngFor="let studio of anime.studios">{{
+          studio.name
+        }}</mat-chip>
+      </mat-chip-list>
+    </div>
+    <div class="detail__info_list">
+      <h2 class="detail__child">Genres:</h2>
+      <mat-chip-list>
+        <mat-chip *ngFor="let genre of anime.genres">{{
+          genre.name
+        }}</mat-chip>
+      </mat-chip-list>
+    </div>
+  </div>
+
+</mat-card>

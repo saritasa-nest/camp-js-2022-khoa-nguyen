@@ -9,7 +9,7 @@ import { Anime, AnimeListQueryOptions, SortValue } from '@js-camp/core/models';
 import { BehaviorSubject, combineLatestWith, debounceTime, distinctUntilChanged, ignoreElements, map, merge, Observable, skip, startWith, Subject, takeUntil, tap } from 'rxjs';
 
 import { DEFAULT_ACTIVE_PAGE, DEFAULT_SEARCH, FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS, url } from '../../../../constants';
-import { AnimeService, AuthService, QueryUrl, SettingOfAnimeList } from '../../../../core/services';
+import { AnimeService, QueryUrl, SettingOfAnimeList } from '../../../../core/services';
 
 /** Anime table list. */
 @Component({
@@ -85,7 +85,6 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
     private readonly animeService: AnimeService,
     private readonly activateRoute: ActivatedRoute,
     private readonly router: Router,
-    private readonly authService: AuthService,
   ) {
     this.queryCombine$ = this.settingOfAnimeList$.pipe(
       combineLatestWith(
@@ -214,7 +213,15 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
     }
   }
 
-  /** OnInit. */
+  /**
+   * Handle move to detail page with corresponding anime clicked.
+   * @param anime Anime chosen.
+   */
+  public handleShowAnimeDetail(anime: Anime): void {
+    this.router.navigate(['/detail', anime.id]);
+  }
+
+  /** @inheritdoc */
   public ngOnInit(): void {
 
     const queryCombineSideEffect$ = this.queryCombine$.pipe(
@@ -252,7 +259,7 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
-  /** OnDestroy. */
+  /** @inheritdoc */
   public ngOnDestroy(): void {
     this.subscriptionManager$.next();
     this.subscriptionManager$.complete();
