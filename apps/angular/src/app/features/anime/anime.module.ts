@@ -10,6 +10,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatSortModule } from '@angular/material/sort';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatButtonModule } from '@angular/material/button';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -20,6 +21,7 @@ import { PaginationComponent } from './pagination/pagination.component';
 import { AnimeRoutingModule } from './anime-routing.module';
 import { AnimeComponent } from './anime.component';
 import { DetailComponent } from './detail/detail.component';
+import { SafeIframePipe } from './pipes/safe-iframe.pipe';
 
 /** Anime module. */
 @NgModule({
@@ -28,6 +30,7 @@ import { DetailComponent } from './detail/detail.component';
     PaginationComponent,
     AnimeComponent,
     DetailComponent,
+    SafeIframePipe,
   ],
   imports: [
     SharedModule,
@@ -41,6 +44,7 @@ import { DetailComponent } from './detail/detail.component';
     MatInputModule,
     MatSortModule,
     MatChipsModule,
+    MatButtonModule,
     MatCardModule,
     CommonModule,
     FormsModule,
