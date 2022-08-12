@@ -1,24 +1,24 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ErrorLogin, HttpError, Login, Token } from '@js-camp/core/models';
 
 import { BehaviorSubject, ignoreElements, map, merge, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
 
-import { key, url } from '../../../../constants';
+import { url } from '../../../../constants';
 
 import { isFieldsDefined } from '../../../../core/guards//nonNullField.guard';
 
-import { AuthService, ErrorValidation, LocalStoreService } from '../../../../core/services';
+import { AuthService, ErrorValidation } from '../../../../core/services';
 
 /** Handle login feature. */
 @Component({
   selector: 'camp-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+  styleUrls: ['../authorization.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   /** Login info. */
   public readonly loginInfo$ = new Subject<Login>();
 
@@ -31,7 +31,6 @@ export class LoginComponent implements OnInit {
   public constructor(
     private readonly formBuilder: FormBuilder,
     private readonly authService: AuthService,
-    private readonly localStoreService: LocalStoreService,
     private readonly router: Router,
     private changeDetectorRef: ChangeDetectorRef,
   ) {
@@ -51,7 +50,7 @@ export class LoginComponent implements OnInit {
           this.errorLogin$.next(value.detail);
           this.changeDetectorRef.markForCheck();
         } else {
-          this.localStoreService.setValue<Token>(key.token, value);
+          this.authService.saveToken(value);
           this.router.navigate([url.home]);
         }
       }),
@@ -103,5 +102,11 @@ export class LoginComponent implements OnInit {
       }
       this.loginInfo$.next(new Login(loginInfo));
     }
+  }
+
+  /** @inheritdoc */
+  public ngOnDestroy(): void {
+    this.subscriptionManager$.next();
+    this.subscriptionManager$.complete();
   }
 }

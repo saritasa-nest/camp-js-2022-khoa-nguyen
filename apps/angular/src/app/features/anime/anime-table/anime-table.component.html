@@ -5,7 +5,7 @@
       [value]="(settingOfAnimeList$ | async)?.sortBy"
       (selectionChange)="handleSortByChange($event)"
     >
-      <mat-option *ngFor="let item of sortingOptions" [value]="item.value">{{
+      <mat-option *ngFor="let item of sortingOptions; trackBy:sortOptionsTrackBy"  [value]="item.value">{{
         item.title
       }}</mat-option>
     </mat-select>
@@ -17,7 +17,7 @@
       [value]="(settingOfAnimeList$ | async)?.ordering"
       (selectionChange)="handleOrderingChange($event)"
     >
-      <mat-option *ngFor="let item of orderingOptions" [value]="item.value">{{
+      <mat-option *ngFor="let item of orderingOptions; trackBy:orderOptionsTrackBy" [value]="item.value">{{
         item.title
       }}</mat-option>
     </mat-select>
@@ -32,10 +32,9 @@
         multiple
       >
         <mat-select-trigger>
-          {{ multipleType[0] || "" }}
-          <span *ngIf="(multipleType.length || 0) > 1">
-            (+{{ (multipleType.length || 0) - 1 }}
-            {{ multipleType.length === 2 ? "other" : "others" }})
+          {{multipleType[0]}}
+          <span *ngIf="multipleType.length > 1">
+            {{setTypesDisplaying(multipleType)}}
           </span>
         </mat-select-trigger>
         <mat-option
@@ -57,7 +56,7 @@
     placeholder="Search title anime ... "
   />
 </mat-form-field>
-<ng-container *ngIf="animeListPaginationResult$ | async as animeList; else Loading">
+<ng-container *ngIf="paginationResult$ | async as animeList; else Loading">
   <camp-pagination
     [limit]="(settingOfAnimeList$ | async)?.limit"
     [activePage]="(settingOfAnimeList$ | async)?.page"
@@ -83,7 +82,7 @@
       </th>
       <td
         [ngStyle]="{ paddingLeft: 0 }"
-        class="table__cell_thumb"
+        class="table__thumb"
         mat-cell
         *matCellDef="let element"
       >

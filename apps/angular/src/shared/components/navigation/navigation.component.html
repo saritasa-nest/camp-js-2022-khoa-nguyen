@@ -4,9 +4,25 @@
       <a routerLink="/" class="navigation__link">Home</a>
     </div>
     <div class="navigation__right">
-      <a *ngIf="isAuth$| async" [routerLink]="['/auth/login']" class="navigation__link" (click) = "handleLogOut()">Log out</a>
-      <a *ngIf="(isAuth$| async) === false" [routerLink]="['/auth/login']" class="navigation__link">Log in</a>
-      <a *ngIf="(isAuth$| async) === false" [routerLink]="['/auth/register']" class="navigation__link">Sign up</a>
+      <button
+        type="button"
+        *ngIf="isAuth$ | async"
+        (click)="onLogOutButtonClick()"
+      >
+        Log out
+      </button>
+      <a
+        *ngIf="(isAuth$ | async) === false"
+        [routerLink]="['/auth/login']"
+        class="navigation__link"
+        >Log in</a
+      >
+      <a
+        *ngIf="(isAuth$ | async) === false"
+        [routerLink]="['/auth/register']"
+        class="navigation__link"
+        >Sign up</a
+      >
     </div>
   </div>
 </div>

@@ -7,10 +7,7 @@ type NonNullableFields<T> = {
  * @param value Value defined.
  */
 export function isDefined<T>(value: T | null | undefined): value is T {
-  if (value !== null && value !== undefined) {
-    return true;
-  }
-  return false;
+  return value != null;
 }
 
 /**

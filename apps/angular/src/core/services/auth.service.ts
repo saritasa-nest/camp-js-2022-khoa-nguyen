@@ -45,16 +45,15 @@ export interface ErrorValidation<T = undefined> {
 export class AuthService {
 
   /** Login state. */
-  private _isLoggedIn$ = new BehaviorSubject<boolean>(false);
+  private readonly _isLoggedIn$ = new BehaviorSubject<boolean>(false);
 
   /** Login state. */
-  public isLoggedIn$ = this._isLoggedIn$.asObservable();
+  public readonly isLoggedIn$ = this._isLoggedIn$.asObservable();
 
   public constructor(
     private readonly apiService: ApiService,
     private readonly localStoreService: LocalStoreService,
     private readonly router: Router,
-
     private readonly animeService: AnimeService,
   ) { }
 
@@ -122,6 +121,14 @@ export class AuthService {
   }
 
   /**
+   * Save token to local storage.
+   * @param token Current token.
+   */
+  public saveToken(token: Token): void {
+    this.localStoreService.setValue<Token>(key.token, token);
+  }
+
+  /**
    *  Refresh token.
    * @param currentToken Current token to set refresh.
    */
@@ -136,8 +143,7 @@ export class AuthService {
         catchError((error: unknown) => {
           this.logout();
           this._isLoggedIn$.next(false);
-          this.router.navigate(['']);
-          this.animeService.refreshAnimeList();
+          this.router.navigate(['/auth/login']);
           return throwError(() => error);
         }),
       );

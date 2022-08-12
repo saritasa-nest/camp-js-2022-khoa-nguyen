@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ErrorUser, HttpError, Token, User } from '@js-camp/core/models';
@@ -15,11 +15,11 @@ import { AuthService, ErrorValidation, LocalStoreService, CustomValidatorService
 @Component({
   selector: 'camp-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css'],
+  styleUrls: ['../authorization.component.css', './register.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
 
   /** Register form init. */
   public registerForm: FormGroup;
@@ -208,4 +208,11 @@ export class RegisterComponent implements OnInit {
       this.registerInfo$.next(userInfo);
     }
   }
+
+  /** @inheritdoc */
+  public ngOnDestroy(): void {
+    this.subscriptionManager$.next();
+    this.subscriptionManager$.complete();
+  }
+
 }

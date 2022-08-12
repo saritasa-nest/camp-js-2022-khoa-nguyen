@@ -6,11 +6,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { ApiInterceptor } from '../core/interceptors/api.interceptor';
-
-import { AuthenticationInterceptor } from '../core/interceptors/authentication.interceptor';
-
-import { RefreshTokenInterceptor } from '../core/interceptors/refresh-token.interceptor';
+import { ApiInterceptor, AuthenticationInterceptor, RefreshTokenInterceptor } from '../core/interceptors';
 
 import { SharedModule } from './../shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';

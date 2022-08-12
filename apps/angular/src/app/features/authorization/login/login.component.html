@@ -1,9 +1,9 @@
-<form [formGroup]="loginForm" (ngSubmit)="onSubmitLogin()" form class="login">
-  <div class="login__wrapper">
-    <h1 class="login__title login__title_welcome">Welcome to Saritasa Anime</h1>
-    <h1 class="login__title login__title_action">Login to your account</h1>
-    <div class="login__content">
-      <mat-form-field class="login__content_email">
+<form [formGroup]="loginForm" (ngSubmit)="onSubmitLogin()" form class="auth">
+  <div class="auth__wrapper">
+    <h1 class="auth__title auth__title_welcome">Welcome to Saritasa Anime</h1>
+    <h2 class="auth__title auth__title_action">Login to your account</h2>
+    <div class="auth__content">
+      <mat-form-field class="auth__content_email">
         <mat-label>Email</mat-label>
         <input
           type="email"
@@ -19,7 +19,7 @@
         }}</mat-error>
       </mat-form-field>
 
-      <mat-form-field class="login__content_password">
+      <mat-form-field class="auth__content_password">
         <mat-label>Password</mat-label>
         <input
           formControlName="password"
@@ -34,14 +34,14 @@
       <span *ngIf="errorLogin$ | async" class="form__span_error">{{
         errorLogin$ | async
       }}</span>
-      <p class="login__text">
+      <p class="auth__text">
         Don't have an account? Feel free to
-        <a [routerLink]="['/auth/register']" class="login__text_register"
+        <a [routerLink]="['/auth/register']" class="auth__span"
           >register here.</a
         >
       </p>
 
-      <button type="submit" mat-raised-button class="login__button">
+      <button type="submit" mat-raised-button class="auth__button">
         Login
       </button>
     </div>
