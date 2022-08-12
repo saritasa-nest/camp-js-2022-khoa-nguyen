@@ -5,10 +5,10 @@ import { MatSelectChange } from '@angular/material/select';
 import { Sort } from '@angular/material/sort';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TypeDto } from '@js-camp/core/dtos';
-import { Anime, AnimeListQueryOptions, SortValue } from '@js-camp/core/models';
-import { BehaviorSubject, combineLatestWith, debounceTime, distinctUntilChanged, ignoreElements, map, merge, Observable, skip, startWith, Subject, takeUntil, tap } from 'rxjs';
+import { Anime, Pagination, SortValue } from '@js-camp/core/models';
+import { BehaviorSubject, combineLatestWith, debounceTime, distinctUntilChanged, ignoreElements, map, merge, Observable, shareReplay, skip, startWith, Subject, switchMap, takeUntil, tap } from 'rxjs';
 
-import { DEFAULT_ACTIVE_PAGE, DEFAULT_SEARCH, FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS, url } from '../../../../constants';
+import { DEFAULT_ACTIVE_PAGE, DEFAULT_SEARCH, FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS } from '../../../../constants';
 import { AnimeService, QueryUrl, SettingOfAnimeList } from '../../../../core/services';
 
 /** Anime table list. */
@@ -22,7 +22,7 @@ import { AnimeService, QueryUrl, SettingOfAnimeList } from '../../../../core/ser
 export class AnimeTableComponent implements OnInit, OnDestroy {
 
   /** Column of table. */
-  public displayedColumns: readonly string[] = ['image', 'titleEnglish', 'titleJapan', 'airedStartDate', 'type', 'status'] as const;
+  public displayedColumns: string[] = ['image', 'titleEnglish', 'titleJapan', 'airedStartDate', 'type', 'status'];
 
   /** Anime mapper. */
   public readonly animeMapper = this.animeService.mapper();
@@ -37,7 +37,7 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
   public readonly orderingOptions = ORDERING_OPTIONS;
 
   /** Pagination result. */
-  public readonly animeListQueryOptions$: Observable<AnimeListQueryOptions>;
+  public readonly paginationResult$: Observable<Pagination<Anime>>;
 
   /** Combined query observable. */
   public readonly queryCombine$: Observable<[SettingOfAnimeList, string]>;
@@ -78,9 +78,6 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
     this.settingOfAnimeList$.next({ ...currentSettings, ...settings });
   }
 
-  /** Anime list pagination result. */
-  public animeListPaginationResult$ = this.animeService.paginationAnimeListResult$;
-
   public constructor(
     private readonly animeService: AnimeService,
     private readonly activateRoute: ActivatedRoute,
@@ -101,8 +98,10 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
       map(([settings]) => settings),
     );
 
-    this.animeListQueryOptions$ = this.settingAnimeListUpdate$.pipe(
+    this.paginationResult$ = this.settingAnimeListUpdate$.pipe(
       map(settings => this.animeMapper.settingToModel(settings)),
+      switchMap(animeListQueryModel => this.animeService.getAnimeList(animeListQueryModel)),
+      shareReplay({ refCount: true, bufferSize: 1 }),
     );
   }
 
@@ -132,7 +131,7 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
       trueParams = rest;
     }
 
-    this.router.navigate([url.home], {
+    this.router.navigate([], {
       relativeTo: this.activateRoute,
       queryParams: trueParams,
       queryParamsHandling: '',
@@ -149,15 +148,6 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
       sortBy,
       ordering: sort.direction === 'asc' ? OrderOption.Ascending : OrderOption.Descending,
     });
-  }
-
-  /**
-   * Track anime list.
-   * @param item Track by per item.
-   * @param _index Item index.
-   */
-  public trackByAnime(_index: number, item: Anime): Anime['id'] {
-    return item.id;
   }
 
   /**
@@ -240,26 +230,44 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
       }),
     );
 
-    const paginationResultSideEffect$ = this.animeListQueryOptions$.pipe(
-      tap(animeListOptions => this.animeService.updateAnimeList(animeListOptions)),
-    );
-
-    const effect$ = this.animeListPaginationResult$.pipe(
+    const paginationResultSideEffect$ = this.paginationResult$.pipe(
       tap(animeList => {
-        if (animeList == null) {
-          return;
-        }
         this.isLoading$.next(false);
         this.totalItems$.next(animeList.count);
       }),
     );
 
-    merge(setUrlSideEffect$, queryCombineSideEffect$, paginationResultSideEffect$, effect$)
+    merge(setUrlSideEffect$, queryCombineSideEffect$, paginationResultSideEffect$)
       .pipe(ignoreElements(), takeUntil(this.subscriptionManager$))
       .subscribe();
   }
 
-  /** @inheritdoc */
+  /**
+   *  Sort options trackBy.
+   *  @param index Index of sortby options.
+   */
+  public sortOptionsTrackBy(index: number): number {
+    return index;
+  }
+
+  /**
+   * Set UI of displaying types in filter field.
+   * @param types Types selected.
+   */
+  public setTypesDisplaying(types: TypeDto[]): string {
+    const length = types.length ?? 0;
+    return `+ ${length - 1} ${length === 2 ? 'other' : 'others'}`;
+  }
+
+  /**
+   *  Order options trackBy.
+   *  @param index Index of order options.
+   */
+  public orderOptionsTrackBy(index: number): number {
+    return index;
+  }
+
+  /** OnDestroy. */
   public ngOnDestroy(): void {
     this.subscriptionManager$.next();
     this.subscriptionManager$.complete();

@@ -21,7 +21,7 @@ export class NavigationComponent {
   }
 
   /** Handle logout.*/
-  public handleLogOut(): void {
+  public onLogOutButtonClick(): void {
     this.authService.logout();
   }
 }

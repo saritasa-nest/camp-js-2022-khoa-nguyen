@@ -1,17 +1,9 @@
-<form
-  [formGroup]="registerForm"
-  (ngSubmit)="onSubmitRegister()"
-  class="register"
->
-  <div class="register__wrapper">
-    <h1 class="register__title register__title_welcome">
-      Welcome to Saritasa Anime
-    </h1>
-    <h1 class="register__title register__title_action">
-      Sign up to your account
-    </h1>
-    <div class="register__content">
-      <mat-form-field class="register__input">
+<form [formGroup]="registerForm" (ngSubmit)="onSubmitRegister()" class="auth">
+  <div class="auth__wrapper">
+    <h1 class="auth__title auth__title_welcome">Welcome to Saritasa Anime</h1>
+    <h1 class="auth__title auth__title_action">Sign up to your account</h1>
+    <div class="auth__content">
+      <mat-form-field class="auth__input">
         <mat-label>Email</mat-label>
         <input
           formControlName="email"
@@ -30,7 +22,7 @@
         }}</mat-error>
       </mat-form-field>
 
-      <mat-form-field class="register__input">
+      <mat-form-field class="auth__input">
         <mat-label>First name</mat-label>
         <input
           formControlName="firstName"
@@ -46,7 +38,7 @@
         }}</mat-error>
       </mat-form-field>
 
-      <mat-form-field class="register__input">
+      <mat-form-field class="auth__input">
         <mat-label>Last name</mat-label>
         <input
           formControlName="lastName"
@@ -62,7 +54,7 @@
         }}</mat-error>
       </mat-form-field>
 
-      <mat-form-field class="register__input">
+      <mat-form-field class="auth__input">
         <mat-label>Password</mat-label>
         <input
           formControlName="password"
@@ -77,7 +69,7 @@
           errorControl["password"].httpError?.message$ | async
         }}</mat-error>
       </mat-form-field>
-      <mat-form-field class="register__input">
+      <mat-form-field class="auth__input">
         <mat-label>Confirm your password</mat-label>
         <input
           formControlName="confirmPassword"
@@ -93,13 +85,11 @@
         }}</mat-error>
       </mat-form-field>
 
-      <p class="register__text">
+      <p class="auth__text">
         Already have an account? Please
-        <a [routerLink]="['/auth/login']" class="register__text_login"
-          >login here.</a
-        >
+        <a [routerLink]="['/auth/login']" class="auth__span">login here.</a>
       </p>
-      <button type="submit" mat-raised-button class="register__button">
+      <button type="submit" mat-raised-button class="auth__button">
         Sign up
       </button>
     </div>
