@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { AnimeDetail } from '@js-camp/core/models';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { map, Observable, Subject } from 'rxjs';
 
 import { AnimeService } from '../../../../core/services/anime.service';
 
@@ -19,10 +19,10 @@ export class DetailComponent {
   public readonly animeInfo$: Observable<AnimeDetail> | null;
 
   /** Trigger show popup image or not. */
-  public readonly isShowPopupImage$ = new BehaviorSubject<boolean>(false);
+  public readonly isShowPopupImage$ = new Subject<boolean>();
 
   /** Trigger show popup trailer or not. */
-  public readonly isShowPopupTrailer$ = new BehaviorSubject<boolean>(false);
+  public readonly isShowPopupTrailer$ = new Subject<boolean>();
 
   /** Anime trailer. */
   public readonly animeTrailer$: Observable<SafeResourceUrl>;
