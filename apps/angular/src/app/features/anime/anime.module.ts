@@ -21,7 +21,6 @@ import { PaginationComponent } from './pagination/pagination.component';
 import { AnimeRoutingModule } from './anime-routing.module';
 import { AnimeComponent } from './anime.component';
 import { DetailComponent } from './detail/detail.component';
-import { SafeIframePipe } from './pipes/safe-iframe.pipe';
 
 /** Anime module. */
 @NgModule({
@@ -30,7 +29,6 @@ import { SafeIframePipe } from './pipes/safe-iframe.pipe';
     PaginationComponent,
     AnimeComponent,
     DetailComponent,
-    SafeIframePipe,
   ],
   imports: [
     SharedModule,

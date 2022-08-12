@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { AnimeDetail } from '@js-camp/core/models';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 
 import { AnimeService } from '../../../../core/services/anime.service';
 
@@ -23,15 +24,26 @@ export class DetailComponent {
   /** Trigger show popup trailer or not. */
   public readonly isShowPopupTrailer$ = new BehaviorSubject<boolean>(false);
 
+  /** Anime trailer. */
+  public readonly animeTrailer$: Observable<SafeResourceUrl>;
+
   public constructor(
     private readonly animeService: AnimeService,
     private readonly activatedRoute: ActivatedRoute,
+    private sanitizer: DomSanitizer,
   ) {
     const animeId = this.activatedRoute.snapshot.paramMap.get('id');
     if (animeId == null || isNaN(Number(animeId))) {
       this.animeInfo$ = null;
     }
     this.animeInfo$ = this.animeService.getAnimeDetail(Number(animeId));
+
+    this.animeTrailer$ = this.animeInfo$.pipe(
+      map(anime => {
+        const animeTrailer = `https://www.youtube.com/embed/${anime.trailerYoutubeId}`;
+        return this.sanitizer.bypassSecurityTrustResourceUrl(animeTrailer);
+      }),
+    );
   }
 
   /** Open popup image. */

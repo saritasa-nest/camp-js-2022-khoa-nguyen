@@ -3,6 +3,7 @@
     <img
       class="detail__image_thumb"
       [src]="anime.image"
+      [alt]="anime.titleEnglish"
       (click)="handleOpenImage()"
     />
   </mat-card>
@@ -74,7 +75,11 @@
       <button type="button" class="popup__close" (click)="handleCloseImage()">
         Close
       </button>
-      <img class="popup__image" [src]="anime.image" />
+      <img
+        class="popup__image"
+        [src]="anime.image"
+        [alt]="anime.titleEnglish"
+      />
     </div>
   </div>
 
@@ -85,10 +90,9 @@
       </button>
       <iframe
         class="popup__iframe"
+        [title]="anime.titleEnglish"
         allowfullscreen
-        [src]="
-          'https://www.youtube.com/embed/' + anime.trailerYoutubeId | safeIframe
-        "
+        [src]="animeTrailer$ | async"
       ></iframe>
     </div>
   </div>
