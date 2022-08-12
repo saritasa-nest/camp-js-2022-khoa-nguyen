@@ -102,3 +102,7 @@
   width: 50%;
   height: 50%;
 }
+
+.detail__child_paragraph {
+  margin-top: -5px;
+}
