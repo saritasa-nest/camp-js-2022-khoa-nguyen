@@ -22,7 +22,7 @@ import { AnimeService, AuthService, QueryUrl, SettingOfAnimeList } from '../../.
 export class AnimeTableComponent implements OnInit, OnDestroy {
 
   /** Column of table. */
-  public displayedColumns: string[] = ['image', 'titleEnglish', 'titleJapan', 'airedStartDate', 'type', 'status', 'deleteAction'];
+  public displayedColumns: string[] = ['image', 'titleEnglish', 'titleJapan', 'airedStartDate', 'type', 'status', 'actions'];
 
   /** Anime mapper. */
   public readonly animeMapper = this.animeService.mapper();
@@ -255,7 +255,6 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
       filter((anime): anime is Anime => anime !== null),
       map(anime => this.animeService.removeAnime(anime)),
       switchMap(anime$ => anime$),
-      distinctUntilChanged(),
       tap(() => {
         this.refreshAnimeList();
         this.isShowPopupDeleteConfirm$.next(false);
@@ -268,6 +267,16 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
   /** Handle cancel anime. */
   public handleCancelDelete(): void {
     this.isShowPopupDeleteConfirm$.next(false);
+  }
+
+  /**
+   * Handle delete anime.
+   * @param anime Anime chosen.
+   * @param $event Event.
+   */
+  public handleEditAnime(anime: Anime, $event: Event): void {
+    $event.stopPropagation();
+    this.router.navigate(['/edit', anime.id]);
   }
 
   /** @inheritdoc */

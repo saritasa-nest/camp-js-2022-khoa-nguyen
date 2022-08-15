@@ -1,0 +1,28 @@
+.edit__form {
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+  margin-top: 30px;
+  display: flex;
+  gap: 50px;
+  align-items: center;
+  flex-direction: column;
+}
+
+.edit__field {
+  display: grid;
+  width: 100%;
+  gap: 20px;
+  grid-template-columns: auto auto;
+}
+
+.edit__title {
+  color: var(--primary-font-color-2);
+  padding: 0;
+}
+
+.edit__list {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}

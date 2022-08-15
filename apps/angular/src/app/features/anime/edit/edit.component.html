@@ -1,0 +1,60 @@
+<div *ngIf="(editForm$ | async) as editForm">
+  <form [formGroup]="editForm" *ngIf="(animeInfo$ | async) as anime"  class="edit__form">
+    <h1 class="edit__title">EDIT ANIME</h1>
+    <h2 *ngIf="anime.titleEnglish">{{anime.titleEnglish}}</h2>
+    <h2>{{anime.titleJapan}}</h2>
+    <div class="edit__field">
+      <mat-form-field class="edit__input" appearance="fill">
+        <mat-label>Title English</mat-label>
+        <input formControlName="titleEnglish" matInput type="text">
+        <mat-error></mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="edit__input" appearance="fill">
+        <mat-label>Title Japanese</mat-label>
+        <input formControlName="titleJapanese" matInput type="text">
+        <mat-error></mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="edit__input" appearance="fill">
+        <mat-label>Image link</mat-label>
+        <input formControlName="imageLink" matInput type="text">
+        <mat-error></mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="edit__input" appearance="fill">
+        <mat-label>Youtube trailer ID</mat-label>
+        <input formControlName="trailerYoutubeId" matInput type="text">
+        <mat-error></mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="edit__input" appearance="fill">
+        <mat-label>Aired start date</mat-label>
+        <input formControlName="airedStartDate" matInput type="text">
+        <mat-error></mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="edit__input" appearance="fill">
+        <mat-label>Aired end date</mat-label>
+        <input formControlName="airedEndDate" matInput type="text">
+        <mat-error></mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="edit__list">
+      <h2>Genres:</h2>
+      <mat-chip-list>
+        <mat-chip *ngFor="let genre of anime.genres">{{ genre.name }}</mat-chip>
+      </mat-chip-list>
+    </div>
+
+    <div class="edit__list">
+      <h2>Studios:</h2>
+      <mat-chip-list>
+        <mat-chip *ngFor="let studio of anime.studios">{{ studio.name }}</mat-chip>
+      </mat-chip-list>
+    </div>
+
+  </form>
+</div>
+

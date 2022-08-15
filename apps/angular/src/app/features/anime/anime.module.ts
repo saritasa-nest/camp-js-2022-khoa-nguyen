@@ -21,6 +21,7 @@ import { PaginationComponent } from './pagination/pagination.component';
 import { AnimeRoutingModule } from './anime-routing.module';
 import { AnimeComponent } from './anime.component';
 import { DetailComponent } from './detail/detail.component';
+import { EditComponent } from './edit/edit.component';
 
 /** Anime module. */
 @NgModule({
@@ -29,6 +30,7 @@ import { DetailComponent } from './detail/detail.component';
     PaginationComponent,
     AnimeComponent,
     DetailComponent,
+    EditComponent,
   ],
   imports: [
     SharedModule,
