@@ -139,11 +139,11 @@ export class AuthService {
         map(token => TokenMapper.fromDto(token)),
         tap(token => {
           this.localStoreService.setValue<Token>(key.token, token);
+          this._isLoggedIn$.next(true);
         }),
         catchError((error: unknown) => {
           this.logout();
           this._isLoggedIn$.next(false);
-          this.router.navigate(['/auth/login']);
           return throwError(() => error);
         }),
       );
