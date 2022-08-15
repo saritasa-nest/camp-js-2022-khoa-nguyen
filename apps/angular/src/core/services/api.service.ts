@@ -37,4 +37,15 @@ export class ApiService {
     const finishedUrl = BASE_URL + url;
     return this.httpClient.post<ReceiveValueDto>(finishedUrl, value);
   }
+
+  /**
+   * Delete item from api.
+   * @param url Url of api call.
+   */
+  public deleteData(url: string): Observable<Object> {
+    const finishedUrl = BASE_URL + url;
+    return this.httpClient.delete(finishedUrl).pipe(
+      catchError((error: unknown) => throwError(() => error)),
+    );
+  }
 }

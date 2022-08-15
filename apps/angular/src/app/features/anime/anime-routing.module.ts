@@ -1,14 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AnimeDetailGuard } from '../../../core/guards';
+import { AuthorizationGuard } from '../../../core/guards';
 
 import { AnimeComponent } from './anime.component';
 import { DetailComponent } from './detail/detail.component';
 
 const routes: Routes = [
   { path: '', component: AnimeComponent },
-  { path: 'detail/:id', component: DetailComponent, canActivate: [AnimeDetailGuard] },
+  {
+    path: 'detail/:id',
+    component: DetailComponent,
+    canActivate: [AuthorizationGuard],
+  },
 ];
 
 /** Anime table view module. */

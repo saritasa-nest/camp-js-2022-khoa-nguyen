@@ -94,6 +94,14 @@ export class AnimeService {
       .pipe(map(data => PaginationMapper.fromDto<AnimeDto, Anime>(data, AnimeMapper.fromDto)));
   }
 
+  /**
+   * Delete anime.
+   * @param anime Anime to delete.
+   */
+  public removeAnime(anime: Anime): Observable<Object> {
+    return this.apiService.deleteData(`${ANIME_LIST_API}${anime.id}/`);
+  }
+
   /** Mapper data.*/
   public mapper(): Mapper {
     return {

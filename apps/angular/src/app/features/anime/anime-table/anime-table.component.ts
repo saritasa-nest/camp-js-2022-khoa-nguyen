@@ -6,10 +6,10 @@ import { Sort } from '@angular/material/sort';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TypeDto } from '@js-camp/core/dtos';
 import { Anime, Pagination, SortValue } from '@js-camp/core/models';
-import { BehaviorSubject, combineLatestWith, debounceTime, distinctUntilChanged, ignoreElements, map, merge, Observable, shareReplay, skip, startWith, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, combineLatestWith, debounceTime, distinctUntilChanged, filter, ignoreElements, map, merge, Observable, shareReplay, skip, startWith, Subject, switchMap, take, takeUntil, tap } from 'rxjs';
 
 import { DEFAULT_ACTIVE_PAGE, DEFAULT_SEARCH, FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS } from '../../../../constants';
-import { AnimeService, QueryUrl, SettingOfAnimeList } from '../../../../core/services';
+import { AnimeService, AuthService, QueryUrl, SettingOfAnimeList } from '../../../../core/services';
 
 /** Anime table list. */
 @Component({
@@ -22,7 +22,7 @@ import { AnimeService, QueryUrl, SettingOfAnimeList } from '../../../../core/ser
 export class AnimeTableComponent implements OnInit, OnDestroy {
 
   /** Column of table. */
-  public displayedColumns: string[] = ['image', 'titleEnglish', 'titleJapan', 'airedStartDate', 'type', 'status'];
+  public displayedColumns: string[] = ['image', 'titleEnglish', 'titleJapan', 'airedStartDate', 'type', 'status', 'deleteAction'];
 
   /** Anime mapper. */
   public readonly animeMapper = this.animeService.mapper();
@@ -51,6 +51,12 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
   /** Loading status. */
   public readonly isLoading$ = new BehaviorSubject<boolean>(false);
 
+  /** Toggle pop up delete confirmation. */
+  public readonly isShowPopupDeleteConfirm$ = new Subject();
+
+  /** Check if is logged in. */
+  public readonly isLoggedIn$ = this.authService.isLoggedIn$;
+
   /** Get search initial value. */
   public getSearchValue(): string {
     const currentParams = this.activateRoute.snapshot.queryParams;
@@ -68,6 +74,9 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
   /** Subject that is used for unsubscribing from streams. */
   private readonly subscriptionManager$ = new Subject<void>();
 
+  /** Anime to delete. */
+  public readonly animeToDelete$ = new BehaviorSubject<Anime | null>(null);
+
   /**
    * Set value to setting anime list.
    * @param settings Settings of anime list.
@@ -78,10 +87,18 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
     this.settingOfAnimeList$.next({ ...currentSettings, ...settings });
   }
 
+  /** Refresh anime list after updated. */
+  public refreshAnimeList(): void {
+    const currentParams = this.activateRoute.snapshot.queryParams;
+    const currentSettings = this.animeMapper.urlToSetting(currentParams);
+    this.settingOfAnimeList$.next(currentSettings);
+  }
+
   public constructor(
     private readonly animeService: AnimeService,
     private readonly activateRoute: ActivatedRoute,
     private readonly router: Router,
+    private readonly authService: AuthService,
   ) {
     this.queryCombine$ = this.settingOfAnimeList$.pipe(
       combineLatestWith(
@@ -164,7 +181,6 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
    */
   public handleTypeChange(event: MatSelectChange): void {
     this.setValueToSettingAnimeListObservable({ type: event.value, page: DEFAULT_ACTIVE_PAGE });
-
   }
 
   /**
@@ -209,6 +225,49 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
    */
   public handleShowAnimeDetail(anime: Anime): void {
     this.router.navigate(['/detail', anime.id]);
+  }
+
+  /**
+   * Handle delete anime.
+   * @param anime Anime chosen.
+   * @param $event Event.
+   */
+  public handleDeleteAnime(anime: Anime, $event: Event): void {
+    $event.stopPropagation();
+    this.authService.isLoggedIn$.pipe(
+      tap(isLoggedIn => {
+        if (!isLoggedIn) {
+          this.router.navigate(['/auth/login']);
+          return;
+        }
+        this.isShowPopupDeleteConfirm$.next(true);
+        this.animeToDelete$.next(anime);
+      }),
+      ignoreElements(),
+      takeUntil(this.subscriptionManager$),
+    ).subscribe();
+  }
+
+  /** Handle confirm delete anime. */
+  public handleConfirmDelete(): void {
+    this.animeToDelete$.pipe(
+      take(1),
+      filter((anime): anime is Anime => anime !== null),
+      map(anime => this.animeService.removeAnime(anime)),
+      switchMap(anime$ => anime$),
+      distinctUntilChanged(),
+      tap(() => {
+        this.refreshAnimeList();
+        this.isShowPopupDeleteConfirm$.next(false);
+      }),
+      ignoreElements(),
+      takeUntil(this.subscriptionManager$),
+    ).subscribe();
+  }
+
+  /** Handle cancel anime. */
+  public handleCancelDelete(): void {
+    this.isShowPopupDeleteConfirm$.next(false);
   }
 
   /** @inheritdoc */

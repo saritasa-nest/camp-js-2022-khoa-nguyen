@@ -6,7 +6,7 @@ import { AuthService } from '../services';
 
 /** Anime detail guard. */
 @Injectable({ providedIn: 'root' })
-export class AnimeDetailGuard implements CanActivate {
+export class AuthorizationGuard implements CanActivate {
 
   public constructor(private readonly authService: AuthService, private readonly router: Router) {}
 
