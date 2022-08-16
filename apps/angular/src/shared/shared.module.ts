@@ -1,13 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 import { NavigationComponent } from './components/navigation/navigation.component';
+import { SelectMultipleComponent } from './components/select-multiple/select-multiple.component';
 
 /** Shared module. */
 @NgModule({
-  declarations: [NavigationComponent],
-  imports: [CommonModule, RouterModule],
-  exports: [NavigationComponent],
+  declarations: [NavigationComponent, SelectMultipleComponent],
+  imports: [CommonModule, RouterModule, MatSelectModule, NgxMatSelectSearchModule, MatButtonModule, ReactiveFormsModule, FormsModule],
+  exports: [NavigationComponent, SelectMultipleComponent],
 })
 export class SharedModule {}

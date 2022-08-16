@@ -41,19 +41,29 @@
       </mat-form-field>
     </div>
 
-    <div class="edit__list">
+    <div class="edit__list" *ngIf="anime.genres.length > 0">
       <h2>Genres:</h2>
       <mat-chip-list>
         <mat-chip *ngFor="let genre of anime.genres">{{ genre.name }}</mat-chip>
       </mat-chip-list>
     </div>
 
-    <div class="edit__list">
+
+
+    <div class="edit__list" *ngIf="anime.studios.length > 0">
       <h2>Studios:</h2>
       <mat-chip-list>
         <mat-chip *ngFor="let studio of anime.studios">{{ studio.name }}</mat-chip>
       </mat-chip-list>
     </div>
+
+    <div class="edit__list">
+      <h2>Airing: </h2>
+      <mat-slide-toggle formControlName="isAiring">
+      </mat-slide-toggle>
+    </div>
+
+    <camp-select-multiple></camp-select-multiple>
 
   </form>
 </div>

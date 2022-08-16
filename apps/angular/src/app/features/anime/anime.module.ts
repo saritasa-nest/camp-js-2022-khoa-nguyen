@@ -11,6 +11,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSortModule } from '@angular/material/sort';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -46,8 +47,10 @@ import { EditComponent } from './edit/edit.component';
     MatChipsModule,
     MatButtonModule,
     MatCardModule,
+    MatSlideToggleModule,
     CommonModule,
     FormsModule,
+    SharedModule,
     ReactiveFormsModule,
   ],
 })

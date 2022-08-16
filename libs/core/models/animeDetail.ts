@@ -4,6 +4,15 @@ import { Anime } from './anime';
 import { Genre } from './genre';
 import { Studio } from './studio';
 
+/** Possible options anime season. */
+export enum Season {
+  Summer = 'Summer',
+  Winter = 'Winter',
+  Spring = 'Spring',
+  Fall = 'Fall',
+  NonSeasonal = 'None seasonal',
+}
+
 /** Base model for anime. */
 export class AnimeDetail extends Anime {
 
@@ -28,6 +37,9 @@ export class AnimeDetail extends Anime {
   /** Genre list. */
   public readonly genres: readonly Genre[];
 
+  /** Season. */
+  public readonly season: Season;
+
   public constructor(data: AnimeInitArgs) {
     super(data);
     this.trailerYoutubeId = data.trailerYoutubeId;
@@ -37,6 +49,7 @@ export class AnimeDetail extends Anime {
     this.studios = data.studios;
     this.genresIds = data.genresIds;
     this.genres = data.genres;
+    this.season = data.season;
   }
 }
 

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AnimeDetailDto, AnimeDto, AnimeListQueryOptionsDto, PaginationDto, TypeDto } from '@js-camp/core/dtos';
-import { AnimeDetailMapper, AnimeListQueryOptionsMapper, AnimeMapper, PaginationMapper } from '@js-camp/core/mappers';
-import { Anime, AnimeDetail, AnimeListQueryOptions, Pagination, Sorting, SortTitle, SortValue } from '@js-camp/core/models';
+import { GenreDto } from '@js-camp/core/dtos/genre.dto';
+import { AnimeDetailMapper, AnimeListQueryOptionsMapper, AnimeMapper, GenreMapper, PaginationMapper } from '@js-camp/core/mappers';
+import { Anime, AnimeDetail, AnimeListQueryOptions, Genre, Pagination, Sorting, SortTitle, SortValue } from '@js-camp/core/models';
 import { map, Observable } from 'rxjs';
 
 import { ANIME_LIST_API, DEFAULT_ANIME_LIST_QUERY, DEFAULT_LIMIT, DEFAULT_SEARCH, OrderOption, SORT_OPTIONS } from '../../constants';
@@ -196,5 +197,11 @@ export class AnimeService {
       .pipe(
         map(animeDetail => AnimeDetailMapper.fromDto(animeDetail)),
       );
+  }
+
+  /** Get list of anime. */
+  public getGenresList(): Observable<Pagination<Genre>> {
+    return this.apiService.getData<PaginationDto<GenreDto>, undefined>(ANIME_LIST_API)
+      .pipe(map(data => PaginationMapper.fromDto<GenreDto, Genre>(data, GenreMapper.fromDto)));
   }
 }
