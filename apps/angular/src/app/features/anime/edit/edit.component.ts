@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Genre, StatusModel, TypeModel } from '@js-camp/core/models';
 import { AnimeEdit, Rating, Season, Source } from '@js-camp/core/models/animeEdit';
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { DefaultEntity } from 'apps/angular/src/shared/components/select-multiple/select-multiple.component';
 
 import { BehaviorSubject, map, Observable, tap } from 'rxjs';
