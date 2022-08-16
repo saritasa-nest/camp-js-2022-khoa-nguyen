@@ -12,8 +12,10 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { MatNativeDateModule } from '@angular/material/core';
 
 import { SharedModule } from '../../../shared/shared.module';
 
@@ -47,10 +49,12 @@ import { EditComponent } from './edit/edit.component';
     MatChipsModule,
     MatButtonModule,
     MatCardModule,
+    MatDatepickerModule,
     MatSlideToggleModule,
     CommonModule,
     FormsModule,
     SharedModule,
+    MatNativeDateModule,
     ReactiveFormsModule,
   ],
 })

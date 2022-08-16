@@ -1,4 +1,15 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+
+/** Default type of entity. */
+export interface DefaultEntity {
+
+  /** Id of entity. */
+  id: number;
+
+  /** Name of entity. */
+  name: string;
+}
 
 /** Multiple select component. */
 @Component({
@@ -23,13 +34,19 @@ export class SelectMultipleComponent {
   @Input() public formControlSearchName = '';
 
   /** Entities selected. */
-  @Input() public entities: string[] = [];
+  @Input() public entities: readonly DefaultEntity[] | null = [];
 
   /** New entity name. */
   @Input() public newEntity = '';
 
+  /** Form group. */
+  @Input() public formGroup: FormGroup<{}> = new FormGroup<{}>({});
+
   /** On create entity. */
   @Output() public createEntity = new EventEmitter();
+
+  /** Selected values. */
+  @Input() public selectedValues: readonly DefaultEntity[] | null = [];
 
   /** Handlers entity create. */
   public onCreateEntity(): void {
@@ -38,9 +55,20 @@ export class SelectMultipleComponent {
 
   /**
    * Tracks entity by ID.
-   * @param _index Anime's index into array.
+   * @param _index Entity's index.
+   * @param entity Entity.
    */
-  public trackItemEntity(_index: number): number {
-    return _index;
+  public trackItemEntity(_index: number, entity: DefaultEntity): number {
+    return entity.id;
   }
+
+  /**
+   * Tracks entity by ID.
+   * @param _index Item selected's index.
+   * @param selectedItems Item selected.
+   */
+  public trackItemSelected(_index: number, selectedItems: DefaultEntity): number {
+    return selectedItems.id;
+  }
+
 }

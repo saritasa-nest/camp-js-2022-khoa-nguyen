@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
-import { AnimeDetailDto, AnimeDto, AnimeListQueryOptionsDto, PaginationDto, TypeDto } from '@js-camp/core/dtos';
+import { AnimeDto, AnimeListQueryOptionsDto, PaginationDto, TypeDto } from '@js-camp/core/dtos';
+import { AnimeEditDto } from '@js-camp/core/dtos/animeEdit.dto';
 import { GenreDto } from '@js-camp/core/dtos/genre.dto';
-import { AnimeDetailMapper, AnimeListQueryOptionsMapper, AnimeMapper, GenreMapper, PaginationMapper } from '@js-camp/core/mappers';
-import { Anime, AnimeDetail, AnimeListQueryOptions, Genre, Pagination, Sorting, SortTitle, SortValue } from '@js-camp/core/models';
+import { AnimeListQueryOptionsMapper, AnimeMapper, GenreMapper, PaginationMapper } from '@js-camp/core/mappers';
+import { AnimeEditMapper } from '@js-camp/core/mappers/animeEdit.mapper';
+import { Anime, AnimeListQueryOptions, Genre, Pagination, Sorting, SortTitle, SortValue } from '@js-camp/core/models';
+import { AnimeEdit } from '@js-camp/core/models/animeEdit';
 import { map, Observable } from 'rxjs';
 
 import { ANIME_LIST_API, DEFAULT_ANIME_LIST_QUERY, DEFAULT_LIMIT, DEFAULT_SEARCH, OrderOption, SORT_OPTIONS } from '../../constants';
@@ -191,17 +194,17 @@ export class AnimeService {
    * Get anime detail information.
    * @param id Id of selected anime.
    */
-  public getAnimeDetail(id: number): Observable<AnimeDetail> {
+  public getAnimeDetail(id: number): Observable<AnimeEdit> {
     return this.apiService
-      .getData<AnimeDetailDto, undefined>(`${ANIME_LIST_API}${id}/`)
+      .getData<AnimeEditDto, undefined>(`${ANIME_LIST_API}${id}/`)
       .pipe(
-        map(animeDetail => AnimeDetailMapper.fromDto(animeDetail)),
+        map(animeDetail => AnimeEditMapper.fromDto(animeDetail)),
       );
   }
 
   /** Get list of anime. */
   public getGenresList(): Observable<Pagination<Genre>> {
-    return this.apiService.getData<PaginationDto<GenreDto>, undefined>(ANIME_LIST_API)
+    return this.apiService.getData<PaginationDto<GenreDto>, undefined>('anime/genres/')
       .pipe(map(data => PaginationMapper.fromDto<GenreDto, Genre>(data, GenreMapper.fromDto)));
   }
 }

@@ -26,7 +26,7 @@ export enum Source {
   FourKomaManga = 'Four koma manga',
   Book = 'Book',
   CardGame = 'Card game',
-  Game = 'game',
+  Game = 'Game',
   LightNovel = 'Light novel',
   Manga = 'Manga',
   MixedMedia = 'Mixed media',

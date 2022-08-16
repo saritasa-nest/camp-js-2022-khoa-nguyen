@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
@@ -12,7 +13,16 @@ import { SelectMultipleComponent } from './components/select-multiple/select-mul
 /** Shared module. */
 @NgModule({
   declarations: [NavigationComponent, SelectMultipleComponent],
-  imports: [CommonModule, RouterModule, MatSelectModule, NgxMatSelectSearchModule, MatButtonModule, ReactiveFormsModule, FormsModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    MatSelectModule,
+    NgxMatSelectSearchModule,
+    MatChipsModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    FormsModule,
+  ],
   exports: [NavigationComponent, SelectMultipleComponent],
 })
 export class SharedModule {}

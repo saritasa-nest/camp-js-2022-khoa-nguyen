@@ -1,43 +1,105 @@
-<div *ngIf="(editForm$ | async) as editForm">
-  <form [formGroup]="editForm" *ngIf="(animeInfo$ | async) as anime"  class="edit__form">
+<div *ngIf="editForm$ | async as editForm">
+  <form
+    [formGroup]="editForm"
+    *ngIf="animeInfo$ | async as anime"
+    class="edit__form"
+  >
     <h1 class="edit__title">EDIT ANIME</h1>
-    <h2 *ngIf="anime.titleEnglish">{{anime.titleEnglish}}</h2>
-    <h2>{{anime.titleJapan}}</h2>
+    <h2 *ngIf="anime.titleEnglish">{{ anime.titleEnglish }}</h2>
+    <h2>{{ anime.titleJapan }}</h2>
     <div class="edit__field">
       <mat-form-field class="edit__input" appearance="fill">
         <mat-label>Title English</mat-label>
-        <input formControlName="titleEnglish" matInput type="text">
+        <input formControlName="titleEnglish" matInput type="text" />
         <mat-error></mat-error>
       </mat-form-field>
 
       <mat-form-field class="edit__input" appearance="fill">
         <mat-label>Title Japanese</mat-label>
-        <input formControlName="titleJapanese" matInput type="text">
+        <input formControlName="titleJapanese" matInput type="text" />
         <mat-error></mat-error>
       </mat-form-field>
 
       <mat-form-field class="edit__input" appearance="fill">
         <mat-label>Image link</mat-label>
-        <input formControlName="imageLink" matInput type="text">
+        <input formControlName="imageLink" matInput type="text" />
         <mat-error></mat-error>
       </mat-form-field>
 
       <mat-form-field class="edit__input" appearance="fill">
         <mat-label>Youtube trailer ID</mat-label>
-        <input formControlName="trailerYoutubeId" matInput type="text">
+        <input formControlName="trailerYoutubeId" matInput type="text" />
         <mat-error></mat-error>
       </mat-form-field>
 
       <mat-form-field class="edit__input" appearance="fill">
-        <mat-label>Aired start date</mat-label>
-        <input formControlName="airedStartDate" matInput type="text">
-        <mat-error></mat-error>
+        <mat-label>Aired date</mat-label>
+        <mat-date-range-input
+          [rangePicker]="airedDatePicker"
+          [formGroup]="editForm"
+        >
+          <input
+            matStartDate
+            placeholder="Start date"
+            formControlName="airedStartDate"
+          />
+          <input
+            matEndDate
+            placeholder="End date"
+            formControlName="airedEndDate"
+          />
+        </mat-date-range-input>
+        <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="airedDatePicker"
+        ></mat-datepicker-toggle>
+        <mat-date-range-picker #airedDatePicker></mat-date-range-picker>
       </mat-form-field>
 
-      <mat-form-field class="edit__input" appearance="fill">
-        <mat-label>Aired end date</mat-label>
-        <input formControlName="airedEndDate" matInput type="text">
-        <mat-error></mat-error>
+      <mat-form-field appearance="fill">
+        <mat-label>Source</mat-label>
+        <mat-select formControlName="source">
+          <mat-option *ngFor="let item of sourceList" [value]="item">{{
+            item
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Type</mat-label>
+        <mat-select formControlName="type">
+          <mat-option *ngFor="let item of typeList" [value]="item">{{
+            item
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option *ngFor="let item of statusList" [value]="item">{{
+            item
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Rating</mat-label>
+        <mat-select formControlName="rating">
+          <mat-option *ngFor="let item of ratingList" [value]="item">{{
+            item
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Season</mat-label>
+        <mat-select formControlName="season">
+          <mat-option *ngFor="let item of seasonList" [value]="item">{{
+            item
+          }}</mat-option>
+        </mat-select>
       </mat-form-field>
     </div>
 
@@ -48,23 +110,30 @@
       </mat-chip-list>
     </div>
 
-
-
     <div class="edit__list" *ngIf="anime.studios.length > 0">
       <h2>Studios:</h2>
       <mat-chip-list>
-        <mat-chip *ngFor="let studio of anime.studios">{{ studio.name }}</mat-chip>
+        <mat-chip *ngFor="let studio of anime.studios">{{
+          studio.name
+        }}</mat-chip>
       </mat-chip-list>
     </div>
 
     <div class="edit__list">
-      <h2>Airing: </h2>
-      <mat-slide-toggle formControlName="isAiring">
-      </mat-slide-toggle>
+      <h2>Airing:</h2>
+      <mat-slide-toggle formControlName="isAiring"> </mat-slide-toggle>
     </div>
 
-    <camp-select-multiple></camp-select-multiple>
-
+    <div class="edit__list">
+      <camp-select-multiple
+        label="Genres"
+        class="edit__select_multiple"
+        [formGroup]="editForm"
+        formControlSearchName="searchGenre"
+        formControlSelectName="genres"
+        [entities]="listGenres$ | async"
+        [selectedValues]="selectedGenres$ | async"
+      ></camp-select-multiple>
+    </div>
   </form>
 </div>
-

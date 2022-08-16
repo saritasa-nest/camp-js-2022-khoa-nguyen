@@ -1,32 +1,47 @@
-<mat-form-field appearance="fill">
-  <mat-label>{{ label }}</mat-label>
-  <mat-select [formControlName]="formControlSelectName" multiple>
-    <mat-option>
-      <ngx-mat-select-search
-        [placeholderLabel]="searchPlaceholder"
-        [formControlName]="formControlSearchName"
-      ></ngx-mat-select-search>
-    </mat-option>
+<form [formGroup]="formGroup">
+  <mat-form-field appearance="fill" class="select">
+    <mat-label>{{ label }}</mat-label>
 
-    <ng-container *ngIf="entities.length === 0">
-      <button mat-button type="button" (click)="onCreateEntity()">
-        Create {{ newEntity }}
-      </button>
-    </ng-container>
-
-    <div
-      class="option"
-      *ngFor="let entity of entities; trackBy: trackItemEntity"
-    >
-      <mat-option [value]="entity">
-        <span>{{ entity }}</span>
+    <mat-select class="select__wrapper" [formControlName]="formControlSelectName" multiple>
+      <mat-option>
+        <ngx-mat-select-search
+          [placeholderLabel]="searchPlaceholder"
+          [formControlName]="formControlSearchName"
+        ></ngx-mat-select-search>
       </mat-option>
-    </div>
 
-    <!-- <ng-container *ngIf="isStringEmpty(this.formControlSearchEntity.value)">
-      <button mat-button type="button" (click)="onAddMoreEntities()">
-        Add more {{ entitiesName }}
-      </button>
-    </ng-container> -->
-  </mat-select>
-</mat-form-field>
+      <mat-select-trigger>
+        <mat-chip-list>
+          <mat-chip
+            *ngFor="let item of selectedValues; trackBy: trackItemSelected"
+            [removable]="true"
+          >
+            {{ item.name }}
+            <!-- <mat-icon matChipRemove>cancel</mat-icon> -->
+          </mat-chip>
+        </mat-chip-list>
+      </mat-select-trigger>
+
+      <!-- <ng-container *ngIf="entities?.length === 0">
+        <button mat-button type="button" (click)="onCreateEntity()">
+          Create {{ newEntity }}
+        </button>
+      </ng-container> -->
+
+      <div
+        class="option"
+        *ngFor="let entity of entities; trackBy: trackItemEntity"
+      >
+        <mat-option [value]="entity.name">
+          <span>{{ entity.name }}</span>
+        </mat-option>
+      </div>
+
+      <!-- <ng-container *ngIf="isStringEmpty(this.formControlSearchEntity.value)">
+        <button mat-button type="button" (click)="onAddMoreEntities()">
+          Add more {{ entitiesName }}
+        </button>
+      </ng-container> -->
+    </mat-select>
+  </mat-form-field>
+</form>
