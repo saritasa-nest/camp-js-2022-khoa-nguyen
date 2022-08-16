@@ -2,15 +2,6 @@ import { AnimeDto } from './anime.dto';
 import { GenreDto } from './genre.dto';
 import { StudioDto } from './studio.dto';
 
-/** Season DTO. */
-export enum SeasonDto {
-  Summer = 'SUMMER',
-  Winter = 'WINTER',
-  Spring = 'SPRING',
-  Fall = 'FALL',
-  NonSeasonal = 'NON_SEASONAL',
-}
-
 /** Anime detail DTO. */
 export interface AnimeDetailDto extends AnimeDto {
 
@@ -27,14 +18,12 @@ export interface AnimeDetailDto extends AnimeDto {
   readonly studios: readonly StudioDto['id'][];
 
   /** Studio data. */
-  readonly studios_data?: readonly StudioDto[];
+  readonly studios_data: readonly StudioDto[];
 
   /** List genres id. */
   readonly genres: readonly GenreDto['id'][];
 
   /** Genre list. */
-  readonly genres_data?: readonly GenreDto[];
+  readonly genres_data: readonly GenreDto[];
 
-  /** Season. */
-  readonly season: SeasonDto;
 }
