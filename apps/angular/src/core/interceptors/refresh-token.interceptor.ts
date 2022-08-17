@@ -2,6 +2,7 @@ import {
   HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Token } from '@js-camp/core/models';
 import { catchError, Observable, switchMap, throwError } from 'rxjs';
 
 import { AuthService } from '../services';
@@ -28,12 +29,25 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
         this.authService.logout();
         if (error instanceof HttpErrorResponse && error.status === 401) {
           return this.authService.refreshToken(token).pipe(
-            switchMap(() => next.handle(request)),
+            switchMap(newToken => next.handle(this.addTokenHeader(request, newToken))),
+            catchError(() => next.handle(request.clone({ headers: request.headers.delete('Authorization') }))),
           );
         }
         return throwError(() => error);
       }),
     );
+  }
+
+  /**
+   * Add Token to header.
+   * @param request Http request.
+   * @param token Token.
+   */
+  private addTokenHeader(request: HttpRequest<unknown>, token: Token): HttpRequest<unknown> {
+    return request.clone({
+      headers: request.headers
+        .set('Authorization', `Bearer ${token.access}`),
+    });
   }
 
 }
