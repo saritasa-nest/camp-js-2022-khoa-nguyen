@@ -202,9 +202,12 @@ export class AnimeService {
       );
   }
 
-  /** Get list of anime. */
-  public getGenresList(): Observable<Pagination<Genre>> {
-    return this.apiService.getData<PaginationDto<GenreDto>, undefined>('anime/genres/')
+  /**
+   *  Get list of anime.
+   *  @param searchName Search input.
+   */
+  public getGenresList(searchName: string): Observable<Pagination<Genre>> {
+    return this.apiService.getData<PaginationDto<GenreDto>, {search: string;}>('anime/genres/', { search: searchName })
       .pipe(map(data => PaginationMapper.fromDto<GenreDto, Genre>(data, GenreMapper.fromDto)));
   }
 }

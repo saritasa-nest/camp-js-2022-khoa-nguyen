@@ -19,7 +19,6 @@ export interface DefaultEntity {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectMultipleComponent {
-  public constructor() {}
 
   /** Label of input. */
   @Input() public label = '';
@@ -40,17 +39,17 @@ export class SelectMultipleComponent {
   @Input() public newEntity = '';
 
   /** Form group. */
-  @Input() public formGroup: FormGroup<{}> = new FormGroup<{}>({});
+  @Input() public formGroup: FormGroup | null = null;
 
   /** On create entity. */
   @Output() public createEntity = new EventEmitter();
 
-  /** Selected values. */
-  @Input() public selectedValues: readonly DefaultEntity[] | null = [];
-
   /** Handlers entity create. */
   public onCreateEntity(): void {
     this.createEntity.emit();
+  }
+
+  public constructor() {
   }
 
   /**
@@ -69,6 +68,17 @@ export class SelectMultipleComponent {
    */
   public trackItemSelected(_index: number, selectedItems: DefaultEntity): number {
     return selectedItems.id;
+  }
+
+  /** On remove selected value. */
+  @Output() public removeSelectedValue = new EventEmitter();
+
+  /**
+   * Handlers remove selected value.
+   * @param item Item to remove.
+   */
+  public onRemoveSelectedValue(item: DefaultEntity): void {
+    this.removeSelectedValue.emit(item);
   }
 
 }

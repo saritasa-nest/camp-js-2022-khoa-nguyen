@@ -69,7 +69,6 @@
 .button {
   background-color: var(--primary-color);
   color: var(--primary-font-light-color);
-  width: 100%;
 }
 
 .button:hover {

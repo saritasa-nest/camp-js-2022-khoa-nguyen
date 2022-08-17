@@ -1,4 +1,5 @@
-<form [formGroup]="formGroup">
+
+<form *ngIf="formGroup" [formGroup]="formGroup">
   <mat-form-field appearance="fill" class="select">
     <mat-label>{{ label }}</mat-label>
 
@@ -13,11 +14,14 @@
       <mat-select-trigger>
         <mat-chip-list>
           <mat-chip
-            *ngFor="let item of selectedValues; trackBy: trackItemSelected"
+            *ngFor="let item of this.formGroup.controls[formControlSelectName].value; trackBy: trackItemSelected"
             [removable]="true"
+            (removed)="onRemoveSelectedValue(item)"
           >
-            {{ item.name }}
-            <!-- <mat-icon matChipRemove>cancel</mat-icon> -->
+          {{ item.split("-")[1] }}
+          <button type="button" matChipRemove>
+            <mat-icon>cancel</mat-icon>
+          </button>
           </mat-chip>
         </mat-chip-list>
       </mat-select-trigger>
@@ -32,7 +36,7 @@
         class="option"
         *ngFor="let entity of entities; trackBy: trackItemEntity"
       >
-        <mat-option [value]="entity.name">
+        <mat-option [value]="entity.id+'-'+entity.name">
           <span>{{ entity.name }}</span>
         </mat-option>
       </div>
