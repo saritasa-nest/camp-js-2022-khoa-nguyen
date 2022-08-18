@@ -1,88 +1,180 @@
-  <div class="filter">
-    <mat-form-field appearance="fill" class="filter__item">
-      <mat-label>Choose an sorting option</mat-label>
-      <mat-select [value]="(settingOfAnimeList$ | async)?.sortBy" (selectionChange)="handleSortByChange($event)">
-        <mat-option *ngFor="let item of sortingOptions" [value]="item.value">{{item.title}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill" class="filter__item">
-      <mat-label>Choose ordering</mat-label>
-      <mat-select
-      [value]="(settingOfAnimeList$ | async)?.ordering"
-      (selectionChange)="handleOrderingChange($event)">
-      <mat-option *ngFor="let item of orderingOptions" [value]="item.value">{{item.title}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <ng-container *ngIf="(settingOfAnimeList$ | async)?.type as multipleType" >
-      <mat-form-field appearance="fill" class="filter__item">
-        <mat-label>Choose types</mat-label>
-        <mat-select [value]="multipleType" (selectionChange)="handleTypeChange($event)" multiple>
-          <mat-select-trigger>
-            {{multipleType[0] || ''}}
-            <span *ngIf="(multipleType.length || 0) > 1">
-              (+{{(multipleType.length || 0) - 1}} {{multipleType.length === 2 ? 'other' : 'others'}})
-            </span>
-          </mat-select-trigger>
-          <mat-option *ngFor="let type of filterTypeOptions;" [value]="type.value">{{type.title}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </ng-container>
-  </div>
-
-  <mat-form-field class="search">
-    <mat-label>Search</mat-label>
-    <input type="search" matInput [formControl] = "search"
-    placeholder="Search title anime .... ">
+<div class="filter">
+  <mat-form-field appearance="fill" class="filter__item">
+    <mat-label>Choose an sorting option</mat-label>
+    <mat-select
+      [value]="(settingOfAnimeList$ | async)?.sortBy"
+      (selectionChange)="handleSortByChange($event)"
+    >
+      <mat-option
+        *ngFor="let item of sortingOptions; trackBy: sortOptionsTrackBy"
+        [value]="item.value"
+        >{{ item.title }}</mat-option
+      >
+    </mat-select>
   </mat-form-field>
-  <ng-container *ngIf="(paginationResult$ | async) as animeList; else Loading">
-    <camp-pagination [limit]="(settingOfAnimeList$ | async)?.limit" [activePage]="(settingOfAnimeList$ | async)?.page" [totalItems]="totalItems$| async" (pageChange)="handlePageChange($event)"></camp-pagination>
-    <table aria-describedby="anime-table" matSort mat-table *ngIf="(isLoading$|async) ===false, else Loading" [dataSource]="animeList.results" (matSortChange)="handleSortDataBuiltIn($event)" class="table">
 
-      <ng-container matColumnDef="image">
-        <th class="table__cell table__cell_title" mat-header-cell *matHeaderCellDef> Image </th>
-        <td [ngStyle]="{paddingLeft: 0}" class="table__cell_thumb" mat-cell *matCellDef="let element">
-          <img [alt]="element.titleEnglish" class="table__image" [src]="element.image"/>
-        </td>
-      </ng-container>
+  <mat-form-field appearance="fill" class="filter__item">
+    <mat-label>Choose ordering</mat-label>
+    <mat-select
+      [value]="(settingOfAnimeList$ | async)?.ordering"
+      (selectionChange)="handleOrderingChange($event)"
+    >
+      <mat-option *ngFor="let item of orderingOptions" [value]="item.value">{{
+        item.title
+      }}</mat-option>
+    </mat-select>
+  </mat-form-field>
 
-      <ng-container matColumnDef="titleEnglish">
-        <th mat-sort-header="sortTitleEnglish" class="table__cell table__cell_title" mat-header-cell *matHeaderCellDef> English title</th>
-        <td class="table__cell" mat-cell *matCellDef="let element"> {{element.titleEnglish}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="titleJapan">
-        <th class="table__cell table__cell_title" mat-header-cell *matHeaderCellDef>Japanese title</th>
-        <td class="table__cell" mat-cell *matCellDef="let element"> {{element.titleJapan}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="airedStartDate">
-        <th mat-sort-header="sortAiredStartDate" class="table__cell table__cell_title" mat-header-cell *matHeaderCellDef> Aired start </th>
-        <td class="table__cell" mat-cell *matCellDef="let element"> {{element.aired.start ? element.aired.start.toLocaleDateString() : ''}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="type">
-        <th class="table__cell table__cell_title" mat-header-cell *matHeaderCellDef> Type </th>
-        <td class="table__cell" mat-cell *matCellDef="let element"> {{element.type}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="status">
-        <th mat-sort-header="sortStatus" class="table__cell table__cell_title" mat-header-cell *matHeaderCellDef> Status </th>
-        <td class="table__cell" mat-cell *matCellDef="let element"> {{element.status}} </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
+  <ng-container *ngIf="(settingOfAnimeList$ | async)?.type as multipleType">
+    <mat-form-field appearance="fill" class="filter__item">
+      <mat-label>Choose types</mat-label>
+      <mat-select
+        [value]="multipleType"
+        (selectionChange)="handleTypeChange($event)"
+        multiple
+      >
+        <mat-select-trigger>
+          {{ multipleType[0] || "" }}
+          <span *ngIf="(multipleType.length || 0) > 1">
+            (+{{ (multipleType.length || 0) - 1 }}
+            {{ multipleType.length === 2 ? "other" : "others" }})
+          </span>
+        </mat-select-trigger>
+        <mat-option
+          *ngFor="let type of filterTypeOptions"
+          [value]="type.value"
+          >{{ type.title }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
   </ng-container>
+</div>
 
+<mat-form-field class="search">
+  <mat-label>Search</mat-label>
+  <input
+    type="search"
+    matInput
+    [formControl]="search"
+    placeholder="Search title anime .... "
+  />
+</mat-form-field>
+<ng-container *ngIf="paginationResult$ | async as animeList; else Loading">
+  <camp-pagination
+    [limit]="(settingOfAnimeList$ | async)?.limit"
+    [activePage]="(settingOfAnimeList$ | async)?.page"
+    [totalItems]="totalItems$ | async"
+    (pageChange)="handlePageChange($event)"
+  ></camp-pagination>
+  <table
+    [trackBy]="trackByTable"
+    aria-describedby="anime-table"
+    matSort
+    mat-table
+    *ngIf="(isLoading$ | async) === false; else Loading"
+    [dataSource]="animeList.results"
+    (matSortChange)="handleSortDataBuiltIn($event)"
+    class="table"
+  >
+    <ng-container matColumnDef="image">
+      <th
+        class="table__cell table__cell_title"
+        mat-header-cell
+        *matHeaderCellDef
+      >
+        Image
+      </th>
+      <td
+        [ngStyle]="{ paddingLeft: 0 }"
+        class="table__cell_thumb"
+        mat-cell
+        *matCellDef="let element"
+      >
+        <img
+          [alt]="element.titleEnglish"
+          class="table__image"
+          [src]="element.image"
+        />
+      </td>
+    </ng-container>
 
+    <ng-container matColumnDef="titleEnglish">
+      <th
+        mat-sort-header="sortTitleEnglish"
+        class="table__cell table__cell_title"
+        mat-header-cell
+        *matHeaderCellDef
+      >
+        English title
+      </th>
+      <td class="table__cell" mat-cell *matCellDef="let element">
+        {{ element.titleEnglish }}
+      </td>
+    </ng-container>
 
+    <ng-container matColumnDef="titleJapan">
+      <th
+        class="table__cell table__cell_title"
+        mat-header-cell
+        *matHeaderCellDef
+      >
+        Japanese title
+      </th>
+      <td class="table__cell" mat-cell *matCellDef="let element">
+        {{ element.titleJapan }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="airedStartDate">
+      <th
+        mat-sort-header="sortAiredStartDate"
+        class="table__cell table__cell_title"
+        mat-header-cell
+        *matHeaderCellDef
+      >
+        Aired start
+      </th>
+      <td class="table__cell" mat-cell *matCellDef="let element">
+        {{
+          element.aired.start ? element.aired.start.toLocaleDateString() : ""
+        }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+      <th
+        class="table__cell table__cell_title"
+        mat-header-cell
+        *matHeaderCellDef
+      >
+        Type
+      </th>
+      <td class="table__cell" mat-cell *matCellDef="let element">
+        {{ element.type }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th
+        mat-sort-header="sortStatus"
+        class="table__cell table__cell_title"
+        mat-header-cell
+        *matHeaderCellDef
+      >
+        Status
+      </th>
+      <td class="table__cell" mat-cell *matCellDef="let element">
+        {{ element.status }}
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</ng-container>
 
 <ng-template #Loading>
   <div ngClass="loading">
     <mat-spinner></mat-spinner>
   </div>
 </ng-template>
-

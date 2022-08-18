@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, TrackByFunction } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSelectChange } from '@angular/material/select';
@@ -248,4 +248,22 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
     this.subscriptionManager$.next();
     this.subscriptionManager$.complete();
   }
+
+  /**
+   * TrackBy options.
+   * @param _index Index of items.
+   */
+  public sortOptionsTrackBy(_index: number): number {
+    return _index;
+  }
+
+  /**
+   * Anime table.
+   * @param _index Index of anime.
+   * @param anime Anime table.
+   * @returns
+   */
+  public trackByTable: TrackByFunction<Anime> = function(_index: number, anime: Anime): Anime['id'] {
+    return anime.id;
+  };
 }
