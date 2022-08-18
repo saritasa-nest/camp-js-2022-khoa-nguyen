@@ -1,0 +1,21 @@
+<mat-form-field appearance="fill" class="filter__item">
+  <mat-label>Choose types</mat-label>
+  <mat-select
+    [value]="value"
+    (selectionChange)="onSelectionChange()"
+    multiple
+  >
+    <mat-select-trigger>
+      {{ value[0] || "" }}
+      <span *ngIf="(value.length || 0) > 1">
+        (+{{ (value.length || 0) - 1 }}
+        {{ value.length === 2 ? "other" : "others" }})
+      </span>
+    </mat-select-trigger>
+    <mat-option
+      *ngFor="let option of optionsList"
+      [value]="option.value"
+      >{{ option.title }}</mat-option
+    >
+  </mat-select>
+</mat-form-field>
