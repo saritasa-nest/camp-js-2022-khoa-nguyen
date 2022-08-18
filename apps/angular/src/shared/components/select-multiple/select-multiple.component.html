@@ -26,11 +26,11 @@
         </mat-chip-list>
       </mat-select-trigger>
 
-      <!-- <ng-container *ngIf="entities?.length === 0">
-        <button mat-button type="button" (click)="onCreateEntity()">
-          Create {{ newEntity }}
+      <ng-container *ngIf="entities?.length === 0">
+        <button mat-button type="button" class="select_button__create" (click)="onCreateEntity()">
+          Create {{ this.formGroup.controls[formControlSearchName].value }}
         </button>
-      </ng-container> -->
+      </ng-container>
 
       <div
         class="option"

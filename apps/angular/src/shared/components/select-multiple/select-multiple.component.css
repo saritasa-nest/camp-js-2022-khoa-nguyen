@@ -5,3 +5,11 @@
 .select__wrapper {
   padding: 10px 0;
 }
+
+.select_button__create {
+  width: 100%;
+  border-radius: 0;
+  color: var(--primary-font-light-color);
+  font-weight: var(--primary-font-weight-title);
+  background-color: var(--primary-color);
+}

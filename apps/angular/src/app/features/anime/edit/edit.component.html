@@ -132,6 +132,7 @@
         formControlSearchName="searchGenre"
         formControlSelectName="genres"
         [entities]="listGenres$ | async"
+        (createEntity)="handleCreateGenre()"
         (removeSelectedValue)="handleRemoveSelectedValue($event)"
       ></camp-select-multiple>
     </div>

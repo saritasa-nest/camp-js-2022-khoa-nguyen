@@ -7,7 +7,7 @@ import { AnimeEdit, Rating, Season, Source } from '@js-camp/core/models/animeEdi
 import { DefaultEntity } from 'apps/angular/src/shared/components/select-multiple/select-multiple.component';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 
-import { BehaviorSubject, combineLatestWith, debounceTime, distinctUntilChanged, filter, ignoreElements, map, Observable, Subject, take, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, combineLatestWith, debounceTime, filter, ignoreElements, map, merge, Observable, Subject, switchMap, take, takeUntil, tap } from 'rxjs';
 
 import { AnimeService, GenreService } from '../../../../core/services';
 
@@ -97,8 +97,6 @@ export class EditComponent implements OnInit, OnDestroy {
 
   private readonly currentListGenresQuery$: Observable<[readonly DefaultEntity[] | null, readonly DefaultEntity[]]>;
 
-  // private readonly currentListGenresQuery$: Observable<[readonly DefaultEntity[] | null, DefaultEntity[], readonly DefaultEntity[]]>;
-
   private mapper(genre: Genre): DefaultEntity {
     return {
       id: genre.id,
@@ -123,8 +121,6 @@ export class EditComponent implements OnInit, OnDestroy {
         tap(anime => {
           this.setInitValuesToAnimeForm(anime);
           this.currentAnimeGenres$.next(anime.genres.map(item => this.mapper(item)));
-
-          // console.log(anime.genres.map(item => this.mapper(item)));
         }),
       );
 
@@ -154,8 +150,6 @@ export class EditComponent implements OnInit, OnDestroy {
           .pipe(
             map(genres => genres.results.map(item => this.mapper(item))),
           ),
-
-        // valueGenresChange$,
       ),
     );
 
@@ -171,52 +165,49 @@ export class EditComponent implements OnInit, OnDestroy {
     });
   }
 
-  /** @inheritdoc */
-  public ngOnInit(): void {
-    const getGenresInitList = (): void => {
-      this.currentListGenresQuery$.pipe(
-        take(1),
-        map(([currentAnimeGenres, listGenres]) => {
-          const arrCombine = currentAnimeGenres?.concat(listGenres);
-          const ids = arrCombine?.map(item => item.id);
-          return arrCombine?.filter(({ id }, index) => !ids?.includes(id, index + 1));
-        }),
-
-        filter((value): value is Genre[] => value != null),
-        tap(value => this.listGenres$.next(value)),
-        ignoreElements(),
-        takeUntil(this.subscriptionManager$),
-      ).subscribe();
-    };
-
-    this.editForm.controls['searchGenre'].valueChanges.pipe(
-      debounceTime(500),
-      distinctUntilChanged(),
-      tap((value: string) => {
-        this.genreService
-          .getGenresList(value)
-          .pipe(
-            map(genres => genres.results),
-            tap(genres => {
-              if (value === '') {
-                getGenresInitList();
-                return;
-              }
-              this.listGenres$.next(genres);
-            }),
-            ignoreElements(),
-            takeUntil(this.subscriptionManager$),
-          )
-          .subscribe();
+  /** Get genres init list. */
+  public getGenresInitList(): void {
+    this.currentListGenresQuery$.pipe(
+      take(1),
+      map(([currentAnimeGenres, listGenres]) => {
+        const arrCombine = currentAnimeGenres?.concat(listGenres);
+        const ids = arrCombine?.map(item => item.id);
+        return arrCombine?.filter(({ id }, index) => !ids?.includes(id, index + 1));
       }),
+
+      filter((value): value is Genre[] => value != null),
+      tap(value => this.listGenres$.next(value)),
       ignoreElements(),
       takeUntil(this.subscriptionManager$),
     ).subscribe();
+  }
 
-    this.editForm.controls['genres'].valueChanges.pipe(
+  /** @inheritdoc */
+  public ngOnInit(): void {
+
+    const searchGenreChange$ = this.editForm.controls['searchGenre'].valueChanges.pipe(
+      debounceTime(500),
+      switchMap(value => this.genreService.getGenresList(value)),
+      map(genres => genres.results),
+      tap(genres => {
+        if (this.editForm.controls['searchGenre'].value === '') {
+          this.getGenresInitList();
+          return;
+        }
+        this.listGenres$.next(genres);
+      }),
+    );
+
+    const genreChange$ = this.editForm.controls['genres'].valueChanges.pipe(
       map(value => this.mapperStringToDefaultEntity(value)),
       tap(value => this.currentAnimeGenres$.next((value))),
-    ).subscribe();
+    );
+
+    merge(searchGenreChange$, genreChange$).pipe(
+      ignoreElements(),
+      takeUntil(this.subscriptionManager$),
+    )
+      .subscribe();
   }
 
   /** @inheritdoc */
@@ -251,6 +242,17 @@ export class EditComponent implements OnInit, OnDestroy {
   public handleRemoveSelectedValue(item: string): void {
     const currentValue: string[] = this.editForm.controls['genres'].value;
     this.editForm.controls['genres'].setValue(currentValue.filter(value => item !== value));
+  }
+
+  /** Handle create new genre. */
+  public handleCreateGenre(): void {
+    const nameGenre = this.editForm.controls['searchGenre'].value;
+    this.genreService.createGenres(nameGenre).pipe(
+      tap(() => this.editForm.controls['searchGenre'].setValue(nameGenre)),
+      ignoreElements(),
+      takeUntil(this.subscriptionManager$),
+    )
+      .subscribe();
   }
 
 }
