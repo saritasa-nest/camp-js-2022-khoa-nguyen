@@ -41,6 +41,9 @@ export class SelectMultipleComponent {
   /** Form group. */
   @Input() public formGroup: FormGroup | null = null;
 
+  /** Toggle create button. */
+  @Input() public isShowCreateButton: Boolean | null = true;
+
   /** On create entity. */
   @Output() public createEntity = new EventEmitter();
 

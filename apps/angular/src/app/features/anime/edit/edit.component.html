@@ -103,21 +103,11 @@
       </mat-form-field>
     </div>
 
-    <div class="edit__list" *ngIf="anime.genres.length > 0">
-      <h2>Genres:</h2>
-      <mat-chip-list>
-        <mat-chip *ngFor="let genre of anime.genres">{{ genre.name }}</mat-chip>
-      </mat-chip-list>
-    </div>
-
-    <div class="edit__list" *ngIf="anime.studios.length > 0">
-      <h2>Studios:</h2>
-      <mat-chip-list>
-        <mat-chip *ngFor="let studio of anime.studios">{{
-          studio.name
-        }}</mat-chip>
-      </mat-chip-list>
-    </div>
+    <mat-form-field class="edit__textarea" appearance="fill">
+      <mat-label>Title Japanese</mat-label>
+      <textarea formControlName="synopsis" matInput type="text"></textarea>
+      <mat-error></mat-error>
+    </mat-form-field>
 
     <div class="edit__list">
       <h2>Airing:</h2>
@@ -133,7 +123,21 @@
         formControlSelectName="genres"
         [entities]="listGenres$ | async"
         (createEntity)="handleCreateGenre()"
-        (removeSelectedValue)="handleRemoveSelectedValue($event)"
+        [isShowCreateButton]="isShowCreateButtonGenre$ | async"
+        (removeSelectedValue)="handleRemoveSelectedGenre($event)"
+      ></camp-select-multiple>
+    </div>
+    <div class="edit__list">
+      <camp-select-multiple
+        label="Studios"
+        class="edit__select_multiple"
+        [formGroup]="editForm"
+        formControlSearchName="searchStudio"
+        formControlSelectName="studios"
+        [entities]="listStudios$ | async"
+        (createEntity)="handleCreateStudio()"
+        [isShowCreateButton]="isShowCreateButtonStudio$ | async"
+        (removeSelectedValue)="handleRemoveSelectedStudio($event)"
       ></camp-select-multiple>
     </div>
   </form>

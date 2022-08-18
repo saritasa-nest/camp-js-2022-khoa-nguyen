@@ -30,3 +30,12 @@
 .edit__select_multiple {
   width: 100%;
 }
+
+.edit__textarea {
+  width: 100%;
+}
+
+.edit__textarea textarea {
+  resize: none;
+  min-height: 200px;
+}

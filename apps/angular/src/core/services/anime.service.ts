@@ -193,7 +193,7 @@ export class AnimeService {
    * Get anime detail information.
    * @param id Id of selected anime.
    */
-  public getAnimeDetail(id: number): Observable<AnimeEdit> {
+  public getAnimeDetail(id: Anime['id']): Observable<AnimeEdit> {
     return this.apiService
       .getData<AnimeEditDto, undefined>(`${ANIME_LIST_API}${id}/`)
       .pipe(
