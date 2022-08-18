@@ -1,6 +1,4 @@
-import { EventEmitter } from 'stream';
-
-import { ChangeDetectionStrategy, Component, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 interface OptionsList {
 
