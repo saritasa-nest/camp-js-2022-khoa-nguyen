@@ -6,6 +6,8 @@ import { Sort } from '@angular/material/sort';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TypeDto } from '@js-camp/core/dtos';
 import { Anime, Pagination, SortValue } from '@js-camp/core/models';
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+import { AnimeMapper } from 'apps/angular/src/core/services/anime-mapper.service';
 import { BehaviorSubject, combineLatestWith, debounceTime, distinctUntilChanged, ignoreElements, map, merge, Observable, shareReplay, skip, startWith, Subject, switchMap, takeUntil, tap } from 'rxjs';
 
 import { DEFAULT_ACTIVE_PAGE, DEFAULT_SEARCH, FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS } from '../../../../constants';
@@ -22,10 +24,7 @@ import { AnimeService, QueryUrl, SettingOfAnimeList } from '../../../../core/ser
 export class AnimeTableComponent implements OnInit, OnDestroy {
 
   /** Column of table. */
-  public displayedColumns: string[] = ['image', 'titleEnglish', 'titleJapan', 'airedStartDate', 'type', 'status'];
-
-  /** Anime mapper. */
-  public readonly animeMapper = this.animeService.mapper();
+  public displayedColumns = ['image', 'titleEnglish', 'titleJapan', 'airedStartDate', 'type', 'status'] as const;
 
   /** Sorting options. */
   public readonly sortingOptions = SORT_OPTIONS;
@@ -50,12 +49,6 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
 
   /** Loading status. */
   public readonly isLoading$ = new BehaviorSubject<boolean>(false);
-
-  /** Get search initial value. */
-  public getSearchValue(): string {
-    const currentParams = this.activateRoute.snapshot.queryParams;
-    return this.animeMapper.urlParamToModel(currentParams).search;
-  }
 
   /** Search. */
   public readonly search = new FormControl<string>(this.getSearchValue());
@@ -82,6 +75,7 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
     private readonly animeService: AnimeService,
     private readonly activateRoute: ActivatedRoute,
     private readonly router: Router,
+    private readonly animeMapper: AnimeMapper,
   ) {
     this.queryCombine$ = this.settingOfAnimeList$.pipe(
       combineLatestWith(
@@ -136,6 +130,12 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
       queryParams: trueParams,
       queryParamsHandling: '',
     });
+  }
+
+  /** Get search initial value. */
+  public getSearchValue(): string {
+    const currentParams = this.activateRoute.snapshot.queryParams;
+    return this.animeMapper.urlParamToModel(currentParams).search;
   }
 
   /**
@@ -212,7 +212,7 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
     }
   }
 
-  /** OnInit. */
+  /** @inheritdoc */
   public ngOnInit(): void {
 
     const queryCombineSideEffect$ = this.queryCombine$.pipe(
@@ -243,7 +243,7 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
-  /** OnDestroy. */
+  /** @inheritdoc */
   public ngOnDestroy(): void {
     this.subscriptionManager$.next();
     this.subscriptionManager$.complete();

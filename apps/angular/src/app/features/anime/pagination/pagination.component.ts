@@ -12,28 +12,28 @@ import { PageEvent } from '@angular/material/paginator';
 /** Init pagination component. */
 export class PaginationComponent {
 
-  /** Change event component.
+  /**
+   * Change event component.
    * @param event Event page change.
    */
-  @Output() public pageChange = new EventEmitter<PageEvent>();
+  @Output()
+  public pageChange = new EventEmitter<PageEvent>();
 
   /** Total items of pagination. */
-  @Input() public totalItems: number | null;
+  @Input()
+  public totalItems: number | null = 0;
 
   /** Limit of pagination. */
-  @Input() public limit: number | undefined;
+  @Input()
+  public limit: number | undefined = 25;
 
   /** Limit options of pagination. */
-  @Input() public limitOptions: number[];
-
-  public constructor() {
-    this.totalItems = 0;
-    this.limit = 25;
-    this.limitOptions = [15, 20, 25];
-  }
+  @Input()
+  public limitOptions: number[] = [15, 20, 25];
 
   /** Active page of pagination. */
-  @Input() public activePage: number | undefined | null = 0;
+  @Input()
+  public activePage: number | undefined | null = 0;
 
   /**
    * Handle pagination change and emit the status.
