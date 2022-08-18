@@ -4,10 +4,12 @@ import { ActivatedRoute } from '@angular/router';
 import { Genre, StatusModel, TypeModel } from '@js-camp/core/models';
 import { AnimeEdit, Rating, Season, Source } from '@js-camp/core/models/animeEdit';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+import { DefaultEntity } from 'apps/angular/src/shared/components/select-multiple/select-multiple.component';
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 
-import { BehaviorSubject, combineLatestWith, debounceTime, filter, ignoreElements, map, Observable, Subject, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, combineLatestWith, debounceTime, distinctUntilChanged, filter, ignoreElements, map, Observable, Subject, take, takeUntil, tap } from 'rxjs';
 
-import { AnimeService } from '../../../../core/services';
+import { AnimeService, GenreService } from '../../../../core/services';
 
 /** Anime poster control. */
 export interface AnimeFormControls {
@@ -71,7 +73,7 @@ export class EditComponent implements OnInit, OnDestroy {
   public readonly animeInfo$: Observable<AnimeEdit> | null;
 
   /** List of all genres. */
-  public readonly listGenres$ = new BehaviorSubject<readonly Genre[] | null>(null);
+  public readonly listGenres$ = new BehaviorSubject<readonly DefaultEntity[] | null>(null);
 
   /** Rating list. */
   public readonly ratingList = Object.values(Rating);
@@ -91,14 +93,24 @@ export class EditComponent implements OnInit, OnDestroy {
   /** Subject that is used for unsubscribing from streams. */
   private readonly subscriptionManager$ = new Subject<void>();
 
-  private readonly currentAnimeGenres$ = new BehaviorSubject<readonly Genre[] | null>(null);
+  private readonly currentAnimeGenres$ = new BehaviorSubject<readonly DefaultEntity[] | null>(null);
 
-  private readonly currentListGenresQuery$: Observable<[readonly Genre[] | null, readonly Genre[]]>;
+  private readonly currentListGenresQuery$: Observable<[readonly DefaultEntity[] | null, readonly DefaultEntity[]]>;
+
+  // private readonly currentListGenresQuery$: Observable<[readonly DefaultEntity[] | null, DefaultEntity[], readonly DefaultEntity[]]>;
+
+  private mapper(genre: Genre): DefaultEntity {
+    return {
+      id: genre.id,
+      name: genre.name,
+    };
+  }
 
   public constructor(
     private readonly animeService: AnimeService,
     private readonly activatedRoute: ActivatedRoute,
     private readonly formBuilder: FormBuilder,
+    private readonly genreService: GenreService,
   ) {
 
     const animeId = this.activatedRoute.snapshot.paramMap.get('id');
@@ -110,7 +122,9 @@ export class EditComponent implements OnInit, OnDestroy {
       .pipe(
         tap(anime => {
           this.setInitValuesToAnimeForm(anime);
-          this.currentAnimeGenres$.next(anime.genres);
+          this.currentAnimeGenres$.next(anime.genres.map(item => this.mapper(item)));
+
+          // console.log(anime.genres.map(item => this.mapper(item)));
         }),
       );
 
@@ -132,21 +146,36 @@ export class EditComponent implements OnInit, OnDestroy {
     });
 
     const currentAnimeGenresObservable$ = this.currentAnimeGenres$.asObservable();
+
     this.currentListGenresQuery$ = currentAnimeGenresObservable$.pipe(
       combineLatestWith(
-        this.animeService
+        this.genreService
           .getGenresList('')
           .pipe(
-            map(genres => genres.results),
+            map(genres => genres.results.map(item => this.mapper(item))),
           ),
+
+        // valueGenresChange$,
       ),
     );
+
+  }
+
+  private mapperStringToDefaultEntity(arr: readonly string[]): readonly DefaultEntity[] {
+    return arr.map(item => {
+      const arrSpilt = item.split('-');
+      return {
+        id: Number(arrSpilt[0]),
+        name: arrSpilt[1],
+      };
+    });
   }
 
   /** @inheritdoc */
   public ngOnInit(): void {
     const getGenresInitList = (): void => {
       this.currentListGenresQuery$.pipe(
+        take(1),
         map(([currentAnimeGenres, listGenres]) => {
           const arrCombine = currentAnimeGenres?.concat(listGenres);
           const ids = arrCombine?.map(item => item.id);
@@ -162,8 +191,9 @@ export class EditComponent implements OnInit, OnDestroy {
 
     this.editForm.controls['searchGenre'].valueChanges.pipe(
       debounceTime(500),
+      distinctUntilChanged(),
       tap((value: string) => {
-        this.animeService
+        this.genreService
           .getGenresList(value)
           .pipe(
             map(genres => genres.results),
@@ -183,6 +213,10 @@ export class EditComponent implements OnInit, OnDestroy {
       takeUntil(this.subscriptionManager$),
     ).subscribe();
 
+    this.editForm.controls['genres'].valueChanges.pipe(
+      map(value => this.mapperStringToDefaultEntity(value)),
+      tap(value => this.currentAnimeGenres$.next((value))),
+    ).subscribe();
   }
 
   /** @inheritdoc */
