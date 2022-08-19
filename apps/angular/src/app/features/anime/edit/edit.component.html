@@ -1,14 +1,11 @@
 <camp-navigation></camp-navigation>
 <div *ngIf="editForm">
-  <form
-  (ngSubmit)="onSubmit()"
-    [formGroup]="editForm"
-    *ngIf="animeInfo$ | async as anime"
-    class="edit__form"
-  >
+  <form (ngSubmit)="onSubmit()" [formGroup]="editForm" class="edit__form">
     <h1 class="edit__title">EDIT ANIME</h1>
-    <h2 *ngIf="anime.titleEnglish">{{ anime.titleEnglish }}</h2>
-    <h2>{{ anime.titleJapan }}</h2>
+    <h2 *ngIf="(animeInfo$ | async) && (animeInfo$ | async)?.titleEnglish">
+      {{ (animeInfo$ | async)?.titleEnglish }}
+    </h2>
+    <h2>{{ (animeInfo$ | async)?.titleJapan }}</h2>
     <div class="edit__field">
       <mat-form-field class="edit__input" appearance="fill">
         <mat-label>Title English</mat-label>
@@ -66,6 +63,7 @@
             item
           }}</mat-option>
         </mat-select>
+        <mat-error></mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="fill">
@@ -75,6 +73,7 @@
             item
           }}</mat-option>
         </mat-select>
+        <mat-error></mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="fill">
@@ -84,6 +83,7 @@
             item
           }}</mat-option>
         </mat-select>
+        <mat-error></mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="fill">
@@ -93,6 +93,7 @@
             item
           }}</mat-option>
         </mat-select>
+        <mat-error></mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="fill">
@@ -102,6 +103,7 @@
             item
           }}</mat-option>
         </mat-select>
+        <mat-error></mat-error>
       </mat-form-field>
     </div>
 
@@ -143,8 +145,6 @@
       ></camp-select-multiple>
     </div>
 
-    <button mat-button type="submit" class="edit__button_submit">
-      Update
-    </button>
+    <button mat-button type="submit" class="edit__button_submit">Update</button>
   </form>
 </div>

@@ -99,10 +99,20 @@ export class AnimeService {
 
   /**
    * Delete anime.
-   * @param anime Anime to delete.
+   * @param animeId Anime to delete.
    */
-  public removeAnime(anime: Anime): Observable<Object> {
-    return this.apiService.deleteData(`${ANIME_LIST_API}${anime.id}/`);
+  public removeAnime(animeId: Anime['id']): Observable<Object> {
+    return this.apiService.deleteData(`${ANIME_LIST_API}${animeId}/`);
+  }
+
+  /**
+   * Edit anime.
+   * @param value Value to create.
+   */
+  public createAnime(value: AnimeEditPutDto): Observable<AnimeEdit> {
+    return this.apiService.postData<AnimeEditDto, AnimeEditPutDto>(ANIME_LIST_API, value).pipe(
+      map(data => AnimeEditMapper.fromDto(data)),
+    );
   }
 
   /**

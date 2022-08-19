@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnimeDetail } from '@js-camp/core/models';
-import { map, Observable, Subject } from 'rxjs';
+import { map, Observable, Subject, tap } from 'rxjs';
 
 import { AnimeService } from '../../../../core/services/anime.service';
 
@@ -75,5 +75,16 @@ export class DetailComponent {
   /** Handle move to edit page of anime. */
   public handleEditAnime(): void {
     this.router.navigate([`edit/${this.animeId}`]);
+  }
+
+  /** Handle delete anime. */
+  public handleDeleteAnime(): void {
+    this.animeService.removeAnime(Number(this.animeId))
+      .pipe(
+        tap(() => {
+          this.router.navigate(['']);
+        }),
+      )
+      .subscribe();
   }
 }

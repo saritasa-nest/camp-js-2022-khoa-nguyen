@@ -1,13 +1,40 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnimeEditMapper } from '@js-camp/core/mappers/animeEdit.mapper';
 import { StatusModel, TypeModel } from '@js-camp/core/models';
-import { AnimeEdit, Rating, Season, Source } from '@js-camp/core/models/animeEdit';
+import {
+  AnimeEdit,
+  Rating,
+  Season,
+  Source,
+} from '@js-camp/core/models/animeEdit';
 import { DateRange } from '@js-camp/core/models/dateRange';
-import { catchError, debounceTime, ignoreElements, map, merge, Observable, Subject, switchMap, takeUntil, tap, throwError } from 'rxjs';
+import {
+  catchError,
+  debounceTime,
+  ignoreElements,
+  map,
+  merge,
+  Observable,
+  of,
+  Subject,
+  switchMap,
+  takeUntil,
+  tap,
+  throwError,
+} from 'rxjs';
 
-import { AnimeService, GenreService, StudioService } from '../../../../core/services';
+import {
+  AnimeService,
+  GenreService,
+  StudioService,
+} from '../../../../core/services';
 
 interface AnimeFormControls {
 
@@ -27,19 +54,19 @@ interface AnimeFormControls {
   readonly synopsis: FormControl<string>;
 
   /** Type control. */
-  readonly type: FormControl<TypeModel >;
+  readonly type: FormControl<TypeModel>;
 
   /** Status control. */
-  readonly status: FormControl<StatusModel >;
+  readonly status: FormControl<StatusModel>;
 
   /** Source control. */
-  readonly source: FormControl<Source >;
+  readonly source: FormControl<Source>;
 
   /** Season control. */
-  readonly season: FormControl<Season >;
+  readonly season: FormControl<Season>;
 
   /** Rating control. */
-  readonly rating: FormControl<Rating >;
+  readonly rating: FormControl<Rating>;
 
   /** Is airing. */
   readonly isAiring: FormControl<boolean>;
@@ -75,19 +102,21 @@ export class EditComponent implements OnInit, OnDestroy {
   public readonly editForm: FormGroup<AnimeFormControls>;
 
   /** Anime selected information. */
-  public readonly animeInfo$: Observable<AnimeEdit> ;
+  public readonly animeInfo$: Observable<AnimeEdit | null>;
 
   /** List of all genres. */
   public readonly listGenres$ = this.genreService.listGenres$;
 
   /** Toggle create button observable. */
-  public readonly isShowCreateButtonGenre$ = this.genreService.isShowCreateButton$;
+  public readonly isShowCreateButtonGenre$ =
+    this.genreService.isShowCreateButton$;
 
   /** List of all studios. */
   public readonly listStudios$ = this.studioService.listStudios$;
 
   /** Toggle create button observable. */
-  public readonly isShowCreateButtonStudio$ = this.studioService.isShowCreateButton$;
+  public readonly isShowCreateButtonStudio$ =
+    this.studioService.isShowCreateButton$;
 
   /** Rating list. */
   public readonly ratingList = Object.values(Rating);
@@ -99,10 +128,14 @@ export class EditComponent implements OnInit, OnDestroy {
   public readonly sourceList = Object.values(Source);
 
   /** Status list. */
-  public readonly statusList = Object.values(StatusModel).filter(item => item !== StatusModel.Default);
+  public readonly statusList = Object.values(StatusModel).filter(
+    item => item !== StatusModel.Default,
+  );
 
   /** Type list. */
-  public readonly typeList = Object.values(TypeModel).filter(item => item !== TypeModel.Default);
+  public readonly typeList = Object.values(TypeModel).filter(
+    item => item !== TypeModel.Default,
+  );
 
   private readonly subscriptionManager$ = new Subject<void>();
 
@@ -113,33 +146,64 @@ export class EditComponent implements OnInit, OnDestroy {
     private readonly studioService: StudioService,
     private readonly router: Router,
   ) {
-
-    if (this.animeId == null || isNaN(Number(this.animeId))) {
-      this.router.navigate(['']);
+    if (this.animeId != null) {
+      this.animeInfo$ = this.animeService
+        .getAnimeDetail(Number(this.animeId))
+        .pipe(
+          catchError((error: unknown) => {
+            this.router.navigate(['']);
+            return throwError(() => error);
+          }),
+        );
+    } else {
+      this.animeInfo$ = of(null);
     }
-    this.animeInfo$ = this.animeService.getAnimeDetail(Number(this.animeId))
-      .pipe(
-        catchError((error: unknown) => {
-          this.router.navigate(['']);
-          return throwError(() => error);
-        }),
-      );
     this.editForm = new FormGroup<AnimeFormControls>({
       imageLink: new FormControl(''),
       trailerYoutubeId: new FormControl(null),
       titleEnglish: new FormControl('', { nonNullable: true }),
       titleJapanese: new FormControl('', { nonNullable: true }),
-      synopsis: new FormControl('', { validators: Validators.required, nonNullable: true }),
-      type: new FormControl(TypeModel.Default, { validators: Validators.required, nonNullable: true }),
-      status: new FormControl(StatusModel.Default, { validators: Validators.required, nonNullable: true }),
-      source: new FormControl(Source.Unknown, { validators: Validators.required, nonNullable: true }),
-      rating: new FormControl(Rating.Unknown, { validators: Validators.required, nonNullable: true }),
-      season: new FormControl(Season.NonSeasonal, { validators: Validators.required, nonNullable: true }),
+      synopsis: new FormControl('', {
+        validators: Validators.required,
+        nonNullable: true,
+      }),
+      type: new FormControl(TypeModel.Default, {
+        validators: Validators.required,
+        nonNullable: true,
+      }),
+      status: new FormControl(StatusModel.Default, {
+        validators: Validators.required,
+        nonNullable: true,
+      }),
+      source: new FormControl(Source.Unknown, {
+        validators: Validators.required,
+        nonNullable: true,
+      }),
+      rating: new FormControl(Rating.Unknown, {
+        validators: Validators.required,
+        nonNullable: true,
+      }),
+      season: new FormControl(Season.NonSeasonal, {
+        validators: Validators.required,
+        nonNullable: true,
+      }),
       isAiring: new FormControl(false, { nonNullable: true }),
-      airedStartDate: new FormControl(new Date(), { validators: Validators.required, nonNullable: true }),
-      airedEndDate: new FormControl(new Date(), { validators: Validators.required, nonNullable: true }),
-      genres: new FormControl([], { validators: Validators.required, nonNullable: true }),
-      studios: new FormControl([], { validators: Validators.required, nonNullable: true }),
+      airedStartDate: new FormControl(new Date(), {
+        validators: Validators.required,
+        nonNullable: true,
+      }),
+      airedEndDate: new FormControl(new Date(), {
+        validators: Validators.required,
+        nonNullable: true,
+      }),
+      genres: new FormControl([], {
+        validators: Validators.required,
+        nonNullable: true,
+      }),
+      studios: new FormControl([], {
+        validators: Validators.required,
+        nonNullable: true,
+      }),
       searchGenre: new FormControl('', { nonNullable: true }),
       searchStudio: new FormControl('', { nonNullable: true }),
     });
@@ -168,12 +232,36 @@ export class EditComponent implements OnInit, OnDestroy {
 
   /** @inheritdoc */
   public ngOnInit(): void {
-
     const animeInfoSideEffect$ = this.animeInfo$.pipe(
       tap(anime => {
-        this.setInitValuesToAnimeForm(anime);
-        this.genreService.addAnimeGenres(anime.genres.map(item => this.genreService.mapGenreToDefaultEntity(item)));
-        this.studioService.addAnimeStudios(anime.studios.map(item => this.studioService.mapStudioToDefaultEntity(item)));
+        if (anime !== null) {
+          this.setInitValuesToAnimeForm(anime);
+          this.genreService.addAnimeGenres(
+            anime.genres.map(item =>
+              this.genreService.mapGenreToDefaultEntity(item)),
+          );
+          this.studioService.addAnimeStudios(
+            anime.studios.map(item =>
+              this.studioService.mapStudioToDefaultEntity(item)),
+          );
+          return;
+        }
+        this.genreService
+          .getGenresList('')
+          .pipe(
+            map(genres => this.genreService.addNewListGenres(genres.results)),
+            ignoreElements(),
+            takeUntil(this.subscriptionManager$),
+          )
+          .subscribe();
+        this.studioService
+          .getStudiosList('')
+          .pipe(
+            map(studios => this.studioService.addNewListStudios(studios.results)),
+            ignoreElements(),
+            takeUntil(this.subscriptionManager$),
+          )
+          .subscribe();
       }),
     );
 
@@ -182,53 +270,69 @@ export class EditComponent implements OnInit, OnDestroy {
       tap(value => this.genreService.addAnimeGenres(value)),
     );
 
-    const searchGenreChange$ = this.editForm.controls.searchGenre.valueChanges.pipe(
-      debounceTime(500),
-      switchMap(value => this.genreService.getGenresList(value)),
-      map(genres => genres.results),
-      tap(genres => {
-        if (this.searchGenreValue === '') {
-          this.genreService.getGenresInitList(this.subscriptionManager$).subscribe();
+    const searchGenreChange$ =
+      this.editForm.controls.searchGenre.valueChanges.pipe(
+        debounceTime(500),
+        switchMap(value => this.genreService.getGenresList(value)),
+        map(genres => genres.results),
+        tap(genres => {
+          if (this.searchGenreValue === '') {
+            this.genreService
+              .getGenresInitList(this.subscriptionManager$)
+              .subscribe();
+            this.genreService.showCreateButton();
+            return;
+          }
+          this.genreService.addNewListGenres(genres);
+          if (
+            this.searchGenreValue.toLowerCase() ===
+            genres[0]?.name.toLowerCase()
+          ) {
+            this.genreService.hideCreateButton();
+            return;
+          }
           this.genreService.showCreateButton();
-          return;
-        }
-        this.genreService.addNewListGenres(genres);
-        if (this.searchGenreValue.toLowerCase() === genres[0]?.name.toLowerCase()) {
-          this.genreService.hideCreateButton();
-          return;
-        }
-        this.genreService.showCreateButton();
-      }),
-    );
+        }),
+      );
 
     const studioChange$ = this.editForm.controls.studios.valueChanges.pipe(
       map(value => this.studioService.mapperStringToDefaultEntity(value)),
       tap(value => this.studioService.addAnimeStudios(value)),
     );
 
-    const searchStudioChange$ = this.editForm.controls.searchStudio.valueChanges.pipe(
-      debounceTime(500),
-      switchMap(value => this.studioService.getStudiosList(value)),
-      map(studios => studios.results),
-      tap(studios => {
-        if (this.searchStudioValue === '') {
-          this.studioService.getStudiosInitList(this.subscriptionManager$).subscribe();
+    const searchStudioChange$ =
+      this.editForm.controls.searchStudio.valueChanges.pipe(
+        debounceTime(500),
+        switchMap(value => this.studioService.getStudiosList(value)),
+        map(studios => studios.results),
+        tap(studios => {
+          if (this.searchStudioValue === '') {
+            this.studioService
+              .getStudiosInitList(this.subscriptionManager$)
+              .subscribe();
+            this.studioService.showCreateButton();
+            return;
+          }
+          this.studioService.addNewListStudios(studios);
+          if (
+            this.searchStudioValue.toLowerCase() ===
+            studios[0]?.name.toLowerCase()
+          ) {
+            this.studioService.hideCreateButton();
+            return;
+          }
           this.studioService.showCreateButton();
-          return;
-        }
-        this.studioService.addNewListStudios(studios);
-        if (this.searchStudioValue.toLowerCase() === studios[0]?.name.toLowerCase()) {
-          this.studioService.hideCreateButton();
-          return;
-        }
-        this.studioService.showCreateButton();
-      }),
-    );
+        }),
+      );
 
-    merge(animeInfoSideEffect$, searchGenreChange$, genreChange$, studioChange$, searchStudioChange$).pipe(
-      ignoreElements(),
-      takeUntil(this.subscriptionManager$),
+    merge(
+      animeInfoSideEffect$,
+      searchGenreChange$,
+      genreChange$,
+      studioChange$,
+      searchStudioChange$,
     )
+      .pipe(ignoreElements(), takeUntil(this.subscriptionManager$))
       .subscribe();
   }
 
@@ -244,7 +348,9 @@ export class EditComponent implements OnInit, OnDestroy {
    */
   public handleRemoveSelectedGenre(item: string): void {
     const currentValue = this.editForm.controls.genres.value;
-    this.editForm.controls.genres.setValue(currentValue.filter(value => item !== value));
+    this.editForm.controls.genres.setValue(
+      currentValue.filter(value => item !== value),
+    );
   }
 
   /**
@@ -253,26 +359,34 @@ export class EditComponent implements OnInit, OnDestroy {
    */
   public handleRemoveSelectedStudio(item: string): void {
     const currentValue = this.editForm.controls.studios.value;
-    this.editForm.controls.studios.setValue(currentValue.filter(value => item !== value));
+    this.editForm.controls.studios.setValue(
+      currentValue.filter(value => item !== value),
+    );
   }
 
   /** Handle create new genre. */
   public handleCreateGenre(): void {
-    this.genreService.createGenres(this.searchGenreValue).pipe(
-      tap(() => this.editForm.controls.searchGenre.setValue(this.searchGenreValue)),
-      ignoreElements(),
-      takeUntil(this.subscriptionManager$),
-    )
+    this.genreService
+      .createGenres(this.searchGenreValue)
+      .pipe(
+        tap(() =>
+          this.editForm.controls.searchGenre.setValue(this.searchGenreValue)),
+        ignoreElements(),
+        takeUntil(this.subscriptionManager$),
+      )
       .subscribe();
   }
 
   /** Handle create new studio. */
   public handleCreateStudio(): void {
-    this.studioService.createStudios(this.searchStudioValue).pipe(
-      tap(() => this.editForm.controls.searchStudio.setValue(this.searchStudioValue)),
-      ignoreElements(),
-      takeUntil(this.subscriptionManager$),
-    )
+    this.studioService
+      .createStudios(this.searchStudioValue)
+      .pipe(
+        tap(() =>
+          this.editForm.controls.searchStudio.setValue(this.searchStudioValue)),
+        ignoreElements(),
+        takeUntil(this.subscriptionManager$),
+      )
       .subscribe();
   }
 
@@ -300,10 +414,10 @@ export class EditComponent implements OnInit, OnDestroy {
 
   /** On form submit. */
   public onSubmit(): void {
+    const rawValue = this.editForm.getRawValue();
     if (!this.editForm.valid) {
       return;
     }
-    const rawValue = this.editForm.getRawValue();
     const animeEditModel = new AnimeEdit({
       image: rawValue.imageLink,
       trailerYoutubeId: rawValue.trailerYoutubeId,
@@ -320,8 +434,10 @@ export class EditComponent implements OnInit, OnDestroy {
         start: rawValue.airedStartDate,
         end: rawValue.airedEndDate,
       }),
-      genresIds: rawValue.genres.map((item: string) => Number(item.split('-')[0])),
-      studioIds: rawValue.studios.map((item: string) => Number(item.split('-')[0])),
+      genresIds: rawValue.genres.map((item: string) =>
+        Number(item.split('-')[0])),
+      studioIds: rawValue.studios.map((item: string) =>
+        Number(item.split('-')[0])),
       genres: [],
       studios: [],
       id: 1,
@@ -329,15 +445,23 @@ export class EditComponent implements OnInit, OnDestroy {
 
     const animeEditDto = AnimeEditMapper.toDto(animeEditModel);
     if (this.animeId == null) {
+      this.animeService
+        .createAnime(animeEditDto)
+        .pipe(
+          tap(anime => this.router.navigate([`detail/${anime.id}`])),
+          ignoreElements(),
+          takeUntil(this.subscriptionManager$),
+        )
+        .subscribe();
       return;
     }
-    this.animeService.editAnime(Number(this.animeId), animeEditDto)
+    this.animeService
+      .editAnime(Number(this.animeId), animeEditDto)
       .pipe(
-        tap(() => this.router.navigate([`detail/${this.animeId}`])),
+        tap(anime => this.router.navigate([`detail/${anime.id}`])),
         ignoreElements(),
         takeUntil(this.subscriptionManager$),
       )
       .subscribe();
   }
-
 }

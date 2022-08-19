@@ -38,10 +38,6 @@
     <h2 class="detail__child">
       Status: <span class="detail__child_content">{{ anime.status }}</span>
     </h2>
-    <h2 class="detail__child">
-      Type:
-      <span class="detail__child_content">{{ anime.type.toUpperCase() }}</span>
-    </h2>
 
     <h2 class="detail__child">Synopsis:</h2>
     <p class="detail__child_paragraph">{{ anime.synopsis }}</p>
@@ -78,6 +74,15 @@
         (click)="handleEditAnime()"
       >
         Edit
+      </button>
+
+      <button
+        mat-button
+        type="button"
+        class="detail__button"
+        (click)="handleDeleteAnime()"
+      >
+        Delete
       </button>
     </div>
   </div>

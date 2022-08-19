@@ -19,6 +19,11 @@ const routes: Routes = [
     component: EditComponent,
     canActivate: [AuthorizationGuard],
   },
+  {
+    path: 'edit',
+    component: EditComponent,
+    canActivate: [AuthorizationGuard],
+  },
 ];
 
 /** Anime table view module. */

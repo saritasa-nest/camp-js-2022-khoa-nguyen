@@ -6,10 +6,20 @@
     <div class="navigation__right">
       <button
         type="button"
+        mat-button
         *ngIf="isAuth$ | async"
         (click)="onLogOutButtonClick()"
       >
         Log out
+      </button>
+
+      <button
+        mat-button
+        type="button"
+        *ngIf="isAuth$ | async"
+        (click)="onCreateAnimeClick()"
+      >
+        Create new anime
       </button>
       <a
         *ngIf="(isAuth$ | async) === false"

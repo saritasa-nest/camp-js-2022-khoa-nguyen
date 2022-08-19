@@ -98,7 +98,7 @@ export class GenreService {
    * Add or refresh list genres.
    * @param genres List genres.
    */
-  public addNewListGenres(genres: readonly Genre[]): void {
+  public addNewListGenres(genres: readonly DefaultEntity[]): void {
     this._listGenres$.next(genres);
   }
 

@@ -253,7 +253,7 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
     this.animeToDelete$.pipe(
       take(1),
       filter((anime): anime is Anime => anime !== null),
-      map(anime => this.animeService.removeAnime(anime)),
+      map(anime => this.animeService.removeAnime(anime.id)),
       switchMap(anime$ => anime$),
       tap(() => {
         this.refreshAnimeList();

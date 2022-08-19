@@ -26,4 +26,9 @@ export class NavigationComponent {
     this.authService.logout();
     this.router.navigate(['/auth/login']);
   }
+
+  /** Handle navigate to create anime page. */
+  public onCreateAnimeClick(): void {
+    this.router.navigate(['/edit']);
+  }
 }
