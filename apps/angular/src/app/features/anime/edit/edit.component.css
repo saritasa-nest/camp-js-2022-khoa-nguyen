@@ -2,7 +2,7 @@
   padding: 20px;
   max-width: 1200px;
   margin: auto;
-  margin-top: 30px;
+  margin-top: 100px;
   display: flex;
   gap: 50px;
   align-items: center;
@@ -44,4 +44,10 @@
   width: 100%;
   background-color: var(--primary-color);
   color: var(--primary-font-light-color);
+}
+
+.loading {
+  position: fixed;
+  left: 50%;
+  top: 50%;
 }

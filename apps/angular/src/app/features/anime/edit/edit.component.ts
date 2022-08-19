@@ -16,15 +16,16 @@ import {
 } from '@js-camp/core/models/animeEdit';
 import { DateRange } from '@js-camp/core/models/dateRange';
 import {
+  BehaviorSubject,
   catchError,
   debounceTime,
   ignoreElements,
   map,
   merge,
   Observable,
-  of,
-  Subject,
+  of, Subject,
   switchMap,
+  take,
   takeUntil,
   tap,
   throwError,
@@ -88,6 +89,7 @@ interface AnimeFormControls {
 
   /** Genres search control. */
   readonly searchStudio: FormControl<string>;
+
 }
 
 /** Edit anime page. */
@@ -137,6 +139,12 @@ export class EditComponent implements OnInit, OnDestroy {
     item => item !== TypeModel.Default,
   );
 
+  /** Loading. */
+  public readonly isLoading$ = new BehaviorSubject<boolean>(true);
+
+  /** Check if there is no anime. */
+  public readonly isNullAnime$ = new BehaviorSubject<boolean>(true);
+
   private readonly subscriptionManager$ = new Subject<void>();
 
   public constructor(
@@ -147,15 +155,18 @@ export class EditComponent implements OnInit, OnDestroy {
     private readonly router: Router,
   ) {
     if (this.animeId != null) {
+      this.isNullAnime$.next(false);
       this.animeInfo$ = this.animeService
         .getAnimeDetail(Number(this.animeId))
         .pipe(
+          take(1),
           catchError((error: unknown) => {
             this.router.navigate(['']);
             return throwError(() => error);
           }),
         );
     } else {
+      this.isNullAnime$.next(true);
       this.animeInfo$ = of(null);
     }
     this.editForm = new FormGroup<AnimeFormControls>({
@@ -234,6 +245,7 @@ export class EditComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     const animeInfoSideEffect$ = this.animeInfo$.pipe(
       tap(anime => {
+        this.isLoading$.next(false);
         if (anime !== null) {
           this.setInitValuesToAnimeForm(anime);
           this.genreService.addAnimeGenres(
@@ -302,7 +314,7 @@ export class EditComponent implements OnInit, OnDestroy {
 
     const searchStudioChange$ =
       this.editForm.controls.searchStudio.valueChanges.pipe(
-        debounceTime(500),
+        debounceTime(300),
         switchMap(value => this.studioService.getStudiosList(value)),
         map(studios => studios.results),
         tap(studios => {

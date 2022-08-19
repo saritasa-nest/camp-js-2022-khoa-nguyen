@@ -7,6 +7,7 @@
       <button
         type="button"
         mat-button
+        class="navigation__button"
         *ngIf="isAuth$ | async"
         (click)="onLogOutButtonClick()"
       >
@@ -16,6 +17,7 @@
       <button
         mat-button
         type="button"
+        class="navigation__button"
         *ngIf="isAuth$ | async"
         (click)="onCreateAnimeClick()"
       >

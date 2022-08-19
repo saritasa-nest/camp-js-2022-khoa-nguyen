@@ -1,11 +1,21 @@
 <camp-navigation></camp-navigation>
 <div *ngIf="editForm">
-  <form (ngSubmit)="onSubmit()" [formGroup]="editForm" class="edit__form">
-    <h1 class="edit__title">EDIT ANIME</h1>
-    <h2 *ngIf="(animeInfo$ | async) && (animeInfo$ | async)?.titleEnglish">
-      {{ (animeInfo$ | async)?.titleEnglish }}
-    </h2>
-    <h2>{{ (animeInfo$ | async)?.titleJapan }}</h2>
+  <form
+    (ngSubmit)="onSubmit()"
+    [formGroup]="editForm"
+    class="edit__form"
+    *ngIf="(isLoading$ | async) === false; else Loading"
+  >
+    <h1 class="edit__title">
+      {{ (isNullAnime$ | async) === false ? "EDIT ANIME" : "CREATE NEW ANIME" }}
+    </h1>
+    <ng-container *ngIf="animeInfo$ | async as anime">
+      <h2 *ngIf="anime.titleEnglish">
+        {{ anime.titleEnglish }}
+      </h2>
+      <h2 *ngIf="anime.titleJapan">{{ anime.titleJapan }}</h2>
+      </ng-container
+    >
     <div class="edit__field">
       <mat-form-field class="edit__input" appearance="fill">
         <mat-label>Title English</mat-label>
@@ -145,6 +155,15 @@
       ></camp-select-multiple>
     </div>
 
-    <button mat-button type="submit" class="edit__button_submit">Update</button>
+    <button mat-button type="submit" class="edit__button_submit">
+      {{ (isNullAnime$ | async) ? "Create" : "Update" }}
+    </button>
   </form>
 </div>
+
+
+<ng-template #Loading>
+  <div ngClass="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>

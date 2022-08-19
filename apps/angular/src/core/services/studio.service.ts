@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { PaginationDto } from '@js-camp/core/dtos';
 import { StudioDto } from '@js-camp/core/dtos/studio.dto';
-import { StudioMapper, PaginationMapper } from '@js-camp/core/mappers';
-import { Studio, Pagination } from '@js-camp/core/models';
+import { PaginationMapper, StudioMapper } from '@js-camp/core/mappers';
+import { Pagination, Studio } from '@js-camp/core/models';
 import { BehaviorSubject, combineLatestWith, filter, ignoreElements, map, Observable, Subject, take, takeUntil, tap } from 'rxjs';
 
 import { DefaultEntity } from '../../shared/components/select-multiple/select-multiple.component';
