@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AnimeDto, AnimeListQueryOptionsDto, PaginationDto, TypeDto } from '@js-camp/core/dtos';
-import { AnimeEditDto } from '@js-camp/core/dtos/animeEdit.dto';
+import { AnimeEditDto, AnimeEditPutDto } from '@js-camp/core/dtos/animeEdit.dto';
 import { AnimeListQueryOptionsMapper, AnimeMapper, PaginationMapper } from '@js-camp/core/mappers';
 import { AnimeEditMapper } from '@js-camp/core/mappers/animeEdit.mapper';
 import { Anime, AnimeListQueryOptions, Pagination, Sorting, SortTitle, SortValue } from '@js-camp/core/models';
@@ -103,6 +103,17 @@ export class AnimeService {
    */
   public removeAnime(anime: Anime): Observable<Object> {
     return this.apiService.deleteData(`${ANIME_LIST_API}${anime.id}/`);
+  }
+
+  /**
+   * Edit anime.
+   * @param id Anime to edit.
+   * @param value Value to edit.
+   */
+  public editAnime(id: Anime['id'], value: AnimeEditPutDto): Observable<AnimeEdit> {
+    return this.apiService.editData<AnimeEditDto, AnimeEditPutDto>(`${ANIME_LIST_API}${id}/`, value).pipe(
+      map(data => AnimeEditMapper.fromDto(data)),
+    );
   }
 
   /** Mapper data.*/

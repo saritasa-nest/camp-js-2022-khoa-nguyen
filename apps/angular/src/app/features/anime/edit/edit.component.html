@@ -1,5 +1,7 @@
+<camp-navigation></camp-navigation>
 <div *ngIf="editForm">
   <form
+  (ngSubmit)="onSubmit()"
     [formGroup]="editForm"
     *ngIf="animeInfo$ | async as anime"
     class="edit__form"
@@ -140,5 +142,9 @@
         (removeSelectedValue)="handleRemoveSelectedStudio($event)"
       ></camp-select-multiple>
     </div>
+
+    <button mat-button type="submit" class="edit__button_submit">
+      Update
+    </button>
   </form>
 </div>

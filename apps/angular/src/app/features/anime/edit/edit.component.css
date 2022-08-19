@@ -39,3 +39,9 @@
   resize: none;
   min-height: 200px;
 }
+
+.edit__button_submit {
+  width: 100%;
+  background-color: var(--primary-color);
+  color: var(--primary-font-light-color);
+}

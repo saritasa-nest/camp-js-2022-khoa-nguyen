@@ -87,12 +87,6 @@
   background: var(--primary-light-color);
 }
 
-.detail__button {
-  background-color: var(--primary-color);
-  color: var(--primary-light-color-2);
-  font-weight: var(--primary-font-weight-title);
-}
-
 .popup__iframe {
   width: 100%;
   height: 100%;
@@ -105,4 +99,16 @@
 
 .detail__child_paragraph {
   margin-top: -5px;
+}
+
+.detail__button-wrapper {
+  display: flex;
+}
+
+.detail__button {
+  background-color: var(--primary-color);
+  color: var(--primary-light-color-2);
+  font-weight: var(--primary-font-weight-title);
+  flex: 1;
+  gap: 20px;
 }

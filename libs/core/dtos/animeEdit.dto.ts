@@ -41,6 +41,8 @@ export enum SourceDto {
   Unknown = 'UNKNOWN',
 }
 
+export type AnimeEditPutDto = Omit<AnimeEditDto, 'id' | 'studios_data' | 'genres_data'>;
+
 /** Anime detail DTO. */
 export interface AnimeEditDto extends AnimeDetailDto {
 

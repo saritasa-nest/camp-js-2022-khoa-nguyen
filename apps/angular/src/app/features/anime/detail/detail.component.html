@@ -1,3 +1,4 @@
+<camp-navigation></camp-navigation>
 <mat-card *ngIf="animeInfo$ | async as anime; else Loading" class="detail">
   <mat-card class="detail__image">
     <img
@@ -59,15 +60,26 @@
         <mat-chip *ngFor="let genre of anime.genres">{{ genre.name }}</mat-chip>
       </mat-chip-list>
     </div>
-    <button
-      mat-button
-      *ngIf="anime.trailerYoutubeId"
-      class="detail__button"
-      (click)="handleOpenTrailer()"
-      type="button"
-    >
-      View trailer
-    </button>
+
+    <div class="detail__button-wrapper">
+      <button
+        mat-button
+        *ngIf="anime.trailerYoutubeId"
+        class="detail__button"
+        (click)="handleOpenTrailer()"
+        type="button"
+      >
+        View trailer
+      </button>
+      <button
+        mat-button
+        type="button"
+        class="detail__button"
+        (click)="handleEditAnime()"
+      >
+        Edit
+      </button>
+    </div>
   </div>
 
   <div class="popup" *ngIf="isShowPopupImage$ | async">

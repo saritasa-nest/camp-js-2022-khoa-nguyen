@@ -1,5 +1,5 @@
 import { StatusDto } from '../dtos';
-import { AnimeEditDto, RatingDto, SeasonDto, SourceDto } from '../dtos/animeEdit.dto';
+import { AnimeEditDto, AnimeEditPutDto, RatingDto, SeasonDto, SourceDto } from '../dtos/animeEdit.dto';
 import { TypeModel } from '../models';
 import { AnimeEdit, Rating, Season, Source } from '../models/animeEdit';
 
@@ -92,7 +92,7 @@ export namespace AnimeEditMapper {
    * Maps model to dto.
    * @param model Anime edit model.
    */
-  export function toDto(model: AnimeEdit): Omit<AnimeEditDto, 'studios_data' | 'genres_data'> {
+  export function toDto(model: AnimeEdit): AnimeEditPutDto {
     const type = AnimeListQueryOptionsMapper.typeModelToDto[model.type] ?? TypeModel.Default;
     const status = AnimeMapper.statusModelToDto[model.status] ?? StatusDto.Default;
     const source = sourceModelToDto[model.source];
@@ -100,7 +100,6 @@ export namespace AnimeEditMapper {
     const season = seasonModelToDto[model.season];
 
     return {
-      id: model.id,
       image: model.image,
       // eslint-disable-next-line @typescript-eslint/naming-convention
       trailer_youtube_id: model.trailerYoutubeId,
