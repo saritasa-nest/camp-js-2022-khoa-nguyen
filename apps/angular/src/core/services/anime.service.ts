@@ -19,16 +19,9 @@ import { ApiService } from './api.service';
   providedIn: 'root',
 })
 
-/** Anime services. */
 export class AnimeService {
 
-  /**
-   * Anime services.
-   * @param apiService Api methods.
-   */
-  public constructor(private readonly apiService: ApiService) {
-
-  }
+  public constructor(private readonly apiService: ApiService) { }
 
   /**
    *  Get list of anime.

@@ -17,8 +17,8 @@ import { AnimeService } from '../../../../core/services/anime.service';
 })
 export class AnimeTableComponent {
 
-  /** Pagination result. */
-  public readonly result$: Observable<Pagination<Anime>>;
+  /** Pagination anime result. */
+  public readonly animeListResult$: Observable<Pagination<Anime>>;
 
   /** Default query options of anime list. */
   public defaultQuery = new AnimeListQueryOptions({
@@ -34,7 +34,7 @@ export class AnimeTableComponent {
   });
 
   public constructor(private animeService: AnimeService) {
-    this.result$ = this.animeService.getAnimeList(this.defaultQuery);
+    this.animeListResult$ = this.animeService.getAnimeList(this.defaultQuery);
   }
 
   /**
