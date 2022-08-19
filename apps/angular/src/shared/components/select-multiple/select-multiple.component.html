@@ -2,7 +2,7 @@
   <mat-label>Choose types</mat-label>
   <mat-select
     [value]="value"
-    (selectionChange)="onSelectionChange()"
+    (selectionChange)="onSelectionChange($event)"
     multiple
   >
     <mat-select-trigger>

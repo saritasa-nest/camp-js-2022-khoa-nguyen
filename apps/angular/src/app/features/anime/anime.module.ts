@@ -12,6 +12,9 @@ import { MatSortModule } from '@angular/material/sort';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+import { SharedModule } from 'apps/angular/src/shared/shared.module';
+
 import { AnimeTableComponent } from './anime-table/anime-table.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { AnimeRoutingModule } from './anime-routing.module';
@@ -32,6 +35,7 @@ import { AnimeComponent } from './anime.component';
     MatSortModule,
     CommonModule,
     FormsModule,
+    SharedModule,
     ReactiveFormsModule,
   ],
 })

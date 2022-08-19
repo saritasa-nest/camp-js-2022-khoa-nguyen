@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { MatSelectChange } from '@angular/material/select';
 
 interface OptionsList {
 
@@ -24,14 +25,17 @@ export class SelectMultipleComponent {
 
   /** Value of select. */
   @Input()
-  public optionsList: OptionsList[] = [];
+  public optionsList: readonly OptionsList[] = [];
 
   /** On selection change event. */
   @Output()
   public selectionChange = new EventEmitter();
 
-  /** Emit selection event. */
-  public onSelectionChange(): void {
-    this.selectionChange.emit();
+  /**
+   *  Emit selection event.
+   * @param event Event of Mat select.
+   */
+  public onSelectionChange(event: MatSelectChange): void {
+    this.selectionChange.emit(event);
   }
 }
