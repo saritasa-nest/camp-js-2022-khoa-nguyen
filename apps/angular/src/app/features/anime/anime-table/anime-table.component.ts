@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSelectChange } from '@angular/material/select';
@@ -6,10 +11,40 @@ import { Sort } from '@angular/material/sort';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TypeDto } from '@js-camp/core/dtos';
 import { Anime, Pagination, SortValue } from '@js-camp/core/models';
-import { BehaviorSubject, combineLatestWith, debounceTime, distinctUntilChanged, filter, ignoreElements, map, merge, Observable, shareReplay, skip, startWith, Subject, switchMap, take, takeUntil, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatestWith,
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  ignoreElements,
+  map,
+  merge,
+  Observable,
+  shareReplay,
+  skip,
+  startWith,
+  Subject,
+  switchMap,
+  take,
+  takeUntil,
+  tap,
+} from 'rxjs';
 
-import { DEFAULT_ACTIVE_PAGE, DEFAULT_SEARCH, FILTER_TYPE_OPTIONS, ORDERING_OPTIONS, OrderOption, SORT_OPTIONS } from '../../../../constants';
-import { AnimeService, AuthService, QueryUrl, SettingOfAnimeList } from '../../../../core/services';
+import {
+  DEFAULT_ACTIVE_PAGE,
+  DEFAULT_SEARCH,
+  FILTER_TYPE_OPTIONS,
+  ORDERING_OPTIONS,
+  OrderOption,
+  SORT_OPTIONS,
+} from '../../../../constants';
+import {
+  AnimeService,
+  AuthService,
+  QueryUrl,
+  SettingOfAnimeList,
+} from '../../../../core/services';
 
 /** Anime table list. */
 @Component({
@@ -17,12 +52,18 @@ import { AnimeService, AuthService, QueryUrl, SettingOfAnimeList } from '../../.
   templateUrl: './anime-table.component.html',
   styleUrls: ['./anime-table.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-
 })
 export class AnimeTableComponent implements OnInit, OnDestroy {
-
   /** Column of table. */
-  public displayedColumns: string[] = ['image', 'titleEnglish', 'titleJapan', 'airedStartDate', 'type', 'status', 'actions'];
+  public displayedColumns: string[] = [
+    'image',
+    'titleEnglish',
+    'titleJapan',
+    'airedStartDate',
+    'type',
+    'status',
+    'actions',
+  ];
 
   /** Anime mapper. */
   public readonly animeMapper = this.animeService.mapper();
@@ -81,7 +122,9 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
    * Set value to setting anime list.
    * @param settings Settings of anime list.
    */
-  public setValueToSettingAnimeListObservable(settings: SettingOfAnimeList): void {
+  public setValueToSettingAnimeListObservable(
+    settings: SettingOfAnimeList,
+  ): void {
     const currentParams = this.activateRoute.snapshot.queryParams;
     const currentSettings = this.animeMapper.urlToSetting(currentParams);
     this.settingOfAnimeList$.next({ ...currentSettings, ...settings });
@@ -105,7 +148,7 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
         this.search.valueChanges.pipe(
           startWith(this.search.value),
           distinctUntilChanged(),
-          map(value => value ? value.trim() : DEFAULT_SEARCH),
+          map(value => (value ? value.trim() : DEFAULT_SEARCH)),
           debounceTime(500),
         ),
       ),
@@ -117,7 +160,8 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
 
     this.paginationResult$ = this.settingAnimeListUpdate$.pipe(
       map(settings => this.animeMapper.settingToModel(settings)),
-      switchMap(animeListQueryModel => this.animeService.getAnimeList(animeListQueryModel)),
+      switchMap(animeListQueryModel =>
+        this.animeService.getAnimeList(animeListQueryModel)),
       shareReplay({ refCount: true, bufferSize: 1 }),
     );
   }
@@ -130,7 +174,6 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
     const { queryParams } = this.activateRoute.snapshot;
     let trueParams = { ...queryParams, ...params };
     if (params.search === DEFAULT_SEARCH) {
-
       // I disable eslint on this line because I just want to get the search key
       // out of the object and not using it below
 
@@ -139,7 +182,6 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
       trueParams = rest;
     }
     if (params.type === TypeDto.Default) {
-
       // I disable eslint on this line because I just want to get the search key
       // out of the object and not using it below
 
@@ -163,7 +205,10 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
   private setValueSortBuiltIn(sortBy: SortValue, sort: Sort): void {
     this.setValueToSettingAnimeListObservable({
       sortBy,
-      ordering: sort.direction === 'asc' ? OrderOption.Ascending : OrderOption.Descending,
+      ordering:
+        sort.direction === 'asc' ?
+          OrderOption.Ascending :
+          OrderOption.Descending,
     });
   }
 
@@ -172,7 +217,10 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
    * @param event OnChange event of pagination.
    */
   public handlePageChange(event: PageEvent): void {
-    this.setValueToSettingAnimeListObservable({ page: event.pageIndex + 1, limit: event.pageSize });
+    this.setValueToSettingAnimeListObservable({
+      page: event.pageIndex + 1,
+      limit: event.pageSize,
+    });
   }
 
   /**
@@ -180,7 +228,10 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
    * @param event OnChange event of pagination.
    */
   public handleTypeChange(event: MatSelectChange): void {
-    this.setValueToSettingAnimeListObservable({ type: event.value, page: DEFAULT_ACTIVE_PAGE });
+    this.setValueToSettingAnimeListObservable({
+      type: event.value,
+      page: DEFAULT_ACTIVE_PAGE,
+    });
   }
 
   /**
@@ -234,34 +285,38 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
    */
   public handleDeleteAnime(anime: Anime, $event: Event): void {
     $event.stopPropagation();
-    this.authService.isLoggedIn$.pipe(
-      tap(isLoggedIn => {
-        if (!isLoggedIn) {
-          this.router.navigate(['/auth/login']);
-          return;
-        }
-        this.isShowPopupDeleteConfirm$.next(true);
-        this.animeToDelete$.next(anime);
-      }),
-      ignoreElements(),
-      takeUntil(this.subscriptionManager$),
-    ).subscribe();
+    this.authService.isLoggedIn$
+      .pipe(
+        tap(isLoggedIn => {
+          if (!isLoggedIn) {
+            this.router.navigate(['/auth/login']);
+            return;
+          }
+          this.isShowPopupDeleteConfirm$.next(true);
+          this.animeToDelete$.next(anime);
+        }),
+        ignoreElements(),
+        takeUntil(this.subscriptionManager$),
+      )
+      .subscribe();
   }
 
   /** Handle confirm delete anime. */
   public handleConfirmDelete(): void {
-    this.animeToDelete$.pipe(
-      take(1),
-      filter((anime): anime is Anime => anime !== null),
-      map(anime => this.animeService.removeAnime(anime.id)),
-      switchMap(anime$ => anime$),
-      tap(() => {
-        this.refreshAnimeList();
-        this.isShowPopupDeleteConfirm$.next(false);
-      }),
-      ignoreElements(),
-      takeUntil(this.subscriptionManager$),
-    ).subscribe();
+    this.animeToDelete$
+      .pipe(
+        take(1),
+        filter((anime): anime is Anime => anime !== null),
+        map(anime => this.animeService.removeAnime(anime.id)),
+        switchMap(anime$ => anime$),
+        tap(() => {
+          this.refreshAnimeList();
+          this.isShowPopupDeleteConfirm$.next(false);
+        }),
+        ignoreElements(),
+        takeUntil(this.subscriptionManager$),
+      )
+      .subscribe();
   }
 
   /** Handle cancel anime. */
@@ -281,14 +336,16 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
 
   /** @inheritdoc */
   public ngOnInit(): void {
-
     const queryCombineSideEffect$ = this.queryCombine$.pipe(
       map(([, searchValue]) => searchValue),
       distinctUntilChanged(),
       skip(1),
       tap(searchValue => {
-          this.setValueToSettingAnimeListObservable({ search: searchValue, page: DEFAULT_ACTIVE_PAGE });
-        }),
+        this.setValueToSettingAnimeListObservable({
+          search: searchValue,
+          page: DEFAULT_ACTIVE_PAGE,
+        });
+      }),
     );
 
     const setUrlSideEffect$ = this.settingAnimeListUpdate$.pipe(
@@ -305,7 +362,11 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
       }),
     );
 
-    merge(setUrlSideEffect$, queryCombineSideEffect$, paginationResultSideEffect$)
+    merge(
+      setUrlSideEffect$,
+      queryCombineSideEffect$,
+      paginationResultSideEffect$,
+    )
       .pipe(ignoreElements(), takeUntil(this.subscriptionManager$))
       .subscribe();
   }

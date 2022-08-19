@@ -117,7 +117,7 @@ export class StudioService {
    *  Get studios init list.
    * @param subscriptionManager$ Subscription manager.
    */
-  public getStudiosInitList(subscriptionManager$: Subject<void>): Observable<[readonly DefaultEntity[] | null, readonly DefaultEntity[]]> {
+  public getStudiosInitList(subscriptionManager$: Subject<void>): Observable<Studio[]> {
     return this.currentListStudiosQuery$.pipe(
       take(1),
       map(([currentAnimeStudios, listStudios]) => {

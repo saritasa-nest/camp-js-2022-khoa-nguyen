@@ -23,7 +23,8 @@ import {
   map,
   merge,
   Observable,
-  of, Subject,
+  of,
+  Subject,
   switchMap,
   take,
   takeUntil,
@@ -89,7 +90,6 @@ interface AnimeFormControls {
 
   /** Genres search control. */
   readonly searchStudio: FormControl<string>;
-
 }
 
 /** Edit anime page. */
@@ -269,7 +269,8 @@ export class EditComponent implements OnInit, OnDestroy {
         this.studioService
           .getStudiosList('')
           .pipe(
-            map(studios => this.studioService.addNewListStudios(studios.results)),
+            map(studios =>
+              this.studioService.addNewListStudios(studios.results)),
             ignoreElements(),
             takeUntil(this.subscriptionManager$),
           )
