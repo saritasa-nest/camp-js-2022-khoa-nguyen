@@ -14,7 +14,6 @@ interface OptionsList {
 @Component({
   selector: 'camp-select-multiple',
   templateUrl: './select-multiple.component.html',
-  styleUrls: ['./select-multiple.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectMultipleComponent {
