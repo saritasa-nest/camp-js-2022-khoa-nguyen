@@ -38,7 +38,7 @@ export class AnimeTableComponent {
   }
 
   /**
-   *  Track anime list.
+   * Track anime list.
    * @param item Track by per item.
    * @param _index Item index.
    */

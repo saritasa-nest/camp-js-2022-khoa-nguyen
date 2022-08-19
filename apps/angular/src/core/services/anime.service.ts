@@ -24,8 +24,8 @@ export class AnimeService {
   public constructor(private readonly apiService: ApiService) { }
 
   /**
-   *  Get list of anime.
-   *  @param paramsModel Query options of anime list.
+   * Get list of anime.
+   * @param paramsModel Query options of anime list.
    */
   public getAnimeList(paramsModel: AnimeListQueryOptions): Observable<Pagination<Anime>> {
     const paramDto = AnimeListQueryOptionsMapper.toDto(paramsModel);
