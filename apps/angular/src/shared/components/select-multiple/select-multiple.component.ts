@@ -21,38 +21,44 @@ export interface DefaultEntity {
 export class SelectMultipleComponent {
 
   /** Label of input. */
-  @Input() public label = '';
+  @Input()
+  public label = '';
 
   /** Form control of select. */
-  @Input() public formControlSelectName = '';
+  @Input()
+  public formControlSelectName = '';
 
   /** Search placeholder. */
-  @Input() public searchPlaceholder = '';
+  @Input()
+  public searchPlaceholder = '';
 
   /** Form control of search field. */
-  @Input() public formControlSearchName = '';
+  @Input()
+  public formControlSearchName = '';
 
   /** Entities selected. */
-  @Input() public entities: readonly DefaultEntity[] | null = [];
+  @Input()
+  public entities: readonly DefaultEntity[] | null = [];
 
   /** New entity name. */
-  @Input() public newEntity = '';
+  @Input()
+  public newEntity = '';
 
   /** Form group. */
-  @Input() public formGroup: FormGroup | null = null;
+  @Input()
+  public formGroup: FormGroup | null = null;
 
   /** Toggle create button. */
-  @Input() public isShowCreateButton: Boolean | null = true;
+  @Input()
+  public isShowCreateButton: boolean | null = true;
 
   /** On create entity. */
-  @Output() public createEntity = new EventEmitter();
+  @Output()
+  public createEntity = new EventEmitter();
 
   /** Handlers entity create. */
   public onCreateEntity(): void {
     this.createEntity.emit();
-  }
-
-  public constructor() {
   }
 
   /**
