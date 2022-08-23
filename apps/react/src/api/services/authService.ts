@@ -8,14 +8,15 @@ import { TokenService } from './tokenService';
 
 export namespace AuthService {
   const LOGIN_URL = 'auth/login/';
-  const REGISTER_URL = 'auth/register/';
+
+  // const REGISTER_URL = 'auth/register/';
   const REFRESH_URL = 'auth/refresh/';
 
   /**
    * Login.
    * @param data Login data.
    */
-  export async function login(data: Login): Promise<Token | HttpError<Login>> {
+  export async function login(data: Login): Promise<Token> {
     try {
       const dataDto = LoginMapper.toDto(data);
       const tokenDto = await http.post<TokenDto>(
@@ -27,7 +28,8 @@ export namespace AuthService {
       return token;
     } catch (error: unknown) {
       if (error instanceof HttpError<Login>) {
-        return error as HttpError<Login>;
+        const errorHttp = error as HttpError<Login>;
+        throw errorHttp;
       }
       throw error;
     }

@@ -2,6 +2,7 @@ import axios, { AxiosInstance } from 'axios';
 
 import { CONFIG } from './config';
 import { addToken } from './interceptors/addToken';
+import { refreshToken } from './interceptors/refreshToken';
 
 export const http: AxiosInstance = axios.create({
   baseURL: CONFIG.apiUrl,
@@ -12,5 +13,4 @@ export const http: AxiosInstance = axios.create({
 });
 
 http.interceptors.request.use(addToken);
-
-// http.interceptors.response.use(config => config, refreshToken);
+http.interceptors.response.use(refreshToken);
