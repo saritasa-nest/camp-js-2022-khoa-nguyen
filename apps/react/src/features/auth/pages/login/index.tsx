@@ -1,6 +1,6 @@
 import { Form, Formik } from 'formik';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 
 import { Button, Card } from '../../../../components';
@@ -8,6 +8,7 @@ import { Button, Card } from '../../../../components';
 import { FormInputItem } from '../../components';
 
 import style from '../auth.module.css';
+import { StateLocation } from '../type';
 
 interface Login {
 
@@ -28,16 +29,20 @@ const validationSchema: yup.SchemaOf<Login> = yup.object().shape({
 
 const initialValues: Login = { email: '', password: '' };
 
-export const LoginPage: React.FC = () => (
-  <div className={style['auth']}>
+export const LoginPage: React.FC = () => {
+  const { state } = useLocation();
+  const navigate = useNavigate();
+  const handleSubmit = (value: Login) => {
+    console.log(value);
+    navigate((state as StateLocation).path ?? '/');
+  };
+  return <div className={style['auth']}>
     <Card>
       <h1 className={style['auth__title']}>Welcome to Saritasa Anime</h1>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={values => {
-          console.log(values);
-        }}
+        onSubmit={handleSubmit}
       >
         {({ values }) => {
           console.log(values);
@@ -52,5 +57,5 @@ export const LoginPage: React.FC = () => (
         }}
       </Formik>
     </Card>
-  </div>
-);
+  </div>;
+};
