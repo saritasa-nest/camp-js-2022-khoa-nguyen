@@ -5,9 +5,9 @@ import { AuthService } from '../../api/services/authService';
 
 export const login = createAsyncThunk(
   'auth/login',
-  (loginInfo: Login, { rejectWithValue }) => {
+  async(loginInfo: Login, { rejectWithValue }) => {
     try {
-      return AuthService.login(loginInfo);
+      return await AuthService.login(loginInfo);
     } catch (error: unknown) {
       return rejectWithValue(error);
     }

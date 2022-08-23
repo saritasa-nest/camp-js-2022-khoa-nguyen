@@ -1,6 +1,7 @@
 import { TokenDto } from '@js-camp/core/dtos';
 import { LoginMapper, TokenMapper } from '@js-camp/core/mappers';
 import { HttpError, Login, Token } from '@js-camp/core/models';
+import { AxiosError } from 'axios';
 
 import { http } from '..';
 
@@ -27,8 +28,8 @@ export namespace AuthService {
       await TokenService.save(token);
       return token;
     } catch (error: unknown) {
-      if (error instanceof HttpError<Login>) {
-        const errorHttp = error as HttpError<Login>;
+      if (error instanceof AxiosError) {
+        const errorHttp = error.response?.data as HttpError<Login>;
         throw errorHttp;
       }
       throw error;
