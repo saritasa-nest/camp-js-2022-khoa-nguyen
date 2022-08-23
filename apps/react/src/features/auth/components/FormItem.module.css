@@ -1,0 +1,13 @@
+.form-item {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 20px;
+  flex-direction: column;
+}
+.form-item__input {
+}
+
+.form-item__error {
+  color: var(--primary-font-error-color);
+}

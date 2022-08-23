@@ -1,0 +1,16 @@
+.button {
+  padding: 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button_primary {
+  background-color: var(--primary-color);
+  color: var(--primary-font-light-color);
+}
+
+.button_primary:hover {
+  background-color: var(--primary-dark-color);
+  transition: 0.3s ease;
+}

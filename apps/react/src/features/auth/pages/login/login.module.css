@@ -1,0 +1,33 @@
+.login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  flex-direction: column;
+  max-width: 1200px;
+  margin: auto;
+}
+
+
+.login__card {
+  padding: 20px;
+  width: 100%;
+}
+
+.login__title {
+  text-align: center;
+  color: var(--primary-color);
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.login__form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 22px;
+}
+
+.login__error {
+  color: var(--primary-font-error-color);
+}
