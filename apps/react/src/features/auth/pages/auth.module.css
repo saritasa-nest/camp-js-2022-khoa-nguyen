@@ -21,3 +21,9 @@
   width: 100%;
   gap: 22px;
 }
+
+.auth__link {
+  color: var(--primary-color);
+  font-weight: var(--primary-font-weight-title);
+  text-decoration: underline;
+}

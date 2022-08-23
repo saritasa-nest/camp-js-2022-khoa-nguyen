@@ -1,5 +1,6 @@
 import { Form, Formik } from 'formik';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 
 import { Button, Card } from '../../../../components';
@@ -44,7 +45,8 @@ export const LoginPage: React.FC = () => (
             <Form className={style['auth__form']}>
               <FormInputItem label="Email" name="email" type="email" />
               <FormInputItem label="Password" name="password" type="password" />
-              <Button type="submit">Submit</Button>
+              <p>Don't have an account? <Link className={style['auth__link']} to="/register">Register now!</Link> </p>
+              <Button type="submit">Login</Button>
             </Form>
           );
         }}

@@ -1,4 +1,5 @@
 import { Form, Formik } from 'formik';
+import { Link } from 'react-router-dom';
 
 import * as yup from 'yup';
 
@@ -76,7 +77,8 @@ export const RegisterPage: React.FC = () => (
                 name="confirmPassword"
                 type="password"
               />
-              <Button type="submit">Submit</Button>
+              <p>Already have an account? <Link to='/login' className={style['auth__link']}>Login now!</Link> </p>
+              <Button type="submit">Register</Button>
             </Form>
           );
         }}
