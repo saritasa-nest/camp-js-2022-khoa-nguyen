@@ -58,7 +58,7 @@ export const RegisterPage: React.FC = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const handleSubmit = (value: Register) => {
-    console.log(value);
+    console.warn(value);
     navigate((state as StateLocation).path ?? '/');
   };
   return <div className={style['auth']}>
@@ -69,24 +69,19 @@ export const RegisterPage: React.FC = () => {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ values }) => {
-          console.log(values);
-          return (
-            <Form className={style['auth__form']}>
-              <FormInputItem label="Email" name="email" type="email" />
-              <FormInputItem label="First name" name="firstName" />
-              <FormInputItem label="Last name" name="lastName" />
-              <FormInputItem label="Password" name="password" type="password" />
-              <FormInputItem
-                label="Confirm password"
-                name="confirmPassword"
-                type="password"
-              />
-              <p>Already have an account? <Link to='/login' className={style['auth__link']}>Login now!</Link> </p>
-              <Button type="submit">Register</Button>
-            </Form>
-          );
-        }}
+        <Form className={style['auth__form']}>
+          <FormInputItem label="Email" name="email" type="email" />
+          <FormInputItem label="First name" name="firstName" />
+          <FormInputItem label="Last name" name="lastName" />
+          <FormInputItem label="Password" name="password" type="password" />
+          <FormInputItem
+            label="Confirm password"
+            name="confirmPassword"
+            type="password"
+          />
+          <p>Already have an account? <Link to='/login' className={style['auth__link']}>Login now!</Link> </p>
+          <Button type="submit">Register</Button>
+        </Form>
       </Formik>
     </Card>
   </div>;

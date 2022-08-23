@@ -33,7 +33,7 @@ export const LoginPage: React.FC = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const handleSubmit = (value: Login) => {
-    console.log(value);
+    console.warn(value);
     navigate((state as StateLocation).path ?? '/');
   };
   return <div className={style['auth']}>
@@ -44,17 +44,12 @@ export const LoginPage: React.FC = () => {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ values }) => {
-          console.log(values);
-          return (
-            <Form className={style['auth__form']}>
-              <FormInputItem label="Email" name="email" type="email" />
-              <FormInputItem label="Password" name="password" type="password" />
-              <p>Don't have an account? <Link className={style['auth__link']} to="/register">Register now!</Link> </p>
-              <Button type="submit">Login</Button>
-            </Form>
-          );
-        }}
+        <Form className={style['auth__form']}>
+          <FormInputItem label="Email" name="email" type="email" />
+          <FormInputItem label="Password" name="password" type="password" />
+          <p>Don't have an account? <Link className={style['auth__link']} to="/register">Register now!</Link> </p>
+          <Button type="submit">Login</Button>
+        </Form>
       </Formik>
     </Card>
   </div>;
