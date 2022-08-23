@@ -1,4 +1,4 @@
-import { Login } from '@js-camp/core/models';
+import { Login, LoginModel } from '@js-camp/core/models';
 import { login } from '@js-camp/react/store/auth/dispatchers';
 import { useAppDispatch } from '@js-camp/react/store/store';
 import { Form, Formik } from 'formik';
@@ -13,16 +13,7 @@ import { FormInputItem } from '../../components';
 import style from '../auth.module.css';
 import { StateLocation } from '../type';
 
-interface Login {
-
-  /** Email. */
-  readonly email: string;
-
-  /** Password. */
-  readonly password: string;
-}
-
-const validationSchema: yup.SchemaOf<Login> = yup.object().shape({
+const validationSchema: yup.SchemaOf<LoginModel> = yup.object().shape({
   email: yup
     .string()
     .email('This field has to be an email!')
@@ -30,13 +21,13 @@ const validationSchema: yup.SchemaOf<Login> = yup.object().shape({
   password: yup.string().required('Password is required!'),
 });
 
-const initialValues: Login = { email: '', password: '' };
+const initialValues: LoginModel = { email: '', password: '' };
 
 export const LoginPage: React.FC = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const handleSubmit = async({ email, password }: Login) => {
+  const handleSubmit = async({ email, password }: LoginModel) => {
     const result = await dispatch(login(new Login({ email, password })));
     console.log(result.payload);
     navigate((state as StateLocation).path ?? '/');
