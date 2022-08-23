@@ -6,9 +6,18 @@ import { Button, Card } from '../../../../components';
 
 import { FormInputItem } from '../../components';
 
-import style from './login.module.css';
+import style from '../auth.module.css';
 
-const validationSchema = yup.object().shape({
+interface Login {
+
+  /** Email. */
+  readonly email: string;
+
+  /** Password. */
+  readonly password: string;
+}
+
+const validationSchema: yup.SchemaOf<Login> = yup.object().shape({
   email: yup
     .string()
     .email('This field has to be an email!')
@@ -16,31 +25,29 @@ const validationSchema = yup.object().shape({
   password: yup.string().required('Password is required!'),
 });
 
+const initialValues: Login = { email: '', password: '' };
+
 export const LoginPage: React.FC = () => (
-  <div className={style['login']}>
+  <div className={style['auth']}>
     <Card>
-      <h1 className={style['login__title']}>Welcome to Saritasa Anime</h1>
+      <h1 className={style['auth__title']}>Welcome to Saritasa Anime</h1>
       <Formik
-        initialValues={{ email: '', password: '' }}
+        initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={values => {
-        console.log(values);
-      }}
+          console.log(values);
+        }}
       >
         {({ values }) => {
-        console.log(values);
-        return (
-          <Form className={style['login__form']}>
-            <FormInputItem label="Email" name="email" type="email" />
-            <FormInputItem
-              label="Password"
-              name="password"
-              type="password"
-            />
-            <Button type="submit">Submit</Button>
-          </Form>
-        );
-      }}
+          console.log(values);
+          return (
+            <Form className={style['auth__form']}>
+              <FormInputItem label="Email" name="email" type="email" />
+              <FormInputItem label="Password" name="password" type="password" />
+              <Button type="submit">Submit</Button>
+            </Form>
+          );
+        }}
       </Formik>
     </Card>
   </div>
