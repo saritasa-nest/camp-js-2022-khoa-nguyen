@@ -4,7 +4,7 @@
   justify-content: center;
   height: 100vh;
   flex-direction: column;
-  max-width: 1200px;
+  max-width: 500px;
   margin: auto;
 }
 
@@ -26,4 +26,8 @@
   color: var(--primary-color);
   font-weight: var(--primary-font-weight-title);
   text-decoration: underline;
+}
+
+.auth__error {
+  color: var(--primary-font-error-color);
 }

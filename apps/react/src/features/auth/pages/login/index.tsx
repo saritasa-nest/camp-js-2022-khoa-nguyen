@@ -1,17 +1,22 @@
-import { Login, LoginModel } from '@js-camp/core/models';
-import { login } from '@js-camp/react/store/auth/dispatchers';
-import { useAppDispatch } from '@js-camp/react/store/store';
-import { Form, Formik } from 'formik';
-import React from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { HttpError, Login, LoginModel } from '@js-camp/core/models';
+import {
+  login,
+} from '@js-camp/react/store/auth/dispatchers';
+import { selectAuthError } from '@js-camp/react/store/auth/selectors';
+import { clearErrorMessage } from '@js-camp/react/store/auth/slice';
+import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
+import { Snackbar } from '@mui/material';
+import { Form, FormikProvider, useFormik } from 'formik';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 
 import { Button, Card } from '../../../../components';
 
-import { FormInputItem } from '../../components';
+import { FormInputItem } from '../../components/FormItem';
 
 import style from '../auth.module.css';
-import { StateLocation } from '../type';
+import { SnackBarConfig } from '../type';
 
 const validationSchema: yup.SchemaOf<LoginModel> = yup.object().shape({
   email: yup
@@ -21,29 +26,67 @@ const validationSchema: yup.SchemaOf<LoginModel> = yup.object().shape({
   password: yup.string().required('Password is required!'),
 });
 
+const SNACKBAR_INITIAL_VALUE = {
+  isOpen: false,
+  message: '',
+  duration: 3000,
+};
+
 const initialValues: LoginModel = { email: '', password: '' };
 
 export const LoginPage: React.FC = () => {
-  const { state } = useLocation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const error = useAppSelector(selectAuthError);
+  const [isShowBackendError, setIsShowBackendError] = useState<boolean>(false);
+
+  const [snackbarConfig, setSnackbarConfig] = useState<SnackBarConfig>(
+    SNACKBAR_INITIAL_VALUE,
+  );
+
   const handleSubmit = async({ email, password }: LoginModel) => {
     const result = await dispatch(login(new Login({ email, password })));
-    console.log(result.payload);
-    navigate((state as StateLocation).path ?? '/');
+    if (result.payload instanceof HttpError<Login>) {
+      const errorDetail = result.payload.detail;
+      setSnackbarConfig(prev => ({ ...prev, isOpen: true, message: errorDetail }));
+      return;
+    }
+    navigate('/');
+
+    // navigate((state as StateLocation).path ?? '/');
   };
+
+  const handleCloseSnackbar = () => {
+    setSnackbarConfig(prev => ({ ...prev, isOpen: false }));
+  };
+
+  useEffect(() => {
+    dispatch(clearErrorMessage());
+  }, []);
+
+  const formik = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit: handleSubmit,
+  });
+
+  useEffect(() => {
+    if (isShowBackendError) {
+      setIsShowBackendError(false);
+    }
+  }, [formik.values]);
+
   return (
     <div className={style['auth']}>
       <Card>
         <h1 className={style['auth__title']}>Welcome to Saritasa Anime</h1>
-        <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={handleSubmit}
-        >
+        <FormikProvider value={formik}>
           <Form className={style['auth__form']}>
             <FormInputItem label="Email" name="email" type="email" />
             <FormInputItem label="Password" name="password" type="password" />
+            {isShowBackendError && (
+              <span className={style['auth__error']}>{error?.detail}</span>
+            )}
             <p>
               Don't have an account?{' '}
               <Link className={style['auth__link']} to="/register">
@@ -52,8 +95,15 @@ export const LoginPage: React.FC = () => {
             </p>
             <Button type="submit">Login</Button>
           </Form>
-        </Formik>
+        </FormikProvider>
       </Card>
+
+      <Snackbar
+        open={snackbarConfig.isOpen}
+        autoHideDuration={snackbarConfig.duration}
+        onClose={handleCloseSnackbar}
+        message={snackbarConfig.message}
+      />
     </div>
   );
 };
