@@ -18,11 +18,12 @@ export namespace AuthService {
    */
   export async function login(data: Login): Promise<Token> {
     const dataDto = LoginMapper.toDto(data);
-    const tokenDto = await http.post<TokenDto>(
+    const tokenDto = await http.post(
       LOGIN_URL,
       dataDto,
     );
     const token = TokenMapper.fromDto(tokenDto.data);
+
     await TokenService.save(token);
     return token;
   }

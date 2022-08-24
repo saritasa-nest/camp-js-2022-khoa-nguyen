@@ -19,7 +19,7 @@ export async function refreshToken(error: unknown) {
     throw new Error('There is no response.');
   }
 
-  if (error.response.status) {
+  if (error.response.status === 401) {
     const newToken = await AuthService.refreshToken(token);
     return TokenService.save(newToken);
   }

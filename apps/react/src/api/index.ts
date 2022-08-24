@@ -13,4 +13,4 @@ export const http: AxiosInstance = axios.create({
 });
 
 http.interceptors.request.use(addToken);
-http.interceptors.response.use(refreshToken);
+http.interceptors.response.use(config => config, refreshToken);

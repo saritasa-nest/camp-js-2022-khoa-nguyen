@@ -18,6 +18,6 @@ export interface AuthState {
 
 export const initialState: AuthState = {
   isLoading: false,
-  isAuth: false,
+  isAuth: true,
   token: null,
 };
