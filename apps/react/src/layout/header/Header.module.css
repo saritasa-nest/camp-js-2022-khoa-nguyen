@@ -4,8 +4,10 @@
   z-index: 1;
   left: 0;
   right: 0;
+  height: var(--height-header);
   background-color: var(--primary-color);
   padding: 20px;
+  box-sizing: border-box;
 }
 
 .header__link {

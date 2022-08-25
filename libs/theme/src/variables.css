@@ -29,7 +29,7 @@
   --primary-backdrop-color: rgba(0 0 0 / 60.3%);
 
   /** Header height */
-  --height-header: 100px;
+  --height-header: 90px;
 }
 
 body {
