@@ -11,6 +11,7 @@
 .header__link {
   color: var(--primary-font-light-color);
   font-weight: var(--primary-font-weight-title);
+  font-size: var(--primary-font-size-normal);
 }
 
 .header__wrapper {

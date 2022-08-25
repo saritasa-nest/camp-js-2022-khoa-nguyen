@@ -1,38 +1,24 @@
-import { Container, Grid } from '@mui/material';
-
-import { useEffect } from 'react';
-
-import { useAppDispatch } from '@js-camp/react/store/store';
-
-import { getAnimeList } from '@js-camp/react/store/anime/dispatchers';
-
-import { useSelector } from 'react-redux';
-
-import { selectAmineList } from '@js-camp/react/store/anime/selectors';
+import { Card } from '../../../../components';
 
 import { DefaultLayout } from '../../../../layout';
 
-import { Card } from '../../../../components';
+import { AnimeSidebar } from '../../components/AnimeSidebar';
 
-export const AnimeTablePage: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const animeList = useSelector(selectAmineList);
-  console.log(animeList);
+import style from './AnimeTablePage.module.css';
 
-  useEffect(() => {
-    dispatch(getAnimeList(''));
-  }, []);
-  return <DefaultLayout>
-    <Container>
-      <Grid container justifyContent="center" spacing={5}>
-        <Grid item xs={3}>
-          <Card>Test</Card>
-        </Grid>
-        <Grid item xs={9}>
-          <Card>Test2</Card>
-        </Grid>
-      </Grid>
-    </Container>
-
-  </DefaultLayout>;
-};
+export const AnimeTablePage: React.FC = () => (
+  <DefaultLayout>
+    <div className={style['anime-table']}>
+      <div className={style['anime-table__sidebar']}>
+        <AnimeSidebar
+          onSelectAnime={function(anime): void {
+            throw new Error('Function not implemented.');
+          }}
+        />
+      </div>
+      <div className={style['anime-table__content']}>
+        <h1>Place holder for next implementation</h1>
+      </div>
+    </div>
+  </DefaultLayout>
+);

@@ -12,8 +12,8 @@ export namespace AnimeService {
    * Get anime pagination.
    * @param params Query params.
    */
-  export async function getAnimeList(params = '') {
-    const paginationDto = await http.get(ANIME_LIST_URL, { params });
+  export async function getAnimeList(params: string) {
+    const paginationDto = await http.get(ANIME_LIST_URL, { params: params !== '' ? params : undefined });
     return PaginationMapper.fromDto<AnimeDto, Anime>(paginationDto.data, AnimeMapper.fromDto);
   }
 }
