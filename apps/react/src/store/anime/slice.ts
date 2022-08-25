@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { getAnimeList } from './dispatchers';
 
-import { initialState } from './state';
+import { animeAdapter, AnimeState, initialState } from './state';
 
 export const animeSlice = createSlice({
   name: 'anime',
@@ -13,8 +13,8 @@ export const animeSlice = createSlice({
       .addCase(getAnimeList.pending, state => {
         state.isLoading = true;
       })
-      .addCase(getAnimeList.fulfilled, state => {
-        // state.animeList = action.payload;
+      .addCase(getAnimeList.fulfilled, (state, action) => {
+        animeAdapter.setAll(state as AnimeState, action.payload);
         state.isLoading = false;
       })
       .addCase(getAnimeList.rejected, state => {

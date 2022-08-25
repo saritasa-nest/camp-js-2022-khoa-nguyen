@@ -9,10 +9,10 @@ export interface AnimeState extends EntityState<Anime> {
 
 }
 
-export const animeBaseAdapter = createEntityAdapter<Anime>({
+export const animeAdapter = createEntityAdapter<Anime>({
   selectId: anime => anime.id,
 });
 
-export const initialState: AnimeState = animeBaseAdapter.getInitialState({
+export const initialState: AnimeState = animeAdapter.getInitialState({
   isLoading: false,
 });
