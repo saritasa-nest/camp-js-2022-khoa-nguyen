@@ -6,7 +6,7 @@ export const getAnimeList = createAsyncThunk(
   'auth/login',
   async(param: string, { rejectWithValue }) => {
     try {
-      return await AnimeService.getAnimeList(param);
+      return (await AnimeService.getAnimeList(param)).results;
     } catch (error: unknown) {
       return rejectWithValue(error);
     }

@@ -13,8 +13,8 @@ export const animeSlice = createSlice({
       .addCase(getAnimeList.pending, state => {
         state.isLoading = true;
       })
-      .addCase(getAnimeList.fulfilled, (state, action) => {
-        state.paginationAnime = action.payload;
+      .addCase(getAnimeList.fulfilled, state => {
+        // state.animeList = action.payload;
         state.isLoading = false;
       })
       .addCase(getAnimeList.rejected, state => {
