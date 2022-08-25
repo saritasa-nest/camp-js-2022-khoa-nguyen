@@ -1,8 +1,10 @@
 import { TokenDto } from '@js-camp/core/dtos';
 import { TokenMapper } from '@js-camp/core/mappers';
 import { Token } from '@js-camp/core/models';
+import { setIsAuth } from '@js-camp/react/store/auth/slice';
 
 import { http } from '..';
+import { store } from '../../store';
 
 import { LocalStoreService } from './localStorageServce';
 
@@ -52,7 +54,7 @@ export namespace TokenService {
       const result = await http.post<TokenDto>(REFRESH_URL, { refresh: token.refresh });
       return TokenMapper.fromDto(result.data);
     } catch (error: unknown) {
-      await TokenService.remove();
+      store.dispatch(setIsAuth(false));
       throw error;
     }
   }

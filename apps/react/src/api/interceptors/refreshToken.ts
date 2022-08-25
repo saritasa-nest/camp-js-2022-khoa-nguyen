@@ -1,5 +1,7 @@
 import { AxiosError } from 'axios';
 
+import { http } from '..';
+
 import { TokenService } from '../services/tokenService';
 
 /**
@@ -9,7 +11,7 @@ import { TokenService } from '../services/tokenService';
 export async function refreshToken(error: unknown) {
   const token = await TokenService.get();
   if (token == null || !(error instanceof AxiosError)) {
-    throw error;
+    return Promise.reject(error);
   }
 
   if (error.response == null) {
@@ -19,8 +21,9 @@ export async function refreshToken(error: unknown) {
   if (error.response.status === 401) {
     await TokenService.remove();
     const newToken = await TokenService.refreshToken(token);
-    return TokenService.save(newToken);
+    await TokenService.save(newToken);
+    return http(error.config);
   }
 
-  throw error;
+  return Promise.reject(error);
 }
