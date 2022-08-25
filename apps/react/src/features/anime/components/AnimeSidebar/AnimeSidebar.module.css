@@ -3,5 +3,6 @@
   gap: 20px;
   flex-direction: column;
   height: calc(100vh - var(--height-header));
-  overflow-y: scroll;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
