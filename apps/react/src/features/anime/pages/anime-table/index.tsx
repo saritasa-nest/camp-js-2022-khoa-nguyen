@@ -1,4 +1,3 @@
-import { Card } from '../../../../components';
 
 import { DefaultLayout } from '../../../../layout';
 
@@ -11,9 +10,6 @@ export const AnimeTablePage: React.FC = () => (
     <div className={style['anime-table']}>
       <div className={style['anime-table__sidebar']}>
         <AnimeSidebar
-          onSelectAnime={function(anime): void {
-            throw new Error('Function not implemented.');
-          }}
         />
       </div>
       <div className={style['anime-table__content']}>
