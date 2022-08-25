@@ -1,10 +1,16 @@
+import { TokenDto } from '@js-camp/core/dtos';
+import { TokenMapper } from '@js-camp/core/mappers';
 import { Token } from '@js-camp/core/models';
+
+import { http } from '..';
 
 import { LocalStoreService } from './localStorageServce';
 
 export namespace TokenService {
 
   const KEY_TOKEN = 'token';
+  const VERIFY_URL = 'auth/token/verify/';
+  const REFRESH_URL = 'auth/token/refresh/';
 
   /** Get token form local storage. */
   export function get() {
@@ -22,5 +28,32 @@ export namespace TokenService {
   /** Removes token. */
   export function remove() {
     return LocalStoreService.remove(KEY_TOKEN);
+  }
+
+  /**
+   * Verify token.
+   * @param token Current token.
+   */
+  export async function isValid(token: Token) {
+    try {
+      await http.post(VERIFY_URL, { token: token.access });
+      return true;
+    } catch (error: unknown) {
+      return false;
+    }
+  }
+
+  /**
+   * Refreshes access token.
+   * @param token Token object.
+   */
+  export async function refreshToken(token: Token): Promise<Token> {
+    try {
+      const result = await http.post<TokenDto>(REFRESH_URL, { refresh: token.refresh });
+      return TokenMapper.fromDto(result.data);
+    } catch (error: unknown) {
+      await TokenService.remove();
+      throw error;
+    }
   }
 }

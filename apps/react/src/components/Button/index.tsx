@@ -14,14 +14,19 @@ interface Props {
 
   /** Children. */
   readonly children: ReactNode;
+
+  /** Click event. */
+  readonly onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export const Button: React.FC<Props> = ({
   type = 'button',
   style = 'primary',
   children,
+  onClick,
 }) => (
   <button
+    onClick={onClick}
     type={type}
     className={classNames(_style['button'], {
       [_style['button_primary']]: style === 'primary',

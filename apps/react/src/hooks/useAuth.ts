@@ -14,6 +14,9 @@ export const useAuth = () => {
     if (token == null) {
       return false;
     }
+    if (!TokenService.isValid(token)) {
+      return false;
+    }
     return true;
   };
   useEffect(() => {

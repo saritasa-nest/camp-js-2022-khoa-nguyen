@@ -8,6 +8,8 @@
 .button_primary {
   background-color: var(--primary-color);
   color: var(--primary-font-light-color);
+  font-weight: var(--primary-font-weight-title);
+  font-size: var(--primary-font-size);
 }
 
 .button_primary:hover {

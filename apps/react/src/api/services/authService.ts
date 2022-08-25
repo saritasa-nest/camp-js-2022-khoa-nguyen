@@ -7,10 +7,9 @@ import { http } from '..';
 import { TokenService } from './tokenService';
 
 export namespace AuthService {
-  const LOGIN_URL = 'auth/login/';
 
+  const LOGIN_URL = 'auth/login/';
   const REGISTER_URL = 'auth/register/';
-  const REFRESH_URL = 'auth/refresh/';
 
   /**
    * Login.
@@ -43,17 +42,4 @@ export namespace AuthService {
     return token;
   }
 
-  /**
-   * Refreshes access token.
-   * @param token Token object.
-   */
-  export async function refreshToken(token: Token): Promise<Token> {
-    try {
-      const result = await http.post<TokenDto>(REFRESH_URL, { refresh: token.refresh });
-      return TokenMapper.fromDto(result.data);
-    } catch (error: unknown) {
-      await TokenService.remove();
-      throw error;
-    }
-  }
 }
