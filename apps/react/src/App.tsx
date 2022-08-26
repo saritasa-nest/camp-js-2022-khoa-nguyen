@@ -8,11 +8,9 @@ import { store } from './store';
 export const App: FC = () => (
   <Provider store={store}>
     <HashRouter>
-      <div>
-        <Suspense fallback={<div>Brrr... here should be your loader component</div>}>
-          <RootRouter />
-        </Suspense>
-      </div>
+      <Suspense fallback={<div>Brrr... here should be your loader component</div>}>
+        <RootRouter />
+      </Suspense>
     </HashRouter>
   </Provider>
 );

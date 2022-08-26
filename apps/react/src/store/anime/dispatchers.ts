@@ -9,7 +9,7 @@ import { AnimeService } from '../../api/services/animeService';
 
 export const getAnimeList = createAsyncThunk(
   'anime/getAnimeList',
-  async(param: string, { rejectWithValue }) => {
+  async(param: any, { rejectWithValue }) => {
     try {
       return (await AnimeService.getAnimeList(param));
     } catch (error: unknown) {

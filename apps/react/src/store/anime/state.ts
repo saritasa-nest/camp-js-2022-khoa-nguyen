@@ -12,7 +12,6 @@ export interface AnimeState extends EntityState<Anime> {
 
   /** Next page. */
   readonly nextPage: string | null;
-
 }
 
 export const animeAdapter = createEntityAdapter<Anime>({
