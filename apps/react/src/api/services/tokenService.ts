@@ -15,7 +15,7 @@ export namespace TokenService {
   const REFRESH_URL = 'auth/token/refresh/';
 
   /** Get token form local storage. */
-  export function get() {
+  export function get(): Promise<Token | null> {
     return LocalStoreService.getValue<Token>(KEY_TOKEN);
   }
 
@@ -23,12 +23,12 @@ export namespace TokenService {
    * Save to local storage.
    * @param token Current token.
    */
-  export function save(token: Token) {
+  export function save(token: Token): Promise<void> {
     return LocalStoreService.setValue<Token>(KEY_TOKEN, token);
   }
 
   /** Removes token. */
-  export function remove() {
+  export function remove(): Promise<void> {
     return LocalStoreService.remove(KEY_TOKEN);
   }
 
@@ -36,7 +36,7 @@ export namespace TokenService {
    * Verify token.
    * @param token Current token.
    */
-  export async function isValid(token: Token) {
+  export async function isValid(token: Token): Promise<boolean> {
     try {
       await http.post(VERIFY_URL, { token: token.access });
       return true;

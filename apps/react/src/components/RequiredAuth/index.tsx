@@ -5,7 +5,7 @@ import { useAuth } from '../../hooks';
 
 interface Props {
 
-  /** Children. */
+  // eslint-disable-next-line jsdoc/require-jsdoc
   readonly children: ReactNode;
 }
 

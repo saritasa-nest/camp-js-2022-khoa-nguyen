@@ -13,8 +13,8 @@
   border-radius: 999px;
 }
 
-.anime-item__wrapper {
-  overflow: visible !important;
+.anime-item__wrapper[class*="MuiCard-root"] {
+  overflow: visible;
 }
 
 .anime-item__content {

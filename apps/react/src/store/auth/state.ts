@@ -9,7 +9,7 @@ export interface AuthState {
   /** Error. */
   readonly error?: HttpError<Login> ;
 
-  /** Whether the token are loading or not. */
+  /** Whether the token is loading or not. */
   readonly isLoading: boolean;
 
   /** Whether user logged in or not. */

@@ -52,8 +52,6 @@ export const LoginPage: React.FC = () => {
       return;
     }
     navigate('/');
-
-    // navigate((state as StateLocation).path ?? '/');
   };
 
   const handleCloseSnackbar = () => {

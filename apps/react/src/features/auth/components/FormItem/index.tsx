@@ -26,10 +26,10 @@ export const FormInputItem: FC<Props> = ({ label, propsInput, name, type }) => {
     <div className={style['form-item']}>
       <TextField
         className={style['form-item__input']}
-        label={label}
-        type={type}
         {...field}
         {...propsInput}
+        label={label}
+        type={type}
       />
       <ErrorMessage
         className={style['form-item__error']}

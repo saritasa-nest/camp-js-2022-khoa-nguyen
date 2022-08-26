@@ -6,15 +6,15 @@ import style from './DefaultLayout.module.css';
 
 interface Props {
 
-  /** Children. */
+  // eslint-disable-next-line jsdoc/require-jsdoc
   readonly children: ReactNode;
 }
 
 export const DefaultLayout: React.FC<Props> = ({ children }) => (
-  <div>
+  <>
     <Header/>
     <div className={style['default-layout']}>
       {children}
     </div>
-  </div>
+  </>
 );
