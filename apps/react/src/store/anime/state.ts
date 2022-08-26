@@ -7,6 +7,12 @@ export interface AnimeState extends EntityState<Anime> {
   /** Whether the anime list is loading or not. */
   readonly isLoading: boolean;
 
+  /** Total item. */
+  readonly totalItems: number;
+
+  /** Next page. */
+  readonly nextPage: string | null;
+
 }
 
 export const animeAdapter = createEntityAdapter<Anime>({
@@ -15,4 +21,6 @@ export const animeAdapter = createEntityAdapter<Anime>({
 
 export const initialState: AnimeState = animeAdapter.getInitialState({
   isLoading: false,
+  totalItems: 0,
+  nextPage: null,
 });

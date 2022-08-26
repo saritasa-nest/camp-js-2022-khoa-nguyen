@@ -4,5 +4,6 @@
   flex-direction: column;
   height: calc(100vh - var(--height-header));
   overflow-y: auto;
+  width: 100%;
   overflow-x: hidden;
 }

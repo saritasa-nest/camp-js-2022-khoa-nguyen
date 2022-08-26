@@ -11,3 +11,9 @@ export const Loading: React.FC = () => (
     </Backdrop>
   </div>
 );
+
+export const LoadingComponent: React.FC = () => (
+  <div>
+    <CircularProgress color="inherit" />
+  </div>
+);

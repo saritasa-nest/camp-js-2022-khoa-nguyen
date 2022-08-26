@@ -1,6 +1,5 @@
 .anime-table {
   display: grid;
-  max-width: 1200px;
   margin: auto;
   gap: 20px;
   grid-template-columns: 1fr 3fr;
