@@ -6,7 +6,7 @@ import { TokenService } from '../services/tokenService';
  * Refresh token.
  * @param error Error of request.
  */
-export async function refreshToken(error: unknown) {
+export async function refreshToken(error: unknown): Promise<void> {
   const token = await TokenService.get();
   if (token == null || !(error instanceof AxiosError)) {
     throw error;

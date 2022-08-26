@@ -14,7 +14,6 @@ export const animeSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(getAnimeList.fulfilled, state => {
-        // state.animeList = action.payload;
         state.isLoading = false;
       })
       .addCase(getAnimeList.rejected, state => {
