@@ -10,11 +10,7 @@ export const useAuth = () => {
 
   const dispatch = useAppDispatch();
   const checkAuth = async() => {
-    const token = await TokenService.get();
-    if (token == null) {
-      return false;
-    }
-    if (!TokenService.isValid(token)) {
+    if (!await TokenService.isValid()) {
       return false;
     }
     return true;

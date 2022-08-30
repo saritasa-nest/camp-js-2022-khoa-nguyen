@@ -11,7 +11,6 @@ import { LocalStoreService } from './localStorageServce';
 export namespace TokenService {
 
   const KEY_TOKEN = 'token';
-  const VERIFY_URL = 'auth/token/verify/';
   const REFRESH_URL = 'auth/token/refresh/';
 
   /** Get token form local storage. */
@@ -34,11 +33,13 @@ export namespace TokenService {
 
   /**
    * Verify token.
-   * @param token Current token.
    */
-  export async function isValid(token: Token): Promise<boolean> {
+  export async function isValid(): Promise<boolean> {
     try {
-      await http.post(VERIFY_URL, { token: token.access });
+      const token = await TokenService.get();
+      if (token == null) {
+        return false;
+      }
       return true;
     } catch (error: unknown) {
       return false;
