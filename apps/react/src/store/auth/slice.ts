@@ -1,4 +1,4 @@
-import { HttpError, Login, User } from '@js-camp/core/models';
+import { HttpError } from '@js-camp/core/models';
 import { createSlice } from '@reduxjs/toolkit';
 
 import { login, register } from './dispatchers';
@@ -12,8 +12,8 @@ export const authSlice = createSlice({
     clearErrorMessage(state) {
       state.error = undefined;
     },
-    setIsAuth(state, action) {
-      state.isAuth = action.payload ;
+    setIsAuthorized(state, action) {
+      state.isAuthorized = action.payload;
     },
   },
   extraReducers: builder =>
@@ -25,12 +25,14 @@ export const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.token = action.payload;
         state.isLoading = false;
-        state.isAuth = true;
+        state.isAuthorized = true;
       })
       .addCase(login.rejected, (state, action) => {
-        state.error = action.payload as HttpError<Login>;
+        if (action.payload instanceof HttpError) {
+          state.error = action.payload;
+        }
         state.isLoading = false;
-        state.isAuth = false;
+        state.isAuthorized = false;
       })
 
       .addCase(register.pending, state => {
@@ -40,13 +42,15 @@ export const authSlice = createSlice({
       .addCase(register.fulfilled, (state, action) => {
         state.token = action.payload;
         state.isLoading = false;
-        state.isAuth = true;
+        state.isAuthorized = true;
       })
       .addCase(register.rejected, (state, action) => {
-        state.error = action.payload as HttpError<User>;
+        if (action.payload instanceof HttpError) {
+          state.error = action.payload;
+        }
         state.isLoading = false;
-        state.isAuth = false;
+        state.isAuthorized = false;
       }),
 });
 
-export const { clearErrorMessage, setIsAuth } = authSlice.actions;
+export const { clearErrorMessage, setIsAuthorized } = authSlice.actions;
