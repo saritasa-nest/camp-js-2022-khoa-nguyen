@@ -88,12 +88,7 @@ export const RegisterPage: React.FC = () => {
     );
     if (result.payload instanceof HttpError<ErrorUser>) {
       const { data, detail } = result.payload;
-      setErrors({
-        firstName: data?.firstName?.join('\n'),
-        lastName: data?.lastName?.join('\n'),
-        password: data?.password?.join('\n'),
-        email: data?.email?.join('\n'),
-      });
+      setErrors(data);
       setSnackbarConfig(prev => ({ ...prev, message: detail }));
       return;
     }
