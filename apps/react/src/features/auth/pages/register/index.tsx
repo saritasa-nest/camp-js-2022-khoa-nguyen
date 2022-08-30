@@ -74,7 +74,7 @@ export const RegisterPage: React.FC = () => {
 
   const handleSubmit = async(
     { password, email, firstName, lastName }: Register,
-    { setFieldError }: FormikHelpers<Register>,
+    { setErrors }: FormikHelpers<Register>,
   ) => {
     const result = await dispatch(
       register(
@@ -86,14 +86,14 @@ export const RegisterPage: React.FC = () => {
         }),
       ),
     );
-    if (
-        result.payload instanceof HttpError<ErrorUser>
-    ) {
+    if (result.payload instanceof HttpError<ErrorUser>) {
       const { data, detail } = result.payload;
-      setFieldError('firstName', data?.firstName?.join('\n'));
-      setFieldError('lastName', data?.lastName?.join('\n'));
-      setFieldError('password', data?.password?.join('\n'));
-      setFieldError('email', data?.email?.join('\n'));
+      setErrors({
+        firstName: data?.firstName?.join('\n'),
+        lastName: data?.lastName?.join('\n'),
+        password: data?.password?.join('\n'),
+        email: data?.email?.join('\n'),
+      });
       setSnackbarConfig(prev => ({ ...prev, message: detail }));
       return;
     }
