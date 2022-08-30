@@ -1,4 +1,6 @@
-import { HttpError, Login, User } from '@js-camp/core/models';
+import { ErrorLoginDto, ErrorUserDto, HttpErrorDto } from '@js-camp/core/dtos';
+import { ErrorLoginMapper, ErrorUserMapper, HttpErrorMapper } from '@js-camp/core/mappers';
+import { ErrorLogin, ErrorUser, Login, User } from '@js-camp/core/models';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 
@@ -10,8 +12,9 @@ export const login = createAsyncThunk(
     try {
       return await AuthService.login(loginInfo);
     } catch (error: unknown) {
-      const errorReturn = (error as AxiosError).response?.data as HttpError<Login>;
-      return rejectWithValue(new HttpError<Login>(errorReturn));
+      const errorDto = (error as AxiosError).response?.data as HttpErrorDto<ErrorLoginDto>;
+      const errorModel = HttpErrorMapper.fromDto<ErrorLoginDto, ErrorLogin>(errorDto, ErrorLoginMapper.fromDto);
+      return rejectWithValue(errorModel);
     }
   },
 );
@@ -22,8 +25,9 @@ export const register = createAsyncThunk(
     try {
       return await AuthService.register(registerInfo);
     } catch (error: unknown) {
-      const errorReturn = (error as AxiosError).response?.data as HttpError<User>;
-      return rejectWithValue(new HttpError<User>(errorReturn));
+      const errorDto = (error as AxiosError).response?.data as HttpErrorDto<ErrorUserDto>;
+      const errorModel = HttpErrorMapper.fromDto<ErrorUserDto, ErrorUser>(errorDto, ErrorUserMapper.fromDto);
+      return rejectWithValue(errorModel);
     }
   },
 );

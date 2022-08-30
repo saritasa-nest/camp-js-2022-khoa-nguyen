@@ -20,6 +20,12 @@ export const selectIsAnimeLoading = createSelector(
   isLoading => isLoading,
 );
 
+/** Select is logged in state. */
+export const selectIsAuth = createSelector(
+  (state: RootState) => state.auth.isAuthorized,
+  isAuthorized => isAuthorized,
+);
+
 export const selectTotalAnimeCount = createSelector(
   (state: RootState) => state.anime.totalItems,
   totalItems => totalItems,

@@ -1,16 +1,12 @@
-import React, { ReactNode } from 'react';
+import { FC, PropsWithChildren } from 'react';
 
 import { Header } from '../header';
 
 import style from './DefaultLayout.module.css';
 
-interface Props {
+type Props = PropsWithChildren;
 
-  // eslint-disable-next-line jsdoc/require-jsdoc
-  readonly children: ReactNode;
-}
-
-export const DefaultLayout: React.FC<Props> = ({ children }) => (
+export const DefaultLayout: FC<Props> = ({ children }) => (
   <>
     <Header/>
     <div className={style['default-layout']}>

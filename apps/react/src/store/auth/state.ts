@@ -1,4 +1,4 @@
-import { HttpError, Login, Token } from '@js-camp/core/models';
+import { ErrorLogin, ErrorUser, HttpError, Token } from '@js-camp/core/models';
 
 /** Token state. */
 export interface AuthState {
@@ -7,7 +7,7 @@ export interface AuthState {
   readonly token: Token | null;
 
   /** Error. */
-  readonly error?: HttpError<Login> ;
+  readonly error?: HttpError<ErrorLogin | ErrorUser> ;
 
   /** Whether the token is loading or not. */
   readonly isLoading: boolean;

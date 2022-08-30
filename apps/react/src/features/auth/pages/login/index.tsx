@@ -9,7 +9,6 @@ import { Snackbar } from '@mui/material';
 import { Form, FormikProvider, useFormik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import * as yup from 'yup';
 
 import { Button, Card } from '../../../../components';
 
@@ -18,13 +17,7 @@ import { FormInputItem } from '../../components/FormItem';
 import style from '../auth.module.css';
 import { SnackBarConfig } from '../type';
 
-const validationSchema: yup.SchemaOf<LoginModel> = yup.object().shape({
-  email: yup
-    .string()
-    .email('This field has to be an email!')
-    .required('Email is required!'),
-  password: yup.string().required('Password is required!'),
-});
+import { validationSchema } from './shema';
 
 const SNACKBAR_INITIAL_VALUE = {
   isOpen: false,
