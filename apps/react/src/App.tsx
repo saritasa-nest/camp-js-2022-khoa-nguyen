@@ -4,7 +4,6 @@ import { HashRouter } from 'react-router-dom';
 
 import { RootRouter } from './routes/RootRouter';
 import { store } from './store';
-
 export const App: FC = () => (
   <Provider store={store}>
     <HashRouter>

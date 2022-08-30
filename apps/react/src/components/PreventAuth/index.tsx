@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const PreventAuth: React.FC<Props> = ({ children }) => {
-  const { isAuth } = useAuth();
+  const { isAuthorized } = useAuth();
 
-  return !isAuth ? <>{children}</> : <Navigate to={'/'} replace />;
+  return !isAuthorized ? <>{children}</> : <Navigate to={'/'} replace />;
 };

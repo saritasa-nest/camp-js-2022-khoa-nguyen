@@ -13,11 +13,11 @@ export interface AuthState {
   readonly isLoading: boolean;
 
   /** Whether user logged in or not. */
-  readonly isAuth: boolean;
+  readonly isAuthorized: boolean;
 }
 
 export const initialState: AuthState = {
   isLoading: false,
-  isAuth: true,
+  isAuthorized: true,
   token: null,
 };

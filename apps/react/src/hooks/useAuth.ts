@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { TokenService } from '../api/services/tokenService';
 import { useAppDispatch } from '../store';
 import { selectIsAuth } from '../store/auth/selectors';
-import { setIsAuth } from '../store/auth/slice';
+import { setIsAuthorized } from '../store/auth/slice';
 
 export const useAuth = () => {
 
@@ -20,7 +20,7 @@ export const useAuth = () => {
     return true;
   };
   useEffect(() => {
-    checkAuth().then(isAuth => dispatch(setIsAuth(isAuth)));
+    checkAuth().then(isAuthorized => dispatch(setIsAuthorized(isAuthorized)));
   }, []);
-  return { isAuth: useSelector(selectIsAuth) };
+  return { isAuthorized: useSelector(selectIsAuth) };
 };

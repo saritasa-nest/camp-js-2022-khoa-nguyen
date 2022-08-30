@@ -1,4 +1,4 @@
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosError, AxiosRequestHeaders, AxiosResponse } from 'axios';
 
 import { http } from '..';
 
@@ -22,7 +22,17 @@ export async function refreshToken(error: unknown): Promise<AxiosResponse> {
     await TokenService.remove();
     const newToken = await TokenService.refreshToken(token);
     await TokenService.save(newToken);
-    return http(error.config);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { headers, ...restConfig } = error.config;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { Authorization, ...restHeader } = error.config.headers as (AxiosRequestHeaders & {Authorization: string;});
+    return http({
+      ...restConfig,
+      headers: {
+        ...restHeader,
+        Authorization: `Bearer ${newToken.access}`,
+      },
+    });
   }
 
   return Promise.reject(error);

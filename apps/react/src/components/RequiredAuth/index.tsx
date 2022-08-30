@@ -10,8 +10,8 @@ interface Props {
 }
 
 export const RequiredAuth: React.FC<Props> = ({ children }) => {
-  const { isAuth } = useAuth();
+  const { isAuthorized } = useAuth();
   const location = useLocation();
 
-  return isAuth ? <>{children}</> : <Navigate to="/login" replace state={{ path: location.pathname }} />;
+  return isAuthorized ? <>{children}</> : <Navigate to="/login" replace state={{ path: location.pathname }} />;
 };
