@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-export const useSearch = () => {
-  const [inputValue, setInputValue] = useState<string>('');
+export const useSearch = (initialValue: string) => {
+  const [inputValue, setInputValue] = useState<string>(initialValue);
   const [debounceValue, setDebounceValue] = useState<string>('');
   useEffect(() => {
     const idTimeout = setTimeout(() => {

@@ -1,3 +1,5 @@
+import { AnimeQueryDto } from '@js-camp/core/dtos/animeQuery.dto';
+import { AnimeQueryMapper } from '@js-camp/core/mappers/animeQuery.mapper';
 import {
   getAnimeList,
   getNextAnimeList,
@@ -11,6 +13,8 @@ import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 
 import { FC, memo, useCallback, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
+
+import { useQueryParam } from '../../../../hooks';
 
 import { LoadingComponent } from '../../../../components';
 
@@ -30,9 +34,11 @@ export const AnimeInfiniteScrollInner: FC = () => {
   const dispatch = useAppDispatch();
   const nextPage = useAppSelector(selectNextPage);
   const animeList = useSelector(selectAmineList);
+  const { currentQueryParams } = useQueryParam<AnimeQueryDto>();
 
   useEffect(() => {
-    dispatch(getAnimeList(''));
+    const currentQueryParamsModel = AnimeQueryMapper.fromDto(currentQueryParams);
+    dispatch(getAnimeList(currentQueryParamsModel));
   }, []);
 
   const handleObserver = useCallback(
