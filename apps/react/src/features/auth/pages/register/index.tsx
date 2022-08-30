@@ -6,14 +6,16 @@ import { Snackbar } from '@mui/material';
 import { Form, FormikHelpers, FormikProvider, useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import * as yup from 'yup';
 
 import { Button, Card } from '../../../../components';
 import { FormInputItem } from '../../components/FormItem';
 import style from '../auth.module.css';
 import { SnackBarConfig } from '../type';
 
-interface Register {
+import { validationSchema } from './schema';
+
+/** Register schema. */
+export interface Register {
 
   /** Email. */
   readonly email: string;
@@ -30,26 +32,6 @@ interface Register {
   /** Retype password. */
   readonly confirmPassword: string;
 }
-
-const validationSchema: yup.SchemaOf<Register> = yup.object().shape({
-  email: yup
-    .string()
-    .email('This field has to be an email!')
-    .required('Email is required!'),
-  password: yup.string().required('Password is required!'),
-  lastName: yup.string().required('Last name is required!'),
-  firstName: yup.string().required('First name is required!'),
-  confirmPassword: yup
-    .string()
-    .required('Confirm password is required!')
-    .test(
-      'is-match-password',
-      'Confirm password does not match with password',
-      function(value) {
-        return value === this.parent.password;
-      },
-    ),
-});
 
 const initialValues: Register = {
   email: '',
