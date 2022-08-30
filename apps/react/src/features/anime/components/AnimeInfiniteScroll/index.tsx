@@ -16,7 +16,7 @@ import { LoadingComponent } from '../../../../components';
 
 import { AnimeItem } from '../AnimeItem';
 
-import style from './AnimeInfinitiveScroll.module.css';
+import style from './AnimeInfiniteScroll.module.css';
 
 const option = {
   root: null,
@@ -24,7 +24,7 @@ const option = {
   threshold: 0.2,
 };
 
-export const AnimeInfinitiveScrollInner: FC = () => {
+export const AnimeInfiniteScrollInner: FC = () => {
   const itemRef = useRef<HTMLDivElement>(null);
   const isLoading = useAppSelector(selectIsAnimeLoading);
   const dispatch = useAppDispatch();
@@ -75,4 +75,4 @@ export const AnimeInfinitiveScrollInner: FC = () => {
   );
 };
 
-export const AnimeInfinitiveScroll = memo(AnimeInfinitiveScrollInner);
+export const AnimeInfiniteScroll = memo(AnimeInfiniteScrollInner);

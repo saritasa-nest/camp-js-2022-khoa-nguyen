@@ -26,7 +26,7 @@ export const AnimeSearchInner: FC = () => {
         value={inputValue}
         onChange={handleOnChangeValue}
         className={style['anime-search__input']}
-        placeholder="Ex: Naruto, ..."
+        placeholder="e.g.Naruto, ..."
         type="search"
       />
     </div>

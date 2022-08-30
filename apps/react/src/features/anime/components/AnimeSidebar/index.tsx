@@ -4,7 +4,7 @@ import { FC, memo } from 'react';
 
 import { TabGroup } from '../../../../components';
 
-import { AnimeInfinitiveScroll } from '../AnimeInfinitiveScroll';
+import { AnimeInfiniteScroll } from '../AnimeInfiniteScroll';
 import { AnimeSearch } from '../AnimeSearch';
 
 import style from './AnimeSidebar.module.css';
@@ -21,7 +21,7 @@ export const AnimeSidebarInner: FC = () => (
         { label: 'Sorting', panel: <div>Sorting</div> },
       ]}
     />
-    <AnimeInfinitiveScroll />
+    <AnimeInfiniteScroll />
   </ListItem>
 );
 

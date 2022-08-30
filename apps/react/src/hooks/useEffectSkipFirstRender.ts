@@ -10,6 +10,6 @@ export const useEffectSkipFirstRender = (
       isFirstMounted.current++;
       return;
     }
-    callback?.();
+    callback();
   }, deps);
 };
