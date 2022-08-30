@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { FC, memo } from 'react';
 
 import { DefaultLayout } from '../../../../layout';
 
@@ -6,7 +6,7 @@ import { AnimeSidebar } from '../../components/AnimeSidebar';
 
 import style from './AnimeTablePage.module.css';
 
-export const AnimeTablePageInner: React.FC = () => (
+export const AnimeTablePageInner: FC = () => (
   <DefaultLayout>
     <div className={style['anime-table']}>
       <div className={style['anime-table__sidebar']}>

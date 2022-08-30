@@ -1,6 +1,6 @@
 import { Tab, Tabs } from '@mui/material';
 import classNames from 'classnames';
-import { Fragment, memo, ReactNode, useState } from 'react';
+import { FC, memo, ReactNode, useState } from 'react';
 
 import style from './Tab.module.css';
 
@@ -9,7 +9,7 @@ const a11yProps = (index: number) => ({
   'aria-controls': `simple-tabpanel-${index}`,
 });
 
-interface Tab {
+interface TabItem {
 
   /** Label of tab. */
   readonly label: string;
@@ -21,10 +21,10 @@ interface Tab {
 interface Props {
 
   /** List of tabs need to render. */
-  readonly listTab: readonly Tab[];
+  readonly listTab: readonly TabItem[];
 }
 
-export const TabGroupInner: React.FC<Props> = ({ listTab }) => {
+export const TabGroupInner: FC<Props> = ({ listTab }) => {
   const [value, setValue] = useState(0);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -55,7 +55,7 @@ export const TabGroupInner: React.FC<Props> = ({ listTab }) => {
           id={`tabpanel-${index}`}
           aria-labelledby={`tab-${index}`}
         >
-          <Fragment>{item.panel}</Fragment>
+          <>{item.panel}</>
         </div>
       ))}
     </>

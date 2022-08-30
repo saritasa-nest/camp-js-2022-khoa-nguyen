@@ -1,6 +1,6 @@
 import { Anime } from '@js-camp/core/models';
 import { Avatar, Card, CardContent, Typography } from '@mui/material';
-import React from 'react';
+import { FC } from 'react';
 
 import style from './AnimeItem.module.css';
 
@@ -10,7 +10,7 @@ interface Props {
   readonly data: Anime;
 }
 
-export const AnimeItem: React.FC<Props> = ({ data }) => (
+export const AnimeItem: FC<Props> = ({ data }) => (
   <Card className={style['anime-item__wrapper']}>
     <CardContent className={style['anime-item']}>
       {data.image && (

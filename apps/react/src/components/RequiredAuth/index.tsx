@@ -1,11 +1,11 @@
-import { PropsWithChildren } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 
 import { useAuth } from '../../hooks';
 
 type Props = PropsWithChildren;
 
-export const RequiredAuth: React.FC<Props> = ({ children }) => {
+export const RequiredAuth: FC<Props> = ({ children }) => {
   const { isAuthorized } = useAuth();
   const location = useLocation();
 

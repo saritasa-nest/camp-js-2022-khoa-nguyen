@@ -1,4 +1,7 @@
-import { getAnimeList, getNextAnimeList } from '@js-camp/react/store/anime/dispatchers';
+import {
+  getAnimeList,
+  getNextAnimeList,
+} from '@js-camp/react/store/anime/dispatchers';
 import {
   selectAmineList,
   selectIsAnimeLoading,
@@ -43,7 +46,6 @@ export const AnimeInfinitiveScrollInner: FC = () => {
   );
 
   useEffect(() => {
-
     const observer = new IntersectionObserver(handleObserver, option);
     if (itemRef.current) {
       observer.observe(itemRef.current);
@@ -52,12 +54,15 @@ export const AnimeInfinitiveScrollInner: FC = () => {
       observer.disconnect();
     };
   }, [handleObserver]);
+
   if (isLoading) {
-    return <LoadingComponent/>;
+    return <LoadingComponent />;
   }
+
   if (animeList.length === 0) {
     return <div>There is no result</div>;
   }
+
   return (
     <>
       {animeList?.map((item, index) => (

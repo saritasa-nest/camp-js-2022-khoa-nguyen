@@ -7,7 +7,7 @@ import { clearErrorMessage } from '@js-camp/react/store/auth/slice';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { Snackbar } from '@mui/material';
 import { Form, FormikProvider, useFormik } from 'formik';
-import React, { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { Button, Card } from '../../../../components';
@@ -27,7 +27,7 @@ const SNACKBAR_INITIAL_VALUE = {
 
 const initialValues: LoginModel = { email: '', password: '' };
 
-export const LoginPage: React.FC = () => {
+export const LoginPage: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const error = useAppSelector(selectAuthError);

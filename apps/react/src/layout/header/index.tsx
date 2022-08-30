@@ -1,4 +1,5 @@
 import { setIsAuthorized } from '@js-camp/react/store/auth/slice';
+import { FC } from 'react';
 import { Link } from 'react-router-dom';
 
 import { TokenService } from '../../api/services/tokenService';
@@ -8,7 +9,7 @@ import { useAppDispatch } from '../../store';
 
 import style from './Header.module.css';
 
-export const Header: React.FC = () => {
+export const Header: FC = () => {
   const dispatch = useAppDispatch();
   const handleLogout = async() => {
     await TokenService.remove();

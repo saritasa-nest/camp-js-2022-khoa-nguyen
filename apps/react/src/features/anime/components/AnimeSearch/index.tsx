@@ -2,13 +2,13 @@ import { getAnimeList } from '@js-camp/react/store/anime/dispatchers';
 import { useAppDispatch } from '@js-camp/react/store/store';
 import { TextField } from '@mui/material';
 
-import React, { memo } from 'react';
+import React, { FC, memo } from 'react';
 
 import { useEffectSkipFirstRender, useSearch } from '../../../../hooks';
 
 import style from './AnimeSearch.module.css';
 
-export const AnimeSearchInner: React.FC = () => {
+export const AnimeSearchInner: FC = () => {
   const { inputValue, setInputValue, debounceValue } = useSearch();
   const handleOnChangeValue = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,

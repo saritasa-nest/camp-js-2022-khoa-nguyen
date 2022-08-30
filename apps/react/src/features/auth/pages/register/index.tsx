@@ -4,7 +4,7 @@ import { clearErrorMessage } from '@js-camp/react/store/auth/slice';
 import { useAppDispatch } from '@js-camp/react/store/store';
 import { Snackbar } from '@mui/material';
 import { Form, FormikHelpers, FormikProvider, useFormik } from 'formik';
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { Button, Card } from '../../../../components';
@@ -47,7 +47,7 @@ const SNACKBAR_INITIAL_VALUE = {
   duration: 3000,
 };
 
-export const RegisterPage: React.FC = () => {
+export const RegisterPage: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [snackbarConfig, setSnackbarConfig] = useState<SnackBarConfig>(

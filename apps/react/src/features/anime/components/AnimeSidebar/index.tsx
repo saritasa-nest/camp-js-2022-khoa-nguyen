@@ -1,6 +1,6 @@
 import { ListItem } from '@mui/material';
 
-import React, { memo } from 'react';
+import { FC, memo } from 'react';
 
 import { TabGroup } from '../../../../components';
 
@@ -9,7 +9,7 @@ import { AnimeSearch } from '../AnimeSearch';
 
 import style from './AnimeSidebar.module.css';
 
-export const AnimeSidebarInner: React.FC = () => (
+export const AnimeSidebarInner: FC = () => (
   <ListItem className={style['anime-sidebar']}>
     <TabGroup
       listTab={[
