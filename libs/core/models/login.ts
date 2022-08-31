@@ -30,4 +30,4 @@ export class ErrorLogin extends Immerable {
   }
 }
 
-export type ErrorLoginType = OmitImmerable<ErrorLogin>;
+type ErrorLoginType = OmitImmerable<ErrorLogin>;

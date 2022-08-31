@@ -1,6 +1,6 @@
 import { FC, PropsWithChildren } from 'react';
 
-import { Header } from '../header';
+import { Header } from '../header/Header';
 
 import style from './DefaultLayout.module.css';
 

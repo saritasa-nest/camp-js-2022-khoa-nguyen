@@ -1,7 +1,8 @@
-import { TextField, TextFieldProps } from '@mui/material';
 import { FC, HTMLInputTypeAttribute } from 'react';
 
-import { ErrorMessage, useField } from 'formik';
+import { ErrorMessage, Field, useField } from 'formik';
+
+import { TextField, TextFieldProps } from '@mui/material';
 
 import style from './FormItem.module.css';
 
@@ -10,7 +11,7 @@ interface Props {
   /** Label. */
   readonly label: string;
 
-  /** Input properties. */
+  /** Props input. */
   readonly propsInput?: TextFieldProps;
 
   /** Name of form field. */
@@ -20,11 +21,12 @@ interface Props {
   readonly type?: HTMLInputTypeAttribute;
 }
 
-export const FormInputItem: FC<Props> = ({ label, propsInput, name, type }) => {
+export const FormInputItem: FC<Props> = ({ label, name, type, propsInput }) => {
   const [field] = useField<string>({ name });
   return (
     <div className={style['form-item']}>
-      <TextField
+      <Field
+        as={TextField}
         className={style['form-item__input']}
         {...field}
         {...propsInput}

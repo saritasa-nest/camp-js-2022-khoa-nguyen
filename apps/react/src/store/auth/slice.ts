@@ -10,7 +10,7 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     clearErrorMessage(state) {
-      state.error = undefined;
+      state.error = null;
     },
     setIsAuthorized(state, action) {
       state.isAuthorized = action.payload;
@@ -19,7 +19,7 @@ export const authSlice = createSlice({
   extraReducers: builder =>
     builder
       .addCase(login.pending, state => {
-        state.error = undefined;
+        state.error = null;
         state.isLoading = true;
       })
       .addCase(login.fulfilled, (state, action) => {
@@ -36,7 +36,7 @@ export const authSlice = createSlice({
       })
 
       .addCase(register.pending, state => {
-        state.error = undefined;
+        state.error = null;
         state.isLoading = true;
       })
       .addCase(register.fulfilled, (state, action) => {
