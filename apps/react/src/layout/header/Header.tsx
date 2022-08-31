@@ -20,7 +20,9 @@ export const Header: React.FC = () => {
         <Link className={style['header__link']} to={'/'}>
           Home
         </Link>
-        <Button onClick={handleLogout}>Log out</Button>
+        <Button variant="contained" color="secondary" onClick={handleLogout}>
+          Log out
+        </Button>
       </div>
     </div>
   );

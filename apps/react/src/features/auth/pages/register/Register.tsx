@@ -66,6 +66,7 @@ export const RegisterPage: React.FC = () => {
     );
     if (result.payload instanceof HttpError<ErrorUser>) {
       const { data, detail } = result.payload;
+
       enqueueSnackbar(detail, { variant: 'error' });
       setErrors(data);
       return;

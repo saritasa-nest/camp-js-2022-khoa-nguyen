@@ -32,6 +32,7 @@ export const LoginPage: React.FC = () => {
     if (result.payload instanceof HttpError<Login>) {
       const errorDetail = result.payload.detail;
       enqueueSnackbar(errorDetail, { variant: 'error' });
+      return;
     }
     enqueueSnackbar('Login successfully!', { variant: 'success' });
     dispatch(setIsAuthorized(true));
