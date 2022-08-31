@@ -1,8 +1,6 @@
-import { Container, Grid } from '@mui/material';
+import { Card, Container, Grid } from '@mui/material';
 
 import { DefaultLayout } from '../../../../layout';
-
-import { Card } from '../../../../components';
 
 export const AnimeTablePage: React.FC = () => (
   <DefaultLayout>
