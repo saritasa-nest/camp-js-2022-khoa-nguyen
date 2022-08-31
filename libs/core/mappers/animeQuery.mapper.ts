@@ -1,4 +1,4 @@
-import { AnimeQueryDto, SortingQueryDto } from '../dtos/animeQuery.dto';
+import { AnimeQueryDto, AnimeQueryUrl, SortingQueryDto } from '../dtos/animeQuery.dto';
 import { AnimeQuery, OrderingQuery, SortingQuery } from '../models/animeQuery';
 
 import { AnimeMapper } from './anime.mapper';
@@ -31,6 +31,9 @@ export namespace SortingMapper {
   export function fromDto(dto: SortingQueryDto): SortingQuery {
     return sortingDtoToSortingModel[dto];
   }
+
+  export const fromUrl = fromDto;
+  export const toUrl = toDto;
 }
 
 export namespace AnimeQueryMapper {
@@ -60,6 +63,20 @@ export namespace AnimeQueryMapper {
       ordering: dto.ordering?.includes('-') ? OrderingQuery.Ascending : OrderingQuery.Descending,
       types: dto.type__in?.map(item => AnimeMapper.typeDtoToModel[item]),
       search: dto.search,
+    });
+  }
+
+  /**
+   *  AnimeQuery mapper from url.
+   * @param url AnimeQuery url.
+   */
+  export function fromUrl(url: AnimeQueryUrl): AnimeQuery {
+    const types = url.types?.map(item => AnimeMapper.typeDtoToModel[item]);
+    return new AnimeQuery({
+      sorting: url.sorting && SortingMapper.fromUrl(url.sorting),
+      ordering: url.ordering,
+      types,
+      search: url.search,
     });
   }
 }

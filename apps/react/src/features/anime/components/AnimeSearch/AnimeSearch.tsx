@@ -1,4 +1,4 @@
-import { AnimeQueryDto } from '@js-camp/core/dtos/animeQuery.dto';
+import { AnimeQueryUrl } from '@js-camp/core/dtos/animeQuery.dto';
 import { AnimeQueryMapper } from '@js-camp/core/mappers/animeQuery.mapper';
 import { AnimeQuery } from '@js-camp/core/models/animeQuery';
 import { getAnimeList } from '@js-camp/react/store/anime/dispatchers';
@@ -12,7 +12,7 @@ import { useEffectSkipFirstRender, useQueryParam, useSearch } from '../../../../
 import style from './AnimeSearch.module.css';
 
 export const AnimeSearchInner: FC = () => {
-  const { currentQueryParams, getQueryMethodWithKey } = useQueryParam<AnimeQueryDto>();
+  const { currentQueryParams, getQueryMethodWithKey } = useQueryParam<AnimeQueryUrl>();
   const queryMethodsSearch = getQueryMethodWithKey('search');
 
   const { inputValue, setInputValue, debounceValue } = useSearch(queryMethodsSearch.get() ?? '');
@@ -25,8 +25,8 @@ export const AnimeSearchInner: FC = () => {
   const dispatch = useAppDispatch();
   useEffectSkipFirstRender(() => {
     queryMethodsSearch.set(debounceValue);
-    const currentParamDto = AnimeQueryMapper.fromDto(currentQueryParams);
-    dispatch(getAnimeList(new AnimeQuery({ ...currentParamDto, search: debounceValue })));
+    const currentParamModel = AnimeQueryMapper.fromUrl(currentQueryParams);
+    dispatch(getAnimeList(new AnimeQuery({ ...currentParamModel, search: debounceValue })));
   }, [debounceValue]);
 
   return (

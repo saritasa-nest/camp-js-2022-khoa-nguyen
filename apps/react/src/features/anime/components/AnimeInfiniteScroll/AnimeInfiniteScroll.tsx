@@ -1,4 +1,4 @@
-import { AnimeQueryDto } from '@js-camp/core/dtos/animeQuery.dto';
+import { AnimeQueryUrl } from '@js-camp/core/dtos/animeQuery.dto';
 import { AnimeQueryMapper } from '@js-camp/core/mappers/animeQuery.mapper';
 import {
   getAnimeList,
@@ -34,10 +34,10 @@ export const AnimeInfiniteScrollInner: FC = () => {
   const dispatch = useAppDispatch();
   const nextPage = useAppSelector(selectNextPage);
   const animeList = useSelector(selectAmineList);
-  const { currentQueryParams } = useQueryParam<AnimeQueryDto>();
+  const { currentQueryParams } = useQueryParam<AnimeQueryUrl>();
 
   useEffect(() => {
-    const currentQueryParamsModel = AnimeQueryMapper.fromDto(currentQueryParams);
+    const currentQueryParamsModel = AnimeQueryMapper.fromUrl(currentQueryParams);
     dispatch(getAnimeList(currentQueryParamsModel));
   }, []);
 
