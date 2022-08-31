@@ -12,7 +12,10 @@ export const login = createAsyncThunk(
     try {
       return await AuthService.login(loginInfo);
     } catch (error: unknown) {
-      const errorDto = (error as AxiosError).response?.data as HttpErrorDto<ErrorLoginDto>;
+      if (!(error instanceof AxiosError)) {
+        return rejectWithValue(error);
+      }
+      const errorDto = error.response?.data as HttpErrorDto<ErrorLoginDto>;
       const errorModel = HttpErrorMapper.fromDto<ErrorLoginDto, ErrorLogin>(errorDto, ErrorLoginMapper.fromDto);
       return rejectWithValue(errorModel);
     }
@@ -25,7 +28,10 @@ export const register = createAsyncThunk(
     try {
       return await AuthService.register(registerInfo);
     } catch (error: unknown) {
-      const errorDto = (error as AxiosError).response?.data as HttpErrorDto<ErrorUserDto>;
+      if (!(error instanceof AxiosError)) {
+        return rejectWithValue(error);
+      }
+      const errorDto = error.response?.data as HttpErrorDto<ErrorUserDto>;
       const errorModel = HttpErrorMapper.fromDto<ErrorUserDto, ErrorUser>(errorDto, ErrorUserMapper.fromDto);
       return rejectWithValue(errorModel);
     }

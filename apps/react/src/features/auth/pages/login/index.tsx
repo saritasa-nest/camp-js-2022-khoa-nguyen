@@ -2,9 +2,8 @@ import { HttpError, Login, LoginModel } from '@js-camp/core/models';
 import {
   login,
 } from '@js-camp/react/store/auth/dispatchers';
-import { selectAuthError } from '@js-camp/react/store/auth/selectors';
 import { clearErrorMessage } from '@js-camp/react/store/auth/slice';
-import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
+import { useAppDispatch } from '@js-camp/react/store/store';
 import { Snackbar } from '@mui/material';
 import { Form, FormikProvider, useFormik } from 'formik';
 import { FC, useEffect, useState } from 'react';
@@ -30,8 +29,6 @@ const initialValues: LoginModel = { email: '', password: '' };
 export const LoginPage: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const error = useAppSelector(selectAuthError);
-  const [isShowBackendError, setIsShowBackendError] = useState<boolean>(false);
 
   const [snackbarConfig, setSnackbarConfig] = useState<SnackBarConfig>(
     SNACKBAR_INITIAL_VALUE,
@@ -61,12 +58,6 @@ export const LoginPage: FC = () => {
     onSubmit: handleSubmit,
   });
 
-  useEffect(() => {
-    if (isShowBackendError) {
-      setIsShowBackendError(false);
-    }
-  }, [formik.values]);
-
   return (
     <div className={style['auth']}>
       <Card>
@@ -75,9 +66,6 @@ export const LoginPage: FC = () => {
           <Form className={style['auth__form']}>
             <FormInputItem label="Email" name="email" type="email" />
             <FormInputItem label="Password" name="password" type="password" />
-            {isShowBackendError && (
-              <span className={style['auth__error']}>{error?.detail}</span>
-            )}
             <p>
               Don't have an account?{' '}
               <Link className={style['auth__link']} to="/register">
