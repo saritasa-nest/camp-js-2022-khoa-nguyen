@@ -1,7 +1,7 @@
 import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 
-import { PreventAuth } from '../../components/PreventAuth';
+import { RequiredNoAuth } from '../../components/RequiredNoAuth/RequiredNoAuth';
 
 const LoginPage = lazy(() => import('./pages/login').then(module => ({ default: module.LoginPage })));
 const RegisterPage = lazy(() => import('./pages/register').then(module => ({ default: module.RegisterPage })));
@@ -9,14 +9,14 @@ const RegisterPage = lazy(() => import('./pages/register').then(module => ({ def
 export const authRoutes: RouteObject[] = [
   {
     path: 'login',
-    element: <PreventAuth>
+    element: <RequiredNoAuth>
       <LoginPage />
-    </PreventAuth>,
+    </RequiredNoAuth>,
   },
   {
     path: 'register',
-    element: <PreventAuth>
+    element: <RequiredNoAuth>
       <RegisterPage />
-    </PreventAuth>,
+    </RequiredNoAuth>,
   },
 ];
