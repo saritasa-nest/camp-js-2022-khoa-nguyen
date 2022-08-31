@@ -1,16 +1,20 @@
 import { ErrorUser, HttpError, User } from '@js-camp/core/models';
 import { register } from '@js-camp/react/store/auth/dispatchers';
-import { clearErrorMessage } from '@js-camp/react/store/auth/slice';
-import { useAppDispatch } from '@js-camp/react/store/store';
-import { Snackbar } from '@mui/material';
+import { selectIsAuthLoading } from '@js-camp/react/store/auth/selectors';
+import {
+  clearErrorMessage,
+  setIsAuthorized,
+} from '@js-camp/react/store/auth/slice';
+import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
+import { LoadingButton } from '@mui/lab';
+import { Card } from '@mui/material';
 import { Form, FormikHelpers, FormikProvider, useFormik } from 'formik';
-import { FC, useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
-import { Button, Card } from '../../../../components';
 import { FormInputItem } from '../../components/FormItem';
 import style from '../auth.module.css';
-import { SnackBarConfig } from '../type';
 
 import { validationSchema } from './schema';
 
@@ -41,18 +45,10 @@ const initialValues: Register = {
   confirmPassword: '',
 };
 
-const SNACKBAR_INITIAL_VALUE = {
-  isOpen: false,
-  message: '',
-  duration: 3000,
-};
-
-export const RegisterPage: FC = () => {
-  const navigate = useNavigate();
+export const RegisterPage: React.FC = () => {
   const dispatch = useAppDispatch();
-  const [snackbarConfig, setSnackbarConfig] = useState<SnackBarConfig>(
-    SNACKBAR_INITIAL_VALUE,
-  );
+  const { enqueueSnackbar } = useSnackbar();
+  const isLoading = useAppSelector(selectIsAuthLoading);
 
   const handleSubmit = async(
     { password, email, firstName, lastName }: Register,
@@ -70,15 +66,13 @@ export const RegisterPage: FC = () => {
     );
     if (result.payload instanceof HttpError<ErrorUser>) {
       const { data, detail } = result.payload;
+
+      enqueueSnackbar(detail, { variant: 'error' });
       setErrors(data);
-      setSnackbarConfig(prev => ({ ...prev, message: detail }));
       return;
     }
-    navigate('/');
-  };
-
-  const handleCloseSnackbar = () => {
-    setSnackbarConfig(prev => ({ ...prev, isOpen: false }));
+    enqueueSnackbar('Register successfully!', { variant: 'success' });
+    dispatch(setIsAuthorized(true));
   };
 
   const formik = useFormik({
@@ -112,16 +106,17 @@ export const RegisterPage: FC = () => {
                 Login now!
               </Link>{' '}
             </p>
-            <Button type="submit">Register</Button>
+            <LoadingButton
+              loading={isLoading}
+              color="primary"
+              variant="contained"
+              type="submit"
+            >
+              Register
+            </LoadingButton>
           </Form>
         </FormikProvider>
       </Card>
-      <Snackbar
-        open={snackbarConfig.isOpen}
-        autoHideDuration={snackbarConfig.duration}
-        onClose={handleCloseSnackbar}
-        message={snackbarConfig.message}
-      />
     </div>
   );
 };
