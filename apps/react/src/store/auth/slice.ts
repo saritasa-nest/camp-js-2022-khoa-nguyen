@@ -10,7 +10,7 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     clearErrorMessage(state) {
-      state.error = undefined;
+      state.error = null;
     },
     setIsAuthorized(state, action) {
       state.isAuthorized = action.payload;
