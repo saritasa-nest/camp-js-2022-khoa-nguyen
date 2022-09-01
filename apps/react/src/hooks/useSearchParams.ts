@@ -1,6 +1,6 @@
 import { useSearchParams } from 'react-router-dom';
 
-export const useQueryParam = <T>() => {
+export const useQueryParam = <T = never>() => {
   const [searchParams, setSearchParams] = useSearchParams();
   const getAllQueryParams = (): T => {
     let params = {};
@@ -41,8 +41,8 @@ export const useQueryParam = <T>() => {
 
   return {
     currentQueryParams: getAllQueryParams(),
-    getQueryMethodWithKey,
     queryMethods,
     searchParams,
+    getQueryMethodWithKey,
   };
 };

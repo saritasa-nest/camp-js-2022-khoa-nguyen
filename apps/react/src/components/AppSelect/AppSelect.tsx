@@ -12,10 +12,10 @@ import { FC, useState } from 'react';
 export interface SelectItem {
 
   /** Value of select item. */
-  readonly value: string | number;
+  readonly value: string;
 
   /** Displaying text of select item. */
-  readonly text?: string | number;
+  readonly text?: string;
 }
 
 interface Props extends SelectProps {
@@ -24,7 +24,7 @@ interface Props extends SelectProps {
   readonly list: readonly SelectItem[];
 
   /** Side effect when sorting value change. */
-  readonly onChangeSideEffect?: (value: string) => void;
+  readonly onChangeSideEffect?: (value: string | string[]) => void;
 }
 
 export const AppSelect: FC<Props> = ({
@@ -32,14 +32,30 @@ export const AppSelect: FC<Props> = ({
   onChangeSideEffect,
   ...props
 }) => {
-  const [selectedValue, setSelectedValue] = useState<string>(
-    props.defaultValue as string ?? '',
+  const initialValue = (): string | string[] => {
+    if (props.defaultValue != null) {
+      if (props.multiple) {
+        return props.defaultValue as string[];
+      }
+      return props.defaultValue as string;
+    }
+    if (props.multiple) {
+      return [];
+    }
+    return '';
+  };
+  const [selectedValue, setSelectedValue] = useState<string | string[]>(
+    initialValue,
   );
 
   const handleChange = (event: SelectChangeEvent<unknown>) => {
-    const value = event.target.value as string;
-    setSelectedValue(value);
+    const value = event.target.value as string | string[];
     onChangeSideEffect?.(value);
+    if (props.multiple) {
+      setSelectedValue(value);
+      return;
+    }
+    setSelectedValue(value);
   };
   return (
     <FormControl fullWidth>
@@ -56,9 +72,11 @@ export const AppSelect: FC<Props> = ({
             {item.text ?? item.value}
           </MenuItem>
         ))}
-        <MenuItem value="">
-          <em>None</em>
-        </MenuItem>
+        {!props.multiple && (
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+        )}
       </Select>
     </FormControl>
   );

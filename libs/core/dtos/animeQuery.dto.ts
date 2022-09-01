@@ -21,7 +21,7 @@ export interface AnimeQueryDto {
   readonly search?: string;
 
   /** Types of anime list. */
-  readonly type__in?: readonly TypeDto[];
+  readonly type__in?: string;
 
 }
 
@@ -39,7 +39,7 @@ export interface AnimeQueryUrl {
   readonly ordering?: OrderingQueryUrl;
 
   /** Types of anime list. */
-  readonly types?: readonly TypeQueryUrl[];
+  readonly types?: string;
 
   /** Search query of anime list. */
   readonly search?: string;

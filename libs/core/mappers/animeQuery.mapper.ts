@@ -1,3 +1,4 @@
+import { TypeDto } from '../dtos';
 import { AnimeQueryDto, AnimeQueryUrl, SortingQueryDto } from '../dtos/animeQuery.dto';
 import { AnimeQuery, OrderingQuery, SortingQuery } from '../models/animeQuery';
 
@@ -48,7 +49,7 @@ export namespace AnimeQueryMapper {
       ordering: sorting && model.ordering === OrderingQuery.Descending ? `-${sorting}` : sorting,
       search: model.search,
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      type__in: model.types?.map(item => AnimeListQueryOptionsMapper.typeModelToDto[item]),
+      type__in: model.types?.map(item => AnimeListQueryOptionsMapper.typeModelToDto[item]).join(','),
     };
   }
 
@@ -61,7 +62,7 @@ export namespace AnimeQueryMapper {
     return new AnimeQuery({
       sorting,
       ordering: dto.ordering?.includes('-') ? OrderingQuery.Ascending : OrderingQuery.Descending,
-      types: dto.type__in?.map(item => AnimeMapper.typeDtoToModel[item]),
+      types: dto.type__in?.split(',').map(item => AnimeMapper.typeDtoToModel[item as TypeDto]),
       search: dto.search,
     });
   }
@@ -71,7 +72,7 @@ export namespace AnimeQueryMapper {
    * @param url AnimeQuery url.
    */
   export function fromUrl(url: AnimeQueryUrl): AnimeQuery {
-    const types = url.types?.map(item => AnimeMapper.typeDtoToModel[item]);
+    const types = url.types?.split(',').map(item => AnimeMapper.typeDtoToModel[(item as TypeDto)]);
     return new AnimeQuery({
       sorting: url.sorting && SortingMapper.fromUrl(url.sorting),
       ordering: url.ordering,

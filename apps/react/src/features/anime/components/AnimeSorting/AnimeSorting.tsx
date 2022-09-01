@@ -36,7 +36,7 @@ export const AnimeSorting: FC = () => {
   const dispatch = useAppDispatch();
   const currentParamModel = AnimeQueryMapper.fromUrl(currentQueryParams);
 
-  const handleSorting = (value: string) => {
+  const handleSorting = (value: string | string[]) => {
     const _value = value as SortingQuery;
     queryMethods.set('sorting', SortingMapper.toUrl(_value));
     dispatch(
@@ -44,7 +44,7 @@ export const AnimeSorting: FC = () => {
     );
   };
 
-  const handleOrdering = (value: string) => {
+  const handleOrdering = (value: string | string[]) => {
     const _value = value as OrderingQuery;
     queryMethods.set('ordering', _value);
     dispatch(
@@ -64,7 +64,7 @@ export const AnimeSorting: FC = () => {
         defaultValue={currentParamModel.ordering}
         onChangeSideEffect={handleOrdering}
         id="order-anime"
-        label="Ordering by"
+        label="Order by"
         list={listOrdering}
       />
     </div>
