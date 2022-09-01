@@ -29,7 +29,7 @@ export type SortingQueryUrl = SortingQueryDto;
 export type OrderingQueryUrl = OrderingQuery;
 export type TypeQueryUrl = TypeDto;
 
-/** Anime query info. */
+/** Anime query url info. */
 export interface AnimeQueryUrl {
 
   /** Sorting options. */
