@@ -58,9 +58,11 @@ export const AnimeSorting: FC = () => {
         onChangeSideEffect={handleSorting}
         id="sort-anime"
         label="Sort by"
+        isNoneSelection
         list={listSorting}
       />
       <AppSelect
+        disabled={currentParamModel.sorting == null}
         defaultValue={currentParamModel.ordering}
         onChangeSideEffect={handleOrdering}
         id="order-anime"
