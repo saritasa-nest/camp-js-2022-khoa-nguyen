@@ -24,11 +24,7 @@ export const AnimeSearchInner: FC = () => {
   };
   const dispatch = useAppDispatch();
 
-  /**
-   * My intention is to prevent the first search query api call when the app is first loaded. However, due to
-   * the strict mode which trigger the app to perform the callback inside normal useEffect 2 times, I have to
-   * skip 2 renders to prevent this behavior of strict mode.
-   */
+  /** My intention is to prevent the first search query api call when the app is first loaded. */
   useEffectSkipRender(1, () => {
     queryMethodsSearch.set(debounceValue);
     const currentParamModel = AnimeQueryMapper.fromUrl(currentQueryParams);
