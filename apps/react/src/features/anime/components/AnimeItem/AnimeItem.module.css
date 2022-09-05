@@ -1,6 +1,5 @@
 .anime-item {
   display: flex;
-  min-width: 400px;
   cursor: pointer;
   align-items: center;
 }

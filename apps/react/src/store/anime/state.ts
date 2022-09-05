@@ -15,6 +15,7 @@ export interface AnimeState extends EntityState<Anime> {
 
   /** Next page url from api. */
   readonly nextPageUrl: string | null;
+
 }
 
 export const animeAdapter = createEntityAdapter<Anime>({

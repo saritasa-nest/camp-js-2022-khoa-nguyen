@@ -12,7 +12,7 @@ import { AnimeSorting } from '../AnimeSorting';
 import style from './AnimeSidebar.module.css';
 
 export const AnimeSidebarInner: FC = () => (
-  <List component='aside' sx={{ padding: '10px' }} className={style['anime-sidebar']}>
+  <List component='aside' sx={{ padding: '20px' }} className={style['anime-sidebar']}>
     <TabGroup
       listTab={[
         {
