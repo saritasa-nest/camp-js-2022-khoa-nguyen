@@ -1,4 +1,4 @@
-import { HttpError, Login, LoginModel } from '@js-camp/core/models';
+import { HttpError, Login } from '@js-camp/core/models';
 import { login } from '@js-camp/react/store/auth/dispatchers';
 import {
   clearErrorMessage,
@@ -21,13 +21,13 @@ import style from '../auth.module.css';
 
 import { validationSchema } from './shema';
 
-const initialValues: LoginModel = { email: '', password: '' };
+const initialValues: Login = new Login({ email: '', password: '' });
 
 export const LoginPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const isLoading = useAppSelector(selectIsAuthLoading);
-  const handleSubmit = async({ email, password }: LoginModel) => {
+  const handleSubmit = async({ email, password }: Login) => {
     const result = await dispatch(login(new Login({ email, password })));
     if (result.payload instanceof HttpError<Login>) {
       const errorDetail = result.payload.detail;
