@@ -7,16 +7,17 @@ import {
 import {
   selectAmineList,
   selectIsAnimeLoading,
+  selectIsLoadingNextPage,
   selectNextPage,
 } from '@js-camp/react/store/anime/selectors';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 
-import { FC, memo, useCallback, useEffect, useRef } from 'react';
+import { FC, memo, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 
 import { useQueryParam } from '../../../../hooks';
 
-import { LoadingComponent } from '../../../../components';
+import { Loading } from '../../../../components';
 
 import { AnimeItem } from '../AnimeItem';
 
@@ -24,7 +25,7 @@ import style from './AnimeInfiniteScroll.module.css';
 
 const option = {
   root: null,
-  rootMargin: '20px',
+  rootMargin: '30px',
   threshold: 0.2,
 };
 
@@ -36,21 +37,20 @@ export const AnimeInfiniteScrollInner: FC = () => {
   const animeList = useSelector(selectAmineList);
   const { currentQueryParams } = useQueryParam<AnimeQueryUrl>();
 
+  const isLoadingNextPage = useAppSelector(selectIsLoadingNextPage);
+
   useEffect(() => {
-    const currentQueryParamsModel = AnimeQueryMapper.fromUrl(currentQueryParams);
+    const currentQueryParamsModel =
+      AnimeQueryMapper.fromUrl(currentQueryParams);
     dispatch(getAnimeList(currentQueryParamsModel));
   }, []);
 
-  const handleObserver = useCallback(
-    (entries: IntersectionObserverEntry[]) => {
-      const target = entries[0];
-      if (target.isIntersecting && nextPage) {
-        dispatch(getNextAnimeList(nextPage));
-      }
-    },
-    [nextPage],
-  );
-
+  const handleObserver = (entries: IntersectionObserverEntry[]) => {
+    const target = entries[0];
+    if (target.isIntersecting && nextPage) {
+      dispatch(getNextAnimeList(nextPage));
+    }
+  };
   useEffect(() => {
     const observer = new IntersectionObserver(handleObserver, option);
     if (itemRef.current) {
@@ -62,7 +62,7 @@ export const AnimeInfiniteScrollInner: FC = () => {
   }, [handleObserver]);
 
   if (isLoading) {
-    return <LoadingComponent />;
+    return <Loading isBackdropLoading={false} />;
   }
 
   if (animeList.length === 0) {
@@ -71,12 +71,17 @@ export const AnimeInfiniteScrollInner: FC = () => {
 
   return (
     <>
-      {animeList?.map((item, index) => (
-        <div key={index} ref={itemRef} className={style['anime-item']}>
-          <AnimeItem data={item} />
-        </div>
-      ))}
-      <div>{nextPage && <LoadingComponent />}</div>
+      {animeList?.map((item, index) => {
+        if (index === animeList.length - 1) {
+          return (
+            <div key={item.id} ref={itemRef} className={style['anime-item']}>
+              <AnimeItem data={item} />
+            </div>
+          );
+        }
+        return <AnimeItem data={item} key={item.id} />;
+      })}
+      {isLoadingNextPage && <Loading isBackdropLoading={false} />}
     </>
   );
 };

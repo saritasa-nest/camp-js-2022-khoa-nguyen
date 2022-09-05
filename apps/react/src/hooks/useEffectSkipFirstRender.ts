@@ -1,13 +1,17 @@
 import { DependencyList, useEffect, useRef } from 'react';
 
-export const useEffectSkipFirstRender = (
+/** This hook is used for skip first rendering of the useEffect hook.
+ *  Sometime, due to the strick mode or other factors, we need to skip two or more renders. */
+
+export const useEffectSkipRender = (
+  renderToBeSkipped: number,
   callback: () => void,
   deps: DependencyList,
 ): void => {
-  const isFirstMounted = useRef(0);
+  const mountedTimes = useRef(0);
   useEffect(() => {
-    if (isFirstMounted.current < 2) {
-      isFirstMounted.current++;
+    if (mountedTimes.current < renderToBeSkipped) {
+      mountedTimes.current++;
       return;
     }
     callback();

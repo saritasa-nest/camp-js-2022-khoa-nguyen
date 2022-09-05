@@ -1,6 +1,9 @@
 import { Anime } from '@js-camp/core/models';
 import { Avatar, Card, CardContent, Typography } from '@mui/material';
+
 import { FC } from 'react';
+
+import { IMAGES } from '../../../../assets';
 
 import style from './AnimeItem.module.css';
 
@@ -10,9 +13,23 @@ interface Props {
   readonly data: Anime;
 }
 
+const getText = (text: string): string => {
+  if (text == null) {
+    return '--';
+  }
+  return text;
+};
+
 export const AnimeItem: FC<Props> = ({ data }) => (
   <Card className={style['anime-item__wrapper']}>
     <CardContent className={style['anime-item']}>
+      {data.image == null && (
+        <Avatar
+          alt={data.titleEnglish}
+          src={IMAGES.FallbackAvatar}
+          className={style['anime-item__thumb']}
+        />
+      )}
       {data.image && (
         <Avatar
           alt={data.titleEnglish}
@@ -21,10 +38,10 @@ export const AnimeItem: FC<Props> = ({ data }) => (
         />
       )}
       <div className={style['anime-item__content']}>
-        <Typography>{data.titleJapan || '--'}</Typography>
-        <Typography>{data.titleEnglish || '--'}</Typography>
-        <Typography>Status: {data.status || '--'}</Typography>
-        <Typography>Type: {data.type || '--'}</Typography>
+        <Typography>{getText(data.titleJapan)}</Typography>
+        <Typography>{getText(data.titleEnglish)}</Typography>
+        <Typography>Status: {getText(data.status)}</Typography>
+        <Typography>Type: {getText(data.type)}</Typography>
       </div>
     </CardContent>
   </Card>

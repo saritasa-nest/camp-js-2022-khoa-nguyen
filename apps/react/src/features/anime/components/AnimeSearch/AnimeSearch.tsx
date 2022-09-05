@@ -7,7 +7,7 @@ import { TextField } from '@mui/material';
 
 import React, { FC, memo } from 'react';
 
-import { useEffectSkipFirstRender, useQueryParam, useSearch } from '../../../../hooks';
+import { useEffectSkipRender, useQueryParam, useSearch } from '../../../../hooks';
 
 import style from './AnimeSearch.module.css';
 
@@ -23,7 +23,13 @@ export const AnimeSearchInner: FC = () => {
     setInputValue(event.target.value);
   };
   const dispatch = useAppDispatch();
-  useEffectSkipFirstRender(() => {
+
+  /**
+   * My intention is to prevent the first search query api call when the app is first loaded. However, due to
+   * the strict mode which trigger the app to perform the callback inside normal useEffect 2 times, I have to
+   * skip 2 renders to prevent this behavior of strict mode.
+   */
+  useEffectSkipRender(2, () => {
     queryMethodsSearch.set(debounceValue);
     const currentParamModel = AnimeQueryMapper.fromUrl(currentQueryParams);
     dispatch(getAnimeList(new AnimeQuery({ ...currentParamModel, search: debounceValue })));

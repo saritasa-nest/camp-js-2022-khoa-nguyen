@@ -7,11 +7,14 @@ export interface AnimeState extends EntityState<Anime> {
   /** Whether the anime list is loading or not. */
   readonly isLoading: boolean;
 
+  /** Whether the next page of anime list is loading or not. */
+  readonly isLoadingNextPage: boolean;
+
   /** Total item. */
   readonly totalItems: number;
 
-  /** Next page. */
-  readonly nextPage: string | null;
+  /** Next page url from api. */
+  readonly nextPageUrl: string | null;
 }
 
 export const animeAdapter = createEntityAdapter<Anime>({
@@ -21,5 +24,6 @@ export const animeAdapter = createEntityAdapter<Anime>({
 export const initialState: AnimeState = animeAdapter.getInitialState({
   isLoading: false,
   totalItems: 0,
-  nextPage: null,
+  nextPageUrl: null,
+  isLoadingNextPage: false,
 });

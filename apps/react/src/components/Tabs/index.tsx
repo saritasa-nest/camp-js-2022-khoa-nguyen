@@ -35,7 +35,7 @@ export const TabGroupInner: FC<Props> = ({ listTab }) => {
         value={value}
         onChange={handleChange}
         className={style['tab']}
-        aria-label="tab-aria"
+        aria-label="app-tabs"
       >
         {listTab.map((item, index) => (
           <Tab
@@ -55,7 +55,7 @@ export const TabGroupInner: FC<Props> = ({ listTab }) => {
           id={`tabpanel-${index}`}
           aria-labelledby={`tab-${index}`}
         >
-          <>{item.panel}</>
+          {item.panel}
         </div>
       ))}
     </>
