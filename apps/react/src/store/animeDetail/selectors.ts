@@ -7,7 +7,7 @@ import { entityAdapter } from './state';
 export const { selectById: selectByAnimeId } = entityAdapter.getSelectors();
 
 /** Select anime by ID. */
-export const selectAnimeDetailsById = createSelector(
+export const selectAnimeDetailById = createSelector(
   (state: RootState, id: EntityId) => (selectByAnimeId(state.animeDetail, id)),
   animeDetails => animeDetails,
 );

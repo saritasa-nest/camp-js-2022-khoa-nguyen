@@ -5,7 +5,7 @@ import { getAnimeDetail } from './dispatchers';
 import { AnimeDetailsState, entityAdapter, initialState } from './state';
 
 export const animeDetailsSlice = createSlice({
-  name: 'animeDetails',
+  name: 'animeDetail',
   initialState,
   reducers: {},
   extraReducers: builder => builder
