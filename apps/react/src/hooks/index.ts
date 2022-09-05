@@ -1,4 +1,4 @@
 export * from './useAuth';
 export * from './useSearch';
 export * from './useSearchParams';
-export * from './useEffectSkipFirstRender';
+export * from './useEffectSkipRender';
