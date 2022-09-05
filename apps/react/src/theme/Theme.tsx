@@ -26,6 +26,7 @@ const theme = createTheme({
           padding: '20px',
           width: '100%',
           boxSizing: 'border-box',
+          overflow: 'visible',
         },
       },
     },
