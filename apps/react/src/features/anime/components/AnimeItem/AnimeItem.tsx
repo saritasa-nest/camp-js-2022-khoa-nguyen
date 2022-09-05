@@ -1,6 +1,9 @@
 import { Anime } from '@js-camp/core/models';
 import { Avatar, Card, CardContent, Typography } from '@mui/material';
+
 import { FC } from 'react';
+
+import { IMAGES } from '../../../../assets';
 
 import style from './AnimeItem.module.css';
 
@@ -20,6 +23,13 @@ const getText = (text: string): string => {
 export const AnimeItem: FC<Props> = ({ data }) => (
   <Card className={style['anime-item__wrapper']}>
     <CardContent className={style['anime-item']}>
+      {data.image == null && (
+        <Avatar
+          alt={data.titleEnglish}
+          src={IMAGES.FallbackAvatar}
+          className={style['anime-item__thumb']}
+        />
+      )}
       {data.image && (
         <Avatar
           alt={data.titleEnglish}
