@@ -1,3 +1,4 @@
+import { AnimeDetailDto } from '../dtos';
 import { Immerable, OmitImmerable } from '../models/immerable';
 
 import { TypeModel } from './anime';
@@ -29,12 +30,16 @@ export class AnimeQuery extends Immerable {
   /** Search query of anime list. */
   public readonly search?: string;
 
+  /** Anime id. */
+  public readonly animeId?: AnimeDetailDto['id'];
+
   public constructor(data: DateRangeInitArgs) {
     super();
     this.sorting = data.sorting;
     this.ordering = data.ordering;
     this.types = data.types;
     this.search = data.search;
+    this.animeId = data.animeId;
   }
 }
 

@@ -1,3 +1,4 @@
+import { AnimeDetail } from '../models';
 import { OrderingQuery } from '../models/animeQuery';
 
 import { TypeDto } from './anime.dto';
@@ -43,5 +44,8 @@ export interface AnimeQueryUrl {
 
   /** Search query of anime list. */
   readonly search?: string;
+
+  /** Anime id. */
+  readonly animeId?: AnimeDetail['id'];
 
 }
