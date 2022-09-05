@@ -1,4 +1,3 @@
-
 import { List } from '@mui/material';
 import { FC, memo } from 'react';
 
@@ -12,17 +11,25 @@ import { AnimeSorting } from '../AnimeSorting';
 import style from './AnimeSidebar.module.css';
 
 export const AnimeSidebarInner: FC = () => (
-  <List component='aside' sx={{ padding: '10px' }} className={style['anime-sidebar']}>
-    <TabGroup
-      listTab={[
-        {
-          label: 'Search',
-          panel: <AnimeSearch />,
-        },
-        { label: 'Filter', panel: <AnimeFilter /> },
-        { label: 'Sorting', panel: <AnimeSorting /> },
-      ]}
-    />
+  <List
+    component="aside"
+    sx={{ padding: 0 }}
+    className={style['anime-sidebar']}
+  >
+    <div
+      className={style['anime-tab-group']}
+    >
+      <TabGroup
+        listTab={[
+          {
+            label: 'Search',
+            panel: <AnimeSearch />,
+          },
+          { label: 'Filter', panel: <AnimeFilter /> },
+          { label: 'Sorting', panel: <AnimeSorting /> },
+        ]}
+      />
+    </div>
     <AnimeInfiniteScroll />
   </List>
 );

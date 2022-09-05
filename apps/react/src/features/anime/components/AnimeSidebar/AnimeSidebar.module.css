@@ -8,3 +8,11 @@
   box-sizing: border-box;
   overflow-x: hidden;
 }
+
+.anime-tab-group {
+  position: sticky;
+  background-color: white;
+  top: 0;
+  border-bottom: 2px solid var(--primary-color);
+  z-index: 1;
+}
