@@ -1,54 +1,41 @@
 import { HttpError, Login, LoginModel } from '@js-camp/core/models';
+import { login } from '@js-camp/react/store/auth/dispatchers';
 import {
-  login,
-} from '@js-camp/react/store/auth/dispatchers';
-import { selectAuthError } from '@js-camp/react/store/auth/selectors';
-import { clearErrorMessage } from '@js-camp/react/store/auth/slice';
+  clearErrorMessage,
+  setIsAuthorized,
+} from '@js-camp/react/store/auth/slice';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
-import { Snackbar } from '@mui/material';
+import { Card } from '@mui/material';
 import { Form, FormikProvider, useFormik } from 'formik';
-import { FC, useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
-import { Button, Card } from '../../../../components';
+import { LoadingButton } from '@mui/lab';
+
+import { selectIsAuthLoading } from '@js-camp/react/store/auth/selectors';
 
 import { FormInputItem } from '../../components/FormItem';
 
 import style from '../auth.module.css';
-import { SnackBarConfig } from '../type';
 
 import { validationSchema } from './shema';
 
-const SNACKBAR_INITIAL_VALUE = {
-  isOpen: false,
-  message: '',
-  duration: 3000,
-};
-
 const initialValues: LoginModel = { email: '', password: '' };
 
-export const LoginPage: FC = () => {
-  const navigate = useNavigate();
+export const LoginPage: React.FC = () => {
   const dispatch = useAppDispatch();
-  const error = useAppSelector(selectAuthError);
-  const [isShowBackendError, setIsShowBackendError] = useState<boolean>(false);
-
-  const [snackbarConfig, setSnackbarConfig] = useState<SnackBarConfig>(
-    SNACKBAR_INITIAL_VALUE,
-  );
-
+  const { enqueueSnackbar } = useSnackbar();
+  const isLoading = useAppSelector(selectIsAuthLoading);
   const handleSubmit = async({ email, password }: LoginModel) => {
     const result = await dispatch(login(new Login({ email, password })));
     if (result.payload instanceof HttpError<Login>) {
       const errorDetail = result.payload.detail;
-      setSnackbarConfig(prev => ({ ...prev, isOpen: true, message: errorDetail }));
+      enqueueSnackbar(errorDetail, { variant: 'error' });
       return;
     }
-    navigate('/');
-  };
-
-  const handleCloseSnackbar = () => {
-    setSnackbarConfig(prev => ({ ...prev, isOpen: false }));
+    enqueueSnackbar('Login successfully!', { variant: 'success' });
+    dispatch(setIsAuthorized(true));
   };
 
   useEffect(() => {
@@ -61,12 +48,6 @@ export const LoginPage: FC = () => {
     onSubmit: handleSubmit,
   });
 
-  useEffect(() => {
-    if (isShowBackendError) {
-      setIsShowBackendError(false);
-    }
-  }, [formik.values]);
-
   return (
     <div className={style['auth']}>
       <Card>
@@ -75,26 +56,18 @@ export const LoginPage: FC = () => {
           <Form className={style['auth__form']}>
             <FormInputItem label="Email" name="email" type="email" />
             <FormInputItem label="Password" name="password" type="password" />
-            {isShowBackendError && (
-              <span className={style['auth__error']}>{error?.detail}</span>
-            )}
             <p>
               Don't have an account?{' '}
               <Link className={style['auth__link']} to="/register">
                 Register now!
               </Link>{' '}
             </p>
-            <Button type="submit">Login</Button>
+            <LoadingButton loading={isLoading} color="primary" variant="contained" type="submit">
+              Login
+            </LoadingButton>
           </Form>
         </FormikProvider>
       </Card>
-
-      <Snackbar
-        open={snackbarConfig.isOpen}
-        autoHideDuration={snackbarConfig.duration}
-        onClose={handleCloseSnackbar}
-        message={snackbarConfig.message}
-      />
     </div>
   );
 };

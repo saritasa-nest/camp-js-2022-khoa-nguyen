@@ -7,7 +7,7 @@ export interface AuthState {
   readonly token: Token | null;
 
   /** Error. */
-  readonly error?: HttpError<ErrorLogin | ErrorUser> ;
+  readonly error: HttpError<ErrorLogin | ErrorUser> | null;
 
   /** Whether the token is loading or not. */
   readonly isLoading: boolean;
@@ -20,4 +20,5 @@ export const initialState: AuthState = {
   isLoading: false,
   isAuthorized: true,
   token: null,
+  error: null,
 };

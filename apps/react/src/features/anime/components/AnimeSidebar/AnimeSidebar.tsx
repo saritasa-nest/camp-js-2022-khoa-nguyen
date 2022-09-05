@@ -4,7 +4,7 @@ import { FC, memo } from 'react';
 
 import { TabGroup } from '../../../../components';
 
-import { AnimeInfiniteScroll } from '../AnimeInfiniteScroll';
+import { AnimeInfiniteScroll } from '../AnimeInfiniteScroll/AnimeInfiniteScroll';
 
 import style from './AnimeSidebar.module.css';
 

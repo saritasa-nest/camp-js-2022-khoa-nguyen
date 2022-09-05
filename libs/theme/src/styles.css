@@ -1,0 +1,34 @@
+:root {
+  /* Box shadow color */
+  --primary-box-shadow-color: 0 4px 8px 0 rgba(0 0 0 / 20%), 0 6px 20px 0 rgba(0 0 0 / 19%);
+
+  /* Custom grid columns */
+  --grid-template-cols-5: repeat(5, minmax(0, 1fr));
+
+  /* Backdrop color */
+  --primary-backdrop-color: rgba(0 0 0 / 60.3%);
+}
+
+a,
+:link,
+.link {
+  --link-color: var(--primary-color);
+
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+a:hover,
+:link:hover,
+.link:hover {
+  --link-color: var(--primary-light-color);
+}
+
+h2 {
+  font-size: var(--primary-font-size-normal);
+  font-weight: normal;
+}
+
+textarea {
+  resize: none;
+}
