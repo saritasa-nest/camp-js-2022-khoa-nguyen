@@ -23,11 +23,15 @@ interface Props extends SelectProps {
   /** List of items. */
   readonly list: readonly SelectItem[];
 
+  /** Is none selection. */
+  readonly isNoneSelection?: boolean;
+
   /** Side effect when sorting value change. */
   readonly onChangeSideEffect?: (value: string | string[]) => void;
 }
 
 export const AppSelect: FC<Props> = ({
+  isNoneSelection = false,
   list,
   onChangeSideEffect,
   ...props
@@ -72,7 +76,7 @@ export const AppSelect: FC<Props> = ({
             {item.text ?? item.value}
           </MenuItem>
         ))}
-        {!props.multiple && (
+        {isNoneSelection && (
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
