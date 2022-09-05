@@ -12,7 +12,7 @@ import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { FC, memo, useCallback, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 
-import { LoadingComponent } from '../../../../components';
+import { Loading } from '../../../../components';
 
 import { AnimeItem } from '../AnimeItem';
 
@@ -32,7 +32,7 @@ export const AnimeInfiniteScrollInner: FC = () => {
   const animeList = useSelector(selectAmineList);
 
   useEffect(() => {
-    dispatch(getAnimeList(''));
+    dispatch(getAnimeList());
   }, []);
 
   const handleObserver = useCallback(
@@ -56,7 +56,7 @@ export const AnimeInfiniteScrollInner: FC = () => {
   }, [handleObserver]);
 
   if (isLoading) {
-    return <LoadingComponent />;
+    return <Loading isBackdropLoading={false} />;
   }
 
   if (animeList.length === 0) {
@@ -70,7 +70,7 @@ export const AnimeInfiniteScrollInner: FC = () => {
           <AnimeItem data={item} />
         </div>
       ))}
-      <div>{nextPage && <LoadingComponent />}</div>
+      <div>{nextPage && <Loading isBackdropLoading={false} />}</div>
     </>
   );
 };

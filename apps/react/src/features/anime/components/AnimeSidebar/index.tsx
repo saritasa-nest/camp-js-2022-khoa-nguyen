@@ -1,28 +1,27 @@
-import { ListItem } from '@mui/material';
 
+import { List } from '@mui/material';
 import { FC, memo } from 'react';
 
 import { TabGroup } from '../../../../components';
 
 import { AnimeInfiniteScroll } from '../AnimeInfiniteScroll';
-import { AnimeSearch } from '../AnimeSearch';
 
 import style from './AnimeSidebar.module.css';
 
 export const AnimeSidebarInner: FC = () => (
-  <ListItem className={style['anime-sidebar']}>
+  <List component='aside' sx={{ padding: '10px' }} className={style['anime-sidebar']}>
     <TabGroup
       listTab={[
         {
             label: 'Search',
-            panel: <AnimeSearch />,
+            panel: <div>Searching</div>,
         },
         { label: 'Filter', panel: <div>Filter</div> },
         { label: 'Sorting', panel: <div>Sorting</div> },
       ]}
     />
     <AnimeInfiniteScroll />
-  </ListItem>
+  </List>
 );
 
 export const AnimeSidebar = memo(AnimeSidebarInner);

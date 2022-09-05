@@ -10,6 +10,13 @@ interface Props {
   readonly data: Anime;
 }
 
+const getText = (text: string): string => {
+  if (text == null) {
+    return '--';
+  }
+  return text;
+};
+
 export const AnimeItem: FC<Props> = ({ data }) => (
   <Card className={style['anime-item__wrapper']}>
     <CardContent className={style['anime-item']}>
@@ -21,10 +28,10 @@ export const AnimeItem: FC<Props> = ({ data }) => (
         />
       )}
       <div className={style['anime-item__content']}>
-        <Typography>{data.titleJapan || '--'}</Typography>
-        <Typography>{data.titleEnglish || '--'}</Typography>
-        <Typography>Status: {data.status || '--'}</Typography>
-        <Typography>Type: {data.type || '--'}</Typography>
+        <Typography>{getText(data.titleJapan)}</Typography>
+        <Typography>{getText(data.titleEnglish)}</Typography>
+        <Typography>Status: {getText(data.status)}</Typography>
+        <Typography>Type: {getText(data.type)}</Typography>
       </div>
     </CardContent>
   </Card>

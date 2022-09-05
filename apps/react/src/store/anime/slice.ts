@@ -15,7 +15,7 @@ export const animeSlice = createSlice({
       })
       .addCase(getAnimeList.fulfilled, (state, action) => {
         animeAdapter.setAll(state as AnimeState, action.payload.results);
-        state.nextPage = action.payload.next;
+        state.nextPageUrl = action.payload.next;
         state.totalItems = action.payload.count;
         state.isLoading = false;
       })
@@ -24,7 +24,7 @@ export const animeSlice = createSlice({
       })
       .addCase(getNextAnimeList.fulfilled, (state, action) => {
         animeAdapter.addMany(state as AnimeState, action.payload.results);
-        state.nextPage = action.payload.next;
+        state.nextPageUrl = action.payload.next;
         state.totalItems = action.payload.count;
       }),
 });
