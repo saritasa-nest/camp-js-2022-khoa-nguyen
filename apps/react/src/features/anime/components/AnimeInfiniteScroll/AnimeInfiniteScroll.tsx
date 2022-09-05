@@ -5,11 +5,12 @@ import {
 import {
   selectAmineList,
   selectIsAnimeLoading,
+  selectIsLoadingNextPage,
   selectNextPage,
 } from '@js-camp/react/store/anime/selectors';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 
-import { FC, memo, useCallback, useEffect, useRef } from 'react';
+import { FC, memo, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 
 import { Loading } from '../../../../components';
@@ -20,7 +21,7 @@ import style from './AnimeInfiniteScroll.module.css';
 
 const option = {
   root: null,
-  rootMargin: '20px',
+  rootMargin: '30px',
   threshold: 0.2,
 };
 
@@ -30,21 +31,18 @@ export const AnimeInfiniteScrollInner: FC = () => {
   const dispatch = useAppDispatch();
   const nextPage = useAppSelector(selectNextPage);
   const animeList = useSelector(selectAmineList);
+  const isLoadingNextPage = useAppSelector(selectIsLoadingNextPage);
 
   useEffect(() => {
     dispatch(getAnimeList());
   }, []);
 
-  const handleObserver = useCallback(
-    (entries: IntersectionObserverEntry[]) => {
-      const target = entries[0];
-      if (target.isIntersecting && nextPage) {
-        dispatch(getNextAnimeList(nextPage));
-      }
-    },
-    [nextPage],
-  );
-
+  const handleObserver = (entries: IntersectionObserverEntry[]) => {
+    const target = entries[0];
+    if (target.isIntersecting && nextPage) {
+      dispatch(getNextAnimeList(nextPage));
+    }
+  };
   useEffect(() => {
     const observer = new IntersectionObserver(handleObserver, option);
     if (itemRef.current) {
@@ -65,12 +63,17 @@ export const AnimeInfiniteScrollInner: FC = () => {
 
   return (
     <>
-      {animeList?.map((item, index) => (
-        <div key={index} ref={itemRef} className={style['anime-item']}>
-          <AnimeItem data={item} />
-        </div>
-      ))}
-      <div>{nextPage && <Loading isBackdropLoading={false} />}</div>
+      {animeList?.map((item, index) => {
+        if (index === animeList.length - 1) {
+          return (
+            <div key={item.id} ref={itemRef} className={style['anime-item']}>
+              <AnimeItem data={item} />
+            </div>
+          );
+        }
+        return <AnimeItem data={item} key={item.id} />;
+      })}
+      {isLoadingNextPage && <Loading isBackdropLoading={false} />}
     </>
   );
 };

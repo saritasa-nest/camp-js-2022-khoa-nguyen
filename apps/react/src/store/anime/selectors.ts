@@ -35,3 +35,8 @@ export const selectNextPage = createSelector(
   (state: RootState) => state.anime.nextPageUrl,
   nextPage => nextPage,
 );
+
+export const selectIsLoadingNextPage = createSelector(
+  (state: RootState) => state.anime.isLoadingNextPage,
+  isLoadingNextPage => isLoadingNextPage,
+);
