@@ -16,7 +16,7 @@ export class Login extends Immerable {
   }
 }
 
-export type LoginModel = OmitImmerable<Login>;
+type LoginModel = OmitImmerable<Login>;
 
 /** Login errors. */
 export class ErrorLogin extends Immerable {
