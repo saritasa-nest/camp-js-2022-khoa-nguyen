@@ -1,7 +1,7 @@
-import { LoginModel } from '@js-camp/core/models';
+import { Login } from '@js-camp/core/models';
 import * as yup from 'yup';
 
-export const validationSchema: yup.SchemaOf<LoginModel> = yup.object().shape({
+export const validationSchema: yup.SchemaOf<Login> = yup.object().shape({
   email: yup
     .string()
     .email('This field has to be an email!')

@@ -3,7 +3,6 @@ import { FC, memo } from 'react';
 
 import { TabGroup } from '../../../../components';
 import { AnimeFilter } from '../AnimeFilter';
-
 import { AnimeInfiniteScroll } from '../AnimeInfiniteScroll/AnimeInfiniteScroll';
 import { AnimeSearch } from '../AnimeSearch';
 import { AnimeSorting } from '../AnimeSorting';
@@ -16,9 +15,7 @@ export const AnimeSidebarInner: FC = () => (
     sx={{ padding: 0 }}
     className={style['anime-sidebar']}
   >
-    <div
-      className={style['anime-tab-group']}
-    >
+    <div className={style['anime-tab-group']}>
       <TabGroup
         listTab={[
           {

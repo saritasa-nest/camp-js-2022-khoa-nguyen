@@ -3,22 +3,16 @@ import {
   OrderingQuery,
   SortingQuery,
 } from '@js-camp/core/models/animeQuery';
-
 import { FC } from 'react';
-
 import { useAppDispatch } from '@js-camp/react/store/store';
-
 import { AnimeQueryUrl } from '@js-camp/core/dtos/animeQuery.dto';
-
 import {
   AnimeQueryMapper,
   SortingMapper,
 } from '@js-camp/core/mappers/animeQuery.mapper';
-
 import { getAnimeList } from '@js-camp/react/store/anime/dispatchers';
 
 import { useQueryParam } from '../../../../hooks';
-
 import { AppSelect, SelectItem } from '../../../../components';
 
 import style from './AnimeSorting.module.css';

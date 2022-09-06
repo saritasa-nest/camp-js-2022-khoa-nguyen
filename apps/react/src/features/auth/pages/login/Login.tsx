@@ -10,16 +10,13 @@ import { Form, FormikProvider, useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
 import { LoadingButton } from '@mui/lab';
-
 import { selectIsAuthLoading } from '@js-camp/react/store/auth/selectors';
 
 import { FormInputItem } from '../../components/FormItem';
-
 import style from '../auth.module.css';
 
-import { validationSchema } from './shema';
+import { validationSchema } from './schema';
 
 const initialValues: Login = new Login({ email: '', password: '' });
 
@@ -62,7 +59,12 @@ export const LoginPage: React.FC = () => {
                 Register now!
               </Link>{' '}
             </p>
-            <LoadingButton loading={isLoading} color="primary" variant="contained" type="submit">
+            <LoadingButton
+              loading={isLoading}
+              color="primary"
+              variant="contained"
+              type="submit"
+            >
               Login
             </LoadingButton>
           </Form>

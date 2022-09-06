@@ -8,11 +8,8 @@ import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { Button, Chip, List, ListItem, Modal } from '@mui/material';
 import { Container } from '@mui/system';
 import { FC, ReactNode, useEffect, useState } from 'react';
-
 import { selectGenres } from '@js-camp/react/store/genre/selectors';
-
 import { selectStudios } from '@js-camp/react/store/studios/selectors';
-
 import { AnimeDetail as AnimeDetailModel } from '@js-camp/core/models';
 
 import { IMAGES } from '../../../../assets';
