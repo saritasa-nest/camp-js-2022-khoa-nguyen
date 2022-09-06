@@ -39,5 +39,9 @@ export const AnimeBasicInfo: FC<Props> = ({ animeInfo }) => (
     <Typography>
       <strong>End date:</strong> {getText(animeInfo?.aired.end?.toDateString())}
     </Typography>
+
+    <Typography>
+      <strong>Airing:</strong> {getText(animeInfo?.isAiring ? 'Yes' : 'No')}
+    </Typography>
   </>
 );

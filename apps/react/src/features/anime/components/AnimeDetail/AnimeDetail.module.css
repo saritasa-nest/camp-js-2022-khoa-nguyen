@@ -1,5 +1,8 @@
 .anime-detail {
   padding: 20px;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
 }
 
 .anime-detail__image {
@@ -17,10 +20,13 @@
   gap: 10px;
 }
 
+.anime-detail__list[class*="MuiList-root"] {
+  padding: 0;
+}
+
 .anime-detail__list-item[class*="MuiListItem-root"] {
   width: auto;
-  padding-left: 2px;
-  padding-right: 2px;
+  padding: 0;
 }
 
 .anime-detail__chip {
