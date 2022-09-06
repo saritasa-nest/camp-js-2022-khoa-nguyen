@@ -1,3 +1,26 @@
 .anime-detail {
   padding: 20px;
 }
+
+.anime-detail__image {
+  width: 100%;
+  max-width: 400px;
+  max-height: 300px;
+  object-fit: cover;
+}
+
+.anime-detail__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.anime-detail__list-item[class*="MuiListItem-root"] {
+  width: auto;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.anime-detail__chip {
+  width: fit-content;
+}
