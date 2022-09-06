@@ -49,11 +49,7 @@ export const AnimeItem: FC<Props> = ({ data }) => {
   const [isOpenPopperDelete, setIsOpenPopperDelete] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
 
-  const handleDeleteAnime = async(
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
-    event.preventDefault();
-    event.stopPropagation();
+  const handleDeleteAnime = async() => {
     setCurrentId(data.id);
     setIsOpenPopperDelete(false);
     await dispatch(deleteAnime(data.id));
@@ -74,14 +70,10 @@ export const AnimeItem: FC<Props> = ({ data }) => {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     event.preventDefault();
-    event.stopPropagation();
     setIsOpenPopperDelete(prevOpen => !prevOpen);
   };
 
-  const handleClose = (event: Event | React.SyntheticEvent) => {
-    if (anchorRef.current?.contains(event.target as HTMLElement)) {
-      return;
-    }
+  const handleClose = () => {
     setIsOpenPopperDelete(false);
   };
 

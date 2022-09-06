@@ -7,7 +7,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import React, { FC } from 'react';
+import { FC } from 'react';
 
 import style from './AnimeItem.module.css';
 
@@ -20,12 +20,10 @@ interface Props {
   readonly anchorEl: HTMLButtonElement | null;
 
   /** Action when click yes. */
-  readonly onAction: (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => void;
+  readonly onAction: () => void;
 
   /** Close function. */
-  readonly onClose: (event: Event | React.SyntheticEvent) => void;
+  readonly onClose: () => void;
 }
 
 export const AnimePopperDelete: FC<Props> = ({
@@ -35,6 +33,7 @@ export const AnimePopperDelete: FC<Props> = ({
   onClose,
 }) => (
   <Popper
+    onClick={e => e.preventDefault()}
     open={isOpen}
     anchorEl={anchorEl}
     role={undefined}
@@ -64,7 +63,7 @@ export const AnimePopperDelete: FC<Props> = ({
                   Yes
                 </Button>
                 <Button
-                  color='warning'
+                  color="warning"
                   variant="contained"
                   className={style['anime-popper__button']}
                   onClick={onClose}
