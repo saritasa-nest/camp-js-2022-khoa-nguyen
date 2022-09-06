@@ -1,18 +1,27 @@
 import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 
+import { AnimeDetail } from './components/AnimeDetail';
+import { AnimeEdit } from './components/AnimeEdit';
+
 const AnimeTablePage = lazy(() =>
   import('./pages/AnimeTable').then(module => ({
     default: module.AnimeTablePage,
   })));
 
-export const animeRoutes: RouteObject[] = [
+const animeRoutesInner: RouteObject[] = [
   {
     path: '/',
-    element: <AnimeTablePage />,
+    element: <AnimeDetail/>,
   },
   {
     path: '/detail/:id',
-    element: <AnimeTablePage />,
+    element: <AnimeDetail />,
+  },
+  {
+    path: '/edit/:id',
+    element: <AnimeEdit />,
   },
 ];
+
+export const animeRoutes: RouteObject[] = [{ element: <AnimeTablePage/>, children: [...animeRoutesInner] }];

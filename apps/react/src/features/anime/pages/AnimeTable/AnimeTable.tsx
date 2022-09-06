@@ -1,8 +1,8 @@
 import { FC, memo } from 'react';
+import { Outlet } from 'react-router-dom';
 
 import { DefaultLayout } from '../../../../layout';
 import { AnimeSidebar } from '../../components/AnimeSidebar';
-import { AnimeDetail } from '../../components/AnimeDetail';
 
 import style from './AnimeTablePage.module.css';
 
@@ -13,7 +13,7 @@ export const AnimeTablePageInner: FC = () => (
         <AnimeSidebar />
       </div>
       <div className={style['anime-table__content']}>
-        <AnimeDetail />
+        <Outlet/>
       </div>
     </div>
   </DefaultLayout>
