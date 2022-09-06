@@ -1,30 +1,18 @@
-import { AnimeDto, PaginationDto } from '@js-camp/core/dtos';
-import { AnimeMapper, PaginationMapper } from '@js-camp/core/mappers';
-import { Anime } from '@js-camp/core/models';
-import { AnimeQuery } from '@js-camp/core/models/animeQuery';
+import { AnimeDetail } from '@js-camp/core/models';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { http } from '../../api';
-
 import { AnimeService } from '../../api/services/animeService';
+import { addGenres } from '../genre/dispatchers';
+import { addStudios } from '../studios/dispatchers';
 
-export const getAnimeList = createAsyncThunk(
-  'anime/getAnimeList',
-  async(param: AnimeQuery, { rejectWithValue }) => {
+export const getAnimeDetail = createAsyncThunk(
+  'anime/getDetail',
+  async(id: AnimeDetail['id'], { rejectWithValue, dispatch }) => {
     try {
-      return (await AnimeService.getAnimeList(param));
-    } catch (error: unknown) {
-      return rejectWithValue(error);
-    }
-  },
-);
-
-export const getNextAnimeList = createAsyncThunk(
-  'anime/getAnimeListNext',
-  async(url: string, { rejectWithValue }) => {
-    try {
-      const result = await http.get<PaginationDto<AnimeDto>>(url);
-      return PaginationMapper.fromDto<AnimeDto, Anime>(result.data, AnimeMapper.fromDto);
+      const anime = await AnimeService.getDetailAnime(id);
+      dispatch(addGenres(anime.genres));
+      dispatch(addStudios(anime.studios));
+      return anime;
     } catch (error: unknown) {
       return rejectWithValue(error);
     }

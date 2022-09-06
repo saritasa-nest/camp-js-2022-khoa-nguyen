@@ -1,7 +1,7 @@
 import { AnimeQueryUrl } from '@js-camp/core/dtos/animeQuery.dto';
 import { AnimeQueryMapper } from '@js-camp/core/mappers/animeQuery.mapper';
 import { AnimeQuery } from '@js-camp/core/models/animeQuery';
-import { getAnimeList } from '@js-camp/react/store/anime/dispatchers';
+import { getAnimeList } from '@js-camp/react/store/animeList/dispatchers';
 import { useAppDispatch } from '@js-camp/react/store/store';
 import { TextField } from '@mui/material';
 import React, { FC, memo } from 'react';

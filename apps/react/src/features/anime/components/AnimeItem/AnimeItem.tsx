@@ -1,12 +1,15 @@
-import { Anime, AnimeDetail } from '@js-camp/core/models';
-import { Avatar, Card, CardContent, Typography } from '@mui/material';
+import { Anime } from '@js-camp/core/models';
+import { Delete, Edit } from '@mui/icons-material';
+import { Avatar, IconButton, Typography } from '@mui/material';
 import { FC } from 'react';
+import { NavLink } from 'react-router-dom';
 
-import { useNavigate } from 'react-router-dom';
+import { Stack } from '@mui/system';
 
-import { useQueryParam } from '../../../../hooks';
+import classNames from 'classnames';
 
 import { IMAGES } from '../../../../assets';
+import { useQueryParam } from '../../../../hooks';
 
 import style from './AnimeItem.module.css';
 interface Props {
@@ -22,39 +25,49 @@ const getText = (text: string): string => {
   return text;
 };
 
+const handleActiveNavLink = ({ isActive }: { isActive: boolean; }) =>
+  classNames(style['anime-item'], isActive && style['anime-item_active']);
+
 export const AnimeItem: FC<Props> = ({ data }) => {
   const { searchParams } = useQueryParam();
-  const navigate = useNavigate();
-  const handleShowAnimeDetail = (id: AnimeDetail['id']) => () => {
-    navigate({ pathname: `/detail/${id}`, search: searchParams });
+
+  const handleDeleteAnime = () => {
+    // 123
   };
   return (
-    <Card
-      className={style['anime-item__wrapper']}
-      onClick={handleShowAnimeDetail(data.id)}
+    <NavLink
+      className={handleActiveNavLink}
+      to={`/detail/${data.id}/${searchParams}`}
     >
-      <CardContent className={style['anime-item']}>
-        {data.image == null && (
-          <Avatar
-            alt={data.titleEnglish}
-            src={IMAGES.FallbackAvatar}
-            className={style['anime-item__thumb']}
-          />
-        )}
-        {data.image && (
-          <Avatar
-            alt={data.titleEnglish}
-            src={data.image}
-            className={style['anime-item__thumb']}
-          />
-        )}
-        <div className={style['anime-item__content']}>
-          <Typography>{getText(data.titleJapan)}</Typography>
-          <Typography>{getText(data.titleEnglish)}</Typography>
-          <Typography>Status: {getText(data.status)}</Typography>
-          <Typography>Type: {getText(data.type)}</Typography>
-        </div>
-      </CardContent>
-    </Card>
+      {data.image == null && (
+        <Avatar
+          alt={data.titleEnglish}
+          src={IMAGES.FallbackAvatar}
+          className={style['anime-item__thumb']}
+        />
+      )}
+      {data.image && (
+        <Avatar
+          alt={data.titleEnglish}
+          src={data.image}
+          className={style['anime-item__thumb']}
+        />
+      )}
+      <Stack className={style['anime-item__content']}>
+        <Typography>{getText(data.titleJapan)}</Typography>
+        <Typography>{getText(data.titleEnglish)}</Typography>
+        <Typography>Status: {getText(data.status)}</Typography>
+        <Typography>Type: {getText(data.type)}</Typography>
+      </Stack>
+
+      <Stack>
+        <IconButton onClick={handleDeleteAnime}>
+          <Delete />
+        </IconButton>
+        <IconButton>
+          <Edit />
+        </IconButton>
+      </Stack>
+    </NavLink>
   );
 };

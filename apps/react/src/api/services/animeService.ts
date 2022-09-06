@@ -28,4 +28,12 @@ export namespace AnimeService {
     const result = await http.get<AnimeDetailDto>(`${ANIME_LIST_URL}${id}/`);
     return AnimeDetailMapper.fromDto(result.data);
   }
+
+  /**
+   * Delete anime.
+   * @param id Id of anime.
+   */
+  export function deleteAnime(id: AnimeDetail['id']): Promise<unknown> {
+    return http.delete<unknown>(`${ANIME_LIST_URL}${id}/`);
+  }
 }

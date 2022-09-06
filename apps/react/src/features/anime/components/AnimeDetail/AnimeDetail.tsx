@@ -1,9 +1,9 @@
 import { AnimeDetail as AnimeDetailModel } from '@js-camp/core/models';
-import { getAnimeDetail } from '@js-camp/react/store/animeDetail/dispatchers';
+import { getAnimeDetail } from '@js-camp/react/store/anime/dispatchers';
 import {
   selectAnimeDetailById,
   selectIsAnimeDetailLoading,
-} from '@js-camp/react/store/animeDetail/selectors';
+} from '@js-camp/react/store/anime/selectors';
 import { selectGenres } from '@js-camp/react/store/genre/selectors';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { selectStudios } from '@js-camp/react/store/studios/selectors';
