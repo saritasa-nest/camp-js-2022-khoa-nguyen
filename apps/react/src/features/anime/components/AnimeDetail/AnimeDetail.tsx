@@ -52,14 +52,13 @@ export const AnimeDetail: FC = () => {
   const genres = useAppSelector(selectGenres);
   const studios = useAppSelector(selectStudios);
 
-  const animeImage = animeInfo?.image ?? IMAGES.FallbackAvatar;
-
-  const handleOpenImage = () => {
-    setModalOption({
-      isOpenModal: true,
-      content: <img src={animeImage} />,
-    });
-  };
+  const handleOpenImage =
+    (url: string, animeTitle: AnimeDetailModel['titleEnglish']) => () => {
+      setModalOption({
+        isOpenModal: true,
+        content: <img src={url} alt={animeTitle} />,
+      });
+    };
 
   const handleOpenTrailer =
     (trailerId: NonNullable<AnimeDetailModel['trailerYoutubeId']>) => () => {
@@ -94,12 +93,15 @@ export const AnimeDetail: FC = () => {
     return <AnimeDetailNoData />;
   }
 
+  const animeImage = animeInfo.image ?? IMAGES.FallbackAvatar;
   return (
     <div className={style['anime-detail']}>
       <div className={style['anime-detail__image-wrapper']}>
         <img
-          onClick={handleOpenImage}
+          onClick={handleOpenImage(animeImage, animeInfo.titleEnglish)}
           src={animeImage}
+          alt={animeInfo.titleEnglish}
+          role={'button'}
           className={style['anime-detail__image']}
         />
         {animeInfo.trailerYoutubeId && (
