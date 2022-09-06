@@ -1,4 +1,3 @@
-import { AnimeQueryUrl } from '@js-camp/core/dtos/animeQuery.dto';
 import { AnimeDetail as AnimeDetailModel } from '@js-camp/core/models';
 import { getAnimeDetail } from '@js-camp/react/store/animeDetail/dispatchers';
 import {
@@ -10,9 +9,9 @@ import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { selectStudios } from '@js-camp/react/store/studios/selectors';
 import { Button, Chip, List, ListItem, Modal } from '@mui/material';
 import { FC, ReactNode, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import { IMAGES } from '../../../../assets';
-import { useQueryParam } from '../../../../hooks';
 
 import { AnimeBasicInfo } from './AnimeBasicInfo';
 import style from './AnimeDetail.module.css';
@@ -39,15 +38,13 @@ const INITIAL_MODAL_OPTION: ModalOption = {
 };
 
 export const AnimeDetail: FC = () => {
-  const { queryMethods } = useQueryParam<AnimeQueryUrl>();
+  const { id: currentAnimeId } = useParams();
   const dispatch = useAppDispatch();
   const [modalOption, setModalOption] =
     useState<ModalOption>(INITIAL_MODAL_OPTION);
 
   const handleCloseModel = () =>
     setModalOption(prev => ({ ...prev, isOpenModal: false }));
-
-  const currentAnimeId = queryMethods.get('animeId');
 
   const isLoading = useAppSelector(selectIsAnimeDetailLoading);
   const animeInfo = useAppSelector(state =>

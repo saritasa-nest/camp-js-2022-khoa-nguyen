@@ -9,6 +9,7 @@ export const useQueryParam = <T = never>() => {
     });
     return params as T;
   };
+
   const queryMethods = {
     get(key: keyof T) {
       return searchParams.get(key as string);
@@ -42,7 +43,7 @@ export const useQueryParam = <T = never>() => {
   return {
     currentQueryParams: getAllQueryParams(),
     queryMethods,
-    searchParams,
+    searchParams: searchParams.toString(),
     getQueryMethodWithKey,
   };
 };

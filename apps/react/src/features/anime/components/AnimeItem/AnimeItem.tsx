@@ -1,7 +1,8 @@
-import { AnimeQueryUrl } from '@js-camp/core/dtos/animeQuery.dto';
 import { Anime, AnimeDetail } from '@js-camp/core/models';
 import { Avatar, Card, CardContent, Typography } from '@mui/material';
 import { FC } from 'react';
+
+import { useNavigate } from 'react-router-dom';
 
 import { useQueryParam } from '../../../../hooks';
 
@@ -22,9 +23,10 @@ const getText = (text: string): string => {
 };
 
 export const AnimeItem: FC<Props> = ({ data }) => {
-  const { queryMethods } = useQueryParam<AnimeQueryUrl>();
+  const { searchParams } = useQueryParam();
+  const navigate = useNavigate();
   const handleShowAnimeDetail = (id: AnimeDetail['id']) => () => {
-    queryMethods.set('animeId', String(id));
+    navigate({ pathname: `/detail/${id}`, search: searchParams });
   };
   return (
     <Card
