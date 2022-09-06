@@ -80,7 +80,7 @@ export const AnimeDetail: FC = () => {
   }, [currentAnimeId]);
 
   if (currentAnimeId == null) {
-    return <div>Select anime to view its information.</div>;
+    return <div className={style['anime-detail']}>Select anime to view its information.</div>;
   }
 
   if (isLoading) {
@@ -99,7 +99,7 @@ export const AnimeDetail: FC = () => {
   }
 
   if (animeInfo == null) {
-    return <div>There is no anime with the id on the search param.</div>;
+    return <div className={style['anime-detail']}>There is no anime with the id on the search param.</div>;
   }
 
   return (
