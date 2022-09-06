@@ -1,23 +1,26 @@
 import { AnimeQueryUrl } from '@js-camp/core/dtos/animeQuery.dto';
+import { AnimeDetail as AnimeDetailModel } from '@js-camp/core/models';
 import { getAnimeDetail } from '@js-camp/react/store/animeDetail/dispatchers';
 import {
   selectAnimeDetailById,
   selectIsAnimeDetailLoading,
 } from '@js-camp/react/store/animeDetail/selectors';
-import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
-import { Button, Chip, List, ListItem, Modal } from '@mui/material';
-import { Container } from '@mui/system';
-import { FC, ReactNode, useEffect, useState } from 'react';
 import { selectGenres } from '@js-camp/react/store/genre/selectors';
+import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { selectStudios } from '@js-camp/react/store/studios/selectors';
-import { AnimeDetail as AnimeDetailModel } from '@js-camp/core/models';
+import { Button, Chip, List, ListItem, Modal } from '@mui/material';
+import { FC, ReactNode, useEffect, useState } from 'react';
 
 import { IMAGES } from '../../../../assets';
-import { Loading } from '../../../../components';
 import { useQueryParam } from '../../../../hooks';
 
 import { AnimeBasicInfo } from './AnimeBasicInfo';
 import style from './AnimeDetail.module.css';
+import {
+  AnimeDetailLoading,
+  AnimeDetailNoData,
+  AnimeDetailRequireSelect,
+} from './AnimeOtherLayout';
 
 interface ModalOption {
 
@@ -43,10 +46,18 @@ export const AnimeDetail: FC = () => {
   const handleCloseModel = () =>
     setModalOption(prev => ({ ...prev, isOpenModal: false }));
 
+  const currentAnimeId = queryMethods.get('animeId');
+
+  const isLoading = useAppSelector(selectIsAnimeDetailLoading);
+
+  const animeInfo = useAppSelector(state =>
+    selectAnimeDetailById(state, currentAnimeId ?? INITIAL_ANIME_ID));
+  const animeImage = animeInfo?.image ?? IMAGES.FallbackAvatar;
+
   const handleOpenImage = () => {
     setModalOption({
       isOpenModal: true,
-      content: <img src={animeInfo?.image ?? IMAGES.FallbackAvatar} />,
+      content: <img src={animeImage} />,
     });
   };
 
@@ -65,13 +76,6 @@ export const AnimeDetail: FC = () => {
       });
     };
 
-  const currentAnimeId = queryMethods.get('animeId');
-
-  const isLoading = useAppSelector(selectIsAnimeDetailLoading);
-
-  const animeInfo = useAppSelector(state =>
-    selectAnimeDetailById(state, currentAnimeId ?? INITIAL_ANIME_ID));
-
   const genres = useAppSelector(selectGenres);
   const studios = useAppSelector(selectStudios);
 
@@ -80,26 +84,15 @@ export const AnimeDetail: FC = () => {
   }, [currentAnimeId]);
 
   if (currentAnimeId == null) {
-    return <div className={style['anime-detail']}>Select anime to view its information.</div>;
+    return <AnimeDetailRequireSelect />;
   }
 
   if (isLoading) {
-    return (
-      <Container
-        sx={{
-          display: 'flex',
-          height: '100%',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Loading isBackdropLoading={false} />;
-      </Container>
-    );
+    return <AnimeDetailLoading />;
   }
 
   if (animeInfo == null) {
-    return <div className={style['anime-detail']}>There is no anime with the id on the search param.</div>;
+    return <AnimeDetailNoData />;
   }
 
   return (
@@ -107,7 +100,7 @@ export const AnimeDetail: FC = () => {
       <div className={style['anime-detail__image-wrapper']}>
         <img
           onClick={handleOpenImage}
-          src={animeInfo?.image ?? IMAGES.FallbackAvatar}
+          src={animeImage}
           className={style['anime-detail__image']}
         />
         {animeInfo.trailerYoutubeId && (
