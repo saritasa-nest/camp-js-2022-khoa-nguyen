@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { AxiosError } from 'axios';
 
 import { getAnimeDetail } from './dispatchers';
 
@@ -14,14 +15,19 @@ export const animeDetailsSlice = createSlice({
       state.isLoading = true;
     })
     .addCase(getAnimeDetail.fulfilled, (state, action) => {
+      state.isLoading = false;
       if (action.payload !== null) {
         entityAdapter.setOne(state as AnimeDetailsState, action.payload);
       }
-      state.isLoading = false;
     })
     .addCase(getAnimeDetail.rejected, (state, action) => {
-      if (action.error.message) {
-        state.error = action.error.message;
+      if (action.payload instanceof AxiosError) {
+        if (action.payload.response?.status !== 401) {
+          state.isLoading = false;
+          return;
+        }
+        state.isLoading = true;
+        return;
       }
       state.isLoading = false;
     }),

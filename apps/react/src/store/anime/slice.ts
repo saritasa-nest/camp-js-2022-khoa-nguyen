@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { AxiosError } from 'axios';
 
 import { getAnimeList, getNextAnimeList } from './dispatchers';
 
@@ -19,7 +20,15 @@ export const animeSlice = createSlice({
         state.totalItems = action.payload.count;
         state.isLoading = false;
       })
-      .addCase(getAnimeList.rejected, state => {
+      .addCase(getAnimeList.rejected, (state, action) => {
+        if (action.payload instanceof AxiosError) {
+          if (action.payload.response?.status !== 401) {
+            state.isLoading = false;
+            return;
+          }
+          state.isLoading = true;
+          return;
+        }
         state.isLoading = false;
       })
       .addCase(getNextAnimeList.pending, state => {
