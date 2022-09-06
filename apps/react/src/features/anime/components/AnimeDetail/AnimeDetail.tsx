@@ -5,32 +5,68 @@ import {
   selectIsAnimeDetailLoading,
 } from '@js-camp/react/store/animeDetail/selectors';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
-import { Chip, List, ListItem, Typography } from '@mui/material';
+import { Button, Chip, List, ListItem, Modal } from '@mui/material';
 import { Container } from '@mui/system';
-import { FC, useEffect } from 'react';
+import { FC, ReactNode, useEffect, useState } from 'react';
 
 import { selectGenres } from '@js-camp/react/store/genre/selectors';
 
 import { selectStudios } from '@js-camp/react/store/studios/selectors';
 
+import { AnimeDetail as AnimeDetailModel } from '@js-camp/core/models';
+
 import { IMAGES } from '../../../../assets';
 import { Loading } from '../../../../components';
 import { useQueryParam } from '../../../../hooks';
 
+import { AnimeBasicInfo } from './AnimeBasicInfo';
 import style from './AnimeDetail.module.css';
 
-const getText = (text: string | undefined): string => {
-  if (text == null || text === '') {
-    return '--';
-  }
-  return text;
-};
+interface ModalOption {
+
+  /** Whether modal is open or not. */
+  readonly isOpenModal: boolean;
+
+  /** Content of modal. */
+  readonly content: ReactNode;
+}
 
 const INITIAL_ANIME_ID = -1;
+
+const INITIAL_MODAL_OPTION: ModalOption = {
+  isOpenModal: false,
+  content: null,
+};
 
 export const AnimeDetail: FC = () => {
   const { queryMethods } = useQueryParam<AnimeQueryUrl>();
   const dispatch = useAppDispatch();
+  const [modalOption, setModalOption] =
+    useState<ModalOption>(INITIAL_MODAL_OPTION);
+  const handleCloseModel = () =>
+    setModalOption(prev => ({ ...prev, isOpenModal: false }));
+
+  const handleOpenImage = () => {
+    setModalOption({
+      isOpenModal: true,
+      content: <img src={animeInfo?.image ?? IMAGES.FallbackAvatar} />,
+    });
+  };
+
+  const handleOpenTrailer =
+    (trailerId: NonNullable<AnimeDetailModel['trailerYoutubeId']>) => () => {
+      const url = 'https://www.youtube.com/embed/';
+      setModalOption({
+        isOpenModal: true,
+        content: (
+          <iframe
+            allowFullScreen
+            className={style['anime-detail__iframe']}
+            src={`${url}${trailerId}`}
+          />
+        ),
+      });
+    };
 
   const currentAnimeId = queryMethods.get('animeId');
 
@@ -71,51 +107,53 @@ export const AnimeDetail: FC = () => {
 
   return (
     <div className={style['anime-detail']}>
-      <img
-        src={animeInfo?.image ?? IMAGES.FallbackAvatar}
-        className={style['anime-detail__image']}
-      />
-      <Typography>
-        <strong>English name:</strong> {getText(animeInfo?.titleEnglish)}
-      </Typography>
-      <Typography>
-        <strong>Japanese name:</strong> {getText(animeInfo?.titleJapan)}
-      </Typography>
-      <Typography>
-        <strong>Status:</strong> {getText(animeInfo?.status)}
-      </Typography>
-      <Typography>
-        <strong>Type:</strong> {getText(animeInfo?.type)}
-      </Typography>
-      <Typography>
-        <strong>Synopsis:</strong> {getText(animeInfo?.synopsis)}
-      </Typography>
-      <Typography>
-        <strong>Start date:</strong>{' '}
-        {getText(animeInfo?.aired.start?.toDateString())}
-      </Typography>
-      <Typography>
-        <strong>End date:</strong>{' '}
-        {getText(animeInfo?.aired.end?.toDateString())}
-      </Typography>
-
+      <div className={style['anime-detail__image-wrapper']}>
+        <img
+          onClick={handleOpenImage}
+          src={animeInfo?.image ?? IMAGES.FallbackAvatar}
+          className={style['anime-detail__image']}
+        />
+        {animeInfo.trailerYoutubeId && (
+          <Button
+            variant="contained"
+            onClick={handleOpenTrailer(animeInfo.trailerYoutubeId)}
+          >
+            Watch trailer
+          </Button>
+        )}
+      </div>
+      <AnimeBasicInfo animeInfo={animeInfo} />
       <List className={style['anime-detail__list']}>
         <strong>Genres: </strong>
-        {animeInfo.genresIds.map(item => (
-          <ListItem className={style['anime-detail__list-item']} key={item}>
-            <Chip className={style['anime-detail__chip']} label={genres.find(genre => genre.id === item)?.name} />
-          </ListItem>
-        ))}
+        {animeInfo.genresIds.length === 0 && '--'}
+        {animeInfo.genresIds.length > 0 &&
+          animeInfo.genresIds.map(item => (
+            <ListItem className={style['anime-detail__list-item']} key={item}>
+              <Chip
+                className={style['anime-detail__chip']}
+                label={genres.find(genre => genre.id === item)?.name}
+              />
+            </ListItem>
+          ))}
       </List>
 
       <List className={style['anime-detail__list']}>
         <strong>Studios: </strong>
-        {animeInfo.studioIds.map(item => (
-          <ListItem className={style['anime-detail__list-item']} key={item}>
-            <Chip className={style['anime-detail__chip']} label={studios.find(studio => studio.id === item)?.name} />
-          </ListItem>
-        ))}
+        {animeInfo.studioIds.length === 0 && '--'}
+        {animeInfo.studioIds.length > 0 &&
+          animeInfo.studioIds.map(item => (
+            <ListItem className={style['anime-detail__list-item']} key={item}>
+              <Chip
+                className={style['anime-detail__chip']}
+                label={studios.find(studio => studio.id === item)?.name}
+              />
+            </ListItem>
+          ))}
       </List>
+
+      <Modal open={modalOption.isOpenModal} onClose={handleCloseModel}>
+        <>{modalOption.content}</>
+      </Modal>
     </div>
   );
 };

@@ -30,6 +30,16 @@ const theme = createTheme({
         },
       },
     },
+
+    MuiModal: {
+      styleOverrides: {
+        root: {
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
+      },
+    },
   },
 });
 
