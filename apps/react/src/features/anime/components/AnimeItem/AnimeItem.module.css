@@ -27,3 +27,16 @@
   margin-left: 15px;
   flex: 1;
 }
+
+.anime-popper__stack-button {
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.anime-popper__button {
+  flex: 1;
+}
+
+.anime-popper__stack-wrapper {
+  padding: 10px;
+}

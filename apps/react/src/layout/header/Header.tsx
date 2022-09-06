@@ -19,7 +19,7 @@ export const Header: FC = () => {
     <div className={style['header']}>
       <div className={style['header__wrapper']}>
         <Link className={style['header__link']} to={'/'}>
-          Home
+          JSCamp 2022 - Anime Saritasa
         </Link>
         <Button variant="contained" color="secondary" onClick={handleLogout}>
           Log out
