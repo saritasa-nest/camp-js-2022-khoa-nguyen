@@ -17,3 +17,15 @@ export const selectIsAnimeDetailLoading = createSelector(
   (state: RootState) => state.anime.isLoading,
   isLoading => isLoading,
 );
+
+/** Select anime delete loading state. */
+export const setIsDeleteAnimeLoading = createSelector(
+  (state: RootState) => state.anime.isLoadingDelete,
+  isLoadingDelete => isLoadingDelete,
+);
+
+/** Select anime delete loading state. */
+export const selectErrorDelete = createSelector(
+  (state: RootState) => state.anime.error,
+  error => error,
+);

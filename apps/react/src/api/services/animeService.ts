@@ -3,6 +3,7 @@ import { AnimeDetailMapper, AnimeMapper, PaginationMapper } from '@js-camp/core/
 import { AnimeQueryMapper } from '@js-camp/core/mappers/animeQuery.mapper';
 import { Anime, AnimeDetail, Pagination } from '@js-camp/core/models';
 import { AnimeQuery } from '@js-camp/core/models/animeQuery';
+import { AxiosResponse } from 'axios';
 
 import { http } from '..';
 
@@ -33,7 +34,8 @@ export namespace AnimeService {
    * Delete anime.
    * @param id Id of anime.
    */
-  export function deleteAnime(id: AnimeDetail['id']): Promise<unknown> {
-    return http.delete<unknown>(`${ANIME_LIST_URL}${id}/`);
+  export async function deleteAnime(id: AnimeDetail['id']): Promise<AxiosResponse> {
+    const result = await http.delete<AxiosResponse>(`${ANIME_LIST_URL}${id}/`);
+    return result.data;
   }
 }

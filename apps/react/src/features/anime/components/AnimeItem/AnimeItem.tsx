@@ -1,12 +1,19 @@
 import { Anime } from '@js-camp/core/models';
 import { Delete, Edit } from '@mui/icons-material';
-import { Avatar, IconButton, Typography } from '@mui/material';
-import { FC } from 'react';
-import { NavLink } from 'react-router-dom';
-
+import { Avatar, Typography } from '@mui/material';
+import { FC, useState } from 'react';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { Stack } from '@mui/system';
-
 import classNames from 'classnames';
+import { useSnackbar } from 'notistack';
+import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
+import { deleteAnime } from '@js-camp/react/store/anime/dispatchers';
+import { getAnimeList } from '@js-camp/react/store/animeList/dispatchers';
+import {
+  selectErrorDelete,
+  setIsDeleteAnimeLoading,
+} from '@js-camp/react/store/anime/selectors';
+import { LoadingButton } from '@mui/lab';
 
 import { IMAGES } from '../../../../assets';
 import { useQueryParam } from '../../../../hooks';
@@ -29,10 +36,32 @@ const handleActiveNavLink = ({ isActive }: { isActive: boolean; }) =>
   classNames(style['anime-item'], isActive && style['anime-item_active']);
 
 export const AnimeItem: FC<Props> = ({ data }) => {
-  const { searchParams } = useQueryParam();
+  const { searchParams, currentQueryParams } = useQueryParam();
+  const { id: currentAnime } = useParams();
+  const navigate = useNavigate();
+  const [currentId, setCurrentId] = useState<number>();
+  const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useAppDispatch();
+  const errorDelete = useAppSelector(selectErrorDelete);
+  const isLoading = useAppSelector(setIsDeleteAnimeLoading);
 
-  const handleDeleteAnime = () => {
-    // 123
+  const handleDeleteAnime = async(
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    event.preventDefault();
+    setCurrentId(data.id);
+    await dispatch(deleteAnime(data.id));
+    if (errorDelete != null) {
+      enqueueSnackbar(errorDelete, { variant: 'error' });
+    } else {
+      enqueueSnackbar(`Delete anime ${data.titleEnglish} successfully!`, {
+        variant: 'success',
+      });
+      if (currentAnime === String(data.id)) {
+        navigate({ pathname: '/', search: searchParams });
+      }
+    }
+    await dispatch(getAnimeList(currentQueryParams));
   };
   return (
     <NavLink
@@ -61,12 +90,16 @@ export const AnimeItem: FC<Props> = ({ data }) => {
       </Stack>
 
       <Stack>
-        <IconButton onClick={handleDeleteAnime}>
+        <LoadingButton
+          loading={currentId === data.id && isLoading}
+          color="secondary"
+          onClick={handleDeleteAnime}
+        >
           <Delete />
-        </IconButton>
-        <IconButton>
+        </LoadingButton>
+        <LoadingButton color="secondary">
           <Edit />
-        </IconButton>
+        </LoadingButton>
       </Stack>
     </NavLink>
   );
