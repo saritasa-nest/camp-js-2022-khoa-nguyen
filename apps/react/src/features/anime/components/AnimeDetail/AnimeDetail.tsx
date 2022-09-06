@@ -43,15 +43,18 @@ export const AnimeDetail: FC = () => {
   const dispatch = useAppDispatch();
   const [modalOption, setModalOption] =
     useState<ModalOption>(INITIAL_MODAL_OPTION);
+
   const handleCloseModel = () =>
     setModalOption(prev => ({ ...prev, isOpenModal: false }));
 
   const currentAnimeId = queryMethods.get('animeId');
 
   const isLoading = useAppSelector(selectIsAnimeDetailLoading);
-
   const animeInfo = useAppSelector(state =>
     selectAnimeDetailById(state, currentAnimeId ?? INITIAL_ANIME_ID));
+  const genres = useAppSelector(selectGenres);
+  const studios = useAppSelector(selectStudios);
+
   const animeImage = animeInfo?.image ?? IMAGES.FallbackAvatar;
 
   const handleOpenImage = () => {
@@ -75,9 +78,6 @@ export const AnimeDetail: FC = () => {
         ),
       });
     };
-
-  const genres = useAppSelector(selectGenres);
-  const studios = useAppSelector(selectStudios);
 
   useEffect(() => {
     dispatch(getAnimeDetail(Number(currentAnimeId)));
