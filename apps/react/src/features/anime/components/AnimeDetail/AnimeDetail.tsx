@@ -31,7 +31,7 @@ interface ModalOption {
   readonly content: ReactNode;
 }
 
-const INITIAL_ANIME_ID = -1;
+const INITIAL_ANIME_ID = '-1';
 
 const INITIAL_MODAL_OPTION: ModalOption = {
   isOpenModal: false,
@@ -80,7 +80,9 @@ export const AnimeDetail: FC = () => {
     };
 
   useEffect(() => {
-    dispatch(getAnimeDetail(Number(currentAnimeId)));
+    if (currentAnimeId !== INITIAL_ANIME_ID) {
+      dispatch(getAnimeDetail(Number(currentAnimeId)));
+    }
   }, [currentAnimeId]);
 
   if (currentAnimeId == null) {
