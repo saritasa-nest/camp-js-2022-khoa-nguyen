@@ -12,7 +12,6 @@ import style from './AnimeSidebar.module.css';
 export const AnimeSidebarInner: FC = () => (
   <List
     component="aside"
-    sx={{ padding: 0 }}
     className={style['anime-sidebar']}
   >
     <div className={style['anime-tab-group']}>

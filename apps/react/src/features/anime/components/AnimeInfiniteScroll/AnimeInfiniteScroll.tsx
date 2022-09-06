@@ -11,14 +11,11 @@ import {
   selectNextPage,
 } from '@js-camp/react/store/anime/selectors';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
-
 import { FC, memo, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 
-import { useQueryParam } from '../../../../hooks';
-
 import { Loading } from '../../../../components';
-
+import { useQueryParam } from '../../../../hooks';
 import { AnimeItem } from '../AnimeItem';
 
 import style from './AnimeInfiniteScroll.module.css';

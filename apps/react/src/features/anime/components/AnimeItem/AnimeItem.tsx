@@ -1,7 +1,6 @@
 import { AnimeQueryUrl } from '@js-camp/core/dtos/animeQuery.dto';
 import { Anime, AnimeDetail } from '@js-camp/core/models';
 import { Avatar, Card, CardContent, Typography } from '@mui/material';
-
 import { FC } from 'react';
 
 import { useQueryParam } from '../../../../hooks';
@@ -9,7 +8,6 @@ import { useQueryParam } from '../../../../hooks';
 import { IMAGES } from '../../../../assets';
 
 import style from './AnimeItem.module.css';
-
 interface Props {
 
   /** Anime info. */
