@@ -9,9 +9,13 @@
   overflow-x: hidden;
 }
 
+.anime-sidebar[class*="MuiList-root"] {
+  padding: 0;
+}
+
 .anime-tab-group {
   position: sticky;
-  background-color: white;
+  background-color: var(--primary-light-color-3);
   top: 0;
   border-bottom: 2px solid var(--primary-color);
   z-index: 1;

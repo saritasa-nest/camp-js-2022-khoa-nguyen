@@ -1,22 +1,14 @@
+import { AnimeQueryUrl } from '@js-camp/core/dtos/animeQuery.dto';
+import { AnimeListQueryOptionsMapper } from '@js-camp/core/mappers';
+import { AnimeQueryMapper } from '@js-camp/core/mappers/animeQuery.mapper';
 import { TypeModel } from '@js-camp/core/models';
-
+import { AnimeQuery } from '@js-camp/core/models/animeQuery';
+import { getAnimeList } from '@js-camp/react/store/anime/dispatchers';
+import { useAppDispatch } from '@js-camp/react/store/store';
 import { FC } from 'react';
 
-import { AnimeQueryMapper } from '@js-camp/core/mappers/animeQuery.mapper';
-
-import { AnimeQueryUrl } from '@js-camp/core/dtos/animeQuery.dto';
-
-import { AnimeListQueryOptionsMapper } from '@js-camp/core/mappers';
-
-import { useAppDispatch } from '@js-camp/react/store/store';
-
-import { getAnimeList } from '@js-camp/react/store/anime/dispatchers';
-
-import { AnimeQuery } from '@js-camp/core/models/animeQuery';
-
-import { useQueryParam } from '../../../../hooks';
-
 import { AppSelect, SelectItem } from '../../../../components';
+import { useQueryParam } from '../../../../hooks';
 
 const listFilter: SelectItem[] = Object.values(TypeModel)
   .filter(item => item !== TypeModel.Default)
@@ -39,15 +31,13 @@ export const AnimeFilter: FC = () => {
     );
   };
   return (
-    <>
-      <AppSelect
-        id="anime-filter"
-        multiple
-        defaultValue={currentModelParam.types}
-        label="Filter by types"
-        onChangeSideEffect={handleFilterByTypes}
-        list={listFilter}
-      />
-    </>
+    <AppSelect
+      id="anime-filter"
+      multiple
+      defaultValue={currentModelParam.types}
+      label="Filter by types"
+      onChangeSideEffect={handleFilterByTypes}
+      list={listFilter}
+    />
   );
 };

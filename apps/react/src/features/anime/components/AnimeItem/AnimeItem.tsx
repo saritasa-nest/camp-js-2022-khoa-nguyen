@@ -1,12 +1,10 @@
 import { Anime } from '@js-camp/core/models';
 import { Avatar, Card, CardContent, Typography } from '@mui/material';
-
 import { FC } from 'react';
 
 import { IMAGES } from '../../../../assets';
 
 import style from './AnimeItem.module.css';
-
 interface Props {
 
   /** Anime info. */

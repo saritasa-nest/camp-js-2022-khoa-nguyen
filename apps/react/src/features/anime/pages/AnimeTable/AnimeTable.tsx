@@ -1,7 +1,6 @@
 import { FC, memo } from 'react';
 
 import { DefaultLayout } from '../../../../layout';
-
 import { AnimeSidebar } from '../../components/AnimeSidebar';
 
 import style from './AnimeTablePage.module.css';
