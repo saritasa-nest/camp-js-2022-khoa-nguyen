@@ -33,9 +33,6 @@ const getText = (text: string): string => {
   return text;
 };
 
-const handleActiveNavLink = ({ isActive }: { isActive: boolean; }) =>
-  classNames(style['anime-item'], isActive && style['anime-item_active']);
-
 export const AnimeItem: FC<Props> = ({ data }) => {
   const { searchParams, currentQueryParams } = useQueryParam();
   const { id: currentAnime } = useParams();
@@ -43,6 +40,9 @@ export const AnimeItem: FC<Props> = ({ data }) => {
   const [currentId, setCurrentId] = useState<number>();
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useAppDispatch();
+
+  const handleActiveNavLink = ({ isActive }: { isActive: boolean; }) =>
+  classNames(style['anime-item'], (isActive || String(data.id) === currentAnime) && style['anime-item_active']);
 
   const errorDelete = useAppSelector(selectErrorDelete);
   const isLoading = useAppSelector(setIsDeleteAnimeLoading);
@@ -104,6 +104,7 @@ export const AnimeItem: FC<Props> = ({ data }) => {
         />
       )}
       <Stack className={style['anime-item__content']}>
+        <Typography>{getText(data.titleEnglish)}</Typography>
         <Typography>Status: {getText(data.status)}</Typography>
         <Typography>Type: {getText(data.type)}</Typography>
       </Stack>

@@ -1,40 +1,62 @@
 import { AnimeDetailDto, AnimeDto, PaginationDto } from '@js-camp/core/dtos';
-import { AnimeDetailMapper, AnimeMapper, PaginationMapper } from '@js-camp/core/mappers';
+import { AnimeEditDto } from '@js-camp/core/dtos/animeEdit.dto';
+import {
+  AnimeDetailMapper,
+  AnimeMapper,
+  PaginationMapper,
+} from '@js-camp/core/mappers';
+import { AnimeEditMapper } from '@js-camp/core/mappers/animeEdit.mapper';
 import { AnimeQueryMapper } from '@js-camp/core/mappers/animeQuery.mapper';
 import { Anime, AnimeDetail, Pagination } from '@js-camp/core/models';
+import { AnimeEdit } from '@js-camp/core/models/animeEdit';
 import { AnimeQuery } from '@js-camp/core/models/animeQuery';
 import { AxiosResponse } from 'axios';
 
 import { http } from '..';
 
 export namespace AnimeService {
-
   const ANIME_LIST_URL = 'anime/anime/';
 
   /**
    * Get anime pagination.
    * @param params Query params.
    */
-  export async function getAnimeList(params: AnimeQuery): Promise<Pagination<Anime>> {
+  export async function getAnimeList(
+    params: AnimeQuery,
+  ): Promise<Pagination<Anime>> {
     const paramDto = AnimeQueryMapper.toDto(params);
-    const result = await http.get<PaginationDto<AnimeDto>>(ANIME_LIST_URL, { params: paramDto });
-    return PaginationMapper.fromDto<AnimeDto, Anime>(result.data, AnimeMapper.fromDto);
+    const result = await http.get<PaginationDto<AnimeDto>>(ANIME_LIST_URL, {
+      params: paramDto,
+    });
+    return PaginationMapper.fromDto<AnimeDto, Anime>(
+      result.data,
+      AnimeMapper.fromDto,
+    );
   }
 
   /**
    * Get anime detail.
    * @param id Id of anime.
+   * @param type Type of query.
    */
-  export async function getDetailAnime(id: AnimeDetail['id']): Promise<AnimeDetail> {
-    const result = await http.get<AnimeDetailDto>(`${ANIME_LIST_URL}${id}/`);
-    return AnimeDetailMapper.fromDto(result.data);
+  export async function getDetailAnime(
+    id: AnimeDetail['id'],
+    type: 'detail' | 'edit',
+  ): Promise<AnimeDetail | AnimeEdit> {
+    const result = await http.get<AnimeDetailDto | AnimeEditDto>(`${ANIME_LIST_URL}${id}/`);
+    if (type === 'detail') {
+      return AnimeDetailMapper.fromDto(result.data as AnimeDetailDto);
+    }
+    return AnimeEditMapper.fromDto(result.data as AnimeEditDto);
   }
 
   /**
    * Delete anime.
    * @param id Id of anime.
    */
-  export async function deleteAnime(id: AnimeDetail['id']): Promise<AxiosResponse> {
+  export async function deleteAnime(
+    id: AnimeDetail['id'],
+  ): Promise<AxiosResponse> {
     const result = await http.delete<AxiosResponse>(`${ANIME_LIST_URL}${id}/`);
     return result.data;
   }

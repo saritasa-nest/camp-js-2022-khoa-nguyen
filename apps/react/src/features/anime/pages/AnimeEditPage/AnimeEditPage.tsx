@@ -1,3 +1,4 @@
+import { AnimeEdit } from '@js-camp/core/models/animeEdit';
 import { getAnimeDetail } from '@js-camp/react/store/anime/dispatchers';
 import {
   selectAnimeDetailById,
@@ -25,7 +26,7 @@ export const AnimeEditPage: FC = () => {
 
   useEffect(() => {
     if (currentAnimeId != null && currentAnimeId !== INITIAL_ANIME_ID) {
-      dispatch(getAnimeDetail(Number(currentAnimeId)));
+      dispatch(getAnimeDetail({ id: Number(currentAnimeId), type: 'edit' }));
     }
   }, [currentAnimeId]);
 
@@ -39,7 +40,7 @@ export const AnimeEditPage: FC = () => {
 
   return (
     <div>
-      <AnimeEditCreateForm />
+      <AnimeEditCreateForm data={animeInfo as AnimeEdit}/>
     </div>
   );
 };

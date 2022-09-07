@@ -7,9 +7,12 @@ import { addStudios } from '../studios/dispatchers';
 
 export const getAnimeDetail = createAsyncThunk(
   'anime/getDetail',
-  async(id: AnimeDetail['id'], { rejectWithValue, dispatch }) => {
+  async(
+    { id, type = 'detail' }: { id: AnimeDetail['id']; type?: 'detail' | 'edit'; },
+    { rejectWithValue, dispatch },
+  ) => {
     try {
-      const anime = await AnimeService.getDetailAnime(id);
+      const anime = await AnimeService.getDetailAnime(id, type);
       dispatch(addGenres(anime.genres));
       dispatch(addStudios(anime.studios));
       return anime;

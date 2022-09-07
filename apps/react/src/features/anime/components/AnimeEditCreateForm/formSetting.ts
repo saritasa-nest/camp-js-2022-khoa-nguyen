@@ -1,3 +1,4 @@
+import { Genre, Studio } from '@js-camp/core/models';
 import * as yup from 'yup';
 
 const REQUIRED_MESSAGE = 'This field is required.';
@@ -21,10 +22,10 @@ interface AnimeValidationSchema {
   readonly isAiring: boolean;
 
   /** End date. */
-  readonly endDate: string;
+  readonly endDate: string | null;
 
   /** Start date. */
-  readonly startDate: string;
+  readonly startDate: string | null;
 
   /** Rating. */
   readonly rating: string;
@@ -63,21 +64,27 @@ export const validationSchema: yup.SchemaOf<AnimeValidationSchema> = yup
 interface AnimeRestType {
 
   /** Image url. */
-  readonly image: string;
+  readonly image: string | null;
 
   /** Trailer id. */
-  readonly trailerYoutubeId: string;
+  readonly trailerYoutubeId: string | null;
 
   /** English title. */
   readonly titleEnglish: string;
 
   /** Japan title. */
   readonly titleJapan: string;
+
+  /** Genres. */
+  readonly genres: readonly Genre[];
+
+  /** Studios. */
+  readonly studios: readonly Studio[];
 }
 
-export type AnimeForm = AnimeValidationSchema & AnimeRestType;
+export type AnimeForm = PartialNull<Omit<AnimeValidationSchema, 'genres' | 'studios'> & AnimeRestType> ;
 
-export const INITIAL_CREATE_VALUE: PartialNull<AnimeForm> = {
+export const INITIAL_CREATE_VALUE: AnimeForm = {
   image: '',
   trailerYoutubeId: '',
   titleEnglish: '',

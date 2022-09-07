@@ -1,7 +1,8 @@
 import { AnimeDetail } from '@js-camp/core/models';
+import { AnimeEdit } from '@js-camp/core/models/animeEdit';
 import { createEntityAdapter } from '@reduxjs/toolkit';
 
-export const entityAdapter = createEntityAdapter<AnimeDetail>({
+export const entityAdapter = createEntityAdapter<AnimeDetail | AnimeEdit>({
   selectId: anime => anime.id,
 });
 

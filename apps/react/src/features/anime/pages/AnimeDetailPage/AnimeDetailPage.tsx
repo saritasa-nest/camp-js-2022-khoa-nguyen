@@ -77,7 +77,7 @@ export const AnimeDetailPage: FC = () => {
 
   useEffect(() => {
     if (currentAnimeId != null && currentAnimeId !== INITIAL_ANIME_ID) {
-      dispatch(getAnimeDetail(Number(currentAnimeId)));
+      dispatch(getAnimeDetail({ id: Number(currentAnimeId) }));
     }
   }, [currentAnimeId]);
 

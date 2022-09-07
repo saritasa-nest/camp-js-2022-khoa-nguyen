@@ -62,7 +62,7 @@ export const AppSelect: FC<Props> = ({
     setSelectedValue(value);
   };
   return (
-    <FormControl fullWidth>
+    <FormControl>
       <InputLabel id={`select-${props.id}`}>{props.label}</InputLabel>
       <Select
         {...props}
