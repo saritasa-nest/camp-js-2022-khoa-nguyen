@@ -62,14 +62,14 @@ export const AppSelect: FC<Props> = ({
     setSelectedValue(value);
   };
   return (
-    <FormControl>
+    <FormControl fullWidth>
       <InputLabel id={`select-${props.id}`}>{props.label}</InputLabel>
       <Select
-        {...props}
         value={selectedValue}
         labelId={`select-${props.id}`}
         sx={{ width: '100%' }}
         onChange={handleChange}
+        {...props}
       >
         {list.map((item, index) => (
           <MenuItem value={item.value} key={index}>

@@ -51,8 +51,8 @@ export const LoginPage: React.FC = () => {
         <h1 className={style['auth__title']}>Welcome to Saritasa Anime</h1>
         <FormikProvider value={formik}>
           <Form className={style['auth__form']}>
-            <FormInputItem label="Email" name="email" type="email" />
-            <FormInputItem label="Password" name="password" type="password" />
+            <FormInputItem label="Email" name="email" propsInput={{ type: 'email' }} />
+            <FormInputItem label="Password" name="password" propsInput={{ type: 'password' }}/>
             <p>
               Don't have an account?{' '}
               <Link className={style['auth__link']} to="/register">

@@ -1,13 +1,18 @@
-import { FC, HTMLInputTypeAttribute } from 'react';
-import { ErrorMessage, Field, useField } from 'formik';
-import { TextField, TextFieldProps } from '@mui/material';
+import { Switch, TextField, TextFieldProps } from '@mui/material';
+import { Field, useField } from 'formik';
+import { FC } from 'react';
+
+import { AppDatePicker } from '../AppDatePicker';
+
+import { AppSelect, SelectItem } from '../AppSelect';
 
 import style from './FormItem.module.css';
+import { FormItemWrapper } from './FormItemWrapper';
 
 interface Props {
 
   /** Label. */
-  readonly label: string;
+  readonly label?: string;
 
   /** Props input. */
   readonly propsInput?: TextFieldProps;
@@ -15,27 +20,31 @@ interface Props {
   /** Name of form field. */
   readonly name: string;
 
-  /** Type of input. */
-  readonly type?: HTMLInputTypeAttribute;
+  /** Component. */
+  readonly as?: typeof AppSelect | typeof Switch | typeof AppDatePicker;
+
+  /** Select list. */
+  readonly list?: readonly SelectItem[];
 }
 
-export const FormInputItem: FC<Props> = ({ label, name, type, propsInput }) => {
-  const [field] = useField<string>({ name });
+export const FormInputItem: FC<Props> = ({
+  label,
+  name,
+  propsInput,
+  as,
+  list,
+}) => {
+  const [field] = useField({ name });
   return (
-    <div className={style['form-item']}>
+    <FormItemWrapper name={field.name}>
       <Field
-        as={TextField}
+        as={as ?? TextField}
         className={style['form-item__input']}
+        list={list}
         {...field}
         {...propsInput}
         label={label}
-        type={type}
       />
-      <ErrorMessage
-        className={style['form-item__error']}
-        component="span"
-        name={field.name}
-      />
-    </div>
+    </FormItemWrapper>
   );
 };

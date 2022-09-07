@@ -22,10 +22,10 @@ interface AnimeValidationSchema {
   readonly isAiring: boolean;
 
   /** End date. */
-  readonly endDate: string | null;
+  readonly endDate: Date | null;
 
   /** Start date. */
-  readonly startDate: string | null;
+  readonly startDate: Date | null;
 
   /** Rating. */
   readonly rating: string;
@@ -50,8 +50,12 @@ export const validationSchema: yup.SchemaOf<AnimeValidationSchema> = yup
     status: yup.string().required(REQUIRED_MESSAGE),
     source: yup.string().required(REQUIRED_MESSAGE),
     isAiring: yup.boolean().required(REQUIRED_MESSAGE),
-    startDate: yup.string().required(REQUIRED_MESSAGE),
-    endDate: yup.string().required(REQUIRED_MESSAGE),
+    startDate: yup.date().required(REQUIRED_MESSAGE)
+      .nullable()
+      .typeError('Please input correct date format.'),
+    endDate: yup.date().required(REQUIRED_MESSAGE)
+      .nullable()
+      .typeError('Please input correct date format.'),
     rating: yup.string().required(REQUIRED_MESSAGE),
     season: yup.string().required(REQUIRED_MESSAGE),
     synopsis: yup.string().required(REQUIRED_MESSAGE),
@@ -82,7 +86,9 @@ interface AnimeRestType {
   readonly studios: readonly Studio[];
 }
 
-export type AnimeForm = PartialNull<Omit<AnimeValidationSchema, 'genres' | 'studios'> & AnimeRestType> ;
+export type AnimeForm = PartialNull<
+  Omit<AnimeValidationSchema, 'genres' | 'studios'> & AnimeRestType
+>;
 
 export const INITIAL_CREATE_VALUE: AnimeForm = {
   image: '',
