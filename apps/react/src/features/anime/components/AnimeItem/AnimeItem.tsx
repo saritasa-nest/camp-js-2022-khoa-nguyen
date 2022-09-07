@@ -66,6 +66,13 @@ export const AnimeItem: FC<Props> = ({ data }) => {
     await dispatch(getAnimeList(currentQueryParams));
   };
 
+  const handleEditAnime = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    event.preventDefault();
+    navigate({ pathname: `/edit/${data.id}`, search: searchParams });
+  };
+
   const handleToggle = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
@@ -80,7 +87,7 @@ export const AnimeItem: FC<Props> = ({ data }) => {
   return (
     <NavLink
       className={handleActiveNavLink}
-      to={`/detail/${data.id}/${searchParams}`}
+      to={`/detail/${data.id}?${searchParams}`}
     >
       {data.image == null && (
         <Avatar
@@ -120,7 +127,7 @@ export const AnimeItem: FC<Props> = ({ data }) => {
           onAction={handleDeleteAnime}
           onClose={handleClose}
         />
-        <LoadingButton color="secondary">
+        <LoadingButton color="secondary" onClick={handleEditAnime}>
           <Edit />
         </LoadingButton>
       </Stack>

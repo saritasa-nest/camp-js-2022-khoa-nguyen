@@ -7,7 +7,7 @@ import style from './AnimeDetail.module.css';
 
 export const AnimeDetailNoData: FC = () => (
   <div className={style['anime-detail']}>
-    There is no anime with the id on the search param.
+    There is no anime with the id on url.
   </div>
 );
 

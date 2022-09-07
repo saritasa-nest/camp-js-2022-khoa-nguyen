@@ -13,7 +13,7 @@ import { useSnackbar } from 'notistack';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import { FormInputItem } from '../../components/FormItem';
+import { FormInputItem } from '../../../../components/FormItem';
 import style from '../auth.module.css';
 
 import { validationSchema } from './schema';

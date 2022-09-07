@@ -1,8 +1,8 @@
 import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 
-import { AnimeDetail } from './components/AnimeDetail';
-import { AnimeEdit } from './components/AnimeEdit';
+import { AnimeDetailPage } from './pages/AnimeDetailPage';
+import { AnimeEditPage } from './pages/AnimeEditPage';
 
 const AnimeTablePage = lazy(() =>
   import('./pages/AnimeTable').then(module => ({
@@ -12,15 +12,15 @@ const AnimeTablePage = lazy(() =>
 const animeRoutesInner: RouteObject[] = [
   {
     path: '/',
-    element: <AnimeDetail/>,
+    element: <AnimeDetailPage/>,
   },
   {
     path: '/detail/:id',
-    element: <AnimeDetail />,
+    element: <AnimeDetailPage />,
   },
   {
     path: '/edit/:id',
-    element: <AnimeEdit />,
+    element: <AnimeEditPage />,
   },
 ];
 

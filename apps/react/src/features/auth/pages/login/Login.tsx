@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom';
 import { LoadingButton } from '@mui/lab';
 import { selectIsAuthLoading } from '@js-camp/react/store/auth/selectors';
 
-import { FormInputItem } from '../../components/FormItem';
+import { FormInputItem } from '../../../../components/FormItem';
 import style from '../auth.module.css';
 
 import { validationSchema } from './schema';

@@ -37,7 +37,7 @@ const INITIAL_MODAL_OPTION: ModalOption = {
   content: null,
 };
 
-export const AnimeDetail: FC = () => {
+export const AnimeDetailPage: FC = () => {
   const { id: currentAnimeId } = useParams();
   const dispatch = useAppDispatch();
   const [modalOption, setModalOption] =
