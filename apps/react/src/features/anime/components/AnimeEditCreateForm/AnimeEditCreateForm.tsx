@@ -1,17 +1,14 @@
 /* eslint-disable max-lines-per-function */
-import { Genre, StatusModel, Studio, TypeModel } from '@js-camp/core/models';
+import { StatusModel, TypeModel } from '@js-camp/core/models';
 import {
   AnimeEdit,
   Rating,
   Season,
   Source,
 } from '@js-camp/core/models/animeEdit';
-import { DateRange } from '@js-camp/core/models/dateRange';
-import { editAnime } from '@js-camp/react/store/animeList/dispatchers';
 import { selectGenres } from '@js-camp/react/store/genre/selectors';
 import {
-  createNewGenre,
-  fetchGenres,
+  createNewGenre, fetchGenresList,
 } from '@js-camp/react/store/genreList/dispatchers';
 import {
   selectIsCreateGenreLoading,
@@ -32,11 +29,7 @@ import {
 import { LoadingButton } from '@mui/lab';
 import { Switch, Typography } from '@mui/material';
 import { Form, FormikProvider, useFormik } from 'formik';
-import { useSnackbar } from 'notistack';
 import { FC, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-
-import { useQueryParam } from '../../../../hooks';
 
 import {
   AppDatePicker,
@@ -49,70 +42,22 @@ import {
 import styles from './AnimeEditCreateForm.module.css';
 import {
   AnimeForm,
+  getInitialValue,
   INITIAL_CREATE_VALUE,
   validationSchema,
 } from './formSetting';
+import { AnimeFormMapper } from './mapper';
 
 interface Props {
 
   /** Anime info. */
   readonly data?: AnimeEdit;
+
+  /** Handle form submit. */
+  readonly onFormSubmit: (value: AnimeEdit) => void;
 }
 
-const getInitialValue = (
-  data: AnimeEdit,
-  genres: Genre[],
-  studios: Studio[],
-): AnimeForm => ({
-  image: data.image,
-  trailerYoutubeId: data.trailerYoutubeId ?? '',
-  titleEnglish: data.titleEnglish,
-  titleJapan: data.titleJapan,
-  type: data.type,
-  status: data.status ?? '',
-  source: data.source ?? '',
-  isAiring: data.isAiring,
-  startDate: data.aired.start ? data.aired.start : null,
-  endDate: data.aired.end ? data.aired.end : null,
-  rating: data.rating ?? '',
-  season: data.season ?? '',
-  synopsis: data.synopsis,
-  studios:
-    (data?.studioIds.map(item =>
-      studios.find(studio => studio.id === item)) as Studio[]) ?? [],
-  genres:
-    (data?.genresIds.map(item =>
-      genres.find(genre => genre.id === item)) as Genre[]) ?? [],
-});
-
-type NonNullableFields<T> = {
-  [K in keyof T]: NonNullable<T[K]>;
-};
-
-/**
- * Checks if a value is defined.
- * @param value Value defined.
- */
-export function isDefined<T>(value: T | null | undefined): value is T {
-  return value != null;
-}
-
-/**
- * Checks if all fields value is defined.
- * @param fields Some object or form fields.
- */
-export function isFieldsDefined<T>(fields: T): fields is NonNullableFields<T> {
-  for (const key in fields) {
-    if (Object.prototype.hasOwnProperty.call(fields, key)) {
-      if (!isDefined(fields[key])) {
-        return false;
-      }
-    }
-  }
-  return true;
-}
-
-export const AnimeEditCreateForm: FC<Props> = ({ data }) => {
+export const AnimeEditCreateForm: FC<Props> = ({ data, onFormSubmit }) => {
   const dispatch = useAppDispatch();
 
   const isCreateGenreLoading = useAppSelector(selectIsCreateGenreLoading);
@@ -125,53 +70,9 @@ export const AnimeEditCreateForm: FC<Props> = ({ data }) => {
   const isStudiosListLoading = useAppSelector(selectIsStudiosListLoading);
   const studiosList = useAppSelector(selectListStudios);
 
-  const navigate = useNavigate();
-  const { searchParams } = useQueryParam();
-  const { enqueueSnackbar } = useSnackbar();
-
-  const handleSubmit = async(value: AnimeForm) => {
-    if (!isFieldsDefined(value)) {
-      return;
-    }
-    if (data != null) {
-      const result = await dispatch(
-        editAnime({
-          id: data.id,
-          body: new AnimeEdit({
-            ...value,
-            trailerYoutubeId:
-              value.trailerYoutubeId === '' ? null : value.trailerYoutubeId,
-            id: -1,
-            type: value.type as TypeModel,
-            source: value.source as Source,
-            rating: value.rating as Rating,
-            status: value.status as StatusModel,
-            season: value.season as Season,
-            isAiring: value.isAiring as boolean,
-            aired: new DateRange({
-              start: value.startDate as Date,
-              end: value.endDate as Date,
-            }),
-            studioIds: value.studios.map(item => item.id),
-            genresIds: value.genres.map(item => item.id),
-          }),
-        }),
-      );
-      if (result.payload instanceof AnimeEdit) {
-        navigate({
-          pathname: `/detail/${result.payload.id}/`,
-          search: searchParams,
-        });
-        enqueueSnackbar(`Edit anime ${data.titleEnglish} successfully!`, {
-          variant: 'success',
-        });
-        return;
-      }
-      enqueueSnackbar(`Failed to edit anime ${data.titleEnglish}!`, {
-        variant: 'warning',
-      });
-    }
-
+  const handleSubmit = (value: AnimeForm) => {
+    const animeEditModel = AnimeFormMapper.fromFormValue(value);
+    onFormSubmit(animeEditModel);
   };
   const formik = useFormik({
     validationSchema,
@@ -182,7 +83,8 @@ export const AnimeEditCreateForm: FC<Props> = ({ data }) => {
   });
 
   useEffect(() => {
-    dispatch(fetchGenres(''));
+    dispatch(fetchGenresList(''));
+    dispatch(fetchStudiosList(''));
   }, []);
 
   const combineGenreList = genresList.concat(genres);
@@ -258,7 +160,7 @@ export const AnimeEditCreateForm: FC<Props> = ({ data }) => {
           />
           <FormItemWrapper name="genres">
             <AppSelectWithSearch
-              onSearchChange={value => dispatch(fetchGenres(value))}
+              onSearchChange={value => dispatch(fetchGenresList(value))}
               isCreateLoading={isCreateGenreLoading}
               isListLoading={isGenreListLoading}
               onClickAddNewItem={value => dispatch(createNewGenre(value))}
@@ -284,10 +186,7 @@ export const AnimeEditCreateForm: FC<Props> = ({ data }) => {
               onSearchChange={value => dispatch(fetchStudiosList(value))}
               isCreateLoading={isCreateStudioLoading}
               isListLoading={isStudiosListLoading}
-              onClickAddNewItem={value => {
-                dispatch(createNewStudio(value));
-                dispatch(fetchStudiosList(value));
-              }}
+              onClickAddNewItem={value => dispatch(createNewStudio(value))}
               defaultValue={data?.studioIds.map(
                 item => studios.find(studio => studio.id === item)?.name,
               )}

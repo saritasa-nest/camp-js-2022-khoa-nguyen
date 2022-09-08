@@ -1,6 +1,8 @@
 import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 
+import { AnimeCreatePage } from './pages/AnimeCreatePage';
+
 import { AnimeDetailPage } from './pages/AnimeDetailPage';
 import { AnimeEditPage } from './pages/AnimeEditPage';
 
@@ -21,6 +23,10 @@ const animeRoutesInner: RouteObject[] = [
   {
     path: '/edit/:id',
     element: <AnimeEditPage />,
+  },
+  {
+    path: '/create',
+    element: <AnimeCreatePage />,
   },
 ];
 

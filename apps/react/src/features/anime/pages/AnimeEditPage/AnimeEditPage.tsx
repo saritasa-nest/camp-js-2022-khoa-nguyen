@@ -4,10 +4,15 @@ import {
   selectAnimeDetailById,
   selectIsAnimeDetailLoading,
 } from '@js-camp/react/store/anime/selectors';
+import { editAnime } from '@js-camp/react/store/animeList/dispatchers';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
+
+import { useSnackbar } from 'notistack';
 import { FC, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+
+import { useQueryParam } from '../../../../hooks';
 
 import { AnimeEditCreateForm } from '../../components/AnimeEditCreateForm';
 import {
@@ -24,11 +29,38 @@ export const AnimeEditPage: FC = () => {
   const animeInfo = useAppSelector(state =>
     selectAnimeDetailById(state, currentAnimeId ?? INITIAL_ANIME_ID));
 
+  const { searchParams } = useQueryParam();
+  const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (currentAnimeId != null && currentAnimeId !== INITIAL_ANIME_ID) {
       dispatch(getAnimeDetail({ id: Number(currentAnimeId), type: 'edit' }));
     }
   }, [currentAnimeId]);
+
+  const handleSubmit = async(animeEditModel: AnimeEdit) => {
+    const data = animeInfo as AnimeEdit;
+    const result = await dispatch(
+      editAnime({
+        id: data.id,
+        body: animeEditModel,
+      }),
+    );
+    if (result.payload instanceof AnimeEdit) {
+      navigate({
+        pathname: `/detail/${result.payload.id}/`,
+        search: searchParams,
+      });
+      enqueueSnackbar(`Edit anime ${data.titleEnglish} successfully!`, {
+        variant: 'success',
+      });
+      return;
+    }
+    enqueueSnackbar(`Failed to edit anime ${data.titleEnglish}!`, {
+      variant: 'error',
+    });
+  };
 
   if (isLoading) {
     return <AnimeDetailLoading />;
@@ -39,8 +71,9 @@ export const AnimeEditPage: FC = () => {
   }
 
   return (
-    <div>
-      <AnimeEditCreateForm data={animeInfo as AnimeEdit}/>
-    </div>
+    <AnimeEditCreateForm
+      data={animeInfo as AnimeEdit}
+      onFormSubmit={handleSubmit}
+    />
   );
 };

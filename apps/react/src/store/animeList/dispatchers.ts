@@ -45,10 +45,21 @@ export const deleteAnime = createAsyncThunk(
 );
 
 export const editAnime = createAsyncThunk(
-  'anime/deleteAnime',
+  'anime/editAnime',
   async({ id, body }: {id: AnimeEdit['id']; body: AnimeEdit;}, { rejectWithValue }) => {
     try {
       return await AnimeService.editAnime(id, body);
+    } catch (error: unknown) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const createAnime = createAsyncThunk(
+  'anime/createAnime',
+  async(body: AnimeEdit, { rejectWithValue }) => {
+    try {
+      return await AnimeService.createAnime(body);
     } catch (error: unknown) {
       return rejectWithValue(error);
     }

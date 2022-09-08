@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { createNewGenre, fetchGenres } from './dispatchers';
+import { createNewGenre, fetchGenresList } from './dispatchers';
 import { entityAdapter, GenreState, initialState } from './state';
 
 export const genresListSlice = createSlice({
@@ -8,14 +8,14 @@ export const genresListSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: builder => builder
-    .addCase(fetchGenres.pending, state => {
+    .addCase(fetchGenresList.pending, state => {
       state.isLoading = true;
     })
-    .addCase(fetchGenres.fulfilled, (state, action) => {
+    .addCase(fetchGenresList.fulfilled, (state, action) => {
       entityAdapter.setAll(state as GenreState, action.payload);
       state.isLoading = false;
     })
-    .addCase(fetchGenres.rejected, (state, action) => {
+    .addCase(fetchGenresList.rejected, (state, action) => {
       if (action.error.message) {
         state.error = action.error.message;
       }

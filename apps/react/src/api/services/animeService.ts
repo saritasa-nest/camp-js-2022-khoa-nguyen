@@ -1,7 +1,5 @@
 import { AnimeDetailDto, AnimeDto, PaginationDto } from '@js-camp/core/dtos';
-import {
-  AnimeEditDto,
-} from '@js-camp/core/dtos/animeEdit.dto';
+import { AnimeEditDto } from '@js-camp/core/dtos/animeEdit.dto';
 import {
   AnimeDetailMapper,
   AnimeMapper,
@@ -84,16 +82,12 @@ export namespace AnimeService {
 
   /**
    * Create anime.
-   * @param id Id of anime.
    * @param body Body of create.
    */
-  export async function createAnime(
-    id: AnimeEdit['id'],
-    body: AnimeEdit,
-  ): Promise<AnimeEdit> {
+  export async function createAnime(body: AnimeEdit): Promise<AnimeEdit> {
     const requestBodyDto = AnimeEditMapper.toDto(body);
     const result = await http.post<AnimeEditDto>(
-      `${ANIME_LIST_URL}${id}/`,
+      `${ANIME_LIST_URL}`,
       requestBodyDto,
     );
     return AnimeEditMapper.fromDto(result.data);

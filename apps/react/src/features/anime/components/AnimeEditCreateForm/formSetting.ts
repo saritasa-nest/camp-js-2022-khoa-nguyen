@@ -1,4 +1,5 @@
 import { Genre, Studio } from '@js-camp/core/models';
+import { AnimeEdit } from '@js-camp/core/models/animeEdit';
 import * as yup from 'yup';
 
 const REQUIRED_MESSAGE = 'This field is required.';
@@ -109,3 +110,29 @@ export const INITIAL_CREATE_VALUE: AnimeForm = {
   studios: [],
   genres: [],
 };
+
+export const getInitialValue = (
+  data: AnimeEdit,
+  genres: Genre[],
+  studios: Studio[],
+): AnimeForm => ({
+  image: data.image,
+  trailerYoutubeId: data.trailerYoutubeId ?? '',
+  titleEnglish: data.titleEnglish,
+  titleJapan: data.titleJapan,
+  type: data.type,
+  status: data.status ?? '',
+  source: data.source ?? '',
+  isAiring: data.isAiring,
+  startDate: data.aired.start ? data.aired.start : null,
+  endDate: data.aired.end ? data.aired.end : null,
+  rating: data.rating ?? '',
+  season: data.season ?? '',
+  synopsis: data.synopsis,
+  studios:
+    (data?.studioIds.map(item =>
+      studios.find(studio => studio.id === item)) as Studio[]) ?? [],
+  genres:
+    (data?.genresIds.map(item =>
+      genres.find(genre => genre.id === item)) as Genre[]) ?? [],
+});
