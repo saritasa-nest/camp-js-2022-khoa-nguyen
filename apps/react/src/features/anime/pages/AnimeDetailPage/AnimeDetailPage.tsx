@@ -52,8 +52,6 @@ export const AnimeDetailPage: FC = () => {
   const genres = useAppSelector(selectGenres);
   const studios = useAppSelector(selectStudios);
 
-  console.log(genres);
-
   const handleOpenImage =
     (url: string, animeTitle: AnimeDetailModel['titleEnglish']) => () => {
       setModalOption({

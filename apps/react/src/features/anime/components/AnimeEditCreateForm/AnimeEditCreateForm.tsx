@@ -6,6 +6,8 @@ import {
   Season,
   Source,
 } from '@js-camp/core/models/animeEdit';
+import { DateRange } from '@js-camp/core/models/dateRange';
+import { editAnime } from '@js-camp/react/store/animeList/dispatchers';
 import { selectGenres } from '@js-camp/react/store/genre/selectors';
 import {
   createNewGenre,
@@ -27,11 +29,14 @@ import {
   selectIsStudiosListLoading,
   selectListStudios,
 } from '@js-camp/react/store/studiosList/selectors';
+import { LoadingButton } from '@mui/lab';
 import { Switch, Typography } from '@mui/material';
 import { Form, FormikProvider, useFormik } from 'formik';
+import { useSnackbar } from 'notistack';
 import { FC, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { LoadingButton } from '@mui/lab';
+import { useQueryParam } from '../../../../hooks';
 
 import {
   AppDatePicker,
@@ -80,6 +85,33 @@ const getInitialValue = (
       genres.find(genre => genre.id === item)) as Genre[]) ?? [],
 });
 
+type NonNullableFields<T> = {
+  [K in keyof T]: NonNullable<T[K]>;
+};
+
+/**
+ * Checks if a value is defined.
+ * @param value Value defined.
+ */
+export function isDefined<T>(value: T | null | undefined): value is T {
+  return value != null;
+}
+
+/**
+ * Checks if all fields value is defined.
+ * @param fields Some object or form fields.
+ */
+export function isFieldsDefined<T>(fields: T): fields is NonNullableFields<T> {
+  for (const key in fields) {
+    if (Object.prototype.hasOwnProperty.call(fields, key)) {
+      if (!isDefined(fields[key])) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
 export const AnimeEditCreateForm: FC<Props> = ({ data }) => {
   const dispatch = useAppDispatch();
 
@@ -93,10 +125,54 @@ export const AnimeEditCreateForm: FC<Props> = ({ data }) => {
   const isStudiosListLoading = useAppSelector(selectIsStudiosListLoading);
   const studiosList = useAppSelector(selectListStudios);
 
-  const handleSubmit = (value: AnimeForm) => {
-    console.warn(value);
-  };
+  const navigate = useNavigate();
+  const { searchParams } = useQueryParam();
+  const { enqueueSnackbar } = useSnackbar();
 
+  const handleSubmit = async(value: AnimeForm) => {
+    if (!isFieldsDefined(value)) {
+      return;
+    }
+    if (data != null) {
+      const result = await dispatch(
+        editAnime({
+          id: data.id,
+          body: new AnimeEdit({
+            ...value,
+            trailerYoutubeId:
+              value.trailerYoutubeId === '' ? null : value.trailerYoutubeId,
+            id: -1,
+            type: value.type as TypeModel,
+            source: value.source as Source,
+            rating: value.rating as Rating,
+            status: value.status as StatusModel,
+            season: value.season as Season,
+            isAiring: value.isAiring as boolean,
+            aired: new DateRange({
+              start: value.startDate as Date,
+              end: value.endDate as Date,
+            }),
+            studioIds: value.studios.map(item => item.id),
+            genresIds: value.genres.map(item => item.id),
+          }),
+        }),
+      );
+      if (result.payload instanceof AnimeEdit) {
+        navigate({
+          pathname: `/detail/${result.payload.id}/`,
+          search: searchParams,
+        });
+        enqueueSnackbar(`Edit anime ${data.titleEnglish} successfully!`, {
+          variant: 'success',
+        });
+        return;
+      }
+      enqueueSnackbar(`Failed to edit anime ${data.titleEnglish}!`, {
+        variant: 'warning',
+      });
+    }
+
+  };
   const formik = useFormik({
     validationSchema,
     initialValues: data ?
@@ -108,6 +184,9 @@ export const AnimeEditCreateForm: FC<Props> = ({ data }) => {
   useEffect(() => {
     dispatch(fetchGenres(''));
   }, []);
+
+  const combineGenreList = genresList.concat(genres);
+  const combineStudioList = studiosList.concat(studios);
 
   return (
     <FormikProvider value={formik}>
@@ -182,10 +261,7 @@ export const AnimeEditCreateForm: FC<Props> = ({ data }) => {
               onSearchChange={value => dispatch(fetchGenres(value))}
               isCreateLoading={isCreateGenreLoading}
               isListLoading={isGenreListLoading}
-              onClickAddNewItem={value => {
-                dispatch(createNewGenre(value));
-                dispatch(fetchGenres(value));
-              }}
+              onClickAddNewItem={value => dispatch(createNewGenre(value))}
               defaultValue={data?.genresIds.map(
                 item => genres.find(genre => genre.id === item)?.name,
               )}
@@ -194,7 +270,11 @@ export const AnimeEditCreateForm: FC<Props> = ({ data }) => {
               label={'Genres'}
               id={'genres'}
               onValueChange={value =>
-                formik.setFieldValue('genres', [...value])
+                formik.setFieldValue(
+                  'genres',
+                  value.map(item =>
+                    combineGenreList.find(genre => item === genre.name)),
+                )
               }
             />
           </FormItemWrapper>
@@ -216,7 +296,11 @@ export const AnimeEditCreateForm: FC<Props> = ({ data }) => {
               label={'Studios'}
               id={'studios'}
               onValueChange={value =>
-                formik.setFieldValue('studios', [...value])
+                formik.setFieldValue(
+                  'studios',
+                  value.map(item =>
+                    combineStudioList.find(studio => item === studio.name)),
+                )
               }
             />
           </FormItemWrapper>
@@ -228,7 +312,7 @@ export const AnimeEditCreateForm: FC<Props> = ({ data }) => {
           name="synopsis"
           label={'Synopsis'}
         />
-        <LoadingButton variant='contained' type="submit" fullWidth>
+        <LoadingButton variant="contained" type="submit" fullWidth>
           Submit
         </LoadingButton>
       </Form>

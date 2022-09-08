@@ -21,14 +21,3 @@ export const getAnimeDetail = createAsyncThunk(
     }
   },
 );
-
-export const deleteAnime = createAsyncThunk(
-  'anime/deleteAnime',
-  async(id: AnimeDetail['id'], { rejectWithValue }) => {
-    try {
-      return await AnimeService.deleteAnime(id);
-    } catch (error: unknown) {
-      return rejectWithValue(error);
-    }
-  },
-);

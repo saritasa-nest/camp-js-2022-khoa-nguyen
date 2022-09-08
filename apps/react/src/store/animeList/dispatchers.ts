@@ -1,6 +1,7 @@
 import { AnimeDto, PaginationDto } from '@js-camp/core/dtos';
 import { AnimeMapper, PaginationMapper } from '@js-camp/core/mappers';
-import { Anime } from '@js-camp/core/models';
+import { Anime, AnimeDetail } from '@js-camp/core/models';
+import { AnimeEdit } from '@js-camp/core/models/animeEdit';
 import { AnimeQuery } from '@js-camp/core/models/animeQuery';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
@@ -25,6 +26,29 @@ export const getNextAnimeList = createAsyncThunk(
     try {
       const result = await http.get<PaginationDto<AnimeDto>>(url);
       return PaginationMapper.fromDto<AnimeDto, Anime>(result.data, AnimeMapper.fromDto);
+    } catch (error: unknown) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const deleteAnime = createAsyncThunk(
+  'anime/deleteAnime',
+  async(id: AnimeDetail['id'], { rejectWithValue }) => {
+    try {
+      await AnimeService.deleteAnime(id);
+      return id;
+    } catch (error: unknown) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const editAnime = createAsyncThunk(
+  'anime/deleteAnime',
+  async({ id, body }: {id: AnimeEdit['id']; body: AnimeEdit;}, { rejectWithValue }) => {
+    try {
+      return await AnimeService.editAnime(id, body);
     } catch (error: unknown) {
       return rejectWithValue(error);
     }

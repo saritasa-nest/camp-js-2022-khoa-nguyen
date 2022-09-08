@@ -15,13 +15,10 @@ export interface AnimeDetailsStateInner {
   /** Error. */
   readonly error?: string | null;
 
-  /** Whether delete anime is loading or not. */
-  readonly isLoadingDelete: boolean;
 }
 
 export const initialState = entityAdapter.getInitialState<AnimeDetailsStateInner>({
   isLoading: false,
-  isLoadingDelete: false,
 });
 
 export type AnimeDetailsState = typeof initialState;

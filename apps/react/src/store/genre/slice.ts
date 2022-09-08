@@ -9,6 +9,6 @@ export const genresSlice = createSlice({
   reducers: {},
   extraReducers: builder => builder
     .addCase(addGenres.fulfilled, (state, action) => {
-      entityAdapter.addMany(state as GenreState, action.payload);
+      entityAdapter.setAll(state as GenreState, action.payload);
     }),
 });

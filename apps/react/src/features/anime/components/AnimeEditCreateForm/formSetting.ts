@@ -90,8 +90,8 @@ interface AnimeRestType {
   readonly studios: readonly Studio[];
 }
 
-type asdsad = Omit<AnimeValidationSchema, 'genres' | 'studios'>;
-export type AnimeForm = PartialNull<asdsad> & AnimeRestType;
+type OmittedAnimeValidationType = Omit<AnimeValidationSchema, 'genres' | 'studios'>;
+export type AnimeForm = PartialNull<OmittedAnimeValidationType> & AnimeRestType;
 export const INITIAL_CREATE_VALUE: AnimeForm = {
   image: '',
   trailerYoutubeId: '',
@@ -101,8 +101,8 @@ export const INITIAL_CREATE_VALUE: AnimeForm = {
   status: '',
   source: '',
   isAiring: false,
-  startDate: '',
-  endDate: '',
+  startDate: null,
+  endDate: null,
   rating: '',
   season: '',
   synopsis: '',

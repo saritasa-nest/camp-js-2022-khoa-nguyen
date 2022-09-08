@@ -34,3 +34,15 @@ export const selectIsLoadingNextPage = createSelector(
   (state: RootState) => state.animeList.isLoadingNextPage,
   isLoadingNextPage => isLoadingNextPage,
 );
+
+/** Select anime delete loading state. */
+export const setIsDeleteAnimeLoading = createSelector(
+  (state: RootState) => state.animeList.isLoadingDelete,
+  isLoadingDelete => isLoadingDelete,
+);
+
+/** Select anime delete loading state. */
+export const selectErrorDelete = createSelector(
+  (state: RootState) => state.animeList.error,
+  error => error,
+);

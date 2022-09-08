@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 
-import { getAnimeList, getNextAnimeList } from './dispatchers';
+import { deleteAnime, getAnimeList, getNextAnimeList } from './dispatchers';
 
 import { animeAdapter, AnimeState, initialState } from './state';
 
@@ -42,5 +42,21 @@ export const animeListSlice = createSlice({
         state.nextPageUrl = action.payload.next;
         state.totalItems = action.payload.count;
         state.isLoadingNextPage = false;
+      })
+
+      .addCase(deleteAnime.pending, state => {
+        state.error = null;
+        state.isLoadingDelete = true;
+      })
+      .addCase(deleteAnime.fulfilled, (state, { payload: id }) => {
+        animeAdapter.removeOne(state as AnimeState, id);
+        state.error = null;
+        state.isLoadingDelete = false;
+      })
+      .addCase(deleteAnime.rejected, (state, action) => {
+        if (action.error.message) {
+          state.error = `Failed to delete anime due to error: ${action.error.message}`;
+        }
+        state.isLoadingDelete = false;
       }),
 });

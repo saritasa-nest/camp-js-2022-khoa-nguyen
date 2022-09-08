@@ -16,6 +16,12 @@ export interface AnimeState extends EntityState<Anime> {
   /** Next page url from api. */
   readonly nextPageUrl: string | null;
 
+  /** Whether delete anime is loading or not. */
+  readonly isLoadingDelete: boolean;
+
+  /** Error. */
+  readonly error?: string | null;
+
 }
 
 export const animeAdapter = createEntityAdapter<Anime>({
@@ -27,4 +33,6 @@ export const initialState: AnimeState = animeAdapter.getInitialState({
   totalItems: 0,
   nextPageUrl: null,
   isLoadingNextPage: false,
+  isLoadingDelete: false,
+
 });

@@ -1,10 +1,6 @@
 import { Anime } from '@js-camp/core/models';
-import { deleteAnime } from '@js-camp/react/store/anime/dispatchers';
-import {
-  selectErrorDelete,
-  setIsDeleteAnimeLoading,
-} from '@js-camp/react/store/anime/selectors';
-import { getAnimeList } from '@js-camp/react/store/animeList/dispatchers';
+import { deleteAnime } from '@js-camp/react/store/animeList/dispatchers';
+import { selectErrorDelete, setIsDeleteAnimeLoading } from '@js-camp/react/store/animeList/selectors';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { Delete, Edit } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
@@ -34,7 +30,7 @@ const getText = (text: string): string => {
 };
 
 export const AnimeItem: FC<Props> = ({ data }) => {
-  const { searchParams, currentQueryParams } = useQueryParam();
+  const { searchParams } = useQueryParam();
   const { id: currentAnime } = useParams();
   const navigate = useNavigate();
   const [currentId, setCurrentId] = useState<number>();
@@ -63,7 +59,6 @@ export const AnimeItem: FC<Props> = ({ data }) => {
         navigate({ pathname: '/', search: searchParams });
       }
     }
-    await dispatch(getAnimeList(currentQueryParams));
   };
 
   const handleEditAnime = (
