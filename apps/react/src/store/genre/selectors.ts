@@ -11,9 +11,3 @@ export const selectGenres = createSelector(
   (state: RootState) => selectAll(state.genres),
   genres => genres,
 );
-
-/** Selects genres loading state. */
-export const selectIsGenresLoading = createSelector(
-  (state: RootState) => state.genres.isLoading,
-  isLoading => isLoading,
-);

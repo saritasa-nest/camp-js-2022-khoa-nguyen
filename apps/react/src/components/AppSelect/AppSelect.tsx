@@ -67,7 +67,6 @@ export const AppSelect: FC<Props> = ({
       <Select
         value={selectedValue}
         labelId={`select-${props.id}`}
-        sx={{ width: '100%' }}
         onChange={handleChange}
         {...props}
       >

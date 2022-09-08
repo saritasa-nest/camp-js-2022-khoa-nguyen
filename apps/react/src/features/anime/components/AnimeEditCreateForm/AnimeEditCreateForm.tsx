@@ -6,16 +6,21 @@ import {
   Source,
 } from '@js-camp/core/models/animeEdit';
 import { selectGenres } from '@js-camp/react/store/genre/selectors';
-import { useAppSelector } from '@js-camp/react/store/store';
+import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { selectStudios } from '@js-camp/react/store/studios/selectors';
 import { Button, Switch, Typography } from '@mui/material';
 
-import { ErrorMessage, Form, FormikProvider, useFormik } from 'formik';
-import { FC } from 'react';
+import { Form, FormikProvider, useFormik } from 'formik';
+import { FC, useEffect } from 'react';
+
+import { fetchGenres } from '@js-camp/react/store/genreList/dispatchers';
+
+import { selectListGenres } from '@js-camp/react/store/genreList/selectors';
 
 import {
   AppDatePicker,
   AppSelect,
+  AppSelectWithSearch,
   FormInputItem,
   FormItemWrapper,
 } from '../../../../components';
@@ -52,16 +57,19 @@ const getInitialValue = (
   rating: data.rating ?? '',
   season: data.season ?? '',
   synopsis: data.synopsis,
-  studios,
-  genres,
+  studios: studios.filter(item => data.studioIds.includes(item.id)),
+  genres: data?.genresIds.map(item =>
+    genres.find(genre => genre.id === item)) as Genre[],
 });
 
 export const AnimeEditCreateForm: FC<Props> = ({ data }) => {
+  const dispatch = useAppDispatch();
   const handleSubmit = (value: AnimeForm) => {
-    console.log(value);
+    console.warn(value);
   };
 
   const genres = useAppSelector(selectGenres);
+  const genresList = useAppSelector(selectListGenres);
   const studios = useAppSelector(selectStudios);
 
   const formik = useFormik({
@@ -71,6 +79,11 @@ export const AnimeEditCreateForm: FC<Props> = ({ data }) => {
       INITIAL_CREATE_VALUE,
     onSubmit: handleSubmit,
   });
+
+  useEffect(() => {
+    dispatch(fetchGenres(''));
+  }, []);
+
   return (
     <FormikProvider value={formik}>
       <Form>
@@ -138,6 +151,19 @@ export const AnimeEditCreateForm: FC<Props> = ({ data }) => {
             name="season"
             list={Object.values(Season).map(item => ({ value: item }))}
             label={'Season'}
+          />
+          <AppSelectWithSearch
+            onSearchChange={value => dispatch(fetchGenres(value))}
+            onClickAddNewItem={value => {
+              dispatch(fetchGenres(value));
+            }}
+            defaultValue={data?.genresIds.map(
+              item => genres.find(genre => genre.id === item)?.name,
+            )}
+            searchPlaceholder="Search genres. e.g: Action"
+            list={genresList.map(item => ({ value: item.name }))}
+            label={'Genres'}
+            id={'genres'}
           />
         </div>
         <Typography>Airing:</Typography>{' '}
