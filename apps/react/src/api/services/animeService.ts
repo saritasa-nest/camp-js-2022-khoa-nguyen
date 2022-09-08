@@ -1,5 +1,7 @@
 import { AnimeDetailDto, AnimeDto, PaginationDto } from '@js-camp/core/dtos';
-import { AnimeEditDto } from '@js-camp/core/dtos/animeEdit.dto';
+import {
+  AnimeEditDto,
+} from '@js-camp/core/dtos/animeEdit.dto';
 import {
   AnimeDetailMapper,
   AnimeMapper,
@@ -43,7 +45,9 @@ export namespace AnimeService {
     id: AnimeDetail['id'],
     type: 'detail' | 'edit',
   ): Promise<AnimeDetail | AnimeEdit> {
-    const result = await http.get<AnimeDetailDto | AnimeEditDto>(`${ANIME_LIST_URL}${id}/`);
+    const result = await http.get<AnimeDetailDto | AnimeEditDto>(
+      `${ANIME_LIST_URL}${id}/`,
+    );
     if (type === 'detail') {
       return AnimeDetailMapper.fromDto(result.data as AnimeDetailDto);
     }
@@ -59,5 +63,39 @@ export namespace AnimeService {
   ): Promise<AxiosResponse> {
     const result = await http.delete<AxiosResponse>(`${ANIME_LIST_URL}${id}/`);
     return result.data;
+  }
+
+  /**
+   * Edit anime.
+   * @param id Id of anime.
+   * @param body Body of edit.
+   */
+  export async function editAnime(
+    id: AnimeEdit['id'],
+    body: AnimeEdit,
+  ): Promise<AnimeEdit> {
+    const requestBodyDto = AnimeEditMapper.toDto(body);
+    const result = await http.put<AnimeEditDto>(
+      `${ANIME_LIST_URL}${id}/`,
+      requestBodyDto,
+    );
+    return AnimeEditMapper.fromDto(result.data);
+  }
+
+  /**
+   * Create anime.
+   * @param id Id of anime.
+   * @param body Body of create.
+   */
+  export async function createAnime(
+    id: AnimeEdit['id'],
+    body: AnimeEdit,
+  ): Promise<AnimeEdit> {
+    const requestBodyDto = AnimeEditMapper.toDto(body);
+    const result = await http.post<AnimeEditDto>(
+      `${ANIME_LIST_URL}${id}/`,
+      requestBodyDto,
+    );
+    return AnimeEditMapper.fromDto(result.data);
   }
 }

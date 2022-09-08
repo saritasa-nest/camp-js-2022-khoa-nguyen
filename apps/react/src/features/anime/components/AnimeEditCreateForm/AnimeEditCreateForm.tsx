@@ -7,11 +7,6 @@ import {
   Source,
 } from '@js-camp/core/models/animeEdit';
 import { selectGenres } from '@js-camp/react/store/genre/selectors';
-import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
-import { selectStudios } from '@js-camp/react/store/studios/selectors';
-import { Button, Switch, Typography } from '@mui/material';
-import { Form, FormikProvider, useFormik } from 'formik';
-import { FC, useEffect } from 'react';
 import {
   createNewGenre,
   fetchGenres,
@@ -21,17 +16,22 @@ import {
   selectIsGenresListLoading,
   selectListGenres,
 } from '@js-camp/react/store/genreList/selectors';
-
+import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
+import { selectStudios } from '@js-camp/react/store/studios/selectors';
+import {
+  createNewStudio,
+  fetchStudiosList,
+} from '@js-camp/react/store/studiosList/dispatchers';
 import {
   selectIsCreateStudioLoading,
   selectIsStudiosListLoading,
   selectListStudios,
 } from '@js-camp/react/store/studiosList/selectors';
+import { Switch, Typography } from '@mui/material';
+import { Form, FormikProvider, useFormik } from 'formik';
+import { FC, useEffect } from 'react';
 
-import {
-  createNewStudio,
-  fetchStudiosList,
-} from '@js-camp/react/store/studiosList/dispatchers';
+import { LoadingButton } from '@mui/lab';
 
 import {
   AppDatePicker,
@@ -41,12 +41,12 @@ import {
   FormItemWrapper,
 } from '../../../../components';
 
+import styles from './AnimeEditCreateForm.module.css';
 import {
   AnimeForm,
   INITIAL_CREATE_VALUE,
   validationSchema,
 } from './formSetting';
-import styles from './AnimeEditCreateForm.module.css';
 
 interface Props {
 
@@ -228,9 +228,9 @@ export const AnimeEditCreateForm: FC<Props> = ({ data }) => {
           name="synopsis"
           label={'Synopsis'}
         />
-        <Button type="submit" fullWidth>
+        <LoadingButton variant='contained' type="submit" fullWidth>
           Submit
-        </Button>
+        </LoadingButton>
       </Form>
     </FormikProvider>
   );
