@@ -6,17 +6,21 @@ export const entityAdapter = createEntityAdapter<Genre>({
 });
 
 /** Genres state. */
-export interface GenreStateInner {
+interface GenreStateInner {
 
   /** Error. */
   readonly error?: string;
 
   /** Whether the genres are loading or not. */
   readonly isLoading: boolean;
+
+  /** Whether the create genres is loading or not. */
+  readonly isCreateGenreLoading: boolean;
 }
 
 export const initialState = entityAdapter.getInitialState<GenreStateInner>({
-  isLoading: true,
+  isLoading: false,
+  isCreateGenreLoading: false,
 });
 
 export type GenreState = typeof initialState;

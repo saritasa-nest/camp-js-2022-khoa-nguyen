@@ -50,19 +50,23 @@ export const validationSchema: yup.SchemaOf<AnimeValidationSchema> = yup
     status: yup.string().required(REQUIRED_MESSAGE),
     source: yup.string().required(REQUIRED_MESSAGE),
     isAiring: yup.boolean().required(REQUIRED_MESSAGE),
-    startDate: yup.date().required(REQUIRED_MESSAGE)
+    startDate: yup
+      .date()
+      .required(REQUIRED_MESSAGE)
       .nullable()
       .typeError('Please input correct date format.'),
-    endDate: yup.date().required(REQUIRED_MESSAGE)
+    endDate: yup
+      .date()
+      .required(REQUIRED_MESSAGE)
       .nullable()
       .typeError('Please input correct date format.'),
     rating: yup.string().required(REQUIRED_MESSAGE),
     season: yup.string().required(REQUIRED_MESSAGE),
     synopsis: yup.string().required(REQUIRED_MESSAGE),
-    studios: yup.array().required(REQUIRED_MESSAGE)
-      .default([]),
-    genres: yup.array().required(REQUIRED_MESSAGE)
-      .default([]),
+    studios: yup.array().default([])
+      .min(1, REQUIRED_MESSAGE),
+    genres: yup.array().default([])
+      .min(1, REQUIRED_MESSAGE),
   });
 
 interface AnimeRestType {
@@ -86,10 +90,8 @@ interface AnimeRestType {
   readonly studios: readonly Studio[];
 }
 
-export type AnimeForm = PartialNull<
-  Omit<AnimeValidationSchema, 'genres' | 'studios'> & AnimeRestType
->;
-
+type asdsad = Omit<AnimeValidationSchema, 'genres' | 'studios'>;
+export type AnimeForm = PartialNull<asdsad> & AnimeRestType;
 export const INITIAL_CREATE_VALUE: AnimeForm = {
   image: '',
   trailerYoutubeId: '',

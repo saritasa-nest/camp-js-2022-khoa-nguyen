@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 import { Genre, StatusModel, Studio, TypeModel } from '@js-camp/core/models';
 import {
   AnimeEdit,
@@ -9,13 +10,28 @@ import { selectGenres } from '@js-camp/react/store/genre/selectors';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { selectStudios } from '@js-camp/react/store/studios/selectors';
 import { Button, Switch, Typography } from '@mui/material';
-
 import { Form, FormikProvider, useFormik } from 'formik';
 import { FC, useEffect } from 'react';
+import {
+  createNewGenre,
+  fetchGenres,
+} from '@js-camp/react/store/genreList/dispatchers';
+import {
+  selectIsCreateGenreLoading,
+  selectIsGenresListLoading,
+  selectListGenres,
+} from '@js-camp/react/store/genreList/selectors';
 
-import { fetchGenres } from '@js-camp/react/store/genreList/dispatchers';
+import {
+  selectIsCreateStudioLoading,
+  selectIsStudiosListLoading,
+  selectListStudios,
+} from '@js-camp/react/store/studiosList/selectors';
 
-import { selectListGenres } from '@js-camp/react/store/genreList/selectors';
+import {
+  createNewStudio,
+  fetchStudiosList,
+} from '@js-camp/react/store/studiosList/dispatchers';
 
 import {
   AppDatePicker,
@@ -30,7 +46,6 @@ import {
   INITIAL_CREATE_VALUE,
   validationSchema,
 } from './formSetting';
-
 import styles from './AnimeEditCreateForm.module.css';
 
 interface Props {
@@ -57,20 +72,30 @@ const getInitialValue = (
   rating: data.rating ?? '',
   season: data.season ?? '',
   synopsis: data.synopsis,
-  studios: studios.filter(item => data.studioIds.includes(item.id)),
-  genres: data?.genresIds.map(item =>
-    genres.find(genre => genre.id === item)) as Genre[],
+  studios:
+    (data?.studioIds.map(item =>
+      studios.find(studio => studio.id === item)) as Studio[]) ?? [],
+  genres:
+    (data?.genresIds.map(item =>
+      genres.find(genre => genre.id === item)) as Genre[]) ?? [],
 });
 
 export const AnimeEditCreateForm: FC<Props> = ({ data }) => {
   const dispatch = useAppDispatch();
+
+  const isCreateGenreLoading = useAppSelector(selectIsCreateGenreLoading);
+  const isGenreListLoading = useAppSelector(selectIsGenresListLoading);
+  const genres = useAppSelector(selectGenres);
+  const genresList = useAppSelector(selectListGenres);
+
+  const isCreateStudioLoading = useAppSelector(selectIsCreateStudioLoading);
+  const studios = useAppSelector(selectStudios);
+  const isStudiosListLoading = useAppSelector(selectIsStudiosListLoading);
+  const studiosList = useAppSelector(selectListStudios);
+
   const handleSubmit = (value: AnimeForm) => {
     console.warn(value);
   };
-
-  const genres = useAppSelector(selectGenres);
-  const genresList = useAppSelector(selectListGenres);
-  const studios = useAppSelector(selectStudios);
 
   const formik = useFormik({
     validationSchema,
@@ -152,19 +177,49 @@ export const AnimeEditCreateForm: FC<Props> = ({ data }) => {
             list={Object.values(Season).map(item => ({ value: item }))}
             label={'Season'}
           />
-          <AppSelectWithSearch
-            onSearchChange={value => dispatch(fetchGenres(value))}
-            onClickAddNewItem={value => {
-              dispatch(fetchGenres(value));
-            }}
-            defaultValue={data?.genresIds.map(
-              item => genres.find(genre => genre.id === item)?.name,
-            )}
-            searchPlaceholder="Search genres. e.g: Action"
-            list={genresList.map(item => ({ value: item.name }))}
-            label={'Genres'}
-            id={'genres'}
-          />
+          <FormItemWrapper name="genres">
+            <AppSelectWithSearch
+              onSearchChange={value => dispatch(fetchGenres(value))}
+              isCreateLoading={isCreateGenreLoading}
+              isListLoading={isGenreListLoading}
+              onClickAddNewItem={value => {
+                dispatch(createNewGenre(value));
+                dispatch(fetchGenres(value));
+              }}
+              defaultValue={data?.genresIds.map(
+                item => genres.find(genre => genre.id === item)?.name,
+              )}
+              searchPlaceholder="Search genres. e.g: Action"
+              list={genresList.map(item => ({ value: item.name }))}
+              label={'Genres'}
+              id={'genres'}
+              onValueChange={value =>
+                formik.setFieldValue('genres', [...value])
+              }
+            />
+          </FormItemWrapper>
+
+          <FormItemWrapper name="studios">
+            <AppSelectWithSearch
+              onSearchChange={value => dispatch(fetchStudiosList(value))}
+              isCreateLoading={isCreateStudioLoading}
+              isListLoading={isStudiosListLoading}
+              onClickAddNewItem={value => {
+                dispatch(createNewStudio(value));
+                dispatch(fetchStudiosList(value));
+              }}
+              defaultValue={data?.studioIds.map(
+                item => studios.find(studio => studio.id === item)?.name,
+              )}
+              searchPlaceholder="Search studio. e.g: OLM"
+              list={studiosList.map(item => ({ value: item.name }))}
+              label={'Studios'}
+              id={'studios'}
+              onValueChange={value =>
+                formik.setFieldValue('studios', [...value])
+              }
+            />
+          </FormItemWrapper>
         </div>
         <Typography>Airing:</Typography>{' '}
         <FormInputItem as={Switch} name="isAiring" />

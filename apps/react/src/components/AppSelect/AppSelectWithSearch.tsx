@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 import { Cancel } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import {
@@ -13,9 +14,10 @@ import {
   TextField,
 } from '@mui/material';
 import { Stack } from '@mui/system';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { useEffectSkipRender, useSearch } from '../../hooks';
+import { Loading } from '../Loading';
 
 import { SelectItem } from './AppSelect';
 import styles from './AppSelect.module.css';
@@ -34,11 +36,20 @@ interface Props extends SelectProps {
   /** Place holder for search. */
   readonly searchPlaceholder: string;
 
+  /** Whether create new genre is loading or not. */
+  readonly isCreateLoading?: boolean;
+
+  /** Whether list is loading or not. */
+  readonly isListLoading?: boolean;
+
   /** Handle search debounce value change. */
   readonly onSearchChange?: (value: string) => void;
 
-  /** Handle create value change. */
+  /** Handle create value. */
   readonly onClickAddNewItem?: (value: string) => void;
+
+  /** Handle value change. */
+  readonly onValueChange?: (value: readonly string[]) => void;
 }
 
 export const AppSelectWithSearch: FC<Props> = ({
@@ -46,7 +57,10 @@ export const AppSelectWithSearch: FC<Props> = ({
   label,
   id,
   searchPlaceholder,
+  isCreateLoading,
+  isListLoading,
   onSearchChange,
+  onValueChange,
   onClickAddNewItem,
   ...props
 }) => {
@@ -55,9 +69,17 @@ export const AppSelectWithSearch: FC<Props> = ({
   const [value, setValue] = useState<string[]>(_defaultValue ?? []);
   const { inputValue, setInputValue, debounceValue } = useSearch('');
 
+  const listCurrentValue = value.map(item => ({ value: item }));
   const _list =
-    props.defaultValue && !debounceValue ?
-      list.concat(_defaultValue.map(item => ({ value: item }))) :
+    value && !debounceValue ?
+      list
+        .concat(listCurrentValue)
+        .reduce((accumulator: SelectItem[], currentValue) => {
+            if (!accumulator.map(item => item.value).includes(currentValue.value)) {
+              accumulator.push(currentValue);
+            }
+            return accumulator;
+          }, []) :
       list;
   const handleSearchChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -67,6 +89,7 @@ export const AppSelectWithSearch: FC<Props> = ({
 
   const handleChange = (event: SelectChangeEvent<unknown>) => {
     setValue(event.target.value as string[]);
+    onValueChange?.(event.target.value as string[]);
   };
   const handleDelete = (item: string) => () => {
     setValue(prev => prev.filter(_item => _item !== item));
@@ -83,6 +106,10 @@ export const AppSelectWithSearch: FC<Props> = ({
     },
     [debounceValue],
   );
+
+  useEffect(() => {
+    onValueChange?.(value);
+  }, [value]);
 
   return (
     <FormControl>
@@ -114,7 +141,6 @@ export const AppSelectWithSearch: FC<Props> = ({
       >
         <Stack
           className={styles['app-select__search_wrapper']}
-          onClickCapture={e => e.stopPropagation()}
           onKeyDown={e => e.stopPropagation()}
         >
           <TextField
@@ -125,12 +151,12 @@ export const AppSelectWithSearch: FC<Props> = ({
             value={inputValue}
             onChange={handleSearchChange}
           />
-          {_list.length !== 0 &&
-            debounceValue &&
+          {debounceValue &&
             !_list
               .map(item => item.value.toLocaleLowerCase())
-              .includes(debounceValue) && (
+              .includes(debounceValue.toLocaleLowerCase()) && (
               <LoadingButton
+                loading={isCreateLoading}
                 variant="contained"
                 onClick={handleAddNewItem(debounceValue)}
               >
@@ -138,12 +164,14 @@ export const AppSelectWithSearch: FC<Props> = ({
               </LoadingButton>
             )}
         </Stack>
-        {_list.map((item, index) => (
-          <MenuItem value={item.value} key={index}>
-            <Checkbox checked={value.includes(item.value)} />
-            {item.text ?? item.value}
-          </MenuItem>
-        ))}
+        {isListLoading && <Loading isBackdropLoading={false} />}
+        {!isListLoading &&
+          _list.map((item, index) => (
+            <MenuItem value={item.value} key={index}>
+              <Checkbox checked={value.includes(item.value)} />
+              {item.text ?? item.value}
+            </MenuItem>
+          ))}
       </Select>
     </FormControl>
   );

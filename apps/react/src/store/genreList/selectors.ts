@@ -13,7 +13,13 @@ export const selectListGenres = createSelector(
 );
 
 /** Selects genres loading state. */
-export const selectIsGenresLoading = createSelector(
+export const selectIsGenresListLoading = createSelector(
   (state: RootState) => state.genresList.isLoading,
   isLoading => isLoading,
+);
+
+/** Selects create genres loading state. */
+export const selectIsCreateGenreLoading = createSelector(
+  (state: RootState) => state.genresList.isCreateGenreLoading,
+  isCreateGenreLoading => isCreateGenreLoading,
 );
