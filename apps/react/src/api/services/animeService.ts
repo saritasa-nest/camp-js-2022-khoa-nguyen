@@ -1,5 +1,6 @@
 import { AnimeDetailDto, AnimeDto, PaginationDto } from '@js-camp/core/dtos';
 import { AnimeEditDto } from '@js-camp/core/dtos/animeEdit.dto';
+import { S3UploadDto } from '@js-camp/core/dtos/s3Upload';
 import {
   AnimeDetailMapper,
   AnimeMapper,
@@ -14,8 +15,11 @@ import { AxiosResponse } from 'axios';
 
 import { http } from '..';
 
+import { S3CloudService } from './s3CloudService';
+
 export namespace AnimeService {
   const ANIME_LIST_URL = 'anime/anime/';
+  const S3_URL = '/s3direct/get_params/';
 
   /**
    * Get anime pagination.
@@ -91,5 +95,17 @@ export namespace AnimeService {
       requestBodyDto,
     );
     return AnimeEditMapper.fromDto(result.data);
+  }
+
+  /**
+   * Post anime poster to s3 cloud.
+   * @param image Image file.
+   */
+  export async function postAnimePoster(image: File): Promise<string> {
+    const { data } = await http.post<S3UploadDto>(S3_URL, {
+      dest: 'anime_images',
+      filename: image.name,
+    });
+    return S3CloudService.uploadToS3Server(data, image);
   }
 }
