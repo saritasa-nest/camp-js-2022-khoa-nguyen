@@ -43,6 +43,35 @@ interface AnimeValidationSchema {
   readonly genres: string[];
 }
 
+interface AnimeRestType {
+
+  /** Image url. */
+  readonly image: string | null;
+
+  /** Trailer id. */
+  readonly trailerYoutubeId: string | null;
+
+  /** English title. */
+  readonly titleEnglish: string;
+
+  /** Japan title. */
+  readonly titleJapan: string;
+
+  /** Genres. */
+  readonly genres: readonly Genre[];
+
+  /** Studios. */
+  readonly studios: readonly Studio[];
+}
+
+type OmittedAnimeValidationType = Omit<
+  AnimeValidationSchema,
+  'genres' | 'studios'
+>;
+
+export type AnimeFormValidation = PartialNull<OmittedAnimeValidationType> &
+  AnimeRestType;
+
 export const validationSchema: yup.SchemaOf<AnimeValidationSchema> = yup
   .object()
   .shape({
@@ -69,33 +98,6 @@ export const validationSchema: yup.SchemaOf<AnimeValidationSchema> = yup
       .min(1, REQUIRED_MESSAGE),
   });
 
-interface AnimeRestType {
-
-  /** Image url. */
-  readonly image: string | null;
-
-  /** Trailer id. */
-  readonly trailerYoutubeId: string | null;
-
-  /** English title. */
-  readonly titleEnglish: string;
-
-  /** Japan title. */
-  readonly titleJapan: string;
-
-  /** Genres. */
-  readonly genres: readonly Genre[];
-
-  /** Studios. */
-  readonly studios: readonly Studio[];
-}
-
-type OmittedAnimeValidationType = Omit<
-  AnimeValidationSchema,
-  'genres' | 'studios'
->;
-export type AnimeFormValidation = PartialNull<OmittedAnimeValidationType> &
-  AnimeRestType;
 export const INITIAL_CREATE_VALUE: AnimeFormValidation = {
   image: '',
   trailerYoutubeId: '',
