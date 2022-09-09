@@ -53,7 +53,7 @@ export const AnimeDetailPage: FC = () => {
   const studios = useAppSelector(selectStudios);
 
   const handleOpenImage =
-    (url: string, animeTitle: AnimeDetailModel['titleEnglish']) => () => {
+    (url: string, animeTitle: AnimeDetailModel['titleEnglish']) => (): void => {
       setModalOption({
         isOpenModal: true,
         content: <img src={url} alt={animeTitle} />,
@@ -61,7 +61,7 @@ export const AnimeDetailPage: FC = () => {
     };
 
   const handleOpenTrailer =
-    (trailerId: NonNullable<AnimeDetailModel['trailerYoutubeId']>) => () => {
+    (trailerId: NonNullable<AnimeDetailModel['trailerYoutubeId']>) => (): void => {
       const url = 'https://www.youtube.com/embed/';
       setModalOption({
         isOpenModal: true,

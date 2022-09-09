@@ -1,7 +1,7 @@
 import { ErrorMessage } from 'formik';
 import { FC, PropsWithChildren } from 'react';
 
-import style from './FormItem.module.css';
+import style from '../FormItem.module.css';
 
 type Props = PropsWithChildren<{name: string;}>;
 

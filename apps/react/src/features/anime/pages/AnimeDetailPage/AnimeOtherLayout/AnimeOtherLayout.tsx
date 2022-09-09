@@ -1,9 +1,9 @@
 import { Container } from '@mui/material';
 import { FC } from 'react';
 
-import { Loading } from '../../../../components';
+import { Loading } from '../../../../../components';
 
-import style from './AnimeDetail.module.css';
+import style from '../AnimeDetail.module.css';
 
 export const AnimeDetailNoData: FC = () => (
   <div className={style['anime-detail']}>
