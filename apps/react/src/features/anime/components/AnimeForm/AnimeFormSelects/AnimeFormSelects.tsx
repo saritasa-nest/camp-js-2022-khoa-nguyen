@@ -1,4 +1,5 @@
 import { Genre, Studio } from '@js-camp/core/models';
+import { AnimeEdit } from '@js-camp/core/models/animeEdit';
 import {
   createNewGenre,
   fetchGenresList,
@@ -8,15 +9,52 @@ import {
   createNewStudio,
   fetchStudiosList,
 } from '@js-camp/react/store/studiosList/dispatchers';
-import { useEffect } from 'react';
+import { FormikProps } from 'formik';
+import { FC, useEffect, useState } from 'react';
 
 import {
   AppSelectWithSearch,
   FormItemWrapper,
 } from '../../../../../components';
+import { AnimeFormValidation } from '../formSetting';
+import { useAnimeFormData } from '../hooks';
 
-export const AnimeFormSelects = () => {
-  const dispath = useAppDispatch();
+/**
+ * @param ids List ids of genres or studios.
+ * @param list List all genres or studios (fetch from api).
+ */
+function getCurrentList<T extends { id: number; name: string; }>(
+  ids: readonly number[],
+  list: T[],
+): (string | undefined)[] {
+  return ids.map(item => list.find(listItem => listItem.id === item)?.name);
+}
+
+interface Props {
+
+  /** Info of anime selected. */
+  readonly animeInfo?: AnimeEdit;
+
+  /** Formik. */
+  readonly formik: FormikProps<AnimeFormValidation>;
+}
+
+export const AnimeFormSelects: FC<Props> = ({ animeInfo, formik }) => {
+  const dispatch = useAppDispatch();
+  const {
+    isCreateGenreLoading,
+    isGenreListLoading,
+    genres,
+    genresList,
+    isCreateStudioLoading,
+    studios,
+    isStudiosListLoading,
+    studiosList,
+  } = useAnimeFormData();
+
+  const [initialGenreList, setInitialGenreList] = useState<Genre[]>(genresList);
+  const [initialStudioList, setInitialStudioList] =
+    useState<Studio[]>(studiosList);
   useEffect(() => {
     dispatch(fetchGenresList('')).then(result =>
       setInitialGenreList(result.payload as Genre[]));
@@ -30,8 +68,7 @@ export const AnimeFormSelects = () => {
     .concat(studiosList);
 
   return (
-    <div>
-      {' '}
+    <>
       <FormItemWrapper name="genres">
         <AppSelectWithSearch
           onSearchChange={value => dispatch(fetchGenresList(value))}
@@ -76,6 +113,6 @@ export const AnimeFormSelects = () => {
           }
         />
       </FormItemWrapper>
-    </div>
+    </>
   );
 };
