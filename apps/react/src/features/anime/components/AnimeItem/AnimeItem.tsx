@@ -23,10 +23,10 @@ import { AnimePopperDelete } from './AnimePopperDelete';
 interface Props {
 
   /** Anime info. */
-  readonly data: Anime;
+  readonly animeInfo: Anime;
 }
 
-export const AnimeItem: FC<Props> = ({ data }) => {
+export const AnimeItem: FC<Props> = ({ animeInfo }) => {
   const { searchParams } = useQueryParam();
   const { id: currentAnime } = useParams();
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ export const AnimeItem: FC<Props> = ({ data }) => {
   const handleActiveNavLink = ({ isActive }: { isActive: boolean; }) =>
     classNames(
       style['anime-item'],
-      (isActive || String(data.id) === currentAnime) &&
+      (isActive || String(animeInfo.id) === currentAnime) &&
         style['anime-item_active'],
     );
 
@@ -47,16 +47,16 @@ export const AnimeItem: FC<Props> = ({ data }) => {
   const anchorRef = useRef<HTMLButtonElement>(null);
 
   const handleDeleteAnime = async() => {
-    setCurrentId(data.id);
+    setCurrentId(animeInfo.id);
     setIsOpenPopperDelete(false);
-    await dispatch(deleteAnime(data.id));
+    await dispatch(deleteAnime(animeInfo.id));
     if (errorDelete != null) {
       enqueueSnackbar(errorDelete, { variant: 'error' });
     } else {
-      enqueueSnackbar(`Delete anime ${data.titleEnglish} successfully!`, {
+      enqueueSnackbar(`Delete anime ${animeInfo.titleEnglish} successfully!`, {
         variant: 'success',
       });
-      if (currentAnime === String(data.id)) {
+      if (currentAnime === String(animeInfo.id)) {
         navigate({ pathname: '/', search: searchParams });
       }
     }
@@ -66,7 +66,7 @@ export const AnimeItem: FC<Props> = ({ data }) => {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     event.preventDefault();
-    navigate({ pathname: `/edit/${data.id}`, search: searchParams });
+    navigate({ pathname: `/edit/${animeInfo.id}`, search: searchParams });
   };
 
   const handleToggle = (
@@ -83,37 +83,37 @@ export const AnimeItem: FC<Props> = ({ data }) => {
   return (
     <NavLink
       className={handleActiveNavLink}
-      to={`/detail/${data.id}?${searchParams}`}
+      to={`/detail/${animeInfo.id}?${searchParams}`}
     >
-      {data.image == null && (
+      {animeInfo.image == null && (
         <Avatar
-          alt={data.titleEnglish}
+          alt={animeInfo.titleEnglish}
           src={IMAGES.FallbackAvatar}
           className={style['anime-item__thumb']}
         />
       )}
-      {data.image && (
+      {animeInfo.image && (
         <Avatar
-          alt={data.titleEnglish}
-          src={data.image}
+          alt={animeInfo.titleEnglish}
+          src={animeInfo.image}
           className={style['anime-item__thumb']}
         />
       )}
       <Stack className={style['anime-item__content']}>
         <Typography>
-          {TextService.replaceEmptyValue(data.titleEnglish)}
+          {TextService.replaceEmptyValue(animeInfo.titleEnglish)}
         </Typography>
         <Typography>
-          Status: {TextService.replaceEmptyValue(data.status)}
+          Status: {TextService.replaceEmptyValue(animeInfo.status)}
         </Typography>
         <Typography>
-          Type: {TextService.replaceEmptyValue(data.type)}
+          Type: {TextService.replaceEmptyValue(animeInfo.type)}
         </Typography>
       </Stack>
 
       <Stack>
         <LoadingButton
-          loading={currentId === data.id && isLoading}
+          loading={currentId === animeInfo.id && isLoading}
           ref={anchorRef}
           id="composition-button"
           aria-controls={isOpenPopperDelete ? 'composition-menu' : undefined}
