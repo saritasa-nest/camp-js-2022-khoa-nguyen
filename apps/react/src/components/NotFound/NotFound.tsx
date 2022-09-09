@@ -6,7 +6,7 @@ export const NotFound: FC = () => (
   <Stack padding={10}>
     <Typography variant="h1">Page not found</Typography>
     <Typography variant="subtitle1">
-      Look like you entered the url which is not invalid. Please check your url
+      Look like you entered an url which is invalid. Please check your url
       again or <MUILink component={Link} to="/" >Go back to home page</MUILink>
     </Typography>
   </Stack>
