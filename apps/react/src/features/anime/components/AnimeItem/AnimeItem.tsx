@@ -1,6 +1,9 @@
 import { Anime } from '@js-camp/core/models';
 import { deleteAnime } from '@js-camp/react/store/animeList/dispatchers';
-import { selectErrorDelete, setIsDeleteAnimeLoading } from '@js-camp/react/store/animeList/selectors';
+import {
+  selectErrorDelete,
+  setIsDeleteAnimeLoading,
+} from '@js-camp/react/store/animeList/selectors';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { Delete, Edit } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
@@ -11,6 +14,7 @@ import { useSnackbar } from 'notistack';
 import { FC, useRef, useState } from 'react';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 
+import { TextService } from '../../../../api/services/textService';
 import { IMAGES } from '../../../../assets';
 import { useQueryParam } from '../../../../hooks';
 
@@ -22,13 +26,6 @@ interface Props {
   readonly data: Anime;
 }
 
-const getText = (text: string): string => {
-  if (text == null || text === '') {
-    return '--';
-  }
-  return text;
-};
-
 export const AnimeItem: FC<Props> = ({ data }) => {
   const { searchParams } = useQueryParam();
   const { id: currentAnime } = useParams();
@@ -38,7 +35,11 @@ export const AnimeItem: FC<Props> = ({ data }) => {
   const dispatch = useAppDispatch();
 
   const handleActiveNavLink = ({ isActive }: { isActive: boolean; }) =>
-  classNames(style['anime-item'], (isActive || String(data.id) === currentAnime) && style['anime-item_active']);
+    classNames(
+      style['anime-item'],
+      (isActive || String(data.id) === currentAnime) &&
+        style['anime-item_active'],
+    );
 
   const errorDelete = useAppSelector(selectErrorDelete);
   const isLoading = useAppSelector(setIsDeleteAnimeLoading);
@@ -99,9 +100,15 @@ export const AnimeItem: FC<Props> = ({ data }) => {
         />
       )}
       <Stack className={style['anime-item__content']}>
-        <Typography>{getText(data.titleEnglish)}</Typography>
-        <Typography>Status: {getText(data.status)}</Typography>
-        <Typography>Type: {getText(data.type)}</Typography>
+        <Typography>
+          {TextService.replaceEmptyValue(data.titleEnglish)}
+        </Typography>
+        <Typography>
+          Status: {TextService.replaceEmptyValue(data.status)}
+        </Typography>
+        <Typography>
+          Type: {TextService.replaceEmptyValue(data.type)}
+        </Typography>
       </Stack>
 
       <Stack>
