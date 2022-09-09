@@ -17,7 +17,13 @@ export interface AnimeState extends EntityState<Anime> {
   readonly nextPageUrl: string | null;
 
   /** Whether delete anime is loading or not. */
-  readonly isLoadingDelete: boolean;
+  readonly isLoadingDeleteAnime: boolean;
+
+  /** Whether delete anime is loading or not. */
+  readonly isLoadingCreateAnime: boolean;
+
+  /** Whether delete anime is loading or not. */
+  readonly isLoadingUpdateAnime: boolean;
 
   /** Error. */
   readonly error?: string | null;
@@ -33,6 +39,7 @@ export const initialState: AnimeState = animeAdapter.getInitialState({
   totalItems: 0,
   nextPageUrl: null,
   isLoadingNextPage: false,
-  isLoadingDelete: false,
-
+  isLoadingDeleteAnime: false,
+  isLoadingCreateAnime: false,
+  isLoadingUpdateAnime: false,
 });

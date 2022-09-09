@@ -1,6 +1,7 @@
 import { AnimeEdit } from '@js-camp/core/models/animeEdit';
 import { createAnime } from '@js-camp/react/store/animeList/dispatchers';
-import { useAppDispatch } from '@js-camp/react/store/store';
+import { setIsCreateAnimeLoading } from '@js-camp/react/store/animeList/selectors';
+import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { Typography } from '@mui/material';
 
 import { useSnackbar } from 'notistack';
@@ -9,12 +10,13 @@ import { useNavigate } from 'react-router-dom';
 
 import { useQueryParam } from '../../../../hooks';
 
-import { AnimeEditCreateForm } from '../../components/AnimeEditCreateForm';
+import { AnimeForm } from '../../components/AnimeForm';
 
 export const AnimeCreatePage: FC = () => {
   const dispatch = useAppDispatch();
   const { searchParams } = useQueryParam();
   const { enqueueSnackbar } = useSnackbar();
+  const isCreateAnimeLoading = useAppSelector(setIsCreateAnimeLoading);
   const navigate = useNavigate();
 
   const handleSubmit = async(animeEditModel: AnimeEdit) => {
@@ -38,8 +40,13 @@ export const AnimeCreatePage: FC = () => {
   };
   return (
     <>
-      <Typography variant='h1' textAlign="center" marginBottom="30px">CREATE NEW ANIME</Typography>
-      <AnimeEditCreateForm onFormSubmit={handleSubmit} />
+      <Typography variant="h1" textAlign="center" marginBottom="30px">
+        CREATE NEW ANIME
+      </Typography>
+      <AnimeForm
+        isLoading={isCreateAnimeLoading}
+        onFormSubmit={handleSubmit}
+      />
     </>
   );
 };

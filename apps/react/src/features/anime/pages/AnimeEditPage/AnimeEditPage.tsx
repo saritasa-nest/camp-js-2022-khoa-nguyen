@@ -5,6 +5,7 @@ import {
   selectIsAnimeDetailLoading,
 } from '@js-camp/react/store/anime/selectors';
 import { editAnime } from '@js-camp/react/store/animeList/dispatchers';
+import { selectIsUpdateLoading } from '@js-camp/react/store/animeList/selectors';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { Typography } from '@mui/material';
 
@@ -15,7 +16,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { useQueryParam } from '../../../../hooks';
 
-import { AnimeEditCreateForm } from '../../components/AnimeEditCreateForm';
+import { AnimeForm } from '../../components/AnimeForm';
 import {
   AnimeDetailLoading,
   AnimeDetailNoData,
@@ -27,6 +28,7 @@ export const AnimeEditPage: FC = () => {
   const { id: currentAnimeId } = useParams();
   const dispatch = useAppDispatch();
   const isLoading = useSelector(selectIsAnimeDetailLoading);
+  const isEditAnimeLoading = useAppSelector(selectIsUpdateLoading);
   const animeInfo = useAppSelector(state =>
     selectAnimeDetailById(state, currentAnimeId ?? INITIAL_ANIME_ID));
 
@@ -41,10 +43,10 @@ export const AnimeEditPage: FC = () => {
   }, [currentAnimeId]);
 
   const handleSubmit = async(animeEditModel: AnimeEdit) => {
-    const data = animeInfo as AnimeEdit;
+    const _animeInfo = animeInfo as AnimeEdit;
     const result = await dispatch(
       editAnime({
-        id: data.id,
+        id: _animeInfo.id,
         body: animeEditModel,
       }),
     );
@@ -53,12 +55,12 @@ export const AnimeEditPage: FC = () => {
         pathname: `/detail/${result.payload.id}/`,
         search: searchParams,
       });
-      enqueueSnackbar(`Edit anime ${data.titleEnglish} successfully!`, {
+      enqueueSnackbar(`Edit anime ${_animeInfo.titleEnglish} successfully!`, {
         variant: 'success',
       });
       return;
     }
-    enqueueSnackbar(`Failed to edit anime ${data.titleEnglish}!`, {
+    enqueueSnackbar(`Failed to edit anime ${_animeInfo.titleEnglish}!`, {
       variant: 'error',
     });
   };
@@ -76,7 +78,8 @@ export const AnimeEditPage: FC = () => {
       <Typography variant="h1" textAlign="center" marginBottom="30px">
         EDIT ANIME
       </Typography>
-      <AnimeEditCreateForm
+      <AnimeForm
+        isLoading={isEditAnimeLoading}
         animeInfo={animeInfo as AnimeEdit}
         onFormSubmit={handleSubmit}
       />

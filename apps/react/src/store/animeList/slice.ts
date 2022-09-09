@@ -46,28 +46,31 @@ export const animeListSlice = createSlice({
 
       .addCase(deleteAnime.pending, state => {
         state.error = null;
-        state.isLoadingDelete = true;
+        state.isLoadingDeleteAnime = true;
       })
       .addCase(deleteAnime.fulfilled, (state, { payload: id }) => {
         animeAdapter.removeOne(state as AnimeState, id);
         state.error = null;
-        state.isLoadingDelete = false;
+        state.isLoadingDeleteAnime = false;
       })
       .addCase(deleteAnime.rejected, (state, action) => {
         if (action.error.message) {
           state.error = `Failed to delete anime due to error: ${action.error.message}`;
         }
-        state.isLoadingDelete = false;
+        state.isLoadingDeleteAnime = false;
       })
 
       .addCase(editAnime.pending, state => {
         state.error = null;
+        state.isLoadingUpdateAnime = true;
       })
       .addCase(editAnime.fulfilled, (state, action) => {
         animeAdapter.setOne(state as AnimeState, action.payload);
         state.error = null;
+        state.isLoadingUpdateAnime = false;
       })
       .addCase(editAnime.rejected, (state, action) => {
+        state.isLoadingUpdateAnime = false;
         if (action.error.message) {
           state.error = `Failed to edit anime due to error: ${action.error.message}`;
         }
@@ -75,12 +78,15 @@ export const animeListSlice = createSlice({
 
       .addCase(createAnime.pending, state => {
         state.error = null;
+        state.isLoadingCreateAnime = true;
       })
       .addCase(createAnime.fulfilled, (state, action) => {
         animeAdapter.addOne(state as AnimeState, action.payload);
+        state.isLoadingCreateAnime = false;
         state.error = null;
       })
       .addCase(createAnime.rejected, (state, action) => {
+        state.isLoadingCreateAnime = false;
         if (action.error.message) {
           state.error = `Failed to create anime due to error: ${action.error.message}`;
         }

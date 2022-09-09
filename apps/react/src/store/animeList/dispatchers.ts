@@ -10,7 +10,7 @@ import { http } from '../../api';
 import { AnimeService } from '../../api/services/animeService';
 
 export const getAnimeList = createAsyncThunk(
-  'anime/getAnimeList',
+  'animeList/getAnimeList',
   async(param: AnimeQuery, { rejectWithValue }) => {
     try {
       return (await AnimeService.getAnimeList(param));
@@ -21,7 +21,7 @@ export const getAnimeList = createAsyncThunk(
 );
 
 export const getNextAnimeList = createAsyncThunk(
-  'anime/getAnimeListNext',
+  'animeList/getAnimeListNext',
   async(url: string, { rejectWithValue }) => {
     try {
       const result = await http.get<PaginationDto<AnimeDto>>(url);
@@ -33,7 +33,7 @@ export const getNextAnimeList = createAsyncThunk(
 );
 
 export const deleteAnime = createAsyncThunk(
-  'anime/deleteAnime',
+  'animeList/deleteAnime',
   async(id: AnimeDetail['id'], { rejectWithValue }) => {
     try {
       await AnimeService.deleteAnime(id);
@@ -45,7 +45,7 @@ export const deleteAnime = createAsyncThunk(
 );
 
 export const editAnime = createAsyncThunk(
-  'anime/editAnime',
+  'animeList/editAnime',
   async({ id, body }: {id: AnimeEdit['id']; body: AnimeEdit;}, { rejectWithValue }) => {
     try {
       return await AnimeService.editAnime(id, body);
@@ -56,7 +56,7 @@ export const editAnime = createAsyncThunk(
 );
 
 export const createAnime = createAsyncThunk(
-  'anime/createAnime',
+  'animeList/createAnime',
   async(body: AnimeEdit, { rejectWithValue }) => {
     try {
       return await AnimeService.createAnime(body);
@@ -64,4 +64,9 @@ export const createAnime = createAsyncThunk(
       return rejectWithValue(error);
     }
   },
+);
+
+export const postAnimePoster = createAsyncThunk(
+  'animeList/postAnimePoster',
+  (poster: File) => AnimeService.postAnimePoster(poster),
 );

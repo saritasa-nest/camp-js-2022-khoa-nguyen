@@ -1,0 +1,5 @@
+.app-select-image__image {
+  height: 100%;
+  object-fit: cover;
+  overflow: hidden;
+}

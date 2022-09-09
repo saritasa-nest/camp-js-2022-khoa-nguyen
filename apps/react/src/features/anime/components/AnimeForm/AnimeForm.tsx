@@ -1,5 +1,6 @@
 import { Genre, Studio } from '@js-camp/core/models';
 import { AnimeEdit } from '@js-camp/core/models/animeEdit';
+import { postAnimePoster } from '@js-camp/react/store/animeList/dispatchers';
 import {
   createNewGenre,
   fetchGenresList,
@@ -12,18 +13,20 @@ import {
 import { LoadingButton } from '@mui/lab';
 import { Switch, Typography } from '@mui/material';
 import { Form, FormikProvider, useFormik } from 'formik';
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import {
+  AppDatePicker,
+  AppSelectImage,
   AppSelectWithSearch,
   FormInputItem,
   FormItemWrapper,
 } from '../../../../components';
 
-import styles from './AnimeEditCreateForm.module.css';
+import styles from './AnimeForm.module.css';
 import { AnimeFormSimpleInputs } from './AnimeFormSimpleInputs';
 import {
-  AnimeForm,
+  AnimeFormValidation,
   getInitialValue,
   INITIAL_CREATE_VALUE,
   validationSchema,
@@ -38,6 +41,9 @@ interface Props {
 
   /** Handle form submit. */
   readonly onFormSubmit: (value: AnimeEdit) => void;
+
+  /** Whether form is loading or not. */
+  readonly isLoading: boolean;
 }
 
 /**
@@ -51,8 +57,14 @@ function getCurrentList<T extends { id: number; name: string; }>(
   return ids.map(item => list.find(listItem => listItem.id === item)?.name);
 }
 
-export const AnimeEditCreateForm: FC<Props> = ({ animeInfo, onFormSubmit }) => {
+// eslint-disable-next-line max-lines-per-function
+export const AnimeForm: FC<Props> = ({
+  animeInfo,
+  onFormSubmit,
+  isLoading,
+}) => {
   const dispatch = useAppDispatch();
+  const [poster, setPoster] = useState<File>();
 
   const {
     isCreateGenreLoading,
@@ -64,10 +76,21 @@ export const AnimeEditCreateForm: FC<Props> = ({ animeInfo, onFormSubmit }) => {
     isStudiosListLoading,
     studiosList,
   } = useAnimeFormData();
+  const [initialGenreList, setInitialGenreList] = useState<Genre[]>(genresList);
+  const [initialStudioList, setInitialStudioList] = useState<Studio[]>(studiosList);
 
-  const handleSubmit = (value: AnimeForm) => {
-    const animeEditModel = AnimeFormMapper.fromFormValue(value);
-    onFormSubmit(animeEditModel);
+  const handleSubmit = (value: AnimeFormValidation) => {
+    if (!poster) {
+      onFormSubmit(AnimeFormMapper.fromFormValue(value));
+      return;
+    }
+    dispatch(postAnimePoster(poster)).then(result => {
+      if (typeof result.payload === 'string') {
+        onFormSubmit(
+          AnimeFormMapper.fromFormValue({ ...value, image: result.payload }),
+        );
+      }
+    });
   };
   const formik = useFormik({
     validationSchema,
@@ -78,18 +101,50 @@ export const AnimeEditCreateForm: FC<Props> = ({ animeInfo, onFormSubmit }) => {
   });
 
   useEffect(() => {
-    dispatch(fetchGenresList(''));
-    dispatch(fetchStudiosList(''));
+    dispatch(fetchGenresList('')).then(result => setInitialGenreList(result.payload as Genre[]));
+    dispatch(fetchStudiosList('')).then(result => setInitialStudioList(result.payload as Studio[]));
   }, []);
 
-  const combineGenreList = genresList.concat(genres);
-  const combineStudioList = studiosList.concat(studios);
+  const combineGenreList = initialGenreList.concat(genres).concat(genresList);
+  const combineStudioList = initialStudioList.concat(studios).concat(studiosList);
 
   return (
     <FormikProvider value={formik}>
       <Form>
+        <FormItemWrapper name="image">
+          <AppSelectImage
+            defaultImageLink={formik.initialValues.image}
+            onImageChange={setPoster}
+          />
+        </FormItemWrapper>
         <div className={styles['anime-edit__form']}>
           <AnimeFormSimpleInputs />
+          <FormItemWrapper name="startDate">
+            <AppDatePicker
+              label={'Start date'}
+              defaultValue={
+                formik.initialValues.startDate !== '' ?
+                  formik.initialValues.startDate :
+                  null
+              }
+              onFormChange={(newDate: Date | null) => {
+                formik.setFieldValue('startDate', newDate);
+              }}
+            />
+          </FormItemWrapper>
+          <FormItemWrapper name="endDate">
+            <AppDatePicker
+              label={'End date'}
+              defaultValue={
+                formik.initialValues.endDate !== '' ?
+                  formik.initialValues.endDate :
+                  null
+              }
+              onFormChange={(newDate: Date | null) => {
+                formik.setFieldValue('endDate', newDate);
+              }}
+            />
+          </FormItemWrapper>
           <FormItemWrapper name="genres">
             <AppSelectWithSearch
               onSearchChange={value => dispatch(fetchGenresList(value))}
@@ -112,7 +167,6 @@ export const AnimeEditCreateForm: FC<Props> = ({ animeInfo, onFormSubmit }) => {
               }
             />
           </FormItemWrapper>
-
           <FormItemWrapper name="studios">
             <AppSelectWithSearch
               onSearchChange={value => dispatch(fetchStudiosList(value))}
@@ -144,7 +198,12 @@ export const AnimeEditCreateForm: FC<Props> = ({ animeInfo, onFormSubmit }) => {
           name="synopsis"
           label={'Synopsis'}
         />
-        <LoadingButton variant="contained" type="submit" fullWidth>
+        <LoadingButton
+          loading={isLoading}
+          variant="contained"
+          type="submit"
+          fullWidth
+        >
           {animeInfo != null ? 'Update' : 'Create'}
         </LoadingButton>
       </Form>

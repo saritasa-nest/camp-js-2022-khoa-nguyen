@@ -4,7 +4,7 @@ import { DateRange } from '@js-camp/core/models/dateRange';
 
 import { isFieldsDefined } from '../../../../guards';
 
-import { AnimeForm } from './formSetting';
+import { AnimeFormValidation } from './formSetting';
 
 export namespace AnimeFormMapper {
 
@@ -12,7 +12,7 @@ export namespace AnimeFormMapper {
    * Map from form value to model.
    * @param value Form value.
    */
-  export function fromFormValue(value: AnimeForm): AnimeEdit {
+  export function fromFormValue(value: AnimeFormValidation): AnimeEdit {
     if (!isFieldsDefined(value)) {
       throw new Error('Invalid anime form value.');
     }

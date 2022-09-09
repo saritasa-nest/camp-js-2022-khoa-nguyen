@@ -92,8 +92,8 @@ interface AnimeRestType {
 }
 
 type OmittedAnimeValidationType = Omit<AnimeValidationSchema, 'genres' | 'studios'>;
-export type AnimeForm = PartialNull<OmittedAnimeValidationType> & AnimeRestType;
-export const INITIAL_CREATE_VALUE: AnimeForm = {
+export type AnimeFormValidation = PartialNull<OmittedAnimeValidationType> & AnimeRestType;
+export const INITIAL_CREATE_VALUE: AnimeFormValidation = {
   image: '',
   trailerYoutubeId: '',
   titleEnglish: '',
@@ -115,8 +115,8 @@ export const getInitialValue = (
   data: AnimeEdit,
   genres: Genre[],
   studios: Studio[],
-): AnimeForm => ({
-  image: data.image,
+): AnimeFormValidation => ({
+  image: data.image ?? null,
   trailerYoutubeId: data.trailerYoutubeId ?? '',
   titleEnglish: data.titleEnglish,
   titleJapan: data.titleJapan,

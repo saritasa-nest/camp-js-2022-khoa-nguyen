@@ -5,3 +5,4 @@ export * from './Loading';
 export * from './AppSelect';
 export * from './FormItem';
 export * from './AppDatePicker';
+export * from './AppSelectImage';
