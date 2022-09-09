@@ -1,51 +1,36 @@
-/* eslint-disable max-lines-per-function */
-import { StatusModel, TypeModel } from '@js-camp/core/models';
+import { Genre, Studio } from '@js-camp/core/models';
 import {
   AnimeEdit,
-  Rating,
-  Season,
-  Source,
 } from '@js-camp/core/models/animeEdit';
-import { selectGenres } from '@js-camp/react/store/genre/selectors';
 import {
-  createNewGenre, fetchGenresList,
+  createNewGenre,
+  fetchGenresList,
 } from '@js-camp/react/store/genreList/dispatchers';
-import {
-  selectIsCreateGenreLoading,
-  selectIsGenresListLoading,
-  selectListGenres,
-} from '@js-camp/react/store/genreList/selectors';
-import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
-import { selectStudios } from '@js-camp/react/store/studios/selectors';
+import { useAppDispatch } from '@js-camp/react/store/store';
 import {
   createNewStudio,
   fetchStudiosList,
 } from '@js-camp/react/store/studiosList/dispatchers';
-import {
-  selectIsCreateStudioLoading,
-  selectIsStudiosListLoading,
-  selectListStudios,
-} from '@js-camp/react/store/studiosList/selectors';
 import { LoadingButton } from '@mui/lab';
 import { Switch, Typography } from '@mui/material';
 import { Form, FormikProvider, useFormik } from 'formik';
 import { FC, useEffect } from 'react';
 
 import {
-  AppDatePicker,
-  AppSelect,
   AppSelectWithSearch,
   FormInputItem,
   FormItemWrapper,
 } from '../../../../components';
 
 import styles from './AnimeEditCreateForm.module.css';
+import { AnimeFormSimpleInputs } from './AnimeFormSimpleInputs';
 import {
   AnimeForm,
   getInitialValue,
   INITIAL_CREATE_VALUE,
   validationSchema,
 } from './formSetting';
+import { useAnimeFormData } from './hooks';
 import { AnimeFormMapper } from './mapper';
 
 interface Props {
@@ -57,18 +42,30 @@ interface Props {
   readonly onFormSubmit: (value: AnimeEdit) => void;
 }
 
+/**
+ * @param ids List ids of genres or studios.
+ * @param list List all genres or studios (fetch from api).
+ */
+function getCurrentList<T extends { id: number; name: string; }>(
+  ids: readonly number[],
+  list: T[],
+): (string | undefined)[] {
+  return ids.map(item => list.find(listItem => listItem.id === item)?.name);
+}
+
 export const AnimeEditCreateForm: FC<Props> = ({ data, onFormSubmit }) => {
   const dispatch = useAppDispatch();
 
-  const isCreateGenreLoading = useAppSelector(selectIsCreateGenreLoading);
-  const isGenreListLoading = useAppSelector(selectIsGenresListLoading);
-  const genres = useAppSelector(selectGenres);
-  const genresList = useAppSelector(selectListGenres);
-
-  const isCreateStudioLoading = useAppSelector(selectIsCreateStudioLoading);
-  const studios = useAppSelector(selectStudios);
-  const isStudiosListLoading = useAppSelector(selectIsStudiosListLoading);
-  const studiosList = useAppSelector(selectListStudios);
+  const {
+    isCreateGenreLoading,
+    isGenreListLoading,
+    genres,
+    genresList,
+    isCreateStudioLoading,
+    studios,
+    isStudiosListLoading,
+    studiosList,
+  } = useAnimeFormData();
 
   const handleSubmit = (value: AnimeForm) => {
     const animeEditModel = AnimeFormMapper.fromFormValue(value);
@@ -94,79 +91,16 @@ export const AnimeEditCreateForm: FC<Props> = ({ data, onFormSubmit }) => {
     <FormikProvider value={formik}>
       <Form>
         <div className={styles['anime-edit__form']}>
-          <FormInputItem label={'Title English'} name={'titleEnglish'} />
-          <FormInputItem label={'Title Japanese'} name={'titleJapan'} />
-          <FormInputItem
-            label={'Trailer Youtube ID'}
-            name={'trailerYoutubeId'}
-          />
-          <FormInputItem
-            as={AppSelect}
-            name="type"
-            list={Object.values(TypeModel).map(item => ({ value: item }))}
-            label={'Type'}
-          />
-          <FormInputItem
-            as={AppSelect}
-            name="status"
-            list={Object.values(StatusModel).map(item => ({ value: item }))}
-            label={'Status'}
-          />
-          <FormInputItem
-            as={AppSelect}
-            name="source"
-            list={Object.values(Source).map(item => ({ value: item }))}
-            label={'Source'}
-          />
-
-          <FormItemWrapper name="startDate">
-            <AppDatePicker
-              label={'Start date'}
-              defaultValue={
-                formik.initialValues.startDate !== '' ?
-                  formik.initialValues.startDate :
-                  null
-              }
-              onFormChange={(newDate: Date | null) => {
-                formik.setFieldValue('startDate', newDate);
-              }}
-            />
-          </FormItemWrapper>
-
-          <FormItemWrapper name="endDate">
-            <AppDatePicker
-              label={'End date'}
-              defaultValue={
-                formik.initialValues.endDate !== '' ?
-                  formik.initialValues.endDate :
-                  null
-              }
-              onFormChange={(newDate: Date | null) => {
-                formik.setFieldValue('endDate', newDate);
-              }}
-            />
-          </FormItemWrapper>
-          <FormInputItem
-            as={AppSelect}
-            name="rating"
-            list={Object.values(Rating).map(item => ({ value: item }))}
-            label={'Rating'}
-          />
-          <FormInputItem
-            as={AppSelect}
-            name="season"
-            list={Object.values(Season).map(item => ({ value: item }))}
-            label={'Season'}
-          />
+          <AnimeFormSimpleInputs/>
           <FormItemWrapper name="genres">
             <AppSelectWithSearch
               onSearchChange={value => dispatch(fetchGenresList(value))}
               isCreateLoading={isCreateGenreLoading}
               isListLoading={isGenreListLoading}
               onClickAddNewItem={value => dispatch(createNewGenre(value))}
-              defaultValue={data?.genresIds.map(
-                item => genres.find(genre => genre.id === item)?.name,
-              )}
+              defaultValue={
+                data && getCurrentList<Genre>(data.genresIds, genres)
+              }
               searchPlaceholder="Search genres. e.g: Action"
               list={genresList.map(item => ({ value: item.name }))}
               label={'Genres'}
@@ -187,9 +121,9 @@ export const AnimeEditCreateForm: FC<Props> = ({ data, onFormSubmit }) => {
               isCreateLoading={isCreateStudioLoading}
               isListLoading={isStudiosListLoading}
               onClickAddNewItem={value => dispatch(createNewStudio(value))}
-              defaultValue={data?.studioIds.map(
-                item => studios.find(studio => studio.id === item)?.name,
-              )}
+              defaultValue={
+                data && getCurrentList<Studio>(data.studioIds, studios)
+              }
               searchPlaceholder="Search studio. e.g: OLM"
               list={studiosList.map(item => ({ value: item.name }))}
               label={'Studios'}
@@ -212,7 +146,7 @@ export const AnimeEditCreateForm: FC<Props> = ({ data, onFormSubmit }) => {
           label={'Synopsis'}
         />
         <LoadingButton variant="contained" type="submit" fullWidth>
-          Submit
+          {data != null ? 'Update' : 'Create'}
         </LoadingButton>
       </Form>
     </FormikProvider>

@@ -6,6 +6,7 @@ import {
 } from '@js-camp/react/store/anime/selectors';
 import { editAnime } from '@js-camp/react/store/animeList/dispatchers';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
+import { Typography } from '@mui/material';
 
 import { useSnackbar } from 'notistack';
 import { FC, useEffect } from 'react';
@@ -71,9 +72,14 @@ export const AnimeEditPage: FC = () => {
   }
 
   return (
-    <AnimeEditCreateForm
-      data={animeInfo as AnimeEdit}
-      onFormSubmit={handleSubmit}
-    />
+    <>
+      <Typography variant="h1" textAlign="center" marginBottom="30px">
+        EDIT ANIME
+      </Typography>
+      <AnimeEditCreateForm
+        data={animeInfo as AnimeEdit}
+        onFormSubmit={handleSubmit}
+      />
+    </>
   );
 };
