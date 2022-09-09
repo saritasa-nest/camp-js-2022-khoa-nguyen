@@ -17,7 +17,7 @@ import {
   FormItemWrapper,
 } from '../../../../../components';
 import { AnimeFormValidation } from '../formSetting';
-import { useAnimeFormData } from '../hooks';
+import { useAnimeFormSelectors } from '../hooks';
 
 /**
  * @param ids List ids of genres or studios.
@@ -50,7 +50,7 @@ export const AnimeFormSelects: FC<Props> = ({ animeInfo, formik }) => {
     studios,
     isStudiosListLoading,
     studiosList,
-  } = useAnimeFormData();
+  } = useAnimeFormSelectors();
 
   const [initialGenreList, setInitialGenreList] = useState<Genre[]>(genresList);
   const [initialStudioList, setInitialStudioList] =

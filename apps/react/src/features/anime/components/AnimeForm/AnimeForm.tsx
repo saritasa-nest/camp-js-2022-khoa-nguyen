@@ -22,7 +22,7 @@ import {
   INITIAL_CREATE_VALUE,
   validationSchema,
 } from './formSetting';
-import { useAnimeFormData } from './hooks';
+import { useAnimeFormSelectors } from './hooks';
 import { AnimeFormMapper } from './mapper';
 
 interface Props {
@@ -39,12 +39,12 @@ interface Props {
 
 export const AnimeForm: FC<Props> = ({
   animeInfo,
-  onFormSubmit,
   isLoading,
+  onFormSubmit,
 }) => {
   const dispatch = useAppDispatch();
   const [poster, setPoster] = useState<File>();
-  const { genres, studios } = useAnimeFormData();
+  const { genres, studios } = useAnimeFormSelectors();
 
   const handleSubmit = (value: AnimeFormValidation) => {
     if (!poster) {

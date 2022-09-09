@@ -12,7 +12,7 @@ import {
   selectListStudios,
 } from '@js-camp/react/store/studiosList/selectors';
 
-export const useAnimeFormData = () => {
+export const useAnimeFormSelectors = () => {
   const isCreateGenreLoading = useAppSelector(selectIsCreateGenreLoading);
   const isGenreListLoading = useAppSelector(selectIsGenresListLoading);
   const genres = useAppSelector(selectGenres);
@@ -31,6 +31,6 @@ export const useAnimeFormData = () => {
     studios,
     isStudiosListLoading,
     studiosList,
-  };
+  } as const;
   return animeFormData;
 };
