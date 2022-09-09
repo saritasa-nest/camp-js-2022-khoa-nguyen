@@ -1,5 +1,4 @@
 import { Genre, Studio } from '@js-camp/core/models';
-import { AnimeEdit } from '@js-camp/core/models/animeEdit';
 import * as yup from 'yup';
 
 const REQUIRED_MESSAGE = 'This field is required.';
@@ -91,8 +90,12 @@ interface AnimeRestType {
   readonly studios: readonly Studio[];
 }
 
-type OmittedAnimeValidationType = Omit<AnimeValidationSchema, 'genres' | 'studios'>;
-export type AnimeFormValidation = PartialNull<OmittedAnimeValidationType> & AnimeRestType;
+type OmittedAnimeValidationType = Omit<
+  AnimeValidationSchema,
+  'genres' | 'studios'
+>;
+export type AnimeFormValidation = PartialNull<OmittedAnimeValidationType> &
+  AnimeRestType;
 export const INITIAL_CREATE_VALUE: AnimeFormValidation = {
   image: '',
   trailerYoutubeId: '',
@@ -110,29 +113,3 @@ export const INITIAL_CREATE_VALUE: AnimeFormValidation = {
   studios: [],
   genres: [],
 };
-
-export const getInitialValue = (
-  data: AnimeEdit,
-  genres: Genre[],
-  studios: Studio[],
-): AnimeFormValidation => ({
-  image: data.image ?? null,
-  trailerYoutubeId: data.trailerYoutubeId ?? '',
-  titleEnglish: data.titleEnglish,
-  titleJapan: data.titleJapan,
-  type: data.type,
-  status: data.status ?? '',
-  source: data.source ?? '',
-  isAiring: data.isAiring,
-  startDate: data.aired.start ? data.aired.start : null,
-  endDate: data.aired.end ? data.aired.end : null,
-  rating: data.rating ?? '',
-  season: data.season ?? '',
-  synopsis: data.synopsis,
-  studios:
-    (data?.studioIds.map(item =>
-      studios.find(studio => studio.id === item)) as Studio[]) ?? [],
-  genres:
-    (data?.genresIds.map(item =>
-      genres.find(genre => genre.id === item)) as Genre[]) ?? [],
-});

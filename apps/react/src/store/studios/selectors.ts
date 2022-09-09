@@ -11,9 +11,3 @@ export const selectStudios = createSelector(
   (state: RootState) => selectAll(state.studios),
   studios => studios,
 );
-
-/** Selects studios loading state. */
-export const selectIsStudiosLoading = createSelector(
-  (state: RootState) => state.studios.isLoading,
-  isLoading => isLoading,
-);

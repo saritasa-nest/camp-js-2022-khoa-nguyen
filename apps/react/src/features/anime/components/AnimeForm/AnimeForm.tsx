@@ -18,7 +18,6 @@ import { AnimeFormSelects } from './AnimeFormSelects';
 import { AnimeFormSimpleInputs } from './AnimeFormSimpleInputs/AnimeFormSimpleInputs';
 import {
   AnimeFormValidation,
-  getInitialValue,
   INITIAL_CREATE_VALUE,
   validationSchema,
 } from './formSetting';
@@ -42,11 +41,12 @@ export const AnimeForm: FC<Props> = ({
   isLoading,
   onFormSubmit,
 }) => {
+
   const dispatch = useAppDispatch();
   const [poster, setPoster] = useState<File>();
   const { genres, studios } = useAnimeFormSelectors();
 
-  const handleSubmit = (value: AnimeFormValidation) => {
+  const handleSubmit = (value: AnimeFormValidation): void => {
     if (!poster) {
       onFormSubmit(AnimeFormMapper.fromFormValue(value));
       return;
@@ -59,10 +59,11 @@ export const AnimeForm: FC<Props> = ({
       }
     });
   };
+
   const formik = useFormik({
     validationSchema,
     initialValues: animeInfo ?
-      getInitialValue(animeInfo, genres, studios) :
+      AnimeFormMapper.toAnimeFormValues(animeInfo, genres, studios) :
       INITIAL_CREATE_VALUE,
     onSubmit: handleSubmit,
   });

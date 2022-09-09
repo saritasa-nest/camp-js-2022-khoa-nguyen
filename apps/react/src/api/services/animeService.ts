@@ -39,6 +39,20 @@ export namespace AnimeService {
   }
 
   /**
+   * Get anime next page.
+   * @param url Url of next page.
+   */
+  export async function getNextAnimeList(
+    url: string,
+  ): Promise<Pagination<Anime>> {
+    const result = await http.get<PaginationDto<AnimeDto>>(url);
+    return PaginationMapper.fromDto<AnimeDto, Anime>(
+      result.data,
+      AnimeMapper.fromDto,
+    );
+  }
+
+  /**
    * Get anime detail.
    * @param id Id of anime.
    * @param type Type of query.

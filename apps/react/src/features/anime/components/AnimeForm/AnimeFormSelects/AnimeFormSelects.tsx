@@ -55,6 +55,7 @@ export const AnimeFormSelects: FC<Props> = ({ animeInfo, formik }) => {
   const [initialGenreList, setInitialGenreList] = useState<Genre[]>(genresList);
   const [initialStudioList, setInitialStudioList] =
     useState<Studio[]>(studiosList);
+
   useEffect(() => {
     dispatch(fetchGenresList('')).then(result =>
       setInitialGenreList(result.payload as Genre[]));
@@ -74,6 +75,7 @@ export const AnimeFormSelects: FC<Props> = ({ animeInfo, formik }) => {
           onSearchChange={value => dispatch(fetchGenresList(value))}
           isCreateLoading={isCreateGenreLoading}
           isListLoading={isGenreListLoading}
+          buttonCreateNewText="Add new genre:"
           onClickAddNewItem={value => dispatch(createNewGenre(value))}
           defaultValue={
             animeInfo && getCurrentList<Genre>(animeInfo.genresIds, genres)
@@ -93,6 +95,7 @@ export const AnimeFormSelects: FC<Props> = ({ animeInfo, formik }) => {
       </FormItemWrapper>
       <FormItemWrapper name="studios">
         <AppSelectWithSearch
+          buttonCreateNewText="Add new studio:"
           onSearchChange={value => dispatch(fetchStudiosList(value))}
           isCreateLoading={isCreateStudioLoading}
           isListLoading={isStudiosListLoading}

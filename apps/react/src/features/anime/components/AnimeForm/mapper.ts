@@ -1,4 +1,4 @@
-import { StatusModel, TypeModel } from '@js-camp/core/models';
+import { Genre, StatusModel, Studio, TypeModel } from '@js-camp/core/models';
 import { AnimeEdit, Rating, Season, Source } from '@js-camp/core/models/animeEdit';
 import { DateRange } from '@js-camp/core/models/dateRange';
 
@@ -36,4 +36,39 @@ export namespace AnimeFormMapper {
       genresIds: value.genres.map(item => item.id),
     });
   }
+
+  /**
+   * Map from anime model to form values.
+   * @param anime Current anime info.
+   * @param genres List initial genres.
+   * @param studios List initial studios.
+   */
+  export function toAnimeFormValues(
+    anime: AnimeEdit,
+    genres: Genre[],
+    studios: Studio[],
+  ): AnimeFormValidation {
+    return {
+      image: anime.image ?? null,
+      trailerYoutubeId: anime.trailerYoutubeId ?? '',
+      titleEnglish: anime.titleEnglish,
+      titleJapan: anime.titleJapan,
+      type: anime.type,
+      status: anime.status ?? '',
+      source: anime.source ?? '',
+      isAiring: anime.isAiring,
+      startDate: anime.aired.start ? anime.aired.start : null,
+      endDate: anime.aired.end ? anime.aired.end : null,
+      rating: anime.rating ?? '',
+      season: anime.season ?? '',
+      synopsis: anime.synopsis,
+      studios:
+      (anime?.studioIds.map(item =>
+        studios.find(studio => studio.id === item)) as Studio[]) ?? [],
+      genres:
+      (anime?.genresIds.map(item =>
+        genres.find(genre => genre.id === item)) as Genre[]) ?? [],
+    };
+  }
+
 }

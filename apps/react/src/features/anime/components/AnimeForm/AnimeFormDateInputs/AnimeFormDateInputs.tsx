@@ -25,8 +25,8 @@ export const AnimeFormDateInputs: FC<Props> = ({ formik }) => (
         label={'Start date'}
         defaultValue={getDefaultDate(formik.initialValues.startDate)}
         onDateChange={(newDate: Date | null) => {
-                formik.setFieldValue('startDate', newDate);
-              }}
+          formik.setFieldValue('startDate', newDate);
+        }}
       />
     </FormItemWrapper>
     <FormItemWrapper name="endDate">
@@ -34,8 +34,8 @@ export const AnimeFormDateInputs: FC<Props> = ({ formik }) => (
         label={'End date'}
         defaultValue={getDefaultDate(formik.initialValues.endDate)}
         onDateChange={(newDate: Date | null) => {
-                formik.setFieldValue('endDate', newDate);
-              }}
+          formik.setFieldValue('endDate', newDate);
+        }}
       />
     </FormItemWrapper>
   </>

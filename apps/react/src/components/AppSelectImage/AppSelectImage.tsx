@@ -19,7 +19,7 @@ export const AppSelectImage: FC<Props> = ({
   const [file, setFile] = useState<File>();
   const [imageUrl, setImageUrl] = useState<string | ArrayBuffer | null>(defaultImageLink);
 
-  const handleUploadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUploadFile = (event: React.ChangeEvent<HTMLInputElement>): void => {
     if (event.target.files == null) {
       return;
     }

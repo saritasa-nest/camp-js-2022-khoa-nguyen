@@ -1,4 +1,3 @@
-/* eslint-disable max-lines-per-function */
 import { Cancel } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import {
@@ -16,11 +15,10 @@ import {
 import { Stack } from '@mui/system';
 import { FC, useEffect, useState } from 'react';
 
-import { useEffectSkipRender, useSearch } from '../../hooks';
-import { Loading } from '../Loading';
-
-import { SelectItem } from './AppSelect';
-import styles from './AppSelect.module.css';
+import { useEffectSkipRender, useSearch } from '../../../hooks';
+import { Loading } from '../../Loading';
+import styles from '../AppSelect.module.css';
+import { SelectItem } from '../AppSelectDefault';
 
 interface Props extends SelectProps {
 
@@ -42,14 +40,36 @@ interface Props extends SelectProps {
   /** Whether list is loading or not. */
   readonly isListLoading?: boolean;
 
+  /** Content of button create. */
+  readonly buttonCreateNewText: string;
+
   /** Handle search debounce value change. */
-  readonly onSearchChange?: (value: string) => void;
+  readonly onSearchChange: (value: string) => void;
 
   /** Handle create value. */
-  readonly onClickAddNewItem?: (value: string) => void;
+  readonly onClickAddNewItem: (value: string) => void;
 
   /** Handle value change. */
-  readonly onValueChange?: (value: readonly string[]) => void;
+  readonly onValueChange: (value: readonly string[]) => void;
+}
+
+/**
+ *
+ * @param list Initial list of select items.
+ * @param listCurrentValue Current values which is added by default in list.
+ */
+function getSelectListItem(
+  list: readonly SelectItem[],
+  listCurrentValue: readonly SelectItem[],
+): SelectItem[] {
+  return list
+    .concat(listCurrentValue)
+    .reduce((accumulator: SelectItem[], currentValue) => {
+      if (!accumulator.map(item => item.value).includes(currentValue.value)) {
+        accumulator.push(currentValue);
+      }
+      return accumulator;
+    }, []);
 }
 
 export const AppSelectWithSearch: FC<Props> = ({
@@ -59,6 +79,7 @@ export const AppSelectWithSearch: FC<Props> = ({
   searchPlaceholder,
   isCreateLoading,
   isListLoading,
+  buttonCreateNewText,
   onSearchChange,
   onValueChange,
   onClickAddNewItem,
@@ -69,21 +90,12 @@ export const AppSelectWithSearch: FC<Props> = ({
   const [value, setValue] = useState<string[]>(_defaultValue ?? []);
   const { inputValue, setInputValue, debounceValue } = useSearch('');
 
-  const listCurrentValue = value.map(item => ({ value: item }));
+  const listCurrentValue: readonly SelectItem[] = value.map(item => ({ value: item }));
   const _list =
-    value && !debounceValue ?
-      list
-        .concat(listCurrentValue)
-        .reduce((accumulator: SelectItem[], currentValue) => {
-            if (!accumulator.map(item => item.value).includes(currentValue.value)) {
-              accumulator.push(currentValue);
-            }
-            return accumulator;
-          }, []) :
-      list;
+    value && !debounceValue ? getSelectListItem(list, listCurrentValue) : list;
   const handleSearchChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
+  ): void => {
     setInputValue(event.target.value);
   };
 
@@ -91,11 +103,11 @@ export const AppSelectWithSearch: FC<Props> = ({
     setValue(event.target.value as string[]);
     onValueChange?.(event.target.value as string[]);
   };
-  const handleDelete = (item: string) => () => {
+  const handleDelete = (item: string) => (): void => {
     setValue(prev => prev.filter(_item => _item !== item));
   };
 
-  const handleAddNewItem = (newEntity: string) => () => {
+  const handleAddNewItem = (newEntity: string) => (): void => {
     onClickAddNewItem?.(newEntity);
   };
 
@@ -160,7 +172,7 @@ export const AppSelectWithSearch: FC<Props> = ({
                 variant="contained"
                 onClick={handleAddNewItem(debounceValue)}
               >
-                Add new genre: &nbsp;<strong>{debounceValue}</strong>
+                {buttonCreateNewText} &nbsp;<strong>{debounceValue}</strong>
               </LoadingButton>
             )}
         </Stack>

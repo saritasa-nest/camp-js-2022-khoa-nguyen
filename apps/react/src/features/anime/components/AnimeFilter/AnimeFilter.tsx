@@ -17,9 +17,10 @@ const listFilter: SelectItem[] = Object.values(TypeModel)
   }));
 
 export const AnimeFilter: FC = () => {
-  const { queryMethods, currentQueryParams } = useQueryParam<AnimeQueryUrl>();
   const dispatch = useAppDispatch();
+  const { queryMethods, currentQueryParams } = useQueryParam<AnimeQueryUrl>();
   const currentModelParam = AnimeQueryMapper.fromUrl(currentQueryParams);
+
   const handleFilterByTypes = (value: string | string[]) => {
     const _value = value as TypeModel[];
     const typesUrl = _value
@@ -30,6 +31,7 @@ export const AnimeFilter: FC = () => {
       getAnimeList(new AnimeQuery({ ...currentModelParam, types: _value })),
     );
   };
+
   return (
     <AppSelect
       id="anime-filter"

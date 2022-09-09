@@ -52,7 +52,7 @@ export const AppSelect: FC<Props> = ({
     initialValue,
   );
 
-  const handleChange = (event: SelectChangeEvent<unknown>) => {
+  const handleChange = (event: SelectChangeEvent<unknown>): void => {
     const value = event.target.value as string | string[];
     onChangeSideEffect?.(value);
     if (props.multiple) {
