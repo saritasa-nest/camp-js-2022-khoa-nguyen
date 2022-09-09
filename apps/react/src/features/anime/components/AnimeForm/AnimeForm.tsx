@@ -24,7 +24,7 @@ import {
 } from '../../../../components';
 
 import styles from './AnimeForm.module.css';
-import { AnimeFormSimpleInputs } from './AnimeFormSimpleInputs';
+import { AnimeFormSimpleInputs } from './AnimeFormSimpleInputs/AnimeFormSimpleInputs';
 import {
   AnimeFormValidation,
   getInitialValue,
@@ -39,11 +39,11 @@ interface Props {
   /** Anime info. */
   readonly animeInfo?: AnimeEdit;
 
-  /** Handle form submit. */
-  readonly onFormSubmit: (value: AnimeEdit) => void;
-
   /** Whether form is loading or not. */
   readonly isLoading: boolean;
+
+  /** Handle form submit. */
+  readonly onFormSubmit: (value: AnimeEdit) => void;
 }
 
 /**
@@ -55,6 +55,14 @@ function getCurrentList<T extends { id: number; name: string; }>(
   list: T[],
 ): (string | undefined)[] {
   return ids.map(item => list.find(listItem => listItem.id === item)?.name);
+}
+
+/**
+ * Get default date for app date picker.
+ * @param date Date input.
+ */
+function getDefaultDate(date: AnimeFormValidation['startDate']): Date | null {
+  return date !== '' ? date : null;
 }
 
 // eslint-disable-next-line max-lines-per-function
@@ -77,7 +85,8 @@ export const AnimeForm: FC<Props> = ({
     studiosList,
   } = useAnimeFormData();
   const [initialGenreList, setInitialGenreList] = useState<Genre[]>(genresList);
-  const [initialStudioList, setInitialStudioList] = useState<Studio[]>(studiosList);
+  const [initialStudioList, setInitialStudioList] =
+    useState<Studio[]>(studiosList);
 
   const handleSubmit = (value: AnimeFormValidation) => {
     if (!poster) {
@@ -101,12 +110,16 @@ export const AnimeForm: FC<Props> = ({
   });
 
   useEffect(() => {
-    dispatch(fetchGenresList('')).then(result => setInitialGenreList(result.payload as Genre[]));
-    dispatch(fetchStudiosList('')).then(result => setInitialStudioList(result.payload as Studio[]));
+    dispatch(fetchGenresList('')).then(result =>
+      setInitialGenreList(result.payload as Genre[]));
+    dispatch(fetchStudiosList('')).then(result =>
+      setInitialStudioList(result.payload as Studio[]));
   }, []);
 
   const combineGenreList = initialGenreList.concat(genres).concat(genresList);
-  const combineStudioList = initialStudioList.concat(studios).concat(studiosList);
+  const combineStudioList = initialStudioList
+    .concat(studios)
+    .concat(studiosList);
 
   return (
     <FormikProvider value={formik}>
@@ -122,12 +135,8 @@ export const AnimeForm: FC<Props> = ({
           <FormItemWrapper name="startDate">
             <AppDatePicker
               label={'Start date'}
-              defaultValue={
-                formik.initialValues.startDate !== '' ?
-                  formik.initialValues.startDate :
-                  null
-              }
-              onFormChange={(newDate: Date | null) => {
+              defaultValue={getDefaultDate(formik.initialValues.startDate)}
+              onDateChange={(newDate: Date | null) => {
                 formik.setFieldValue('startDate', newDate);
               }}
             />
@@ -135,12 +144,8 @@ export const AnimeForm: FC<Props> = ({
           <FormItemWrapper name="endDate">
             <AppDatePicker
               label={'End date'}
-              defaultValue={
-                formik.initialValues.endDate !== '' ?
-                  formik.initialValues.endDate :
-                  null
-              }
-              onFormChange={(newDate: Date | null) => {
+              defaultValue={getDefaultDate(formik.initialValues.endDate)}
+              onDateChange={(newDate: Date | null) => {
                 formik.setFieldValue('endDate', newDate);
               }}
             />

@@ -2,7 +2,7 @@ import { StatusModel, TypeModel } from '@js-camp/core/models';
 import { Season, Source, Rating } from '@js-camp/core/models/animeEdit';
 import { FC } from 'react';
 
-import { AppSelect, FormInputItem } from '../../../../components';
+import { AppSelect, FormInputItem } from '../../../../../components';
 
 export const AnimeFormSimpleInputs: FC = () => (
   <>

@@ -9,13 +9,13 @@ interface Props {
   readonly defaultValue: Date | null;
 
   /** On form change. */
-  readonly onFormChange: (newDate: Date | null) => void;
+  readonly onDateChange: (newDate: Date | null) => void;
 
   /** Label. */
   readonly label: string;
 }
 
-export const AppDatePicker: FC<Props> = ({ defaultValue, onFormChange, label }) => {
+export const AppDatePicker: FC<Props> = ({ defaultValue, onDateChange, label }) => {
   const [value, setValue] = useState<Date | null>(defaultValue);
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -25,7 +25,7 @@ export const AppDatePicker: FC<Props> = ({ defaultValue, onFormChange, label }) 
         onChange={newValue => {
           const newDate = newValue ? new Date(newValue) : null;
           setValue(newDate);
-          onFormChange?.(newDate);
+          onDateChange?.(newDate);
         }}
         renderInput={params => <TextField {...params} />}
       />
