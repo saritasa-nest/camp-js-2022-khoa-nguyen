@@ -1,7 +1,5 @@
 import { Genre, Studio } from '@js-camp/core/models';
-import {
-  AnimeEdit,
-} from '@js-camp/core/models/animeEdit';
+import { AnimeEdit } from '@js-camp/core/models/animeEdit';
 import {
   createNewGenre,
   fetchGenresList,
@@ -36,7 +34,7 @@ import { AnimeFormMapper } from './mapper';
 interface Props {
 
   /** Anime info. */
-  readonly data?: AnimeEdit;
+  readonly animeInfo?: AnimeEdit;
 
   /** Handle form submit. */
   readonly onFormSubmit: (value: AnimeEdit) => void;
@@ -53,7 +51,7 @@ function getCurrentList<T extends { id: number; name: string; }>(
   return ids.map(item => list.find(listItem => listItem.id === item)?.name);
 }
 
-export const AnimeEditCreateForm: FC<Props> = ({ data, onFormSubmit }) => {
+export const AnimeEditCreateForm: FC<Props> = ({ animeInfo, onFormSubmit }) => {
   const dispatch = useAppDispatch();
 
   const {
@@ -73,8 +71,8 @@ export const AnimeEditCreateForm: FC<Props> = ({ data, onFormSubmit }) => {
   };
   const formik = useFormik({
     validationSchema,
-    initialValues: data ?
-      getInitialValue(data, genres, studios) :
+    initialValues: animeInfo ?
+      getInitialValue(animeInfo, genres, studios) :
       INITIAL_CREATE_VALUE,
     onSubmit: handleSubmit,
   });
@@ -91,7 +89,7 @@ export const AnimeEditCreateForm: FC<Props> = ({ data, onFormSubmit }) => {
     <FormikProvider value={formik}>
       <Form>
         <div className={styles['anime-edit__form']}>
-          <AnimeFormSimpleInputs/>
+          <AnimeFormSimpleInputs />
           <FormItemWrapper name="genres">
             <AppSelectWithSearch
               onSearchChange={value => dispatch(fetchGenresList(value))}
@@ -99,7 +97,7 @@ export const AnimeEditCreateForm: FC<Props> = ({ data, onFormSubmit }) => {
               isListLoading={isGenreListLoading}
               onClickAddNewItem={value => dispatch(createNewGenre(value))}
               defaultValue={
-                data && getCurrentList<Genre>(data.genresIds, genres)
+                animeInfo && getCurrentList<Genre>(animeInfo.genresIds, genres)
               }
               searchPlaceholder="Search genres. e.g: Action"
               list={genresList.map(item => ({ value: item.name }))}
@@ -122,7 +120,8 @@ export const AnimeEditCreateForm: FC<Props> = ({ data, onFormSubmit }) => {
               isListLoading={isStudiosListLoading}
               onClickAddNewItem={value => dispatch(createNewStudio(value))}
               defaultValue={
-                data && getCurrentList<Studio>(data.studioIds, studios)
+                animeInfo &&
+                getCurrentList<Studio>(animeInfo.studioIds, studios)
               }
               searchPlaceholder="Search studio. e.g: OLM"
               list={studiosList.map(item => ({ value: item.name }))}
@@ -138,7 +137,7 @@ export const AnimeEditCreateForm: FC<Props> = ({ data, onFormSubmit }) => {
             />
           </FormItemWrapper>
         </div>
-        <Typography>Airing:</Typography>{' '}
+        <Typography>Airing:</Typography>
         <FormInputItem as={Switch} name="isAiring" />
         <FormInputItem
           propsInput={{ minRows: 8, multiline: true, maxRows: 15 }}
@@ -146,7 +145,7 @@ export const AnimeEditCreateForm: FC<Props> = ({ data, onFormSubmit }) => {
           label={'Synopsis'}
         />
         <LoadingButton variant="contained" type="submit" fullWidth>
-          {data != null ? 'Update' : 'Create'}
+          {animeInfo != null ? 'Update' : 'Create'}
         </LoadingButton>
       </Form>
     </FormikProvider>

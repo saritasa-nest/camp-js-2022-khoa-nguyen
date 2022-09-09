@@ -77,7 +77,7 @@ export const AnimeEditPage: FC = () => {
         EDIT ANIME
       </Typography>
       <AnimeEditCreateForm
-        data={animeInfo as AnimeEdit}
+        animeInfo={animeInfo as AnimeEdit}
         onFormSubmit={handleSubmit}
       />
     </>
