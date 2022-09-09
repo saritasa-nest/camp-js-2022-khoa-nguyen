@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 
-import { createAnime, deleteAnime, editAnime, getAnimeList, getNextAnimeList } from './dispatchers';
+import { createAnime, deleteAnime, editAnime, getAnimeList, getNextAnimeList, postAnimePoster } from './dispatchers';
 
 import { animeAdapter, AnimeState, initialState } from './state';
 
@@ -89,6 +89,24 @@ export const animeListSlice = createSlice({
         state.isLoadingCreateAnime = false;
         if (action.error.message) {
           state.error = `Failed to create anime due to error: ${action.error.message}`;
+        }
+      })
+
+      .addCase(postAnimePoster.pending, state => {
+        state.error = null;
+        state.isLoadingCreateAnime = true;
+        state.isLoadingUpdateAnime = true;
+      })
+      .addCase(postAnimePoster.fulfilled, state => {
+        state.isLoadingCreateAnime = false;
+        state.isLoadingUpdateAnime = false;
+        state.error = null;
+      })
+      .addCase(postAnimePoster.rejected, (state, action) => {
+        state.isLoadingCreateAnime = false;
+        state.isLoadingUpdateAnime = false;
+        if (action.error.message) {
+          state.error = `Failed to upload image due to error: ${action.error.message}`;
         }
       }),
 });
