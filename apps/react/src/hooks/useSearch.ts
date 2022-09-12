@@ -2,7 +2,19 @@ import { useEffect, useState } from 'react';
 
 const SEARCH_DEBOUNCE_TIME = 300;
 
-export const useSearch = (initialValue: string) => {
+interface UseSearchReturnedProps {
+
+  /** Search input. */
+  readonly inputValue: string;
+
+  /** Debounce value. */
+  readonly debounceValue: string;
+
+  /** Set stage event of search input. */
+  readonly setInputValue: (inputValue: string) => void;
+}
+
+export const useSearch = (initialValue: string): UseSearchReturnedProps => {
   const [inputValue, setInputValue] = useState<string>(initialValue);
   const [debounceValue, setDebounceValue] = useState<string>('');
   useEffect(() => {

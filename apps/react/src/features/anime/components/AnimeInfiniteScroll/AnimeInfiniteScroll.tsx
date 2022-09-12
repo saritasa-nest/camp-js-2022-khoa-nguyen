@@ -72,11 +72,11 @@ export const AnimeInfiniteScrollInner: FC = () => {
         if (index === animeList.length - 1) {
           return (
             <div key={item.id} ref={itemRef} className={style['anime-item']}>
-              <AnimeItem data={item} />
+              <AnimeItem animeInfo={item} />
             </div>
           );
         }
-        return <AnimeItem data={item} key={item.id} />;
+        return <AnimeItem animeInfo={item} key={item.id} />;
       })}
       {isLoadingNextPage && <Loading isBackdropLoading={false} />}
     </>

@@ -55,10 +55,6 @@ export const AppSelect: FC<Props> = ({
   const handleChange = (event: SelectChangeEvent<unknown>) => {
     const value = event.target.value as string | string[];
     onChangeSideEffect?.(value);
-    if (props.multiple) {
-      setSelectedValue(value);
-      return;
-    }
     setSelectedValue(value);
   };
   return (

@@ -2,7 +2,7 @@ import { AnimeDetail } from '@js-camp/core/models';
 import { Typography } from '@mui/material';
 import { FC } from 'react';
 
-const getText = (text: string | undefined): string => {
+const replaceEmptyValue = (text: string | undefined): string => {
   if (text == null || text === '') {
     return '--';
   }
@@ -18,30 +18,30 @@ interface Props {
 export const AnimeBasicInfo: FC<Props> = ({ animeInfo }) => (
   <>
     <Typography>
-      <strong>English name:</strong> {getText(animeInfo?.titleEnglish)}
+      <strong>English name:</strong> {replaceEmptyValue(animeInfo?.titleEnglish)}
     </Typography>
     <Typography>
-      <strong>Japanese name:</strong> {getText(animeInfo?.titleJapan)}
+      <strong>Japanese name:</strong> {replaceEmptyValue(animeInfo?.titleJapan)}
     </Typography>
     <Typography>
-      <strong>Status:</strong> {getText(animeInfo?.status)}
+      <strong>Status:</strong> {replaceEmptyValue(animeInfo?.status)}
     </Typography>
     <Typography>
-      <strong>Type:</strong> {getText(animeInfo?.type)}
+      <strong>Type:</strong> {replaceEmptyValue(animeInfo?.type)}
     </Typography>
     <Typography>
-      <strong>Synopsis:</strong> {getText(animeInfo?.synopsis)}
+      <strong>Synopsis:</strong> {replaceEmptyValue(animeInfo?.synopsis)}
     </Typography>
     <Typography>
       <strong>Start date:</strong>{' '}
-      {getText(animeInfo?.aired.start?.toDateString())}
+      {replaceEmptyValue(animeInfo?.aired.start?.toDateString())}
     </Typography>
     <Typography>
-      <strong>End date:</strong> {getText(animeInfo?.aired.end?.toDateString())}
+      <strong>End date:</strong> {replaceEmptyValue(animeInfo?.aired.end?.toDateString())}
     </Typography>
 
     <Typography>
-      <strong>Airing:</strong> {getText(animeInfo?.isAiring ? 'Yes' : 'No')}
+      <strong>Airing:</strong> {replaceEmptyValue(animeInfo?.isAiring ? 'Yes' : 'No')}
     </Typography>
   </>
 );
