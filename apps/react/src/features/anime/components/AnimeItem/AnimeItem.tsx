@@ -8,38 +8,38 @@ import style from './AnimeItem.module.css';
 interface Props {
 
   /** Anime info. */
-  readonly data: Anime;
+  readonly animeInfo: Anime;
 }
 
-const getText = (text: string): string => {
+const replaceEmptyValue = (text: string): string => {
   if (text == null) {
     return '--';
   }
   return text;
 };
 
-export const AnimeItem: FC<Props> = ({ data }) => (
+export const AnimeItem: FC<Props> = ({ animeInfo }) => (
   <Card className={style['anime-item__wrapper']}>
     <CardContent className={style['anime-item']}>
-      {data.image == null && (
+      {animeInfo.image == null && (
         <Avatar
-          alt={data.titleEnglish}
+          alt={animeInfo.titleEnglish}
           src={IMAGES.FallbackAvatar}
           className={style['anime-item__thumb']}
         />
       )}
-      {data.image && (
+      {animeInfo.image && (
         <Avatar
-          alt={data.titleEnglish}
-          src={data.image}
+          alt={animeInfo.titleEnglish}
+          src={animeInfo.image}
           className={style['anime-item__thumb']}
         />
       )}
       <div className={style['anime-item__content']}>
-        <Typography>{getText(data.titleJapan)}</Typography>
-        <Typography>{getText(data.titleEnglish)}</Typography>
-        <Typography>Status: {getText(data.status)}</Typography>
-        <Typography>Type: {getText(data.type)}</Typography>
+        <Typography>{replaceEmptyValue(animeInfo.titleJapan)}</Typography>
+        <Typography>{replaceEmptyValue(animeInfo.titleEnglish)}</Typography>
+        <Typography>Status: {replaceEmptyValue(animeInfo.status)}</Typography>
+        <Typography>Type: {replaceEmptyValue(animeInfo.type)}</Typography>
       </div>
     </CardContent>
   </Card>
