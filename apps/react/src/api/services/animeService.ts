@@ -23,7 +23,7 @@ export namespace AnimeService {
 
   /**
    * Get anime pagination.
-   * @param params Query params.
+   * @param params Param of anime list to query.
    */
   export async function getAnimeList(
     params: AnimeQuery,
@@ -32,20 +32,6 @@ export namespace AnimeService {
     const result = await http.get<PaginationDto<AnimeDto>>(ANIME_LIST_URL, {
       params: paramDto,
     });
-    return PaginationMapper.fromDto<AnimeDto, Anime>(
-      result.data,
-      AnimeMapper.fromDto,
-    );
-  }
-
-  /**
-   * Get anime next page.
-   * @param url Url of next page.
-   */
-  export async function getNextAnimeList(
-    url: string,
-  ): Promise<Pagination<Anime>> {
-    const result = await http.get<PaginationDto<AnimeDto>>(url);
     return PaginationMapper.fromDto<AnimeDto, Anime>(
       result.data,
       AnimeMapper.fromDto,
@@ -121,5 +107,19 @@ export namespace AnimeService {
       filename: image.name,
     });
     return S3CloudService.uploadToS3Server(data, image);
+  }
+
+  /**
+   * Get anime pagination.
+   * @param nextPageAnimeUrl Next page url of anime list.
+   */
+  export async function getNextAnimeList(
+    nextPageAnimeUrl: string,
+  ): Promise<Pagination<Anime>> {
+    const result = await http.get<PaginationDto<AnimeDto>>(nextPageAnimeUrl);
+    return PaginationMapper.fromDto<AnimeDto, Anime>(
+      result.data,
+      AnimeMapper.fromDto,
+    );
   }
 }
