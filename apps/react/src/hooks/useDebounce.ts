@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const SEARCH_DEBOUNCE_TIME = 300;
+const DEBOUNCE_TIME = 300;
 
 interface UseSearchReturnedProps {
 
@@ -14,13 +14,17 @@ interface UseSearchReturnedProps {
   readonly setInputValue: (inputValue: string) => void;
 }
 
-export const useSearch = (initialValue: string): UseSearchReturnedProps => {
+/**
+ * This hooks is used to implement debounce value of input.
+ * @param initialValue Initial input value.
+ */
+export const useDebounce = (initialValue: string): UseSearchReturnedProps => {
   const [inputValue, setInputValue] = useState<string>(initialValue);
   const [debounceValue, setDebounceValue] = useState<string>('');
   useEffect(() => {
     const idTimeout = setTimeout(() => {
       setDebounceValue(inputValue);
-    }, SEARCH_DEBOUNCE_TIME);
+    }, DEBOUNCE_TIME);
     return () => {
       clearTimeout(idTimeout);
     };
