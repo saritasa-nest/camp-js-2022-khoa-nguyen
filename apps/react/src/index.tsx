@@ -11,5 +11,7 @@ if (rootElement === null) {
 }
 
 ReactDOM.createRoot(rootElement).render(
-  <App />,
+  <StrictMode>
+    <App />
+  </StrictMode>,
 );
