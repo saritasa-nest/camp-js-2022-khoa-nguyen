@@ -66,8 +66,8 @@ export const AppSelect: FC<Props> = ({
         onChange={handleChange}
         {...props}
       >
-        {list.map((item, index) => (
-          <MenuItem value={item.value} key={index}>
+        {list.map(item => (
+          <MenuItem value={item.value} key={item.value}>
             {item.text ?? item.value}
           </MenuItem>
         ))}

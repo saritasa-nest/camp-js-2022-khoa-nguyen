@@ -34,7 +34,7 @@ export async function addToken(config: AxiosRequestConfig): Promise<AxiosRequest
  * @param url Url address of request.
  */
 function shouldAddToken(url: string | undefined): boolean {
-  if (url == null || url.includes(s3UploadRoute)) {
+  if (url == null || url.includes(s3UploadRoute) || url.includes('auth')) {
     return false;
   }
   return true;

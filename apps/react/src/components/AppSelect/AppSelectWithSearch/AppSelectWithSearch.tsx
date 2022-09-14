@@ -178,8 +178,8 @@ export const AppSelectWithSearch: FC<Props> = ({
         </Stack>
         {isListLoading && <Loading isBackdropLoading={false} />}
         {!isListLoading &&
-          _list.map((item, index) => (
-            <MenuItem value={item.value} key={index}>
+          _list.map(item => (
+            <MenuItem value={item.value} key={item.value}>
               <Checkbox checked={value.includes(item.value)} />
               {item.text ?? item.value}
             </MenuItem>
