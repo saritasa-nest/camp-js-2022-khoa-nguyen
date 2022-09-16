@@ -15,7 +15,7 @@ import {
 import { Stack } from '@mui/system';
 import { FC, useEffect, useState } from 'react';
 
-import { useEffectSkipRender, useSearch } from '../../../hooks';
+import { useEffectSkipRender, useDebounce } from '../../../hooks';
 import { Loading } from '../../Loading';
 import styles from '../AppSelect.module.css';
 import { SelectItem } from '../AppSelectDefault';
@@ -88,7 +88,7 @@ export const AppSelectWithSearch: FC<Props> = ({
   const _defaultValue = props.defaultValue as string[];
 
   const [value, setValue] = useState<string[]>(_defaultValue ?? []);
-  const { inputValue, setInputValue, debounceValue } = useSearch('');
+  const { inputValue, setInputValue, debounceValue } = useDebounce('');
 
   const listCurrentValue: readonly SelectItem[] = value.map(item => ({ value: item }));
   const _list =
