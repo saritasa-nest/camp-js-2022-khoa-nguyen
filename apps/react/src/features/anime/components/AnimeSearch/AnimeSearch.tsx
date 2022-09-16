@@ -6,7 +6,7 @@ import { useAppDispatch } from '@js-camp/react/store/store';
 import { TextField } from '@mui/material';
 import React, { FC, memo } from 'react';
 
-import { useEffectSkipRender, useQueryParam, useSearch } from '../../../../hooks';
+import { useEffectSkipRender, useQueryParam, useDebounce } from '../../../../hooks';
 
 import style from './AnimeSearch.module.css';
 
@@ -14,7 +14,7 @@ export const AnimeSearchInner: FC = () => {
   const { currentQueryParams, getQueryMethodWithKey } = useQueryParam<AnimeQueryUrl>();
   const queryMethodsSearch = getQueryMethodWithKey('search');
 
-  const { inputValue, setInputValue, debounceValue } = useSearch(queryMethodsSearch.get() ?? '');
+  const { inputValue, setInputValue, debounceValue } = useDebounce(queryMethodsSearch.get() ?? '');
 
   const handleOnChangeValue = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
