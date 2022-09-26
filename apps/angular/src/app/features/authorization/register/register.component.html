@@ -1,15 +1,7 @@
-<form
-  [formGroup]="registerForm"
-  (ngSubmit)="onSubmitRegister()"
-  class="auth"
->
+<form [formGroup]="registerForm" (ngSubmit)="onSubmitRegister()" class="auth">
   <div class="auth__wrapper">
-    <h1 class="auth__title auth__title_welcome">
-      Welcome to Saritasa Anime
-    </h1>
-    <h1 class="auth__title auth__title_action">
-      Sign up to your account
-    </h1>
+    <h1 class="auth__title auth__title_welcome">Welcome to Saritasa Anime</h1>
+    <h1 class="auth__title auth__title_action">Sign up to your account</h1>
     <div class="auth__content">
       <mat-form-field class="auth__input">
         <mat-label>Email</mat-label>
@@ -95,9 +87,7 @@
 
       <p class="auth__text">
         Already have an account? Please
-        <a [routerLink]="['/auth/login']" class="auth__span"
-          >login here.</a
-        >
+        <a [routerLink]="['/auth/login']" class="auth__span">login here.</a>
       </p>
       <button type="submit" mat-raised-button class="auth__button">
         Sign up

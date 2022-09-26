@@ -9,14 +9,14 @@ export class Login extends Immerable {
   /** User password. */
   public readonly password: string;
 
-  public constructor(data: PostInitArgs) {
+  public constructor(data: LoginInitArgs) {
     super();
     this.email = data.email;
     this.password = data.password;
   }
 }
 
-type PostInitArgs = OmitImmerable<Login>;
+type LoginInitArgs = OmitImmerable<Login>;
 
 /** Login errors. */
 export class ErrorLogin extends Immerable {
@@ -24,10 +24,10 @@ export class ErrorLogin extends Immerable {
   /** None field errors. */
   public readonly noneFieldErrors?: readonly string[];
 
-  public constructor(data: ErrorInitArgs) {
+  public constructor(data: ErrorLoginInitArgs) {
     super();
     this.noneFieldErrors = data.noneFieldErrors;
   }
 }
 
-type ErrorInitArgs = OmitImmerable<ErrorLogin>;
+type ErrorLoginInitArgs = OmitImmerable<ErrorLogin>;

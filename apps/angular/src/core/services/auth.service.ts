@@ -5,11 +5,9 @@ import { ErrorLoginMapper, ErrorUserMapper, HttpErrorMapper, LoginMapper, TokenM
 import { ErrorLogin, ErrorUser, HttpError, Login, Token, User } from '@js-camp/core/models';
 import { BehaviorSubject, catchError, map, Observable, of, tap, throwError } from 'rxjs';
 
-import { Router } from '@angular/router';
-
 import { key } from '../../constants';
 
-import { AnimeService, ApiService, LocalStoreService } from '.';
+import { ApiService, LocalStoreService } from '.';
 
 /** Enum of general errors. */
 enum Error {
@@ -53,8 +51,6 @@ export class AuthService {
   public constructor(
     private readonly apiService: ApiService,
     private readonly localStoreService: LocalStoreService,
-    private readonly router: Router,
-    private readonly animeService: AnimeService,
   ) { }
 
   /**
@@ -139,11 +135,11 @@ export class AuthService {
         map(token => TokenMapper.fromDto(token)),
         tap(token => {
           this.localStoreService.setValue<Token>(key.token, token);
+          this._isLoggedIn$.next(true);
         }),
         catchError((error: unknown) => {
           this.logout();
           this._isLoggedIn$.next(false);
-          this.router.navigate(['/auth/login']);
           return throwError(() => error);
         }),
       );

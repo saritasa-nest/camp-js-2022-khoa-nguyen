@@ -51,6 +51,10 @@ h2 {
   font-weight: normal;
 }
 
+textarea {
+  resize: none;
+}
+
 .links {
   display: flex;
   flex-wrap: wrap;

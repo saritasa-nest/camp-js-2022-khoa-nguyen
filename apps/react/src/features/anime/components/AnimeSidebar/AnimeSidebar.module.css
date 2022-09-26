@@ -1,0 +1,21 @@
+.anime-sidebar {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - var(--height-header));
+  overflow-y: auto;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.anime-sidebar[class*="MuiList-root"] {
+  padding: 0;
+}
+
+.anime-tab-group {
+  position: sticky;
+  background-color: var(--primary-light-color-3);
+  top: 0;
+  border-bottom: 2px solid var(--primary-color);
+  z-index: 1;
+}

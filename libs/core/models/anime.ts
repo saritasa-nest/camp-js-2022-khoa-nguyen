@@ -10,7 +10,7 @@ export enum TypeModel {
   Special = 'Special',
   Music = 'Music',
   Ova = 'Ova',
-  Default = '',
+  Default = 'Unknown',
 }
 
 /** Anime status model. */
@@ -18,7 +18,7 @@ export enum StatusModel {
   Airing = 'Airing',
   Finished = 'Finished',
   NotAired = 'Not yet aired',
-  Default = '',
+  Default = 'Unknown',
 }
 
 /** Base model for anime. */

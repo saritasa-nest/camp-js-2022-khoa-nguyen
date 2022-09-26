@@ -1,0 +1,46 @@
+
+<form *ngIf="formGroup" [formGroup]="formGroup">
+  <mat-form-field appearance="fill" class="select">
+    <mat-label>{{ label }}</mat-label>
+
+    <mat-select class="select__wrapper" [formControlName]="formControlSelectName" multiple>
+      <mat-option>
+        <ngx-mat-select-search
+          [placeholderLabel]="searchPlaceholder"
+          [formControlName]="formControlSearchName"
+        ></ngx-mat-select-search>
+      </mat-option>
+
+      <mat-select-trigger>
+        <mat-chip-list>
+          <mat-chip
+            *ngFor="let item of this.formGroup.controls[formControlSelectName].value; trackBy: trackItemSelected"
+            [removable]="true"
+            (removed)="onRemoveSelectedValue(item)"
+          >
+          {{ item.split("-")[1] }}
+          <button type="button" matChipRemove>
+            <mat-icon>cancel</mat-icon>
+          </button>
+          </mat-chip>
+        </mat-chip-list>
+      </mat-select-trigger>
+
+      <ng-container *ngIf="isShowCreateButton">
+        <button mat-button type="button" class="select_button__create" (click)="onCreateEntity()">
+          Create {{ this.formGroup.controls[formControlSearchName].value }}
+        </button>
+      </ng-container>
+
+      <div
+        class="option"
+        *ngFor="let entity of entities; trackBy: trackItemEntity"
+      >
+        <mat-option [value]="entity.id+'-'+entity.name">
+          <span>{{ entity.name }}</span>
+        </mat-option>
+      </div>
+    </mat-select>
+    <mat-error></mat-error>
+  </mat-form-field>
+</form>

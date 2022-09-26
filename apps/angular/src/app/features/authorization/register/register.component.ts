@@ -142,12 +142,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   public constructor(
-    private formBuilder: FormBuilder,
-    private authService: AuthService,
-    private localStoreService: LocalStoreService,
-    private customValidatorService: CustomValidatorService,
-    private changeDetectorRef: ChangeDetectorRef,
-    private router: Router,
+    private readonly formBuilder: FormBuilder,
+    private readonly authService: AuthService,
+    private readonly localStoreService: LocalStoreService,
+    private readonly customValidatorService: CustomValidatorService,
+    private readonly changeDetectorRef: ChangeDetectorRef,
+    private readonly router: Router,
   ) {
     this.registerForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],

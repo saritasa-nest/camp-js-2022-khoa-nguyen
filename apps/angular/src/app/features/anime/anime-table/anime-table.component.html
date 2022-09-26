@@ -5,9 +5,11 @@
       [value]="(settingOfAnimeList$ | async)?.sortBy"
       (selectionChange)="handleSortByChange($event)"
     >
-      <mat-option *ngFor="let item of sortingOptions; trackBy:sortOptionsTrackBy"  [value]="item.value">{{
-        item.title
-      }}</mat-option>
+      <mat-option
+        *ngFor="let item of sortingOptions; trackBy: sortOptionsTrackBy"
+        [value]="item.value"
+        >{{ item.title }}</mat-option
+      >
     </mat-select>
   </mat-form-field>
 
@@ -17,9 +19,11 @@
       [value]="(settingOfAnimeList$ | async)?.ordering"
       (selectionChange)="handleOrderingChange($event)"
     >
-      <mat-option *ngFor="let item of orderingOptions; trackBy:orderOptionsTrackBy" [value]="item.value">{{
-        item.title
-      }}</mat-option>
+      <mat-option
+        *ngFor="let item of orderingOptions; trackBy: orderOptionsTrackBy"
+        [value]="item.value"
+        >{{ item.title }}</mat-option
+      >
     </mat-select>
   </mat-form-field>
 
@@ -32,9 +36,9 @@
         multiple
       >
         <mat-select-trigger>
-          {{multipleType[0]}}
+          {{ multipleType[0] }}
           <span *ngIf="multipleType.length > 1">
-            {{setTypesDisplaying(multipleType)}}
+            {{ setTypesDisplaying(multipleType) }}
           </span>
         </mat-select-trigger>
         <mat-option
@@ -164,10 +168,65 @@
       </td>
     </ng-container>
 
+    <ng-container matColumnDef="actions">
+      <th
+        class="table__cell table__cell_title"
+        mat-header-cell
+        *matHeaderCellDef
+      >
+        Actions
+      </th>
+      <td class="table__cell" mat-cell *matCellDef="let element">
+        <div class="table__button_wrapper">
+          <button
+            class="button"
+            (click)="handleDeleteAnime(element, $event)"
+            type="button"
+            mat-button
+          >
+            Delete
+          </button>
+          <button
+            class="button table__button_edit"
+            (click)="handleEditAnime(element, $event)"
+            type="button"
+            mat-button
+          >
+            Edit
+          </button>
+        </div>
+      </td>
+    </ng-container>
+
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    <tr
+      class="table__row"
+      mat-row
+      *matRowDef="let anime; columns: displayedColumns"
+      (click)="handleShowAnimeDetail(anime)"
+    ></tr>
   </table>
 </ng-container>
+<div *ngIf="isShowPopupDeleteConfirm$ | async">
+  <div class="popup">
+    <div class="popup__wrapper">
+      <h2>Are you sure deleting this anime?</h2>
+      <div class="popup__button_wrapper">
+        <button
+          type="button"
+          class="button"
+          (click)="handleConfirmDelete()"
+          mat-button
+        >
+          Yes
+        </button>
+        <button type="button" (click)="handleCancelDelete()" mat-button>
+          No
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <ng-template #Loading>
   <div ngClass="loading">
