@@ -11,8 +11,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSortModule } from '@angular/material/sort';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
-
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { MatNativeDateModule } from '@angular/material/core';
 
 import { SharedModule } from '../../../shared/shared.module';
 
@@ -21,6 +24,7 @@ import { PaginationComponent } from './pagination/pagination.component';
 import { AnimeRoutingModule } from './anime-routing.module';
 import { AnimeComponent } from './anime.component';
 import { DetailComponent } from './detail/detail.component';
+import { EditComponent } from './edit/edit.component';
 
 /** Anime module. */
 @NgModule({
@@ -29,6 +33,7 @@ import { DetailComponent } from './detail/detail.component';
     PaginationComponent,
     AnimeComponent,
     DetailComponent,
+    EditComponent,
   ],
   imports: [
     SharedModule,
@@ -44,8 +49,12 @@ import { DetailComponent } from './detail/detail.component';
     MatChipsModule,
     MatButtonModule,
     MatCardModule,
+    MatDatepickerModule,
+    MatSlideToggleModule,
     CommonModule,
     FormsModule,
+    SharedModule,
+    MatNativeDateModule,
     ReactiveFormsModule,
   ],
 })

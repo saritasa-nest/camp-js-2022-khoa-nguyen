@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
-import { AnimeDetailDto, AnimeDto, AnimeListQueryOptionsDto, PaginationDto, TypeDto } from '@js-camp/core/dtos';
-import { AnimeDetailMapper, AnimeListQueryOptionsMapper, AnimeMapper, PaginationMapper } from '@js-camp/core/mappers';
-import { Anime, AnimeDetail, AnimeListQueryOptions, Pagination, Sorting, SortTitle, SortValue } from '@js-camp/core/models';
+import { AnimeDto, AnimeListQueryOptionsDto, PaginationDto, TypeDto } from '@js-camp/core/dtos';
+import { AnimeEditDto, AnimeEditPutDto } from '@js-camp/core/dtos/animeEdit.dto';
+import { AnimeListQueryOptionsMapper, AnimeMapper, PaginationMapper } from '@js-camp/core/mappers';
+import { AnimeEditMapper } from '@js-camp/core/mappers/animeEdit.mapper';
+import { Anime, AnimeListQueryOptions, Pagination, Sorting, SortTitle, SortValue } from '@js-camp/core/models';
+import { AnimeEdit } from '@js-camp/core/models/animeEdit';
 import { map, Observable } from 'rxjs';
 
 import { ANIME_LIST_API, DEFAULT_ANIME_LIST_QUERY, DEFAULT_LIMIT, DEFAULT_SEARCH, OrderOption, SORT_OPTIONS } from '../../constants';
@@ -94,6 +97,35 @@ export class AnimeService {
       .pipe(map(data => PaginationMapper.fromDto<AnimeDto, Anime>(data, AnimeMapper.fromDto)));
   }
 
+  /**
+   * Delete anime.
+   * @param animeId Anime to delete.
+   */
+  public removeAnime(animeId: Anime['id']): Observable<Object> {
+    return this.apiService.deleteData(`${ANIME_LIST_API}${animeId}/`);
+  }
+
+  /**
+   * Edit anime.
+   * @param value Value to create.
+   */
+  public createAnime(value: AnimeEditPutDto): Observable<AnimeEdit> {
+    return this.apiService.postData<AnimeEditDto, AnimeEditPutDto>(ANIME_LIST_API, value).pipe(
+      map(data => AnimeEditMapper.fromDto(data)),
+    );
+  }
+
+  /**
+   * Edit anime.
+   * @param id Anime to edit.
+   * @param value Value to edit.
+   */
+  public editAnime(id: Anime['id'], value: AnimeEditPutDto): Observable<AnimeEdit> {
+    return this.apiService.editData<AnimeEditDto, AnimeEditPutDto>(`${ANIME_LIST_API}${id}/`, value).pipe(
+      map(data => AnimeEditMapper.fromDto(data)),
+    );
+  }
+
   /** Mapper data.*/
   public mapper(): Mapper {
     return {
@@ -182,11 +214,12 @@ export class AnimeService {
    * Get anime detail information.
    * @param id Id of selected anime.
    */
-  public getAnimeDetail(id: number): Observable<AnimeDetail> {
+  public getAnimeDetail(id: Anime['id']): Observable<AnimeEdit> {
     return this.apiService
-      .getData<AnimeDetailDto, undefined>(`${ANIME_LIST_API}${id}/`)
+      .getData<AnimeEditDto, undefined>(`${ANIME_LIST_API}${id}/`)
       .pipe(
-        map(animeDetail => AnimeDetailMapper.fromDto(animeDetail)),
+        map(animeDetail => AnimeEditMapper.fromDto(animeDetail)),
       );
   }
+
 }

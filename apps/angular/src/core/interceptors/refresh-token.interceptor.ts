@@ -26,8 +26,8 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
 
     return next.handle(request).pipe(
       catchError((error: unknown) => {
-        this.authService.logout();
         if (error instanceof HttpErrorResponse && error.status === 401) {
+          this.authService.logout();
           return this.authService.refreshToken(token).pipe(
             switchMap(newToken => next.handle(this.addTokenHeader(request, newToken))),
             catchError(() => next.handle(request.clone({ headers: request.headers.delete('Authorization') }))),

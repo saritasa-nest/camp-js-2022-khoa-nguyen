@@ -1,14 +1,17 @@
 import { FC } from 'react';
-import { Navigate, RouteObject, useRoutes } from 'react-router-dom';
+import { RouteObject, useRoutes } from 'react-router-dom';
 
-import { genresRoutes } from '../features/genres/routes';
+import { NotFound, RequiredAuth } from '../components';
+import { RequiredNoAuth } from '../components/RequiredNoAuth';
+
+import { animeRoutes } from '../features/anime/routes';
+
+import { authRoutes } from '../features/auth/routes';
 
 const routes: RouteObject[] = [
-  {
-    path: '*',
-    element: <Navigate to="/genres" />,
-  },
-  ...genresRoutes,
+  { element: <RequiredAuth/>, children: [...animeRoutes] },
+  { element: <RequiredNoAuth/>, children: [...authRoutes] },
+  { path: '*', element: <NotFound/> },
 ];
 
 /** Root router component. */

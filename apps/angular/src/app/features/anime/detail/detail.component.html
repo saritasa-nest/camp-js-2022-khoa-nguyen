@@ -1,3 +1,4 @@
+<camp-navigation></camp-navigation>
 <mat-card *ngIf="animeInfo$ | async as anime; else Loading" class="detail">
   <mat-card class="detail__image">
     <img
@@ -37,10 +38,6 @@
     <h2 class="detail__child">
       Status: <span class="detail__child_content">{{ anime.status }}</span>
     </h2>
-    <h2 class="detail__child">
-      Type:
-      <span class="detail__child_content">{{ anime.type.toUpperCase() }}</span>
-    </h2>
 
     <h2 class="detail__child">Synopsis:</h2>
     <p class="detail__child_paragraph">{{ anime.synopsis }}</p>
@@ -59,15 +56,35 @@
         <mat-chip *ngFor="let genre of anime.genres">{{ genre.name }}</mat-chip>
       </mat-chip-list>
     </div>
-    <button
-      mat-button
-      *ngIf="anime.trailerYoutubeId"
-      class="detail__button"
-      (click)="handleOpenTrailer()"
-      type="button"
-    >
-      View trailer
-    </button>
+
+    <div class="detail__button-wrapper">
+      <button
+        mat-button
+        *ngIf="anime.trailerYoutubeId"
+        class="detail__button"
+        (click)="handleOpenTrailer()"
+        type="button"
+      >
+        View trailer
+      </button>
+      <button
+        mat-button
+        type="button"
+        class="detail__button"
+        (click)="handleEditAnime()"
+      >
+        Edit
+      </button>
+
+      <button
+        mat-button
+        type="button"
+        class="detail__button"
+        (click)="handleDeleteAnime()"
+      >
+        Delete
+      </button>
+    </div>
   </div>
 
   <div class="popup" *ngIf="isShowPopupImage$ | async">

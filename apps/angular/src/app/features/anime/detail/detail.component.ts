@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AnimeDetail } from '@js-camp/core/models';
-import { map, Observable, Subject } from 'rxjs';
+import { map, Observable, Subject, tap } from 'rxjs';
 
 import { AnimeService } from '../../../../core/services/anime.service';
 
@@ -29,14 +29,15 @@ export class DetailComponent {
 
   public constructor(
     private readonly animeService: AnimeService,
+    private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
     private sanitizer: DomSanitizer,
   ) {
-    const animeId = this.activatedRoute.snapshot.paramMap.get('id');
-    if (animeId == null || isNaN(Number(animeId))) {
+
+    if (this.animeId == null || isNaN(Number(this.animeId))) {
       this.animeInfo$ = null;
     }
-    this.animeInfo$ = this.animeService.getAnimeDetail(Number(animeId));
+    this.animeInfo$ = this.animeService.getAnimeDetail(Number(this.animeId));
 
     this.animeTrailer$ = this.animeInfo$.pipe(
       map(anime => {
@@ -44,6 +45,11 @@ export class DetailComponent {
         return this.sanitizer.bypassSecurityTrustResourceUrl(animeTrailer);
       }),
     );
+  }
+
+  /** Get anime id. */
+  public get animeId(): string | null {
+    return this.activatedRoute.snapshot.paramMap.get('id');
   }
 
   /** Open popup image. */
@@ -64,5 +70,21 @@ export class DetailComponent {
   /** Open popup trailer. */
   public handleCloseTrailer(): void {
     this.isShowPopupTrailer$.next(false);
+  }
+
+  /** Handle move to edit page of anime. */
+  public handleEditAnime(): void {
+    this.router.navigate([`edit/${this.animeId}`]);
+  }
+
+  /** Handle delete anime. */
+  public handleDeleteAnime(): void {
+    this.animeService.removeAnime(Number(this.animeId))
+      .pipe(
+        tap(() => {
+          this.router.navigate(['']);
+        }),
+      )
+      .subscribe();
   }
 }

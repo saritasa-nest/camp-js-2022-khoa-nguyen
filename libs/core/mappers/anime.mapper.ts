@@ -21,6 +21,13 @@ export namespace AnimeMapper {
     [StatusDto.Default]: StatusModel.Default,
   };
 
+  export const statusModelToDto: Readonly<Record<StatusModel, StatusDto>> = {
+    [StatusModel.Airing]: StatusDto.Airing,
+    [StatusModel.NotAired]: StatusDto.NotAired,
+    [StatusModel.Finished]: StatusDto.Finished,
+    [StatusModel.Default]: StatusDto.Default,
+  };
+
   /**
    * Maps dto to model.
    * @param dto Anime dto.

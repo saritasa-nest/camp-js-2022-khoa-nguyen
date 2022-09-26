@@ -61,7 +61,50 @@
   cursor: pointer;
 }
 
-.table__row:hover{
+.table__row:hover {
   background-color: var(--primary-light-color-2);
   transition: 0.3s;
+}
+
+.button {
+  background-color: var(--primary-color);
+  color: var(--primary-font-light-color);
+}
+
+.button:hover {
+  background-color: var(--primary-dark-color);
+  transition: 0.3s ease;
+}
+
+.table__button_wrapper {
+  display: flex;
+  gap: 15px;
+}
+
+.table__button_edit {
+  background-color: var(--primary-dark-color);
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup__button_wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.popup__wrapper {
+  width: 40%;
+  padding: 20px;
+  height: auto;
+  background: var(--primary-font-light-color);
+  box-shadow: var(--primary-box-shadow-color);
 }

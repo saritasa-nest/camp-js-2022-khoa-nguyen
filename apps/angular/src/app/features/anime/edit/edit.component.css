@@ -1,0 +1,53 @@
+.edit__form {
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+  margin-top: 100px;
+  display: flex;
+  gap: 50px;
+  align-items: center;
+  flex-direction: column;
+}
+
+.edit__field {
+  display: grid;
+  width: 100%;
+  gap: 20px;
+  grid-template-columns: auto auto;
+}
+
+.edit__title {
+  color: var(--primary-font-color-2);
+  padding: 0;
+}
+
+.edit__list {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+
+.edit__select_multiple {
+  width: 100%;
+}
+
+.edit__textarea {
+  width: 100%;
+}
+
+.edit__textarea textarea {
+  resize: none;
+  min-height: 200px;
+}
+
+.edit__button_submit {
+  width: 100%;
+  background-color: var(--primary-color);
+  color: var(--primary-font-light-color);
+}
+
+.loading {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+}

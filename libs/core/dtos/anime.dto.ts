@@ -26,7 +26,7 @@ export interface AnimeDto {
   readonly id: number;
 
   /** Date created. */
-  readonly created: string;
+  readonly created?: string;
 
   /** Date modified. */
   readonly modified: string;

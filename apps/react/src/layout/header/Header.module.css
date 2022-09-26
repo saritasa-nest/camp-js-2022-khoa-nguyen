@@ -1,0 +1,24 @@
+.header {
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  height: var(--height-header);
+  background-color: var(--primary-color);
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.header__link {
+  color: var(--primary-font-light-color);
+  font-weight: var(--primary-font-weight-title);
+  font-size: var(--primary-font-size-normal);
+}
+
+.header__wrapper {
+  margin: auto;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
