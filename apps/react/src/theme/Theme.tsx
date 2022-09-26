@@ -2,6 +2,12 @@ import { createTheme, ThemeProvider } from '@mui/material';
 import { FC, PropsWithChildren } from 'react';
 
 const theme = createTheme({
+  typography: {
+    h1: {
+      fontSize: 50,
+      fontWeight: 600,
+    },
+  },
   palette: {
     primary: {
       main: '#1363df',
@@ -25,7 +31,18 @@ const theme = createTheme({
         root: {
           padding: '20px',
           width: '100%',
+          boxSizing: 'border-box',
           overflow: 'visible',
+        },
+      },
+    },
+
+    MuiModal: {
+      styleOverrides: {
+        root: {
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
         },
       },
     },

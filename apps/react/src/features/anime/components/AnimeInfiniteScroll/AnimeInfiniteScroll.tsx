@@ -3,13 +3,13 @@ import { AnimeQueryMapper } from '@js-camp/core/mappers/animeQuery.mapper';
 import {
   getAnimeList,
   getNextAnimeList,
-} from '@js-camp/react/store/anime/dispatchers';
+} from '@js-camp/react/store/animeList/dispatchers';
 import {
   selectAmineList,
   selectIsAnimeLoading,
   selectIsLoadingNextPage,
   selectNextPage,
-} from '@js-camp/react/store/anime/selectors';
+} from '@js-camp/react/store/animeList/selectors';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { FC, memo, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
@@ -59,7 +59,11 @@ export const AnimeInfiniteScrollInner: FC = () => {
   }, [handleObserver]);
 
   if (isLoading) {
-    return <Loading isBackdropLoading={false} />;
+    return (
+      <div className={style['anime-loading']}>
+        <Loading isBackdropLoading={false} />
+      </div>
+    );
   }
 
   if (animeList.length === 0) {

@@ -13,7 +13,7 @@ import { useSnackbar } from 'notistack';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import { FormInputItem } from '../../components/FormItem';
+import { FormInputItem } from '../../../../components/FormItem';
 import style from '../auth.module.css';
 
 import { validationSchema } from './schema';
@@ -91,14 +91,14 @@ export const RegisterPage: React.FC = () => {
         <h1 className={style['auth__title']}>Welcome to Saritasa Anime</h1>
         <FormikProvider value={formik}>
           <Form className={style['auth__form']}>
-            <FormInputItem label="Email" name="email" type="email" />
+            <FormInputItem label="Email" name="email" propsInput={{ type: 'email' }} />
             <FormInputItem label="First name" name="firstName" />
             <FormInputItem label="Last name" name="lastName" />
-            <FormInputItem label="Password" name="password" type="password" />
+            <FormInputItem label="Password" name="password" propsInput={{ type: 'password' }} />
             <FormInputItem
               label="Confirm password"
               name="confirmPassword"
-              type="password"
+              propsInput={{ type: 'password' }}
             />
             <p>
               Already have an account?{' '}

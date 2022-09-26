@@ -8,7 +8,7 @@ import {
   OrderingQuery,
   SortingQuery,
 } from '@js-camp/core/models/animeQuery';
-import { getAnimeList } from '@js-camp/react/store/anime/dispatchers';
+import { getAnimeList } from '@js-camp/react/store/animeList/dispatchers';
 import { useAppDispatch } from '@js-camp/react/store/store';
 import { FC } from 'react';
 

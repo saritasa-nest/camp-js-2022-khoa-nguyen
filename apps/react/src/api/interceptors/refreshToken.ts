@@ -1,8 +1,11 @@
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 
 import { http } from '..';
 
 import { TokenService } from '../services/tokenService';
+
+let isAlreadyRefreshToken = false;
+let isErrorRefresh = false;
 
 /**
  * Refresh token.
@@ -18,19 +21,23 @@ export async function refreshToken(error: unknown): Promise<AxiosResponse> {
     return Promise.reject(error);
   }
 
-  if (error.response.status === 401) {
+  if (isErrorRefresh) {
+    isErrorRefresh = false;
     await TokenService.remove();
-    const newToken = await TokenService.refreshToken(token);
-    await TokenService.save(newToken);
-    const config: AxiosRequestConfig = {
-      ...error.config,
-      headers: {
-        ...error.config.headers,
-        Authorization: `Bearer ${newToken.access}`,
-      },
-    };
-    return http(config);
+    return Promise.reject(error);
   }
 
+  if (error.response.status === 401) {
+    isAlreadyRefreshToken = false;
+    if (error.config.url?.includes('refresh')) {
+      isErrorRefresh = true;
+    }
+    if (!isAlreadyRefreshToken) {
+      isAlreadyRefreshToken = true;
+      const newToken = await TokenService.refreshToken(token);
+      await TokenService.save(newToken);
+    }
+    return http.request(error.config);
+  }
   return Promise.reject(error);
 }
