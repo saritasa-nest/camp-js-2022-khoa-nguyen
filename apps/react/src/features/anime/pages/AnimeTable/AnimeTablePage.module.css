@@ -1,0 +1,12 @@
+.anime-table {
+  display: grid;
+  margin: auto;
+  gap: 20px;
+  grid-template-columns: 1fr 3fr;
+}
+
+.anime-table__content {
+  height: calc(100vh - var(--height-header));
+  overflow: auto;
+  padding: 20px;
+}

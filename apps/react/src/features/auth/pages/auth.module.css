@@ -1,0 +1,34 @@
+.auth {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  flex-direction: column;
+  max-width: 500px;
+  margin: auto;
+}
+
+.auth__title {
+  text-align: center;
+  color: var(--primary-color);
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.auth__form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 22px;
+}
+
+.auth__link {
+  color: var(--primary-color);
+  font-weight: var(--primary-font-weight-title);
+  text-decoration: underline;
+}
+
+.auth__error {
+  color: var(--primary-font-error-color);
+}
