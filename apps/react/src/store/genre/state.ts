@@ -2,7 +2,7 @@ import { Genre } from '@js-camp/core/models/genre';
 import { createEntityAdapter } from '@reduxjs/toolkit';
 
 export const entityAdapter = createEntityAdapter<Genre>({
-  selectId: studio => studio.id,
+  selectId: genre => genre.id,
 });
 
 /** Genres state. */

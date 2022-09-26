@@ -1,1 +1,2 @@
-export * from './AppSelect';
+export * from './AppSelectDefault';
+export * from './AppSelectWithSearch';

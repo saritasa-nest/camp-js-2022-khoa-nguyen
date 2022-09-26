@@ -1,24 +1,21 @@
-import { AnimeQuery } from '@js-camp/core/models/animeQuery';
+import { AnimeDetail } from '@js-camp/core/models';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { AnimeService } from '../../api/services/animeService';
+import { addGenres } from '../genre/dispatchers';
+import { addStudios } from '../studios/dispatchers';
 
-export const getAnimeList = createAsyncThunk(
-  'anime/getAnimeList',
-  async(param: AnimeQuery, { rejectWithValue }) => {
+export const getAnimeDetail = createAsyncThunk(
+  'anime/getDetail',
+  async(
+    { id, type = 'detail' }: { id: AnimeDetail['id']; type?: 'detail' | 'edit'; },
+    { rejectWithValue, dispatch },
+  ) => {
     try {
-      return await AnimeService.getAnimeList(param);
-    } catch (error: unknown) {
-      return rejectWithValue(error);
-    }
-  },
-);
-
-export const getNextAnimeList = createAsyncThunk(
-  'anime/getAnimeListNext',
-  async(url: string, { rejectWithValue }) => {
-    try {
-      return await AnimeService.getNextAnimeList(url);
+      const anime = await AnimeService.getDetailAnime(id, type);
+      dispatch(addGenres(anime.genres));
+      dispatch(addStudios(anime.studios));
+      return anime;
     } catch (error: unknown) {
       return rejectWithValue(error);
     }
