@@ -9,6 +9,14 @@
   --primary-backdrop-color: rgba(0 0 0 / 60.3%);
 }
 
+body {
+  margin: 0;
+}
+
+body * {
+  box-sizing: border-box;
+}
+
 a,
 :link,
 .link {
@@ -31,35 +39,4 @@ h2 {
 
 textarea {
   resize: none;
-}
-
-.links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-
-.default-layout {
-  --default-layout-width: 1200px;
-
-  margin: auto;
-  max-width: var(--default-layout-width);
-}
-
-.button {
-  padding: 1rem 2rem;
-  border: none;
-  background-color: var(--primary-light-color);
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.button:hover {
-  color: var(--primary-light-color-2);
-  background-color: var(--primary-color);
-}
-
-.form__span_error {
-  color: var(--primary-font-error-color);
-  margin-bottom: 7px;
 }

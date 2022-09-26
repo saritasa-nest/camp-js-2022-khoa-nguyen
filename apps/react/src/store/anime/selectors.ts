@@ -1,27 +1,19 @@
-import { createSelector } from '@reduxjs/toolkit';
+import { createSelector, EntityId } from '@reduxjs/toolkit';
 
 import { RootState } from '../store';
 
-/** Selects auth loading state. */
-export const selectIsAuthLoading = createSelector(
-  (state: RootState) => state.auth.isLoading,
+import { entityAdapter } from './state';
+
+export const { selectById: selectByAnimeId } = entityAdapter.getSelectors();
+
+/** Select anime by ID. */
+export const selectAnimeDetailById = createSelector(
+  (state: RootState, id: EntityId) => (selectByAnimeId(state.anime, id)),
+  anime => anime,
+);
+
+/** Select anime loading state. */
+export const selectIsAnimeDetailLoading = createSelector(
+  (state: RootState) => state.anime.isLoading,
   isLoading => isLoading,
-);
-
-/** Select is logged in state. */
-export const selectIsAuth = createSelector(
-  (state: RootState) => state.auth.isAuthorized,
-  isAuthorized => isAuthorized,
-);
-
-/** Selects auth error state. */
-export const selectAuthError = createSelector(
-  (state: RootState) => state.auth.error,
-  error => error,
-);
-
-/** Selects auth token. */
-export const selectAuthToken = createSelector(
-  (state: RootState) => state.auth.token,
-  token => token,
 );

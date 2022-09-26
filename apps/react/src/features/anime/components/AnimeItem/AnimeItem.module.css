@@ -1,0 +1,42 @@
+.anime-item {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  transition: 0.2s ease;
+}
+
+.anime-item:hover {
+  background-color: var(--primary-light-color-2);
+}
+
+.anime-item_active {
+  background-color: var(--primary-light-color-2);
+}
+
+.anime-item__thumb {
+  width: 100%;
+  min-width: 80px;
+  min-height: 80px;
+  object-fit: cover;
+  border-radius: 999px;
+}
+
+.anime-item__content {
+  margin-left: 15px;
+  flex: 1;
+}
+
+.anime-popper__stack-button {
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.anime-popper__button {
+  flex: 1;
+}
+
+.anime-popper__stack-wrapper {
+  padding: 10px;
+}

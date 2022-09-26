@@ -3,6 +3,7 @@
   --primary-dark-color: #36537e;
   --primary-light-color: #47b5ff;
   --primary-light-color-2: #dff6ff;
+  --primary-light-color-3: #fff;
 
   /* Text color */
   --primary-font-color: #06283d;
@@ -18,4 +19,7 @@
   --primary-font-size-small: 1rem;
   --primary-font-size-normal: 1.3rem;
   --primary-font-size-title: 2rem;
+
+  /** Header height */
+  --height-header: 90px;
 }

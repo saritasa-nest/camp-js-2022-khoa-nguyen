@@ -1,18 +1,22 @@
-import { Card, Container, Grid } from '@mui/material';
+import { FC, memo } from 'react';
+import { Outlet } from 'react-router-dom';
 
 import { DefaultLayout } from '../../../../layout';
+import { AnimeSidebar } from '../../components/AnimeSidebar';
 
-export const AnimeTablePage: React.FC = () => (
+import style from './AnimeTablePage.module.css';
+
+export const AnimeTablePageInner: FC = () => (
   <DefaultLayout>
-    <Container>
-      <Grid container justifyContent="center" spacing={5}>
-        <Grid item xs={3}>
-          <Card>Test</Card>
-        </Grid>
-        <Grid item xs={9}>
-          <Card>Test2</Card>
-        </Grid>
-      </Grid>
-    </Container>
+    <div className={style['anime-table']}>
+      <div className={style['anime-table__sidebar']}>
+        <AnimeSidebar />
+      </div>
+      <div className={style['anime-table__content']}>
+        <Outlet/>
+      </div>
+    </div>
   </DefaultLayout>
 );
+
+export const AnimeTablePage = memo(AnimeTablePageInner);

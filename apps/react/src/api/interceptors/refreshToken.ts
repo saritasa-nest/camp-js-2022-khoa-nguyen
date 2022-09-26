@@ -1,26 +1,43 @@
-import { AxiosError } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
+
+import { http } from '..';
 
 import { TokenService } from '../services/tokenService';
+
+let isAlreadyRefreshToken = false;
+let isErrorRefresh = false;
 
 /**
  * Refresh token.
  * @param error Error of request.
  */
-export async function refreshToken(error: unknown): Promise<void> {
+export async function refreshToken(error: unknown): Promise<AxiosResponse> {
   const token = await TokenService.get();
   if (token == null || !(error instanceof AxiosError)) {
-    throw error;
+    return Promise.reject(error);
   }
 
   if (error.response == null) {
-    throw new Error('There is no response.');
+    return Promise.reject(error);
+  }
+
+  if (isErrorRefresh) {
+    isErrorRefresh = false;
+    await TokenService.remove();
+    return Promise.reject(error);
   }
 
   if (error.response.status === 401) {
-    await TokenService.remove();
-    const newToken = await TokenService.refreshToken(token);
-    return TokenService.save(newToken);
+    isAlreadyRefreshToken = false;
+    if (error.config.url?.includes('refresh')) {
+      isErrorRefresh = true;
+    }
+    if (!isAlreadyRefreshToken) {
+      isAlreadyRefreshToken = true;
+      const newToken = await TokenService.refreshToken(token);
+      await TokenService.save(newToken);
+    }
+    return http.request(error.config);
   }
-
-  throw error;
+  return Promise.reject(error);
 }
