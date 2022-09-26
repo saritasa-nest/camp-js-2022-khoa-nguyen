@@ -1,37 +1,35 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { AxiosError } from 'axios';
 
-import { getAnimeList, getNextAnimeList } from './dispatchers';
+import { getAnimeDetail } from './dispatchers';
 
-import { animeAdapter, AnimeState, initialState } from './state';
+import { AnimeDetailsState, entityAdapter, initialState } from './state';
 
 export const animeSlice = createSlice({
-  name: 'anime',
+  name: 'animeDetail',
   initialState,
   reducers: {},
   extraReducers: builder =>
     builder
-      .addCase(getAnimeList.pending, state => {
+      .addCase(getAnimeDetail.pending, state => {
+        state.error = null;
         state.isLoading = true;
       })
-      .addCase(getAnimeList.fulfilled, (state, action) => {
-        animeAdapter.setAll(state as AnimeState, action.payload.results);
-        state.nextPageUrl = action.payload.next;
-        state.totalItems = action.payload.count;
+      .addCase(getAnimeDetail.fulfilled, (state, action) => {
         state.isLoading = false;
+        if (action.payload !== null) {
+          entityAdapter.setOne(state as AnimeDetailsState, action.payload);
+        }
       })
-      .addCase(getAnimeList.rejected, state => {
+      .addCase(getAnimeDetail.rejected, (state, action) => {
+        if (action.payload instanceof AxiosError) {
+          if (action.payload.response?.status !== 401) {
+            state.isLoading = false;
+            return;
+          }
+          state.isLoading = true;
+          return;
+        }
         state.isLoading = false;
-      })
-      .addCase(getNextAnimeList.pending, state => {
-        state.isLoadingNextPage = true;
-      })
-      .addCase(getNextAnimeList.rejected, state => {
-        state.isLoadingNextPage = false;
-      })
-      .addCase(getNextAnimeList.fulfilled, (state, action) => {
-        animeAdapter.addMany(state as AnimeState, action.payload.results);
-        state.nextPageUrl = action.payload.next;
-        state.totalItems = action.payload.count;
-        state.isLoadingNextPage = false;
       }),
 });

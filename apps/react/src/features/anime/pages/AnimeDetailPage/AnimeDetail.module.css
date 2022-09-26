@@ -1,0 +1,45 @@
+.anime-detail {
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.anime-detail__image {
+  width: 100%;
+  max-width: 400px;
+  max-height: 300px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.anime-detail__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.anime-detail__list[class*="MuiList-root"] {
+  padding: 0;
+}
+
+.anime-detail__list-item[class*="MuiListItem-root"] {
+  width: auto;
+  padding: 0;
+}
+
+.anime-detail__chip {
+  width: fit-content;
+}
+
+.anime-detail__image-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  padding: 20px 0;
+}
+
+.anime-detail__iframe {
+  width: 70vw;
+  height: 80vh;
+}

@@ -1,20 +1,21 @@
+import { AnimeQueryUrl } from '@js-camp/core/dtos/animeQuery.dto';
+import { AnimeQueryMapper } from '@js-camp/core/mappers/animeQuery.mapper';
 import {
   getAnimeList,
   getNextAnimeList,
-} from '@js-camp/react/store/anime/dispatchers';
+} from '@js-camp/react/store/animeList/dispatchers';
 import {
   selectAmineList,
   selectIsAnimeLoading,
   selectIsLoadingNextPage,
   selectNextPage,
-} from '@js-camp/react/store/anime/selectors';
+} from '@js-camp/react/store/animeList/selectors';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
-
 import { FC, memo, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 
 import { Loading } from '../../../../components';
-
+import { useQueryParam } from '../../../../hooks';
 import { AnimeItem } from '../AnimeItem';
 
 import style from './AnimeInfiniteScroll.module.css';
@@ -31,10 +32,14 @@ export const AnimeInfiniteScrollInner: FC = () => {
   const dispatch = useAppDispatch();
   const nextPage = useAppSelector(selectNextPage);
   const animeList = useSelector(selectAmineList);
+  const { currentQueryParams } = useQueryParam<AnimeQueryUrl>();
+
   const isLoadingNextPage = useAppSelector(selectIsLoadingNextPage);
 
   useEffect(() => {
-    dispatch(getAnimeList());
+    const currentQueryParamsModel =
+      AnimeQueryMapper.fromUrl(currentQueryParams);
+    dispatch(getAnimeList(currentQueryParamsModel));
   }, []);
 
   const handleObserver = (entries: IntersectionObserverEntry[]) => {
@@ -54,7 +59,11 @@ export const AnimeInfiniteScrollInner: FC = () => {
   }, [handleObserver]);
 
   if (isLoading) {
-    return <Loading isBackdropLoading={false} />;
+    return (
+      <div className={style['anime-loading']}>
+        <Loading isBackdropLoading={false} />
+      </div>
+    );
   }
 
   if (animeList.length === 0) {
